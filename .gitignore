@@ -1,1 +1,11 @@
+# Visual Studio
+.vs/*
+.vscode/*
+*.code-workspace
 
+# Mac/OSX
+.DS_Store
+
+# Compilation
+out/
+build/
