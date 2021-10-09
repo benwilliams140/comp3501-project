@@ -17,14 +17,13 @@ namespace game {
 
     // Class that manages all resources
     class ResourceManager {
-
         public:
             // Constructor and destructor
             ResourceManager(void);
             ~ResourceManager();
             // Add a resource that was already loaded and allocated to memory
             void AddResource(ResourceType type, const std::string name, GLuint resource, GLsizei size);
-            void AddResource(ResourceType type, const std::string name, GLuint array_buffer, GLuint element_array_buffer, GLsizei size);
+            void AddResource(ResourceType type, const std::string name, util::Vao* array_buffer, util::Ebo* element_array_buffer, GLsizei size);
             // Load a resource from a file, according to the specified type
             void LoadResource(ResourceType type, const std::string name, const char *filename);
             // Get the resource with the specified name
@@ -39,7 +38,7 @@ namespace game {
 			void CreateCylinder(std::string object_name, float height = 1.0, float circle_radius = 0.6, int num_loop_samples = 90, int num_circle_samples = 30);
 
 			// "Wall", a flat object
-            void CreateWall(std::string object_name);
+            void CreateQuad(std::string object_name);
 
         private:
             // List storing all resources

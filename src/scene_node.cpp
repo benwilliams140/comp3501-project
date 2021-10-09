@@ -10,7 +10,6 @@
 namespace game {
 
 SceneNode::SceneNode(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture){
-
     // Set name of scene node
     name_ = name;
 
@@ -45,110 +44,76 @@ SceneNode::SceneNode(const std::string name, const Resource *geometry, const Res
     scale_ = glm::vec3(1.0, 1.0, 1.0);
 }
 
-
-SceneNode::~SceneNode(){
-}
-
+SceneNode::~SceneNode(){}
 
 const std::string SceneNode::GetName(void) const {
-
     return name_;
 }
 
-
 glm::vec3 SceneNode::GetPosition(void) const {
-
     return position_;
 }
 
-
 glm::quat SceneNode::GetOrientation(void) const {
-
     return orientation_;
 }
 
-
 glm::vec3 SceneNode::GetScale(void) const {
-
     return scale_;
 }
 
-
 void SceneNode::SetPosition(glm::vec3 position){
-
     position_ = position;
 }
 
-
 void SceneNode::SetOrientation(glm::quat orientation){
-
     orientation_ = orientation;
 }
 
-
 void SceneNode::SetScale(glm::vec3 scale){
-
     scale_ = scale;
 }
 
-
 void SceneNode::Translate(glm::vec3 trans){
-
     position_ += trans;
 }
 
-
 void SceneNode::Rotate(glm::quat rot){
-
     orientation_ *= rot;
     orientation_ = glm::normalize(orientation_);
 }
 
-
 void SceneNode::Scale(glm::vec3 scale){
-
     scale_ *= scale;
 }
 
-
 GLenum SceneNode::GetMode(void) const {
-
     return mode_;
 }
 
-
-GLuint SceneNode::GetArrayBuffer(void) const {
-
+util::Vao* SceneNode::GetArrayBuffer(void) const {
     return array_buffer_;
 }
 
-
-GLuint SceneNode::GetElementArrayBuffer(void) const {
-
+util::Ebo* SceneNode::GetElementArrayBuffer(void) const {
     return element_array_buffer_;
 }
 
-
 GLsizei SceneNode::GetSize(void) const {
-
     return size_;
 }
 
-
 GLuint SceneNode::GetMaterial(void) const {
-
     return material_;
 }
 
-
 void SceneNode::Draw(Camera *camera){
-
     // Select proper material (shader program)
     glUseProgram(material_);
 
     // Set geometry to draw
-    glBindBuffer(GL_ARRAY_BUFFER, array_buffer_);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_array_buffer_);
+    array_buffer_->bind();
+    element_array_buffer_->bind();
 
     // Set globals for camera
     camera->SetupShader(material_);
@@ -160,22 +125,21 @@ void SceneNode::Draw(Camera *camera){
     if (mode_ == GL_POINTS){
         glDrawArrays(mode_, 0, size_);
     } else {
-        glDrawElements(mode_, size_, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLE_STRIP, size_, GL_UNSIGNED_INT, (void*)(long long)0);
+        //glDrawElements(mode_, size_, GL_UNSIGNED_INT, 0);
     }
 }
-
 
 void SceneNode::Update(void){
 
     // Do nothing for this generic type of scene node
 }
 
-
 void SceneNode::SetupShader(GLuint program){
 
 	
     // Set attributes for shaders
-    GLint vertex_att = glGetAttribLocation(program, "vertex");
+    /*GLint vertex_att = glGetAttribLocation(program, "vertex");
     glVertexAttribPointer(vertex_att, 3, GL_FLOAT, GL_FALSE, 11*sizeof(GLfloat), 0);
     glEnableVertexAttribArray(vertex_att);
 
@@ -189,7 +153,7 @@ void SceneNode::SetupShader(GLuint program){
 
     GLint tex_att = glGetAttribLocation(program, "uv");
     glVertexAttribPointer(tex_att, 2, GL_FLOAT, GL_FALSE, 11*sizeof(GLfloat), (void *) (9*sizeof(GLfloat)));
-    glEnableVertexAttribArray(tex_att);
+    glEnableVertexAttribArray(tex_att);*/
 
     // World transformation
     glm::mat4 scaling = glm::scale(glm::mat4(1.0), scale_);

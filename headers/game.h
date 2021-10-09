@@ -7,6 +7,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include "input.h"
 #include "scene_graph.h"
 #include "resource_manager.h"
 #include "camera.h"

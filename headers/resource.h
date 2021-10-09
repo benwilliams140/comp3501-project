@@ -6,6 +6,9 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include "../headers/vao.h"
+#include "../headers/ebo.h"
+
 namespace game {
 
     // Possible resource types
@@ -22,21 +25,21 @@ namespace game {
                     GLuint resource_; // OpenGL handle for resource
                 };
                 struct {
-                    GLuint array_buffer_; // Buffers for geometry
-                    GLuint element_array_buffer_;
+                    util::Vao* array_buffer_; // Buffers for geometry
+                    util::Ebo* element_array_buffer_;
                 };
             };
             GLsizei size_; // Number of primitives in geometry
 
         public:
             Resource(ResourceType type, std::string name, GLuint resource, GLsizei size);
-            Resource(ResourceType type, std::string name, GLuint array_buffer, GLuint element_array_buffer, GLsizei size);
+            Resource(ResourceType type, std::string name, util::Vao* array_buffer, util::Ebo* element_array_buffer, GLsizei size);
             ~Resource();
             ResourceType GetType(void) const;
             const std::string GetName(void) const;
             GLuint GetResource(void) const;
-            GLuint GetArrayBuffer(void) const;
-            GLuint GetElementArrayBuffer(void) const;
+            util::Vao* GetArrayBuffer(void) const;
+            util::Ebo* GetElementArrayBuffer(void) const;
             GLsizei GetSize(void) const;
 
     }; // class Resource

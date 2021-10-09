@@ -11,8 +11,7 @@ Resource::Resource(ResourceType type, std::string name, GLuint resource, GLsizei
     size_ = size;
 }
 
-
-Resource::Resource(ResourceType type, std::string name, GLuint array_buffer, GLuint element_array_buffer, GLsizei size){
+Resource::Resource(ResourceType type, std::string name, util::Vao* array_buffer, util::Ebo* element_array_buffer, GLsizei size){
     type_ = type;
     name_ = name;
     array_buffer_ = array_buffer;
@@ -20,44 +19,29 @@ Resource::Resource(ResourceType type, std::string name, GLuint array_buffer, GLu
     size_ = size;
 }
 
-
-Resource::~Resource(){
-
-}
-
+Resource::~Resource(){}
 
 ResourceType Resource::GetType(void) const {
-
     return type_;
 }
 
-
 const std::string Resource::GetName(void) const {
-
     return name_;
 }
 
-
 GLuint Resource::GetResource(void) const {
-
     return resource_;
 }
 
-
-GLuint Resource::GetArrayBuffer(void) const {
-
+util::Vao* Resource::GetArrayBuffer(void) const {
     return array_buffer_;
 }
 
-
-GLuint Resource::GetElementArrayBuffer(void) const {
-
+util::Ebo* Resource::GetElementArrayBuffer(void) const {
     return element_array_buffer_;
 }
 
-
 GLsizei Resource::GetSize(void) const {
-
     return size_;
 }
 

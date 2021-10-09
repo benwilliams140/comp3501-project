@@ -51,15 +51,15 @@ namespace game {
 
             // OpenGL variables
             GLenum GetMode(void) const;
-            GLuint GetArrayBuffer(void) const;
-            GLuint GetElementArrayBuffer(void) const;
+            util::Vao* GetArrayBuffer(void) const;
+            util::Ebo* GetElementArrayBuffer(void) const;
             GLsizei GetSize(void) const;
             GLuint GetMaterial(void) const;
 
         private:
             std::string name_; // Name of the scene node
-            GLuint array_buffer_; // References to geometry: vertex and array buffers
-            GLuint element_array_buffer_;
+            util::Vao* array_buffer_; // References to geometry: vertex and array buffers
+            util::Ebo* element_array_buffer_;
             GLenum mode_; // Type of geometry
             GLsizei size_; // Number of primitives in geometry
             GLuint material_; // Reference to shader program

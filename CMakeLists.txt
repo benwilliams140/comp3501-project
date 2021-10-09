@@ -7,11 +7,11 @@ project(${PROJ_NAME} C CXX)
 # Specify project files: header files and source files
 set(HDRS
     headers/asteroid.h headers/camera.h headers/game.h headers/model_loader.h headers/resource.h headers/resource_manager.h headers/scene_graph.h headers/scene_node.h
-)
+ "headers/input.h" "headers/ebo.h" "headers/vao.h")
  
 set(SRCS
    src/asteroid.cpp src/camera.cpp src/game.cpp src/main.cpp src/resource.cpp src/resource_manager.cpp src/scene_graph.cpp src/scene_node.cpp res/shaders/textured_material_fp.glsl res/shaders/textured_material_vp.glsl res/shaders/procedural_vp.glsl res/shaders/procedural_fp.glsl
-)
+ "src/input.cpp" "src/ebo.cpp" "src/vao.cpp")
 
 
 # Add executable based on the source files
