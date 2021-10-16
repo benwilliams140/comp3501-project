@@ -6,11 +6,11 @@ project(${PROJ_NAME} C CXX)
 
 # Specify project files: header files and source files
 set(HDRS
-    headers/asteroid.h headers/camera.h headers/game.h headers/model_loader.h headers/resource.h headers/resource_manager.h headers/scene_graph.h headers/scene_node.h
+    headers/asteroid.h headers/camera.h headers/game.h headers/model_loader.h headers/resource.h headers/resource_manager.h headers/scene_graph.h headers/scene_node.h headers/HoverTank.h headers/HoverTankTurret.h headers/HoverTankTrack.h headers/Scanner.h headers/MachineGun.h
  "headers/input.h" "headers/ebo.h" "headers/vao.h")
  
 set(SRCS
-   src/asteroid.cpp src/camera.cpp src/game.cpp src/main.cpp src/resource.cpp src/resource_manager.cpp src/scene_graph.cpp src/scene_node.cpp res/shaders/textured_material_fp.glsl res/shaders/textured_material_vp.glsl res/shaders/procedural_vp.glsl res/shaders/procedural_fp.glsl
+   src/asteroid.cpp src/camera.cpp src/game.cpp src/main.cpp src/resource.cpp src/resource_manager.cpp src/scene_graph.cpp src/scene_node.cpp src/HoverTank.cpp src/HoverTankTurret.cpp src/HoverTankTrack.cpp src/Scanner.cpp  src/MachineGun.cpp res/shaders/textured_material_fp.glsl res/shaders/textured_material_vp.glsl res/shaders/procedural_vp.glsl res/shaders/procedural_fp.glsl
  "src/input.cpp" "src/ebo.cpp" "src/vao.cpp")
 
 
@@ -23,7 +23,7 @@ include_directories(${OPENGL_INCLUDE_DIR})
 target_link_libraries(${PROJ_NAME} ${OPENGL_gl_LIBRARY})
 
 # Other libraries needed
-set(LIBRARY_PATH "C:/Users/Pablo Rascazzi/OneDrive/CARLETON/2021-2022/FALL 2021/COMP3501/Code/Libraries")
+set(LIBRARY_PATH C:/Program\ Files/Libraries/Libraries)
 include_directories(${LIBRARY_PATH}/include)
 if(NOT WIN32)
     find_library(GLEW_LIBRARY GLEW)

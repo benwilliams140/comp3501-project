@@ -313,7 +313,6 @@ SceneNode *Game::CreateInstance(std::string entity_name, std::string object_name
             throw(GameException(std::string("Could not find resource \"")+texture_name+std::string("\"")));
         }
     }
-
     SceneNode *scn = scene_.CreateNode(entity_name, geom, mat, tex);
     return scn;
 }

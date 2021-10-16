@@ -12,6 +12,12 @@
 #include "resource_manager.h"
 #include "camera.h"
 #include "asteroid.h"
+#include "HoverTank.h"
+#include "HoverTankTurret.h"
+#include "HoverTankTrack.h"
+#include "Scanner.h"
+#include "MachineGun.h"
+
 
 namespace game {
 

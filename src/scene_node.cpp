@@ -9,7 +9,7 @@
 
 namespace game {
 
-SceneNode::SceneNode(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture) {
+SceneNode::SceneNode(const std::string name, const Resource *geometry, const Resource *material, const Resource *texture){
     // Set name of scene node
     name_ = name;
 
@@ -17,7 +17,7 @@ SceneNode::SceneNode(const std::string name, const Resource *geometry, const Res
     if (geometry->GetType() == PointSet){
         mode_ = GL_POINTS;
     } else if (geometry->GetType() == Mesh){
-        mode_ = GL_TRIANGLE_STRIP;
+        mode_ = GL_TRIANGLES;
     } else {
         throw(std::invalid_argument(std::string("Invalid type of geometry")));
     }
@@ -42,7 +42,6 @@ SceneNode::SceneNode(const std::string name, const Resource *geometry, const Res
 
     // Other attributes
     scale_ = glm::vec3(1.0, 1.0, 1.0);
-    parent_ = nullptr;
 }
 
 SceneNode::~SceneNode(){}
@@ -63,10 +62,6 @@ glm::vec3 SceneNode::GetScale(void) const {
     return scale_;
 }
 
-SceneNode* SceneNode::GetParent(void) const {
-    return parent_;
-}
-
 void SceneNode::SetPosition(glm::vec3 position){
     position_ = position;
 }
@@ -75,12 +70,12 @@ void SceneNode::SetOrientation(glm::quat orientation){
     orientation_ = orientation;
 }
 
-void SceneNode::SetScale(glm::vec3 scale){
-    scale_ = scale;
+void SceneNode::SetParent(SceneNode *newParent) {
+	parent = newParent;
 }
 
-void SceneNode::SetParent(SceneNode* parent) {
-    parent_ = parent;
+void SceneNode::SetScale(glm::vec3 scale){
+    scale_ = scale;
 }
 
 void SceneNode::Translate(glm::vec3 trans){
@@ -116,15 +111,8 @@ GLuint SceneNode::GetMaterial(void) const {
     return material_;
 }
 
-glm::mat4 SceneNode::GetWorldTransform(void) const{
-    // Calculate world transformation without scale
-    glm::mat4 transf = glm::translate(glm::mat4(1.0), position_) * glm::mat4_cast(orientation_);
-
-    // Multiply by parent's transformation
-    if (parent_ != nullptr) transf = parent_->GetWorldTransform() * transf;
-
-    // Return transf
-    return transf;
+SceneNode* SceneNode::GetParent() {
+	return parent;
 }
 
 void SceneNode::Draw(Camera *camera){
@@ -145,18 +133,42 @@ void SceneNode::Draw(Camera *camera){
     if (mode_ == GL_POINTS){
         glDrawArrays(mode_, 0, size_);
     } else {
-        glDrawElements(mode_, size_, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLE_STRIP, size_, GL_UNSIGNED_INT, (void*)(long long)0);
+        //glDrawElements(mode_, size_, GL_UNSIGNED_INT, 0);
     }
 }
 
 void SceneNode::Update(void){
+
     // Do nothing for this generic type of scene node
 }
 
 void SceneNode::SetupShader(GLuint program){
-    // Multiply world transformation with scale
+
+	
+    // Set attributes for shaders
+    /*GLint vertex_att = glGetAttribLocation(program, "vertex");
+    glVertexAttribPointer(vertex_att, 3, GL_FLOAT, GL_FALSE, 11*sizeof(GLfloat), 0);
+    glEnableVertexAttribArray(vertex_att);
+
+    GLint normal_att = glGetAttribLocation(program, "normal");
+    glVertexAttribPointer(normal_att, 3, GL_FLOAT, GL_FALSE, 11*sizeof(GLfloat), (void *) (3*sizeof(GLfloat)));
+    glEnableVertexAttribArray(normal_att);
+
+    GLint color_att = glGetAttribLocation(program, "color");
+    glVertexAttribPointer(color_att, 3, GL_FLOAT, GL_FALSE, 11*sizeof(GLfloat), (void *) (6*sizeof(GLfloat)));
+    glEnableVertexAttribArray(color_att);
+
+    GLint tex_att = glGetAttribLocation(program, "uv");
+    glVertexAttribPointer(tex_att, 2, GL_FLOAT, GL_FALSE, 11*sizeof(GLfloat), (void *) (9*sizeof(GLfloat)));
+    glEnableVertexAttribArray(tex_att);*/
+
+    // World transformation
     glm::mat4 scaling = glm::scale(glm::mat4(1.0), scale_);
-    glm::mat4 transf = GetWorldTransform() * scaling;
+    glm::mat4 rotation = glm::mat4_cast(orientation_);
+    glm::mat4 translation = glm::translate(glm::mat4(1.0), position_);
+	glm::mat4 orbit = glm::mat4(1.0); // identity -- left out for now
+	 glm::mat4 transf = translation * orbit * rotation * scaling;
 
     GLint world_mat = glGetUniformLocation(program, "world_mat");
     glUniformMatrix4fv(world_mat, 1, GL_FALSE, glm::value_ptr(transf));
