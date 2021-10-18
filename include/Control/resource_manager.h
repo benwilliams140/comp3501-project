@@ -7,7 +7,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "resource.h"
+#include "Control/resource.h"
 
 // Default extensions for different shader source files
 #define VERTEX_PROGRAM_EXTENSION "_vp.glsl"

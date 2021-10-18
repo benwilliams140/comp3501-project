@@ -1,6 +1,6 @@
 #include <exception>
 
-#include "resource.h"
+#include "Control/resource.h"
 
 namespace game {
 

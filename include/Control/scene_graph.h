@@ -7,9 +7,9 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "scene_node.h"
-#include "resource.h"
-#include "camera.h"
+#include "Control/scene_node.h"
+#include "Control/resource.h"
+#include "Renderer/camera.h"
 
 namespace game {
 

@@ -9,8 +9,8 @@
 #define GLM_FORCE_RADIANS
 #include <glm/gtc/quaternion.hpp>
 
-#include "resource.h"
-#include "camera.h"
+#include "Control/resource.h"
+#include "Renderer/camera.h"
 
 namespace game {
 

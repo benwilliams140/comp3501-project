@@ -7,11 +7,11 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "input.h"
-#include "scene_graph.h"
-#include "resource_manager.h"
-#include "camera.h"
-#include "asteroid.h"
+#include "Control/input.h"
+#include "Control/scene_graph.h"
+#include "Control/resource_manager.h"
+#include "Renderer/camera.h"
+#include "Objects/asteroid.h"
 
 namespace game {
 

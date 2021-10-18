@@ -1,11 +1,3 @@
-target_sources(${PROJ_NAME} PUBLIC
-	${CMAKE_CURRENT_SOURCE_DIR}/asteroid.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/camera.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/game.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/resource.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/resource_manager.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/scene_graph.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/scene_node.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/input.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/ebo.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/vao.cpp)
+add_subdirectory(Control)
+add_subdirectory(Objects)
+add_subdirectory(Renderer)

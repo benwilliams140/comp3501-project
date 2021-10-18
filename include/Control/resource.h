@@ -6,8 +6,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "vao.h"
-#include "ebo.h"
+#include "Renderer/vao.h"
+#include "Renderer/ebo.h"
 
 namespace game {
 

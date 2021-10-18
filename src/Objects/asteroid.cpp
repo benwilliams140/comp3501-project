@@ -1,4 +1,4 @@
-#include "asteroid.h"
+#include "Objects/asteroid.h"
 
 namespace game {
 

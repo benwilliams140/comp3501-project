@@ -5,7 +5,7 @@
 #include <iostream>
 #include <time.h>
 
-#include "scene_node.h"
+#include "Control/scene_node.h"
 
 namespace game {
 

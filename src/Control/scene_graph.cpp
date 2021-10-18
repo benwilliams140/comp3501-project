@@ -6,7 +6,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "scene_graph.h"
+#include "Control/scene_graph.h"
 
 namespace game {
 

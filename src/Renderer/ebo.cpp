@@ -1,4 +1,4 @@
-#include "ebo.h"
+#include "Renderer/ebo.h"
 
 namespace util {
 

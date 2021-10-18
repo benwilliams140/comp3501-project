@@ -5,7 +5,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 
-#include "camera.h"
+#include "Renderer/camera.h"
 
 namespace game {
 

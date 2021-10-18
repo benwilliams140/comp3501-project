@@ -1,0 +1,5 @@
+target_sources(${PROJ_NAME} PUBLIC
+	${CMAKE_CURRENT_SOURCE_DIR}/camera.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/ebo.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/vao.cpp
+)
