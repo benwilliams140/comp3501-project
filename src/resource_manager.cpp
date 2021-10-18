@@ -6,8 +6,8 @@
 #include <iostream>
 #include <SOIL/SOIL.h>
 
-#include "../headers/resource_manager.h"
-#include "../headers/model_loader.h"
+#include "resource_manager.h"
+#include "model_loader.h"
 
 namespace game {
 

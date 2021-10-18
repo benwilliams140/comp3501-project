@@ -9,7 +9,7 @@
 
 #include <iostream>
 #include <exception>
-#include "../headers/game.h"
+#include "game.h"
 
 // Macro for printing exceptions
 #define PrintException(exception_object)\

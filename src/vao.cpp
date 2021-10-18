@@ -1,4 +1,4 @@
-#include "../headers/vao.h"
+#include "vao.h"
 
 namespace util {
 

@@ -2,8 +2,8 @@
 #include <time.h>
 #include <sstream>
 
-#include "../headers/game.h"
-#include "../headers/path_config.h"
+#include "game.h"
+#include "path_config.h"
 
 namespace game {
 
