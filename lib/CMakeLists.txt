@@ -15,7 +15,7 @@ add_subdirectory(nanogui)
 set_property(TARGET glfw glfw_objects nanogui PROPERTY FOLDER "dependencies")
 
 # add nanogui definitions and include directory
-add_definitions(${NANOGUI_EXTRA_DEFS})
+target_compile_definitions(${PROJ_NAME} PUBLIC ${NANOGUI_EXTRA_DEFS})
 target_include_directories(${PROJ_NAME} PUBLIC ${NANOGUI_EXTRA_INCS})
 target_include_directories(${PROJ_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/nanogui/include)
 
