@@ -31,6 +31,12 @@ namespace game {
             virtual ~GameException() throw() {};
     };
 
+    enum class State {
+        PAUSED,
+        RUNNING,
+        STOPPED
+    };
+
     // Game application
     class Game {
 
@@ -62,6 +68,7 @@ namespace game {
 
             // Flag to turn animation on/off
             bool animating_;
+            State state_;
 
             // Methods to initialize the game
             void InitWindow(void);
