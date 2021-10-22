@@ -4,45 +4,73 @@
 
 namespace game {
 
-Resource::Resource(ResourceType type, std::string name, GLuint resource, GLsizei size){
-    type_ = type;
-    name_ = name;
-    resource_ = resource;
-    size_ = size;
-}
+    Resource::Resource(ResourceType type, std::string name, GLuint resource, GLsizei size) {
+        type_ = type;
+        name_ = name;
+        resource_ = resource;
+        size_ = size;
+    }
 
-Resource::Resource(ResourceType type, std::string name, util::Vao* array_buffer, util::Ebo* element_array_buffer, GLsizei size){
-    type_ = type;
-    name_ = name;
-    array_buffer_ = array_buffer;
-    element_array_buffer_ = element_array_buffer;
-    size_ = size;
-}
+    Resource::Resource(ResourceType type, std::string name, util::Vao* vao, util::Ebo* ebo, GLsizei size) {
+        type_ = type;
+        name_ = name;
+        vao_ = vao;
+        ebo_ = ebo;
+        size_ = size;
+    }
 
-Resource::~Resource(){}
+    Resource::Resource(ResourceType type, std::string name, util::Vao* vao, util::Ebo* ebo, GLsizei size, int width, int length, glm::vec3 scale, float* heightMatrix) {
+        type_ = type;
+        name_ = name;
+        vao_ = vao;
+        ebo_ = ebo;
+        size_ = size;
+        width_ = width;
+        length_ = length;
+        scale_ = scale;
+        heightMatrix_ = heightMatrix;
+    }
 
-ResourceType Resource::GetType(void) const {
-    return type_;
-}
+    Resource::~Resource() {}
 
-const std::string Resource::GetName(void) const {
-    return name_;
-}
+    ResourceType Resource::GetType(void) const {
+        return type_;
+    }
 
-GLuint Resource::GetResource(void) const {
-    return resource_;
-}
+    const std::string Resource::GetName(void) const {
+        return name_;
+    }
 
-util::Vao* Resource::GetArrayBuffer(void) const {
-    return array_buffer_;
-}
+    GLuint Resource::GetResource(void) const {
+        return resource_;
+    }
 
-util::Ebo* Resource::GetElementArrayBuffer(void) const {
-    return element_array_buffer_;
-}
+    util::Vao* Resource::GetVAO(void) const {
+        return vao_;
+    }
 
-GLsizei Resource::GetSize(void) const {
-    return size_;
-}
+    util::Ebo* Resource::GetEBO(void) const {
+        return ebo_;
+    }
+
+    GLsizei Resource::GetSize(void) const {
+        return size_;
+    }
+
+    int Resource::GetWidth(void) const {
+        return width_;
+    }
+
+    int Resource::GetLength(void) const {
+        return length_;
+    }
+
+    glm::vec3 Resource::GetScale(void) const {
+        return scale_;
+    }
+
+    float* Resource::GetHeightMatrix(void) const {
+        return heightMatrix_;
+    }
 
 } // namespace game

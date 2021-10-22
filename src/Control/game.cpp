@@ -19,7 +19,7 @@ const bool window_full_screen_g = false;
 // Viewport and camera settings
 float camera_near_clip_distance_g = 0.01;
 float camera_far_clip_distance_g = 1000.0;
-float camera_fov_g = 20.0; // Field-of-view of camera
+float camera_fov_g = 60.0; // Field-of-view of camera
 const glm::vec3 viewport_background_color_g(0.1, 0.1, 0.1);
 glm::vec3 camera_position_g(0.5, 0.5, 10.0);
 glm::vec3 camera_look_at_g(0.0, 0.0, 0.0);
@@ -105,48 +105,55 @@ void Game::InitEventHandlers(void){
     glfwSetWindowUserPointer(window_, (void *) this);
 }
 
-void Game::SetupResources(void){
+void Game::SetupResources(void) {
     std::string filename;
 
     // Create geometry of the objects
-	resman_.CreateQuad("FlatSurface");
-	//resman_.CreateTorus("SimpleTorusMesh", 0.8, 0.35, 30, 30);
-	//resman_.CreateSeamlessTorus("SeamlessTorusMesh", 0.8, 0.35, 80, 80);
-	//resman_.CreateCylinder("SimpleCylinderMesh", 2.0, 0.4, 30, 30);
+    resman_.CreateQuad("FlatSurface");
+    //resman_.CreateTorus("SimpleTorusMesh", 0.8, 0.35, 30, 30);
+    //resman_.CreateSeamlessTorus("SeamlessTorusMesh", 0.8, 0.35, 80, 80);
+    //resman_.CreateCylinder("SimpleCylinderMesh", 2.0, 0.4, 30, 30);
+
+    // Load terrain
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/terrain_height_map.png");
+    resman_.LoadResource(ResourceType::Terrain, "Terrain", filename.c_str(), glm::vec3(1.0f));
 
     // Load geometry
     filename = std::string(MESH_DIRECTORY) + std::string("/cube.mesh");
-    resman_.LoadResource(Mesh, "Cube", filename.c_str());
-	
-	// Load shaders
-	filename = std::string(MATERIAL_DIRECTORY) + std::string("/textured_material");
-	resman_.LoadResource(Material, "TextureShader", filename.c_str());
-	filename = std::string(MATERIAL_DIRECTORY) + std::string("/corona");
-	resman_.LoadResource(Material, "Procedural", filename.c_str());
+    resman_.LoadResource(ResourceType::Mesh, "Cube", filename.c_str());
+
+    // Load shaders
+    filename = std::string(MATERIAL_DIRECTORY) + std::string("/textured_material");
+    resman_.LoadResource(ResourceType::Material, "TextureShader", filename.c_str());
+    filename = std::string(MATERIAL_DIRECTORY) + std::string("/corona");
+    resman_.LoadResource(ResourceType::Material, "Procedural", filename.c_str());
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/simple_texture");
-	resman_.LoadResource(Material, "Simple", filename.c_str());
-	filename = std::string(MATERIAL_DIRECTORY) + std::string("/lit");
-	resman_.LoadResource(Material, "Lighting", filename.c_str());
+    resman_.LoadResource(ResourceType::Material, "Simple", filename.c_str());
+    filename = std::string(MATERIAL_DIRECTORY) + std::string("/lit");
+    resman_.LoadResource(ResourceType::Material, "Lighting", filename.c_str());
 
     // Load texture
-	filename = std::string(TEXTURE_DIRECTORY) + std::string("/rocky.png");
-	resman_.LoadResource(Texture, "RockyTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/rocky.png");
+    resman_.LoadResource(ResourceType::Texture, "RockyTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/uv6.png");
-	resman_.LoadResource(Texture, "uv6", filename.c_str());
+    resman_.LoadResource(ResourceType::Texture, "uv6", filename.c_str());
 }
 
-void Game::SetupScene(void){
+void Game::SetupScene(void) {
     // Set background color for the scene
     scene_.SetBackgroundColor(viewport_background_color_g);
 
     // Create an object for showing the texture
-	// instance contains identifier, geometry, shader, and texture
-	//game::SceneNode *mytorus = CreateInstance("MyTorus1", "SimpleTorusMesh", "TextureShader", "RockyTexture");
-	//game::SceneNode *mytorus = CreateInstance("MyTorus1", "SimpleTorusMesh", "Procedural", "RockyTexture");
-	//game::SceneNode *mytorus = CreateInstance("MyTorus1", "SeamlessTorusMesh", "Lighting", "RockyTexture");
+    // instance contains identifier, geometry, shader, and texture
+    //game::SceneNode *mytorus = CreateInstance("MyTorus1", "SimpleTorusMesh", "TextureShader", "RockyTexture");
+    //game::SceneNode *mytorus = CreateInstance("MyTorus1", "SimpleTorusMesh", "Procedural", "RockyTexture");
+    //game::SceneNode *mytorus = CreateInstance("MyTorus1", "SeamlessTorusMesh", "Lighting", "RockyTexture");
 
-	game::SceneNode *wall = CreateInstance("Canvas", "Cube", "Simple", "uv6"); // must supply a texture, even if not used	
+    game::SceneNode* wall = CreateInstance("Canvas", "Cube", "Simple", "uv6"); // must supply a texture, even if not used	
     wall->Rotate(glm::angleAxis(glm::radians(90.0f), glm::vec3(1.0, 0.0, 0.0)));
+    wall->Translate(glm::vec3(0.0f, 0.0f, -5.0f));
+
+    game::Terrain* terrain = (game::Terrain*)CreateInstance("Terrain Object", "Terrain", "Simple", "uv6");
 }
 
 void Game::MainLoop(void){
@@ -259,44 +266,6 @@ void Game::ResizeCallback(GLFWwindow* window, int width, int height){
 Game::~Game(){
     
     glfwTerminate();
-}
-
-Asteroid *Game::CreateAsteroidInstance(std::string entity_name, std::string object_name, std::string material_name){
-    // Get resources
-    Resource *geom = resman_.GetResource(object_name);
-    if (!geom){
-        throw(GameException(std::string("Could not find resource \"")+object_name+std::string("\"")));
-    }
-
-    Resource *mat = resman_.GetResource(material_name);
-    if (!mat){
-        throw(GameException(std::string("Could not find resource \"")+material_name+std::string("\"")));
-    }
-
-    // Create asteroid instance
-    Asteroid *ast = new Asteroid(entity_name, geom, mat);
-    scene_.AddNode(ast);
-    return ast;
-}
-
-void Game::CreateAsteroidField(int num_asteroids){
-    // Create a number of asteroid instances
-    for (int i = 0; i < num_asteroids; i++){
-        // Create instance name
-        std::stringstream ss;
-        ss << i;
-        std::string index = ss.str();
-        std::string name = "AsteroidInstance" + index;
-
-        // Create asteroid instance
-        Asteroid *ast = CreateAsteroidInstance(name, "SimpleSphereMesh", "ObjectMaterial");
-
-        // Set attributes of asteroid: random position, orientation, and
-        // angular momentum
-        ast->SetPosition(glm::vec3(-300.0 + 600.0*((float) rand() / RAND_MAX), -300.0 + 600.0*((float) rand() / RAND_MAX), 600.0*((float) rand() / RAND_MAX)));
-        ast->SetOrientation(glm::normalize(glm::angleAxis(glm::pi<float>()*((float) rand() / RAND_MAX), glm::vec3(((float) rand() / RAND_MAX), ((float) rand() / RAND_MAX), ((float) rand() / RAND_MAX)))));
-        ast->SetAngM(glm::normalize(glm::angleAxis(0.05f*glm::pi<float>()*((float) rand() / RAND_MAX), glm::vec3(((float) rand() / RAND_MAX), ((float) rand() / RAND_MAX), ((float) rand() / RAND_MAX)))));
-    }
 }
 
 SceneNode *Game::CreateInstance(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name){

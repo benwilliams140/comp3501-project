@@ -11,12 +11,12 @@
 #include "Control/scene_graph.h"
 #include "Control/resource_manager.h"
 #include "Renderer/camera.h"
-#include "Objects/asteroid.h"
 #include "Objects/Hovertank/hovertank.h"
 #include "Objects/Hovertank/hovertank_track.h"
 #include "Objects/Hovertank/hovertank_turret.h"
 #include "Objects/Hovertank/machine_gun.h"
 #include "Objects/Hovertank/scanner.h"
+#include "Objects/terrain.h"
 
 namespace game {
 
@@ -78,12 +78,6 @@ namespace game {
             // Methods to handle events
             static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
             static void ResizeCallback(GLFWwindow* window, int width, int height);
-
-            // Asteroid field
-            // Create instance of one asteroid
-            Asteroid *CreateAsteroidInstance(std::string entity_name, std::string object_name, std::string material_name);
-            // Create entire random asteroid field
-            void CreateAsteroidField(int num_asteroids = 1500);
 
             // Create an instance of an object stored in the resource manager
             SceneNode *CreateInstance(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name = std::string(""));
