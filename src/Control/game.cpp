@@ -32,7 +32,7 @@ const std::string material_directory_g = MATERIAL_DIRECTORY;
 void UpdateCameraMovement(Camera*);
 
 Game::Game(void){
-    // Don't do work in the constructor, leave it for the Init() function
+    state_ = State::STOPPED;
 }
 
 void Game::Init(void){
@@ -154,7 +154,11 @@ void Game::MainLoop(void){
     while (!glfwWindowShouldClose(window_)){
         // Press "Q" key to close application
         if (Input::getKey(INPUT_KEY_ESCAPE)) {
-            glfwSetWindowShouldClose(window_, true);
+            switch (state_) {
+            case State::PAUSED: state_ = State::RUNNING; break;
+            case State::RUNNING: state_ = State::PAUSED; break;
+            default: break;
+            }
         }
         // Press "Space" key to toggle animation
         if (Input::getKey(INPUT_KEY_SPACE)) {
