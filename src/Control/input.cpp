@@ -52,6 +52,10 @@ namespace game {
 	Point2 Input::getMousePosition() { return Input::mousePosition; }
 	Point2 Input::getMouseDownPosition() { return Input::mouseDownPosition; }
 
+	void Input::setKey(std::string keyName, bool current, bool pressed, bool released) {
+
+	}
+
 	float Input::getAxis(string axisName) {
 		float axis = 0;
 		float keyDeltaTime = keyboardAxisSensitivity/* * Time::getDT()*/;

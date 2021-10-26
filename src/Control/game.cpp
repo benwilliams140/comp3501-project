@@ -1,9 +1,4 @@
-#include <iostream>
-#include <time.h>
-#include <sstream>
-
 #include "Control/game.h"
-#include "Control/path_config.h"
 
 namespace game {
 
@@ -32,7 +27,7 @@ const std::string material_directory_g = MATERIAL_DIRECTORY;
 void UpdateCameraMovement(Camera*);
 
 Game::Game(void){
-    state_ = State::STOPPED;
+    // do nothing
 }
 
 void Game::Init(void){
@@ -40,9 +35,11 @@ void Game::Init(void){
     InitWindow();
     InitView();
     InitEventHandlers();
+    InitMenus();
 
     // Set variables
     animating_ = true;
+    state_ = State::RUNNING; // state_ = State::STOPPED;
 }
        
 void Game::InitWindow(void){
@@ -72,6 +69,18 @@ void Game::InitWindow(void){
     if (err != GLEW_OK){
         throw(GameException(std::string("Could not initialize the GLEW library: ")+std::string((const char *) glewGetErrorString(err))));
     }
+}
+
+void Game::InitMenus() {
+    // initialize ImGUI instance
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGui_ImplGlfw_InitForOpenGL(window_, true);
+    ImGui_ImplOpenGL3_Init("#version 330");
+    ImGui::StyleColorsLight();
+
+    menus_[MenuType::MAIN] = new MainMenu(window_);
+    menus_[MenuType::PAUSE] = new PauseMenu(window_);
 }
 
 void Game::InitView(void){
@@ -159,48 +168,52 @@ void Game::SetupScene(void) {
 void Game::MainLoop(void){
     // Loop while the user did not close the window
     while (!glfwWindowShouldClose(window_)){
-        // Press "Q" key to close application
-        if (Input::getKey(INPUT_KEY_ESCAPE)) {
+        // Press 'Escape' key to pause/unpause game
+        if (Input::getKeyDown(INPUT_KEY_ESCAPE)) {
             switch (state_) {
             case State::PAUSED: state_ = State::RUNNING; break;
             case State::RUNNING: state_ = State::PAUSED; break;
             default: break;
             }
         }
-        // Press "Space" key to toggle animation
-        if (Input::getKey(INPUT_KEY_SPACE)) {
-            animating_ = !animating_;
-        }
-        
-        // Updates camera movement
-        UpdateCameraMovement(&camera_);
-
-        // Animate the scene
-        if (animating_){
-            static double last_time = 0;
-            double current_time = glfwGetTime();
-            if ((current_time - last_time) > 0.01){
-                // Animate the scene
-                //scene_.Update();
-
-				// make the torus fly away from the camera:
-                //SceneNode *node = scene_.GetNode("MyTorus1");
-				//node->Translate(glm::vec3(0, 0, -1));
-
-				SceneNode *node = scene_.GetNode("Canvas");
-
-				glm::quat rotation = glm::angleAxis(0.15f*glm::pi<float>()/180.0f, glm::vec3(0.0, 1.0, 0.0));
-                node->Rotate(rotation);
-
-                last_time = current_time;
-            }
-        }
 
         // Draw the scene
         scene_.Draw(&camera_);
 
+        switch (state_) {
+        case State::STOPPED:
+            menus_[MenuType::MAIN]->Render();
+            break;
+        case State::PAUSED:
+            menus_[MenuType::PAUSE]->Render();
+            break;
+        case State::RUNNING:
+            // Updates camera movement
+            UpdateCameraMovement(&camera_);
+
+            // Animate the scene
+            if (animating_) {
+                static double last_time = 0;
+                double current_time = glfwGetTime();
+                if ((current_time - last_time) > 0.01) {
+                    // Animate the scene
+                    //scene_.Update();
+
+                    SceneNode* node = scene_.GetNode("Canvas");
+                    glm::quat rotation = glm::angleAxis(0.15f * glm::pi<float>() / 180.0f, glm::vec3(0.0, 1.0, 0.0));
+                    node->Rotate(rotation);
+
+                    last_time = current_time;
+                }
+            }
+            break;
+        default: break;
+        }
+
         // Push buffer drawn in the background onto the display
         glfwSwapBuffers(window_);
+
+        Input::update();
 
         // Update other events like input handling
         glfwPollEvents();

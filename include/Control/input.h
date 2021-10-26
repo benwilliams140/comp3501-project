@@ -30,6 +30,8 @@ namespace game {
 		static Point2 getMouseDownPosition(); // Mouse position relative to window when the last left button down occured
 		static float getAxis(std::string axis); // Horizontal or Vertical
 
+		static void setKey(std::string keyName, bool current, bool pressed, bool released);
+
 	private:
 		struct Button { bool current = false, pressed = false, released = false; };
 

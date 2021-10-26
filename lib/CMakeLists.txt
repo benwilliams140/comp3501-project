@@ -5,19 +5,17 @@ target_include_directories(${PROJ_NAME} PUBLIC ${OPENGL_INCLUDE_DIR})
 # include all library headers
 target_include_directories(${PROJ_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-# set nanogui options
-set(NANOGUI_BUILD_EXAMPLE OFF CACHE BOOL " " FORCE)
-set(NANOGUI_BUILD_PYTHON  OFF CACHE BOOL " " FORCE)
-set(NANOGUI_INSTALL       OFF CACHE BOOL " " FORCE)
-
-# add nanogui subdirectory
-add_subdirectory(nanogui)
-set_property(TARGET glfw glfw_objects nanogui PROPERTY FOLDER "dependencies")
-
-# add nanogui definitions and include directory
-target_compile_definitions(${PROJ_NAME} PUBLIC ${NANOGUI_EXTRA_DEFS})
-target_include_directories(${PROJ_NAME} PUBLIC ${NANOGUI_EXTRA_INCS})
-target_include_directories(${PROJ_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/nanogui/include)
+# include ImGUI headers and source files
+target_include_directories(${PROJ_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/imgui)
+target_include_directories(${PROJ_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends)
+target_sources(${PROJ_NAME} PUBLIC 
+    ${CMAKE_CURRENT_SOURCE_DIR}/imgui/imgui.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/imgui/imgui_draw.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/imgui/imgui_tables.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/imgui/imgui_widgets.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_opengl3.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_glfw.cpp
+)
 
 # find libraries
 if(NOT WIN32)
@@ -35,7 +33,6 @@ target_link_libraries(${PROJ_NAME} ${OPENGL_gl_LIBRARY})
 target_link_libraries(${PROJ_NAME} ${GLEW_LIBRARY})
 target_link_libraries(${PROJ_NAME} ${GLFW_LIBRARY})
 target_link_libraries(${PROJ_NAME} ${SOIL_LIBRARY})
-target_link_libraries(${PROJ_NAME} ${NANOGUI_EXTRA_LIBS})
 
 # The rules here are specific to Windows Systems
 if(WIN32)
