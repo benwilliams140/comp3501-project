@@ -3,14 +3,27 @@
 
 #include <exception>
 #include <string>
+#include <unordered_map>
+#include <iostream>
+#include <time.h>
+#include <sstream>
+
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_opengl3.h>
 
 #include "Control/input.h"
 #include "Control/scene_graph.h"
 #include "Control/resource_manager.h"
+#include "Control/GUI/menu.h"
+#include "Control/GUI/Menus/main_menu.h"
+#include "Control/GUI/Menus/pause_menu.h"
+#include "Control/path_config.h"
+
 #include "Renderer/camera.h"
+
 #include "Objects/Hovertank/hovertank.h"
 #include "Objects/Hovertank/hovertank_track.h"
 #include "Objects/Hovertank/hovertank_turret.h"
@@ -57,6 +70,9 @@ namespace game {
             // GLFW window
             GLFWwindow* window_;
 
+            // Menus/GUI components
+            std::unordered_map<MenuType, Menu*> menus_;
+
             // Scene graph containing all nodes to render
             SceneGraph scene_;
 
@@ -74,6 +90,7 @@ namespace game {
             void InitWindow(void);
             void InitView(void);
             void InitEventHandlers(void);
+            void InitMenus();
  
             // Methods to handle events
             static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);

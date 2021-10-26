@@ -1,15 +1,15 @@
 #include "Control/GUI/Menus/main_menu.h"
 
 namespace game {
-	MainMenu::MainMenu() : Menu() {
-
+	MainMenu::MainMenu(GLFWwindow* window) : Menu(window) {
+		
 	}
 
 	MainMenu::~MainMenu() {
 
 	}
 
-	void MainMenu::Init() {
-		
+	void MainMenu::Render() {
+
 	}
 } // namespace game

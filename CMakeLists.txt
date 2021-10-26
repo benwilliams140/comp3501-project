@@ -4,10 +4,12 @@ cmake_minimum_required(VERSION 3.13)
 set(PROJ_NAME FinalProject)
 project(${PROJ_NAME} C CXX)
 
+# Set include directory
 include_directories(include)
 
 # Add executable based on the source files
-add_executable(${PROJ_NAME} src/main.cpp "src/Objects/terrain.cpp" "include/Objects/terrain.h")
+add_executable(${PROJ_NAME} src/main.cpp "lib/include/GLFW/glfw3native.h")
 
+# Add src and lib subdirectories
 add_subdirectory(src)
 add_subdirectory(lib)

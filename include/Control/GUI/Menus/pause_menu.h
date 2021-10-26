@@ -3,11 +3,11 @@
 #include "Control/GUI/menu.h"
 
 namespace game {
-	class MainMenu : public Menu {
+	class PauseMenu : public Menu {
 	public:
-		MainMenu(GLFWwindow* window);
-		~MainMenu();
-
+		PauseMenu(GLFWwindow* window);
+		~PauseMenu();
+		
 		virtual void Render() override;
-	}; // MainMenu class
+	}; // PauseMenu class
 } // namespace game

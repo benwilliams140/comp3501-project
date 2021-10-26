@@ -1,21 +1,26 @@
 #pragma once
 
-#include <nanogui/nanogui.h>
+#include <iostream>
 
-#include "Control/GUI/menu_item_group.h"
+#include <backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_opengl3.h>
+#include <GLFW/glfw3.h>
 
 namespace game {
+	enum class MenuType {
+		MAIN,
+		PAUSE,
+		HUD
+	};
+
 	class Menu {
 	public:
-		Menu();
+		Menu(GLFWwindow* window);
 		~Menu();
 
-		void Render();
+		virtual void Render() = 0;
 
 	protected:
-		MenuItemGroup* base;
-
-	private:
-		virtual void Init() = 0;
+		GLFWwindow* window_;
 	}; // Menu class
 } // namespace game
