@@ -14,7 +14,11 @@ namespace game {
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		ImGui::Begin("Pause Menu");
+		ImGuiWindowFlags flags = 0;
+		flags |= ImGuiWindowFlags_NoTitleBar;
+		flags |= ImGuiWindowFlags_NoBackground;
+		flags |= ImGuiWindowFlags_NoResize;
+		ImGui::Begin("Pause Menu", (bool*)true, flags);
 		if (ImGui::Button("Quit")) {
 			glfwSetWindowShouldClose(window_, GL_TRUE);
 		}

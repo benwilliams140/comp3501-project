@@ -77,7 +77,7 @@ void Game::InitMenus() {
     ImGui::CreateContext();
     ImGui_ImplGlfw_InitForOpenGL(window_, true);
     ImGui_ImplOpenGL3_Init("#version 330");
-    ImGui::StyleColorsLight();
+    ImGui::StyleColorsClassic();
 
     menus_[MenuType::MAIN] = new MainMenu(window_);
     menus_[MenuType::PAUSE] = new PauseMenu(window_);
