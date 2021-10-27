@@ -30,6 +30,8 @@
 #include "Objects/Hovertank/machine_gun.h"
 #include "Objects/Hovertank/scanner.h"
 #include "Objects/terrain.h"
+#include "Objects/Artifact.h"
+#include "Objects/Player.h"
 
 namespace game {
 

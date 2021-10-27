@@ -11,6 +11,8 @@ const unsigned int window_width_g = 800;
 const unsigned int window_height_g = 600;
 const bool window_full_screen_g = false;
 
+
+
 // Viewport and camera settings
 float camera_near_clip_distance_g = 0.01;
 float camera_far_clip_distance_g = 1000.0;
@@ -302,6 +304,7 @@ SceneNode *Game::CreateInstance(std::string entity_name, std::string object_name
 
     SceneNode *scn = scene_.CreateNode(entity_name, geom, mat, tex);
     return scn;
+    
 }
 
 } // namespace game
