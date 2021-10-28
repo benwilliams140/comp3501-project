@@ -51,13 +51,13 @@ namespace game {
 		ImGui::PushStyleColor(ImGuiCol_Text, TEXT_COLOR);
 
 		// settings button definition
-		ImGui::SetCursorPos(ImVec2(width / 2 - BUTTON_WIDTH / 2, height / 2 - BUTTON_HEIGHT / 2 - 5));
+		ImGui::SetCursorPos(ImVec2(width / 2 - BUTTON_WIDTH / 2, height / 2 - 3 * BUTTON_HEIGHT / 2 - 5));
 		if (ImGui::Button("Start", ImVec2(BUTTON_WIDTH, BUTTON_HEIGHT))) {
 			game->SetState(State::RUNNING);
 		}
 
 		// quit button definition
-		ImGui::SetCursorPos(ImVec2(width / 2 - BUTTON_WIDTH / 2, height / 2 + BUTTON_HEIGHT / 2 + 5));
+		ImGui::SetCursorPos(ImVec2(width / 2 - BUTTON_WIDTH / 2, height / 2 - BUTTON_HEIGHT / 2 + 5));
 		if (ImGui::Button("Quit", ImVec2(BUTTON_WIDTH, BUTTON_HEIGHT))) {
 			ImGui::OpenPopup("Quit Confirmation");
 		}

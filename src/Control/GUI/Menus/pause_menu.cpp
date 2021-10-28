@@ -67,6 +67,7 @@ namespace game {
 			ImGui::EndPopup();
 		}
 
+		// setup colours for elements
 		ImGui::PushStyleColor(ImGuiCol_Button, BUTTON_COLOR);
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, BUTTON_HOVERED_COLOR);
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, BUTTON_ACTIVE_COLOR);
@@ -89,7 +90,6 @@ namespace game {
 		if (ImGui::Button("Exit to Menu", ImVec2(BUTTON_WIDTH, BUTTON_HEIGHT))) {
 			ImGui::OpenPopup("Quit Confirmation");
 		}
-
 
 		ImGui::PopStyleColor(4);
 		
