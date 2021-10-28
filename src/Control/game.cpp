@@ -36,8 +36,8 @@ void Game::Init(void){
     InitMenus();
 
     // Set variables
-    animating_ = true;
     state_ = State::STOPPED;
+    freeroam_ = false;
 }
        
 void Game::InitWindow(void){
@@ -77,8 +77,7 @@ void Game::InitMenus() {
     ImGui_ImplOpenGL3_Init("#version 330");
     ImGui::StyleColorsClassic();
 
-    // create menus and add a reference to any variables that may be needed
-    //      (eg. settings needs access to the FOV)
+    // create menus
     menus_[MenuType::MAIN] = new MainMenu();
     menus_[MenuType::PAUSE] = new PauseMenu();
 }
@@ -155,11 +154,11 @@ void Game::SetupScene(void) {
     //game::SceneNode *mytorus = CreateInstance("MyTorus1", "SimpleTorusMesh", "Procedural", "RockyTexture");
     //game::SceneNode *mytorus = CreateInstance("MyTorus1", "SeamlessTorusMesh", "Lighting", "RockyTexture");
 
-    game::SceneNode* wall = CreateInstance("Canvas", "Cube", "Simple", "uv6"); // must supply a texture, even if not used	
-    wall->Rotate(glm::angleAxis(glm::radians(90.0f), glm::vec3(1.0, 0.0, 0.0)));
-    wall->Translate(glm::vec3(0.0f, 0.0f, -5.0f));
-
-    game::Terrain* terrain = (game::Terrain*)CreateInstance("Terrain Object", "Terrain", "Simple", "uv6");
+    SceneNode* terrain = CreateInstance<SceneNode>("Terrain Object", "Terrain", "Simple", "uv6");
+    terrain->Translate(glm::vec3(-50.f));
+    SceneNode* hovertank_base = CreateInstance<HoverTank>("Hovertank Base", "Cube", "Simple", "RockyTexture");
+    hovertank_base->Translate(glm::vec3(0.f, 0.f, -5.f));
+    
 }
 
 void Game::MainLoop(void){
@@ -178,31 +177,40 @@ void Game::MainLoop(void){
             }
         }
 
+        // toggle freeroam if 'F' key clicked
+        // developer feature - should probably be removed before submission
+        if (Input::getKeyDown(INPUT_KEY_F)) {
+            freeroam_ = !freeroam_;
+        }
+
+        // render main menu when game is stopped
         if (state_ == State::STOPPED) {
             menus_[MenuType::MAIN]->Render(window_);
         }
+        // render pause menu and frozen game state in the background when paused
         else if (state_ == State::PAUSED) {
             scene_.Draw(camera_);
             menus_[MenuType::PAUSE]->Render(window_);
         }
+        // update and render game when running
         else if (state_ == State::RUNNING) {
-            // Updates camera movement
-            UpdateCameraMovement(camera_);
+            // handle camera/tank movement
+            if (freeroam_) {
+                UpdateCameraMovement(camera_);
+            }
+            else {
+                HandleHovertankMovement();
+                UpdateCameraPos();
+            }
 
-            // Animate the scene
-            if (animating_) {
-                static double last_time = 0;
-                double current_time = glfwGetTime();
-                if ((current_time - last_time) > 0.01) {
-                    // Animate the scene
-                    //scene_.Update();
+            // Update the scene
+            static double last_time = 0;
+            double current_time = glfwGetTime();
+            if ((current_time - last_time) > 0.01) {
+                // Animate the scene
+                //scene_.Update();
 
-                    SceneNode* node = scene_.GetNode("Canvas");
-                    glm::quat rotation = glm::angleAxis(0.15f * glm::pi<float>() / 180.0f, glm::vec3(0.0, 1.0, 0.0));
-                    node->Rotate(rotation);
-
-                    last_time = current_time;
-                }
+                last_time = current_time;
             }
             scene_.Draw(camera_);
         }
@@ -215,6 +223,49 @@ void Game::MainLoop(void){
         // Update other events like input handling
         glfwPollEvents();
     }
+}
+
+void Game::HandleHovertankMovement() {
+    HoverTank* tank = (HoverTank*) scene_.GetNode("Hovertank Base");
+    float rot_factor = glm::pi<float>() / 180;
+    float trans_factor = 0.25f;
+
+    // Translate forward/backward
+    if (Input::getKey(INPUT_KEY_W)) {
+        tank->Translate(tank->GetForward() * trans_factor);
+    }
+    if (Input::getKey(INPUT_KEY_S)) {
+        tank->Translate(-tank->GetForward() * trans_factor);
+    }
+    // Translate left/right
+    if (Input::getKey(INPUT_KEY_A)) {
+        tank->Translate(-tank->GetRight() * trans_factor);
+    }
+    if (Input::getKey(INPUT_KEY_D)) {
+        tank->Translate(tank->GetRight() * trans_factor);
+    }
+    // Translate up/down
+    if (Input::getKey(INPUT_KEY_Q)) {
+        tank->Translate(tank->GetUp() * trans_factor);
+    }
+    if (Input::getKey(INPUT_KEY_E)) {
+        tank->Translate(-tank->GetUp() * trans_factor);
+    }
+    // Rotate yaw
+    if (Input::getKey(INPUT_KEY_LEFT)) {
+        glm::quat rotation = glm::angleAxis(rot_factor, tank->GetUp());
+        tank->Rotate(rotation);
+    }
+    if (Input::getKey(INPUT_KEY_RIGHT)) {
+        glm::quat rotation = glm::angleAxis(-rot_factor, tank->GetUp());
+        tank->Rotate(rotation);
+    }
+}
+
+void Game::UpdateCameraPos() {
+    HoverTank* tank = (HoverTank*)scene_.GetNode("Hovertank Base");
+    camera_->SetPosition(tank->GetPosition() - tank->GetForward() * 15.f + tank->GetUp() * 5.f);
+    camera_->SetView(camera_->GetPosition(), tank->GetPosition(), tank->GetUp());
 }
 
 void UpdateCameraMovement(Camera* camera) {
@@ -278,6 +329,7 @@ Game::~Game(){
     glfwTerminate();
 }
 
+template <typename T>
 SceneNode *Game::CreateInstance(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name){
     Resource *geom = resman_.GetResource(object_name);
     if (!geom){
@@ -297,7 +349,7 @@ SceneNode *Game::CreateInstance(std::string entity_name, std::string object_name
         }
     }
 
-    SceneNode *scn = scene_.CreateNode(entity_name, geom, mat, tex);
+    SceneNode *scn = scene_.CreateNode<T>(entity_name, geom, mat, tex);
     return scn;
 }
 
