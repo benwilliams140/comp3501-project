@@ -12,13 +12,11 @@ const unsigned int window_height_g = 600;
 const bool window_full_screen_g = false;
 
 // Viewport and camera settings
-float camera_near_clip_distance_g = 0.01;
-float camera_far_clip_distance_g = 1000.0;
-float camera_fov_g = 60.0; // Field-of-view of camera
-const glm::vec3 viewport_background_color_g(0.1, 0.1, 0.1);
 glm::vec3 camera_position_g(0.5, 0.5, 10.0);
 glm::vec3 camera_look_at_g(0.0, 0.0, 0.0);
 glm::vec3 camera_up_g(0.0, 1.0, 0.0);
+const glm::vec3 viewport_background_color_g(0.1, 0.1, 0.1);
+
 
 // Materials 
 const std::string material_directory_g = MATERIAL_DIRECTORY;
@@ -79,8 +77,10 @@ void Game::InitMenus() {
     ImGui_ImplOpenGL3_Init("#version 330");
     ImGui::StyleColorsClassic();
 
-    menus_[MenuType::MAIN] = new MainMenu(window_);
-    menus_[MenuType::PAUSE] = new PauseMenu(window_);
+    // create menus and add a reference to any variables that may be needed
+    //      (eg. settings needs access to the FOV)
+    menus_[MenuType::MAIN] = new MainMenu();
+    menus_[MenuType::PAUSE] = new PauseMenu();
 }
 
 void Game::InitView(void){
@@ -98,10 +98,7 @@ void Game::InitView(void){
     glEnable(GL_PRIMITIVE_RESTART);
 
     // Set up camera
-    // Set current view
-    camera_.SetView(camera_position_g, camera_look_at_g, camera_up_g);
-    // Set projection
-    camera_.SetProjection(camera_fov_g, camera_near_clip_distance_g, camera_far_clip_distance_g, width, height);
+    camera_ = new Camera(camera_position_g, camera_look_at_g, camera_up_g, width, height);
 }
 
 void Game::InitEventHandlers(void){
@@ -177,19 +174,17 @@ void Game::MainLoop(void){
             }
         }
 
-        // Draw the scene
-        scene_.Draw(&camera_);
-
         switch (state_) {
         case State::STOPPED:
-            menus_[MenuType::MAIN]->Render();
+            menus_[MenuType::MAIN]->Render(window_);
             break;
         case State::PAUSED:
-            menus_[MenuType::PAUSE]->Render();
+            scene_.Draw(camera_);
+            menus_[MenuType::PAUSE]->Render(window_);
             break;
         case State::RUNNING:
             // Updates camera movement
-            UpdateCameraMovement(&camera_);
+            UpdateCameraMovement(camera_);
 
             // Animate the scene
             if (animating_) {
@@ -206,6 +201,7 @@ void Game::MainLoop(void){
                     last_time = current_time;
                 }
             }
+            scene_.Draw(camera_);
             break;
         default: break;
         }
@@ -273,7 +269,7 @@ void Game::ResizeCallback(GLFWwindow* window, int width, int height){
     glViewport(0, 0, width, height);
     void* ptr = glfwGetWindowUserPointer(window);
     Game *game = (Game *) ptr;
-    game->camera_.SetProjection(camera_fov_g, camera_near_clip_distance_g, camera_far_clip_distance_g, width, height);
+    game->camera_->SetProjection(width, height);
 }
 
 Game::~Game(){
@@ -302,6 +298,10 @@ SceneNode *Game::CreateInstance(std::string entity_name, std::string object_name
 
     SceneNode *scn = scene_.CreateNode(entity_name, geom, mat, tex);
     return scn;
+}
+
+Camera* Game::GetCamera() {
+    return camera_;
 }
 
 } // namespace game

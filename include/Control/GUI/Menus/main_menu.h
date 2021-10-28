@@ -5,9 +5,9 @@
 namespace game {
 	class MainMenu : public Menu {
 	public:
-		MainMenu(GLFWwindow* window);
+		MainMenu();
 		~MainMenu();
 
-		virtual void Render() override;
+		virtual void Render(GLFWwindow* window) override;
 	}; // MainMenu class
 } // namespace game

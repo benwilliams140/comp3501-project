@@ -66,6 +66,8 @@ namespace game {
             // Run the game: keep the application active
             void MainLoop(void); 
 
+            Camera* GetCamera();
+
         private:
             // GLFW window
             GLFWwindow* window_;
@@ -80,7 +82,7 @@ namespace game {
             ResourceManager resman_;
 
             // Camera abstraction
-            Camera camera_;
+            Camera* camera_;
 
             // Flag to turn animation on/off
             bool animating_;

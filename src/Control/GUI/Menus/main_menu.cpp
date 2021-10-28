@@ -1,7 +1,7 @@
 #include "Control/GUI/Menus/main_menu.h"
 
 namespace game {
-	MainMenu::MainMenu(GLFWwindow* window) : Menu(window) {
+	MainMenu::MainMenu() : Menu() {
 		
 	}
 
@@ -9,7 +9,7 @@ namespace game {
 
 	}
 
-	void MainMenu::Render() {
+	void MainMenu::Render(GLFWwindow* window) {
 
 	}
 } // namespace game
