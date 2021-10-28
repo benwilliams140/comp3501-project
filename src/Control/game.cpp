@@ -37,7 +37,7 @@ void Game::Init(void){
 
     // Set variables
     animating_ = true;
-    state_ = State::RUNNING; // state_ = State::STOPPED;
+    state_ = State::STOPPED;
 }
        
 void Game::InitWindow(void){
@@ -165,6 +165,10 @@ void Game::SetupScene(void) {
 void Game::MainLoop(void){
     // Loop while the user did not close the window
     while (!glfwWindowShouldClose(window_)){
+        // Clear background
+        glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
         // Press 'Escape' key to pause/unpause game
         if (Input::getKeyDown(INPUT_KEY_ESCAPE)) {
             switch (state_) {
@@ -174,15 +178,14 @@ void Game::MainLoop(void){
             }
         }
 
-        switch (state_) {
-        case State::STOPPED:
+        if (state_ == State::STOPPED) {
             menus_[MenuType::MAIN]->Render(window_);
-            break;
-        case State::PAUSED:
+        }
+        else if (state_ == State::PAUSED) {
             scene_.Draw(camera_);
             menus_[MenuType::PAUSE]->Render(window_);
-            break;
-        case State::RUNNING:
+        }
+        else if (state_ == State::RUNNING) {
             // Updates camera movement
             UpdateCameraMovement(camera_);
 
@@ -202,8 +205,6 @@ void Game::MainLoop(void){
                 }
             }
             scene_.Draw(camera_);
-            break;
-        default: break;
         }
 
         // Push buffer drawn in the background onto the display
@@ -302,6 +303,10 @@ SceneNode *Game::CreateInstance(std::string entity_name, std::string object_name
 
 Camera* Game::GetCamera() {
     return camera_;
+}
+
+void Game::SetState(State state) {
+    state_ = state;
 }
 
 } // namespace game

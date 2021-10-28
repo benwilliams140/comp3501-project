@@ -66,6 +66,8 @@ namespace game {
             // Run the game: keep the application active
             void MainLoop(void); 
 
+            void SetState(State state);
+
             Camera* GetCamera();
 
         private:

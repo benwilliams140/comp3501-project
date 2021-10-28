@@ -58,7 +58,7 @@ namespace game {
 		if (ImGui::BeginPopupModal("Quit Confirmation", nullptr, 0)) {
 			ImGui::Text("Are you sure you want to quit?");
 			if (ImGui::Button("OK")) {
-				glfwSetWindowShouldClose(window, GL_TRUE);
+				game->SetState(State::STOPPED);
 			}
 			ImGui::SameLine();
 			if (ImGui::Button("Cancel")) {
@@ -72,6 +72,12 @@ namespace game {
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, BUTTON_ACTIVE_COLOR);
 		ImGui::PushStyleColor(ImGuiCol_Text, TEXT_COLOR);
 		
+		// resume button definition
+		ImGui::SetCursorPos(ImVec2(width / 2 - BUTTON_WIDTH / 2, height / 2 - 3 * BUTTON_HEIGHT / 2- 15));
+		if (ImGui::Button("Resume", ImVec2(BUTTON_WIDTH, BUTTON_HEIGHT))) {
+			game->SetState(State::RUNNING);
+		}
+
 		// settings button definition
 		ImGui::SetCursorPos(ImVec2(width / 2 - BUTTON_WIDTH / 2, height / 2 - BUTTON_HEIGHT / 2 - 5));
 		if (ImGui::Button("Settings", ImVec2(BUTTON_WIDTH, BUTTON_HEIGHT))) {
@@ -80,7 +86,7 @@ namespace game {
 
 		// quit button definition
 		ImGui::SetCursorPos(ImVec2(width / 2 - BUTTON_WIDTH / 2, height / 2 + BUTTON_HEIGHT / 2 + 5));
-		if (ImGui::Button("Quit", ImVec2(BUTTON_WIDTH, BUTTON_HEIGHT))) {
+		if (ImGui::Button("Exit to Menu", ImVec2(BUTTON_WIDTH, BUTTON_HEIGHT))) {
 			ImGui::OpenPopup("Quit Confirmation");
 		}
 
