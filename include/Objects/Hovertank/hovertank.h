@@ -19,7 +19,7 @@ namespace game {
 
 	public:
 		// Create HoverTank from given resources
-		HoverTank(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture, float hitPoints = 100.f);
+		HoverTank(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture);
 
 		// Destructor
 		~HoverTank();
@@ -30,21 +30,14 @@ namespace game {
 
 		// Get/set attributes specific to HoverTanks
 		glm::quat GetAngM(void) const;
-		float GetHealth();
-		float GetMaxHealth();
 		float GetSpeed();
 		glm::vec3 GetVelocity();
-		bool IsAlive();
 		float GetStrength();
 
 		void SetAngM(glm::quat angm);
-		void SetHealth(float newHealth);
-		void SetMaxHealth(float newHealth);
 		void SetSpeed(float newSpeed);
 		void SetVelocity(glm::vec3 newVelocity);
 		void SetStrength(float newStrength);
-
-		void decreaseHealth(float damage);
 
 
 		// Update geometry configuration
@@ -52,12 +45,10 @@ namespace game {
 
 	private:
 		void movementControl();
-		void collisionDetection();
+		bool collisionDetection();
 
 		// Angular momentum of HoverTank
 		glm::quat angm_;
-		float health;
-		float maxHealth;
 		float speed;
 		float strength;
 		float colliderBox_x;//we cam change this later, doesn't have to be a float

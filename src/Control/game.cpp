@@ -11,6 +11,8 @@ const unsigned int window_width_g = 800;
 const unsigned int window_height_g = 600;
 const bool window_full_screen_g = false;
 
+
+
 // Viewport and camera settings
 glm::vec3 camera_position_g(0.5, 0.5, 10.0);
 glm::vec3 camera_look_at_g(0.0, 0.0, 0.0);
@@ -351,6 +353,7 @@ SceneNode *Game::CreateInstance(std::string entity_name, std::string object_name
 
     SceneNode *scn = scene_.CreateNode<T>(entity_name, geom, mat, tex);
     return scn;
+    
 }
 
 Camera* Game::GetCamera() {

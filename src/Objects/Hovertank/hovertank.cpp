@@ -8,9 +8,7 @@
 
 namespace game {
 
-	HoverTank::HoverTank(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture, float hitPoints) : SceneNode(name, geometry, material, texture) {
-		maxHealth = hitPoints;
-		health = hitPoints;
+	HoverTank::HoverTank(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : SceneNode(name, geometry, material, texture) {
 		velocity = glm::vec3(0, 0, 0);
 		forward_ = glm::vec3(0, 0, -1); // consider taking this in as a parameter
 		colliderBox_x = 10;
@@ -38,14 +36,6 @@ namespace game {
 		return angm_;
 	}
 
-	float HoverTank::GetHealth(void) {
-		return health;
-	}
-
-	float HoverTank::GetMaxHealth(void) {
-		return maxHealth;
-	}
-
 	float HoverTank::GetSpeed(void) {
 		return speed;
 	}
@@ -54,24 +44,12 @@ namespace game {
 		return velocity;
 	}
 
-	bool HoverTank::IsAlive() {
-		return health > 0.f;
-	}
-
 	float HoverTank::GetStrength() {
 		return strength;
 	}
 
 	void HoverTank::SetAngM(glm::quat angm) {
 		angm_ = angm;
-	}
-
-	void HoverTank::SetHealth(float newHealth) {
-		health = newHealth;
-	}
-
-	void HoverTank::SetMaxHealth(float newHealth) {
-		maxHealth = newHealth;
 	}
 
 	void HoverTank::SetSpeed(float newSpeed) {
@@ -86,16 +64,12 @@ namespace game {
 		strength = newStrength;
 	}
 
-	void HoverTank::decreaseHealth(float damage) {
-		health -= damage;
-	}
-
 	void HoverTank::Update(void) {
 
 	}
 
 	void HoverTank::movementControl() {}
 
-	void HoverTank::collisionDetection() {}
+	bool HoverTank::collisionDetection() { return false; }
 
 }
