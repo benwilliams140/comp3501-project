@@ -8,6 +8,7 @@
 #include <GLFW/glfw3.h>
 
 #include "Control/scene_node.h"
+#include "Objects/Hovertank/hovertank.h"
 #include "Control/resource.h"
 #include "Renderer/camera.h"
 
@@ -33,7 +34,9 @@ namespace game {
             glm::vec3 GetBackgroundColor(void) const;
             
             // Create a scene node from the specified resources
-            SceneNode *CreateNode(std::string node_name, Resource *geometry, Resource *material, Resource *texture = NULL);
+            // templated to add classes that extend from SceneNode (definitions are in cpp file)
+            template <typename T>
+            SceneNode* CreateNode(std::string node_name, Resource *geometry, Resource *material, Resource *texture = NULL);
             // Add an already-created node
             void AddNode(SceneNode *node);
             // Find a scene node with a specific name

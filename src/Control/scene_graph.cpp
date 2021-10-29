@@ -30,12 +30,13 @@ glm::vec3 SceneGraph::GetBackgroundColor(void) const {
 
     return background_color_;
 }
- 
 
-SceneNode *SceneGraph::CreateNode(std::string node_name, Resource *geometry, Resource *material, Resource *texture){
+// generic CreateNode function
+template <typename T>
+SceneNode* SceneGraph::CreateNode(std::string node_name, Resource *geometry, Resource *material, Resource *texture){
 
     // Create scene node with the specified resources
-    SceneNode *scn = new SceneNode(node_name, geometry, material, texture);
+    SceneNode* scn = new T(node_name, geometry, material, texture);
 
     // Add node to the scene
     node_.push_back(scn);
@@ -43,6 +44,10 @@ SceneNode *SceneGraph::CreateNode(std::string node_name, Resource *geometry, Res
     return scn;
 }
 
+// definitions for generic function
+// NOTE: Add more explicit function definitions here (eg. for terrain)
+template SceneNode* SceneGraph::CreateNode<SceneNode>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
+template SceneNode* SceneGraph::CreateNode<HoverTank>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
 
 void SceneGraph::AddNode(SceneNode *node){
 
@@ -75,13 +80,7 @@ std::vector<SceneNode *>::const_iterator SceneGraph::end() const {
 }
 
 
-void SceneGraph::Draw(Camera *camera){
-
-    // Clear background
-    glClearColor(background_color_[0], 
-                 background_color_[1],
-                 background_color_[2], 0.0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+void SceneGraph::Draw(Camera *camera) {
 
     // Draw all scene nodes
     for (int i = 0; i < node_.size(); i++){
