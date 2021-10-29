@@ -9,7 +9,10 @@
 
 namespace game {
 
-Camera::Camera(void){
+Camera::Camera(glm::vec3 position, glm::vec3 lookAtPosition, glm::vec3 up, int windowWidth, int windowHeight) :
+    fov_(60.f), nearPlane_(0.01f), farPlane_(1000.f), aspect_(windowWidth / windowHeight) {
+    SetProjection(windowWidth, windowHeight);
+    SetView(position, lookAtPosition, up);
 }
 
 
@@ -38,6 +41,15 @@ void Camera::SetPosition(glm::vec3 position){
 void Camera::SetOrientation(glm::quat orientation){
 
     orientation_ = orientation;
+}
+
+void Camera::SetFOV(float fov, GLfloat w, GLfloat h) {
+    fov_ = fov;
+    SetProjection(w, h);
+}
+
+float Camera::GetFOV() {
+    return fov_;
 }
 
 
@@ -117,12 +129,12 @@ void Camera::SetView(glm::vec3 position, glm::vec3 look_at, glm::vec3 up){
 }
 
 
-void Camera::SetProjection(GLfloat fov, GLfloat near, GLfloat far, GLfloat w, GLfloat h){
+void Camera::SetProjection(GLfloat w, GLfloat h){
 
     // Set projection based on field-of-view
-    float top = tan((fov/2.0)*(glm::pi<float>()/180.0))*near;
+    float top = tan((fov_/2.0)*(glm::pi<float>()/180.0))*nearPlane_;
     float right = top * w/h;
-    projection_matrix_ = glm::frustum(-right, right, -top, top, near, far);
+    projection_matrix_ = glm::frustum(-right, right, -top, top, nearPlane_, farPlane_);
 }
 
 

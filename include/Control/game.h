@@ -30,6 +30,8 @@
 #include "Objects/Hovertank/machine_gun.h"
 #include "Objects/Hovertank/scanner.h"
 #include "Objects/terrain.h"
+#include "Objects/Artifact.h"
+#include "Objects/Player.h"
 
 namespace game {
 
@@ -66,6 +68,10 @@ namespace game {
             // Run the game: keep the application active
             void MainLoop(void); 
 
+            void SetState(State state);
+
+            Camera* GetCamera();
+
         private:
             // GLFW window
             GLFWwindow* window_;
@@ -80,10 +86,9 @@ namespace game {
             ResourceManager resman_;
 
             // Camera abstraction
-            Camera camera_;
+            Camera* camera_;
 
-            // Flag to turn animation on/off
-            bool animating_;
+            bool freeroam_;
             State state_;
 
             // Methods to initialize the game
@@ -96,10 +101,13 @@ namespace game {
             static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
             static void ResizeCallback(GLFWwindow* window, int width, int height);
 
+            // handle movement
+            void HandleHovertankMovement();
+            void UpdateCameraPos();
+
             // Create an instance of an object stored in the resource manager
+            template <typename T>
             SceneNode *CreateInstance(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name = std::string(""));
-
-
     }; // class Game
 
 } // namespace game

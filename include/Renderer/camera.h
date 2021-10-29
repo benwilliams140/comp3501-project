@@ -6,14 +6,13 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
-
 namespace game {
 
     // Abstraction of a camera
     class Camera {
 
         public:
-            Camera(void);
+            Camera(glm::vec3 position, glm::vec3 lookAtPosition, glm::vec3 up, int windowWidth, int windowHeight);
             ~Camera();
  
             // Get global camera attributes
@@ -32,6 +31,7 @@ namespace game {
             glm::vec3 GetForward(void) const;
             glm::vec3 GetSide(void) const;
             glm::vec3 GetUp(void) const;
+            float GetFOV();
 
             // Perform relative transformations of camera
             void Pitch(float angle);
@@ -44,7 +44,8 @@ namespace game {
             void SetView(glm::vec3 position, glm::vec3 look_at, glm::vec3 up);
             // Set projection from frustum parameters: field-of-view,
             // near and far planes, and width and height of viewport
-            void SetProjection(GLfloat fov, GLfloat near, GLfloat far, GLfloat w, GLfloat h);
+            void SetProjection(GLfloat w, GLfloat h);
+            void SetFOV(float fov, GLfloat w, GLfloat h);
             // Set all camera-related variables in shader program
             void SetupShader(GLuint program);
 
@@ -55,6 +56,8 @@ namespace game {
             glm::vec3 side_; // Initial side vector
             glm::mat4 view_matrix_; // View matrix
             glm::mat4 projection_matrix_; // Projection matrix
+
+            float fov_, aspect_, nearPlane_, farPlane_;
 
             // Create view matrix from current camera parameters
             void SetupViewMatrix(void);
