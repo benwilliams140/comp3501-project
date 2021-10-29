@@ -124,6 +124,7 @@ namespace game {
 		}
 		else {
 			money -= payment;
+			return true;
 		}
 	}
 
