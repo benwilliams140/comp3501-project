@@ -8,7 +8,7 @@ project(${PROJ_NAME} C CXX)
 include_directories(include)
 
 # Add executable based on the source files
-add_executable(${PROJ_NAME} src/main.cpp "lib/include/GLFW/glfw3native.h"  "include/Objects/Artifact.h" "src/Objects/Artifact.cpp" "include/Objects/Player.h" "src/Objects/Player.cpp")
+add_executable(${PROJ_NAME} src/main.cpp)
 
 # Add src and lib subdirectories
 add_subdirectory(src)
