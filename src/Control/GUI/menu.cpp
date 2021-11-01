@@ -1,15 +1,15 @@
 #include "Control/GUI/menu.h"
 
 namespace game {
-	Menu::Menu() {
-		
+	Menu::Menu(GLFWwindow* window) : window(window) {
+		glfwGetWindowSize(window, &initialWindowWidth, &initialWindowHeight);
 	}
 
 	Menu::~Menu() {
 
 	}
 
-	void Menu::addVariable(void* var) {
+	void Menu::AddVariable(void* var) {
 		variables.push_back(var);
 	}
 } // namespace game

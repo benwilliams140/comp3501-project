@@ -8,7 +8,7 @@
 
 namespace game {
 
-	HoverTankTurret::HoverTankTurret(const std::string name, const Resource* geometry, const Resource* material) : SceneNode(name, geometry, material) {
+	HoverTankTurret::HoverTankTurret(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : SceneNode(name, geometry, material, texture) {
 	}
 
 

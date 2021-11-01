@@ -1,7 +1,7 @@
 #include "Control/GUI/Menus/pause_menu.h"
 
 namespace game {
-	PauseMenu::PauseMenu() : Menu() {
+	PauseMenu::PauseMenu(GLFWwindow* window) : Menu(window) {
 		
 	}
 
@@ -9,7 +9,7 @@ namespace game {
 
 	}
 
-	void PauseMenu::Render(GLFWwindow* window) {
+	void PauseMenu::Render() {
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
@@ -17,9 +17,9 @@ namespace game {
 		void* ptr = glfwGetWindowUserPointer(window);
 		Game* game = (Game*)ptr;
 
-		int width, height;
-		glfwGetWindowSize(window, &width, &height);
-		ImGui::SetNextWindowSize(ImVec2(width, height));
+		int windowWidth, windowHeight;
+		glfwGetWindowSize(window, &windowWidth, &windowHeight);
+		ImGui::SetNextWindowSize(ImVec2(windowWidth, windowHeight));
 		ImGui::SetNextWindowPos(ImVec2(0, 0));
 
 		ImGuiWindowFlags flags = ImGuiWindowFlags_NoBackground |
@@ -32,14 +32,14 @@ namespace game {
 		ImGui::Begin("Pause Menu", (bool*)true, flags);
 		
 		// set window position for the following modals
-		ImGui::SetNextWindowPos(ImVec2(width / 2, height / 2));
+		ImGui::SetNextWindowPos(ImVec2(windowWidth / 2, windowHeight / 2));
 
 		// settings popup definition
 		if (ImGui::BeginPopupModal("Settings", nullptr, 0)) {
 			float fov = game->GetCamera()->GetFOV();
 			if (ImGui::SliderFloat("FOV", &fov, 30.f, 90.f)) {
 				// currently saving settings on change...
-				game->GetCamera()->SetFOV(fov, width, height);
+				game->GetCamera()->SetFOV(fov, windowWidth, windowHeight);
 			}
 
 			if (ImGui::Button("OK")) {
@@ -74,19 +74,19 @@ namespace game {
 		ImGui::PushStyleColor(ImGuiCol_Text, TEXT_COLOR);
 		
 		// resume button definition
-		ImGui::SetCursorPos(ImVec2(width / 2 - BUTTON_WIDTH / 2, height / 2 - 3 * BUTTON_HEIGHT / 2- 15));
+		ImGui::SetCursorPos(ImVec2(windowWidth / 2 - BUTTON_WIDTH / 2, windowHeight / 2 - 3 * BUTTON_HEIGHT / 2- 15));
 		if (ImGui::Button("Resume", ImVec2(BUTTON_WIDTH, BUTTON_HEIGHT))) {
 			game->SetState(State::RUNNING);
 		}
 
 		// settings button definition
-		ImGui::SetCursorPos(ImVec2(width / 2 - BUTTON_WIDTH / 2, height / 2 - BUTTON_HEIGHT / 2 - 5));
+		ImGui::SetCursorPos(ImVec2(windowWidth / 2 - BUTTON_WIDTH / 2, windowHeight / 2 - BUTTON_HEIGHT / 2 - 5));
 		if (ImGui::Button("Settings", ImVec2(BUTTON_WIDTH, BUTTON_HEIGHT))) {
 			ImGui::OpenPopup("Settings");
 		}
 
 		// quit button definition
-		ImGui::SetCursorPos(ImVec2(width / 2 - BUTTON_WIDTH / 2, height / 2 + BUTTON_HEIGHT / 2 + 5));
+		ImGui::SetCursorPos(ImVec2(windowWidth / 2 - BUTTON_WIDTH / 2, windowHeight / 2 + BUTTON_HEIGHT / 2 + 5));
 		if (ImGui::Button("Exit to Menu", ImVec2(BUTTON_WIDTH, BUTTON_HEIGHT))) {
 			ImGui::OpenPopup("Quit Confirmation");
 		}

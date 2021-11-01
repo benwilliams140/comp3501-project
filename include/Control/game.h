@@ -20,6 +20,7 @@
 #include "Control/GUI/menu.h"
 #include "Control/GUI/Menus/main_menu.h"
 #include "Control/GUI/Menus/pause_menu.h"
+#include "Control/GUI/Menus/hud.h"
 #include "Control/path_config.h"
 
 #include "Renderer/camera.h"
@@ -32,6 +33,14 @@
 #include "Objects/terrain.h"
 #include "Objects/Artifact.h"
 #include "Objects/Player.h"
+
+// object/resource names
+#define HOVERTANK_BASE "HovertankChassis"
+#define HOVERTANK_TURRET "HovertankCylinder"
+#define HOVERTANK_TRACK_BL "HovertankTrackBL"
+#define HOVERTANK_TRACK_BR "HovertankTrackBR"
+#define HOVERTANK_TRACK_FL "HovertankTrackFL"
+#define HOVERTANK_TRACK_FR "HovertankTrackFR"
 
 namespace game {
 
@@ -107,7 +116,7 @@ namespace game {
 
             // Create an instance of an object stored in the resource manager
             template <typename T>
-            SceneNode *CreateInstance(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name = std::string(""));
+            T* CreateInstance(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name = std::string(""));
     }; // class Game
 
 } // namespace game

@@ -1,7 +1,7 @@
 #include "Control/GUI/Menus/main_menu.h"
 
 namespace game {
-	MainMenu::MainMenu() : Menu() {
+	MainMenu::MainMenu(GLFWwindow* window) : Menu(window) {
 		
 	}
 
@@ -9,7 +9,7 @@ namespace game {
 
 	}
 
-	void MainMenu::Render(GLFWwindow* window) {
+	void MainMenu::Render() {
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
@@ -17,9 +17,9 @@ namespace game {
 		void* ptr = glfwGetWindowUserPointer(window);
 		Game* game = (Game*)ptr;
 
-		int width, height;
-		glfwGetWindowSize(window, &width, &height);
-		ImGui::SetNextWindowSize(ImVec2(width, height));
+		int windowWidth, windowHeight;
+		glfwGetWindowSize(window, &windowWidth, &windowHeight);
+		ImGui::SetNextWindowSize(ImVec2(windowWidth, windowHeight));
 		ImGui::SetNextWindowPos(ImVec2(0, 0));
 
 		ImGuiWindowFlags flags = ImGuiWindowFlags_NoBackground |
@@ -29,7 +29,7 @@ namespace game {
 		ImGui::Begin("Main Menu", (bool*)true, flags);
 
 		// set window position for the following modals
-		ImGui::SetNextWindowPos(ImVec2(width / 2, height / 2));
+		ImGui::SetNextWindowPos(ImVec2(windowWidth / 2, windowHeight / 2));
 
 		// quit comfirmation popup definition
 
@@ -50,14 +50,14 @@ namespace game {
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, BUTTON_ACTIVE_COLOR);
 		ImGui::PushStyleColor(ImGuiCol_Text, TEXT_COLOR);
 
-		// settings button definition
-		ImGui::SetCursorPos(ImVec2(width / 2 - BUTTON_WIDTH / 2, height / 2 - 3 * BUTTON_HEIGHT / 2 - 5));
+		// start button definition
+		ImGui::SetCursorPos(ImVec2(windowWidth / 2 - BUTTON_WIDTH / 2, windowHeight / 2 - 3 * BUTTON_HEIGHT / 2 - 5));
 		if (ImGui::Button("Start", ImVec2(BUTTON_WIDTH, BUTTON_HEIGHT))) {
 			game->SetState(State::RUNNING);
 		}
 
 		// quit button definition
-		ImGui::SetCursorPos(ImVec2(width / 2 - BUTTON_WIDTH / 2, height / 2 - BUTTON_HEIGHT / 2 + 5));
+		ImGui::SetCursorPos(ImVec2(windowWidth / 2 - BUTTON_WIDTH / 2, windowHeight / 2 - BUTTON_HEIGHT / 2 + 5));
 		if (ImGui::Button("Quit", ImVec2(BUTTON_WIDTH, BUTTON_HEIGHT))) {
 			ImGui::OpenPopup("Quit Confirmation");
 		}

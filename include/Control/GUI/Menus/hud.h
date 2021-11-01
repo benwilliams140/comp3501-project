@@ -4,11 +4,11 @@
 #include "Control/game.h"
 
 namespace game {
-	class PauseMenu : public Menu {
+	class HUD : public Menu {
 	public:
-		PauseMenu(GLFWwindow* window);
-		~PauseMenu();
-		
+		HUD(GLFWwindow* window);
+		~HUD();
+
 		virtual void Render() override;
-	}; // PauseMenu class
+	}; // MainMenu class
 } // namespace game
