@@ -80,6 +80,7 @@ namespace game {
             void SetState(State state);
 
             Camera* GetCamera();
+            Player* GetPlayer();
 
         private:
             // GLFW window
@@ -96,6 +97,9 @@ namespace game {
 
             // Camera abstraction
             Camera* camera_;
+
+            // Player
+            Player* player_;
 
             bool freeroam_;
             State state_;

@@ -183,6 +183,7 @@ void Game::SetupScene(void) {
     // if a new model is loaded, will probably need to update these translations
     std::string hovertankMaterial = "Simple";
     HoverTank* hovertank_base = CreateInstance<HoverTank>(HOVERTANK_BASE, HOVERTANK_BASE, hovertankMaterial);
+    player_ = new Player(100.f, 100.f, hovertank_base);
     HoverTankTurret* hovertank_turret = CreateInstance<HoverTankTurret>(HOVERTANK_TURRET, HOVERTANK_TURRET, hovertankMaterial);
     hovertank_turret->Translate(glm::vec3(0.f, 1.1f, -0.25f));
     hovertank_turret->SetParent(hovertank_base);
@@ -193,9 +194,9 @@ void Game::SetupScene(void) {
     for (int i = 0; i < 4; ++i) {
         hovertank_tracks.push_back(CreateInstance<HoverTankTrack>("HovertankTrack" + trackLocations[i], "HovertankTrack" + trackLocations[i], hovertankMaterial));
         hovertank_tracks.at(i)->SetParent(hovertank_base);
-        float dx = -1.5f + 3.f * ((i + 1) % 2); // left tracks (i=0,2) should translate (x) by 1.5, right (i=1,3) by -1.5
-        float dy = -.3f; // all tracks should translate (y) by -.3
-        float dz = -1.f + 4.f * (floor(i / 2)); // back tracks (i=0,1) should translate (z) by -1, front (i=2,3) by 3
+        float dx = -1.5f + 3.0f * ((i + 1) % 2); // left tracks (i=0,2) should translate (x) by 1.5, right (i=1,3) by -1.5
+        float dy = -0.3f; // all tracks should translate (y) by -.3
+        float dz = -1.0f + 4.0f * (floor(i / 2)); // back tracks (i=0,1) should translate (z) by -1, front (i=2,3) by 3
         hovertank_tracks.at(i)->Translate(glm::vec3(dx, dy, dz));
     }
 }
@@ -398,6 +399,10 @@ T *Game::CreateInstance(std::string entity_name, std::string object_name, std::s
 
 Camera* Game::GetCamera() {
     return camera_;
+}
+
+Player* Game::GetPlayer() {
+    return player_;
 }
 
 void Game::SetState(State state) {
