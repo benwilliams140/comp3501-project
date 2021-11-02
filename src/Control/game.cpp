@@ -184,6 +184,8 @@ void Game::SetupScene(void) {
     std::string hovertankMaterial = "Simple";
     HoverTank* hovertank_base = CreateInstance<HoverTank>(HOVERTANK_BASE, HOVERTANK_BASE, hovertankMaterial);
     player_ = new Player(100.f, 100.f, hovertank_base);
+    player_->SetEnergy(75.0f); // for demo purposes
+    player_->SetHealth(75.0f); // for demo purposes
     HoverTankTurret* hovertank_turret = CreateInstance<HoverTankTurret>(HOVERTANK_TURRET, HOVERTANK_TURRET, hovertankMaterial);
     hovertank_turret->Translate(glm::vec3(0.f, 1.1f, -0.25f));
     hovertank_turret->SetParent(hovertank_base);
