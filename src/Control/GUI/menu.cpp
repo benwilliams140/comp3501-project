@@ -2,7 +2,7 @@
 
 namespace game {
 	Menu::Menu(GLFWwindow* window) : window(window) {
-		glfwGetWindowSize(window, &initialWindowWidth, &initialWindowHeight);
+		
 	}
 
 	Menu::~Menu() {
@@ -11,5 +11,11 @@ namespace game {
 
 	void Menu::AddVariable(void* var) {
 		variables.push_back(var);
+	}
+
+	void Menu::HandleInput() {
+		// ImGui already handles most input, this is mostly just for specialized additional features
+		//		eg. Using the scroll wheel to select items in an HUD element
+		// base menu object should not have any additional input
 	}
 } // namespace game

@@ -12,6 +12,7 @@ namespace game {
 		~HUD();
 
 		virtual void Render() override;
+		virtual void HandleInput() override;
 
 	private:
 		/*
@@ -21,12 +22,23 @@ namespace game {
 		const struct HealthBar {
 			float widthRatio = 0.2f;
 			float heightRatio = 0.025f;
+			ImU32 backgroundColor = IM_COL32(255, 0, 0, 255);
+			ImU32 foregroundColor = IM_COL32(0, 255, 0, 255);
+			ImU32 textColor = IM_COL32(0, 0, 0, 255);
 		} healthBar_;
 
 		const struct EnergyBar {
-			float widthRatio = 0.025f;
+			float widthRatio = 0.02f;
 			float heightRatio = 0.2f;
+			ImU32 backgroundColor = IM_COL32(160, 160, 160, 255);
+			ImU32 foregroundColor = IM_COL32(0, 255, 255, 255);
 		} energyBar_;
+
+		const struct ProjectileSelection {
+			float widthRatio = 0.15f;
+			float heightRatio = 0.025f;
+			int inventorySize = 4;
+		} projSelection_;
 
 		void RenderHealthBar(Game* game, int windowWidth, int windowHeight);
 		void RenderEnergyBar(Game* game, int windowWidth, int windowHeight);

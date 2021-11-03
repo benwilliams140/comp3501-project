@@ -323,13 +323,13 @@ void Game::HandleGun() {
         if (!mat) {
             throw(GameException(std::string("Could not find resource \"") + "Simple" + std::string("\"")));
         }
-        hero->shootProjectile("Projectile", geom, mat, &scene_);
+        player_->shootProjectile("Projectile", geom, mat, &scene_);
         //hero->shootThrowable("Throwable", geom, mat, &scene_);
     }
     //handle shooting cool down
-    hero->coolOff();
-    hero->removeDeadProjectiles(&scene_);
-    hero->removeDeadThrowables(&scene_);
+    player_->coolOff();
+    player_->removeDeadProjectiles(&scene_);
+    player_->removeDeadThrowables(&scene_);
 }
 
 void Game::UpdateCameraPos() {

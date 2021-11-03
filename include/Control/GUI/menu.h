@@ -31,11 +31,11 @@ namespace game {
 		void AddVariable(void* var);
 
 		// overridden by specialized Menu classes (eg. MainMenu)
-		virtual void Render() = 0;
+		virtual void Render() = 0; // handles rendering ImGui widgets (no base implementation)
+		virtual void HandleInput(); // handles any additional input for menus
 
 	protected:
 		GLFWwindow* window;
-		int initialWindowWidth, initialWindowHeight;
 		std::vector<void*> variables; // not currently used - idea is to store menu-specific variables
 										// that will be edited by ImGui widgets (eg. the FOV in the pause menu)
 	}; // Menu class

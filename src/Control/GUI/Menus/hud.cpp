@@ -9,6 +9,10 @@ namespace game {
 
 	}
 
+	void HUD::HandleInput() {
+
+	}
+	
 	void HUD::Render() {
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -55,9 +59,9 @@ namespace game {
 		float healthBarY = healthBarBaseY + 2.0f;
 
 		// render the health bar (can replace the base colour with an image)
-		ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(healthBarBaseX, healthBarBaseY), ImVec2(healthBarBaseX + healthBarBaseWidth, healthBarBaseY + healthBarBaseHeight), IM_COL32(255, 0, 0, 255), 0.0f, 0);
-		ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(healthBarX, healthBarY), ImVec2(healthBarX + healthBarWidth, healthBarY + healthBarHeight), IM_COL32(0, 255, 0, 255), 0.0f, 0);
-		ImGui::GetWindowDrawList()->AddText(ImVec2(healthBarBaseX + healthBarBaseWidth / 2 - 10, healthBarBaseY + healthBarBaseHeight / 2 - 8), IM_COL32(0, 0, 0, 255), std::to_string((int)health).c_str());
+		ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(healthBarBaseX, healthBarBaseY), ImVec2(healthBarBaseX + healthBarBaseWidth, healthBarBaseY + healthBarBaseHeight), healthBar_.backgroundColor, 0.0f, 0);
+		ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(healthBarX, healthBarY), ImVec2(healthBarX + healthBarWidth, healthBarY + healthBarHeight), healthBar_.foregroundColor, 0.0f, 0);
+		ImGui::GetWindowDrawList()->AddText(ImVec2(healthBarBaseX + healthBarBaseWidth / 2 - 10, healthBarBaseY + healthBarBaseHeight / 2 - 8), healthBar_.textColor, std::to_string((int)health).c_str());
 
 		// render a second option for a health bar using the slider widget
 		ImGui::PushItemWidth(healthBarBaseWidth);
@@ -82,8 +86,8 @@ namespace game {
 		float energyBarY = energyBarBaseY + energyBarBaseHeight - 2.0f - energyBarHeight;
 
 		// render the energy bar (can replace the base colour with an image)
-		ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(energyBarBaseX, energyBarBaseY), ImVec2(energyBarBaseX + energyBarBaseWidth, energyBarBaseY + energyBarBaseHeight), IM_COL32(255, 0, 0, 255), 0.0f, 0);
-		ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(energyBarX, energyBarY), ImVec2(energyBarX + energyBarWidth, energyBarY + energyBarHeight), IM_COL32(0, 255, 255, 255), 0.0f, 0);
+		ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(energyBarBaseX, energyBarBaseY), ImVec2(energyBarBaseX + energyBarBaseWidth, energyBarBaseY + energyBarBaseHeight), energyBar_.backgroundColor, 0.0f, 0);
+		ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(energyBarX, energyBarY), ImVec2(energyBarX + energyBarWidth, energyBarY + energyBarHeight), energyBar_.foregroundColor, 0.0f, 0);
 		
 		// render a second option for an energy bar using the slider widget
 		ImGui::SetCursorPos(ImVec2(energyBarBaseX - energyBarBaseWidth - 5, energyBarBaseY));
