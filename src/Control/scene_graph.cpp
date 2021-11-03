@@ -69,6 +69,17 @@ SceneNode *SceneGraph::GetNode(std::string node_name) const {
 
 }
 
+void SceneGraph::removeNode(std::string node_name) {
+    //deletes the specified node
+    for (int i = 0; i < node_.size(); i++) {
+        if (node_[i]->GetName() == node_name) {
+            node_.erase(begin() + i);
+            return;
+        }
+    }
+    
+}
+
 
 std::vector<SceneNode *>::const_iterator SceneGraph::begin() const {
 
@@ -95,6 +106,7 @@ void SceneGraph::Update(void){
 
     for (int i = 0; i < node_.size(); i++){
         node_[i]->Update();
+        
     }
 }
 

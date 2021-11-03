@@ -13,6 +13,7 @@ const bool window_full_screen_g = false;
 
 
 
+
 // Viewport and camera settings
 glm::vec3 camera_position_g(0.5, 0.5, 10.0);
 glm::vec3 camera_look_at_g(0.0, 0.0, 0.0);
@@ -243,6 +244,7 @@ void Game::MainLoop(void){
             else {
                 HandleHovertankMovement();
                 UpdateCameraPos();
+                HandleGun();
             }
 
             // Update the scene
@@ -255,6 +257,7 @@ void Game::MainLoop(void){
                 last_time = current_time;
             }
             scene_.Draw(camera_);
+            scene_.Update();
 
             // render the HUD overtop of the game
             menus_[MenuType::HUD]->Render();
@@ -264,6 +267,7 @@ void Game::MainLoop(void){
         glfwSwapBuffers(window_);
 
         Input::update();
+        
 
         // Update other events like input handling
         glfwPollEvents();
@@ -305,6 +309,27 @@ void Game::HandleHovertankMovement() {
         glm::quat rotation = glm::angleAxis(-rot_factor, tank->GetUp());
         tank->Rotate(rotation);
     }
+    
+}
+
+void Game::HandleGun() {
+    if (Input::getKey(INPUT_KEY_SPACE)) {
+        Resource* geom = resman_.GetResource("Cube");
+        if (!geom) {
+            throw(GameException(std::string("Could not find resource \"") + "Cube" + std::string("\"")));
+        }
+
+        Resource* mat = resman_.GetResource("Simple");
+        if (!mat) {
+            throw(GameException(std::string("Could not find resource \"") + "Simple" + std::string("\"")));
+        }
+        hero->shootProjectile("Projectile", geom, mat, &scene_);
+        //hero->shootThrowable("Throwable", geom, mat, &scene_);
+    }
+    //handle shooting cool down
+    hero->coolOff();
+    hero->removeDeadProjectiles(&scene_);
+    hero->removeDeadThrowables(&scene_);
 }
 
 void Game::UpdateCameraPos() {

@@ -11,7 +11,10 @@
 #include <glm/gtc/quaternion.hpp>
 
 #include "Objects/Artifact.h"
+#include "Objects/Projectile.h"
+#include "Objects/Throwable.h"
 #include "Objects/Hovertank/hovertank.h"
+#include "Control/scene_graph.h"
 
 namespace game {
 
@@ -43,12 +46,24 @@ namespace game {
 		void energyLost(float lostEnergy);
 		void gainMoney(float gain);
 		bool purchase(float payment);
+		void coolOff();
 
 		void addArtifact(Artifact *newArtifact);
 		Artifact* GetArtifact(int id);
 		void printArtifacts();
+
+		void shootProjectile(const std::string name, const Resource* geometry, const Resource* material,  SceneGraph* scene_);
+		void removeDeadProjectiles(SceneGraph* scene_);
+
+		void shootThrowable(const std::string name, const Resource* geometry, const Resource* material, SceneGraph* scene_);
+		void removeDeadThrowables(SceneGraph* scene_);
+
+
+
 	private:
 		std::vector<Artifact*> artifacts;
+		std::vector<Projectile*> projectiles;
+		std::vector<Throwable*> throwables;
 		float health;
 		float maxHealth;
 		float energy;
@@ -56,6 +71,9 @@ namespace game {
 		float money;
 		HoverTank* tank;
 		bool alive;
+		int coolDown;
+		int projectNum;
+		int throwNum;
 		
 	}; // class Player
 

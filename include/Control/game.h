@@ -33,6 +33,8 @@
 #include "Objects/terrain.h"
 #include "Objects/Artifact.h"
 #include "Objects/Player.h"
+#include "Objects/Projectile.h"
+#include "Objects/Throwable.h"
 
 // object/resource names
 #define HOVERTANK_BASE "HovertankChassis"
@@ -117,7 +119,7 @@ namespace game {
             // handle movement
             void HandleHovertankMovement();
             void UpdateCameraPos();
-
+            void HandleGun();
             // Create an instance of an object stored in the resource manager
             template <typename T>
             T* CreateInstance(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name = std::string(""));
