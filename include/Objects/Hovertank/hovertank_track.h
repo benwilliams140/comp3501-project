@@ -19,7 +19,7 @@ namespace game {
 
 	public:
 		// Create HoverTankTrack from given resources
-		HoverTankTrack(const std::string name, const Resource* geometry, const Resource* material);
+		HoverTankTrack(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture);
 
 		// Destructor
 		~HoverTankTrack();

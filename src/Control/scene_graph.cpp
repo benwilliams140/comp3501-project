@@ -33,10 +33,10 @@ glm::vec3 SceneGraph::GetBackgroundColor(void) const {
 
 // generic CreateNode function
 template <typename T>
-SceneNode* SceneGraph::CreateNode(std::string node_name, Resource *geometry, Resource *material, Resource *texture){
+T* SceneGraph::CreateNode(std::string node_name, Resource *geometry, Resource *material, Resource *texture){
 
     // Create scene node with the specified resources
-    SceneNode* scn = new T(node_name, geometry, material, texture);
+    T* scn = new T(node_name, geometry, material, texture);
 
     // Add node to the scene
     node_.push_back(scn);
@@ -45,9 +45,11 @@ SceneNode* SceneGraph::CreateNode(std::string node_name, Resource *geometry, Res
 }
 
 // definitions for generic function
-// NOTE: Add more explicit function definitions here (eg. for terrain)
+// NOTE: Add more explicit function definitions here (eg. for terrain, other hovertank parts)
 template SceneNode* SceneGraph::CreateNode<SceneNode>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
-template SceneNode* SceneGraph::CreateNode<HoverTank>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
+template HoverTank* SceneGraph::CreateNode<HoverTank>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
+template HoverTankTrack* SceneGraph::CreateNode<HoverTankTrack>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
+template HoverTankTurret* SceneGraph::CreateNode<HoverTankTurret>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
 
 void SceneGraph::AddNode(SceneNode *node){
 

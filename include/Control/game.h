@@ -20,6 +20,7 @@
 #include "Control/GUI/menu.h"
 #include "Control/GUI/Menus/main_menu.h"
 #include "Control/GUI/Menus/pause_menu.h"
+#include "Control/GUI/Menus/hud.h"
 #include "Control/path_config.h"
 
 #include "Renderer/camera.h"
@@ -34,6 +35,14 @@
 #include "Objects/Player.h"
 #include "Objects/Projectile.h"
 #include "Objects/Throwable.h"
+
+// object/resource names
+#define HOVERTANK_BASE "HovertankChassis"
+#define HOVERTANK_TURRET "HovertankCylinder"
+#define HOVERTANK_TRACK_BL "HovertankTrackBL"
+#define HOVERTANK_TRACK_BR "HovertankTrackBR"
+#define HOVERTANK_TRACK_FL "HovertankTrackFL"
+#define HOVERTANK_TRACK_FR "HovertankTrackFR"
 
 namespace game {
 
@@ -73,6 +82,7 @@ namespace game {
             void SetState(State state);
 
             Camera* GetCamera();
+            Player* GetPlayer();
 
         private:
             // GLFW window
@@ -89,6 +99,9 @@ namespace game {
 
             // Camera abstraction
             Camera* camera_;
+
+            // Player
+            Player* player_;
 
             bool freeroam_;
             State state_;
@@ -109,8 +122,7 @@ namespace game {
             void HandleGun();
             // Create an instance of an object stored in the resource manager
             template <typename T>
-            SceneNode *CreateInstance(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name = std::string(""));
-            Player* hero;
+            T* CreateInstance(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name = std::string(""));
     }; // class Game
 
 } // namespace game

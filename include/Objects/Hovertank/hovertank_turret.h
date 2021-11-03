@@ -19,7 +19,7 @@ namespace game {
 
 	public:
 		// Create HoverTankTurret from given resources
-		HoverTankTurret(const std::string name, const Resource* geometry, const Resource* material);
+		HoverTankTurret(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture = nullptr);
 
 		// Destructor
 		~HoverTankTurret();
