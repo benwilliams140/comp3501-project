@@ -5,6 +5,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 #include <time.h>
+#include <sstream>
 
 namespace game {
 
@@ -16,6 +17,9 @@ namespace game {
 		tank = theTank;
 		alive = true;
 		money = 0;
+		coolDown = 0;
+		projectNum = 0;
+		throwNum = 0;
 	}
 
 
@@ -147,6 +151,91 @@ namespace game {
 		//used for testing
 		for (int i = 0; i < artifacts.size(); i++) {
 			std::cout << "Artifact Name: " << artifacts[i]->GetArtifactName() << "ID: "<< artifacts[i]->GetName()<< "Value: "<< artifacts[i]->GetValue()<<"\n";
+		}
+	}
+
+	void Player::coolOff() {
+		if (coolDown > 0) {
+			coolDown -= 1;
+		}
+	}
+
+	void Player::shootProjectile(const std::string name, const Resource* geometry, const Resource* material,  SceneGraph* scene_) {
+		//if cool down is not 0, then we shouldn't shoot
+		if (coolDown > 0) {
+			return;
+		}
+
+		//setting the name
+		std::stringstream ss;
+		ss << projectNum;
+		std::string index = ss.str();
+
+		Projectile* pro = new Projectile(name + index, geometry, material, glm::normalize(tank->GetForward()));
+
+		projectiles.push_back(pro);
+
+		//setting the position and orientation
+		pro->SetPosition(tank->GetPosition());
+		pro->SetOrientation(tank->GetOrientation());
+
+		scene_->AddNode(pro);
+
+		//reset cool down, and update number of projectiles
+		coolDown = 250;
+		projectNum++;
+
+	}
+
+	
+
+	void Player::removeDeadProjectiles(SceneGraph* scene_) {
+		//goes through entire list of projectiles, if it's dead get rid of it
+		for (int i = projectiles.size() - 1; i >= 0;  i--) {
+			if (!projectiles[i]->isAlive()) {
+				scene_->removeNode(projectiles[i]->GetName());
+				projectiles.erase(projectiles.begin() + i);
+			}
+		}
+	}
+
+	void Player::shootThrowable(const std::string name, const Resource* geometry, const Resource* material, SceneGraph* scene_) {
+		//if cool down is not 0, then we shouldn't shoot
+		if (coolDown > 0) {
+			return;
+		}
+		//setting the name 
+		std::stringstream ss;
+		ss << throwNum;
+		std::string index = ss.str();
+
+		glm::quat rotation = glm::angleAxis((float)glm::radians((float)45), tank->GetRight());
+
+		Throwable* thro = new Throwable(name + index, geometry, material,  glm::normalize(rotation * tank->GetForward()));
+
+		throwables.push_back(thro);
+
+		//setting the position and orientation
+		thro->SetPosition(tank->GetPosition());
+		thro->SetOrientation(tank->GetOrientation());
+
+		scene_->AddNode(thro);
+
+		//reset cool down, and update number of throwables
+		coolDown = 250;
+		throwNum++;
+
+	}
+
+
+
+	void Player::removeDeadThrowables(SceneGraph* scene_) {
+		//goes through entire list of throwables, if it's dead get rid of it
+		for (int i = throwables.size() - 1; i >= 0; i--) {
+			if (!throwables[i]->isAlive()) {
+				scene_->removeNode(throwables[i]->GetName());
+				throwables.erase(throwables.begin() + i);
+			}
 		}
 	}
 }

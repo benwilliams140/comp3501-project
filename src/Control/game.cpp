@@ -13,6 +13,7 @@ const bool window_full_screen_g = false;
 
 
 
+
 // Viewport and camera settings
 glm::vec3 camera_position_g(0.5, 0.5, 10.0);
 glm::vec3 camera_look_at_g(0.0, 0.0, 0.0);
@@ -160,6 +161,7 @@ void Game::SetupScene(void) {
     terrain->Translate(glm::vec3(-50.f));
     SceneNode* hovertank_base = CreateInstance<HoverTank>("Hovertank Base", "Cube", "Simple", "RockyTexture");
     hovertank_base->Translate(glm::vec3(0.f, 0.f, -5.f));
+    hero = new Player(100, 100, (HoverTank*)scene_.GetNode("Hovertank Base"));
     
 }
 
@@ -203,6 +205,7 @@ void Game::MainLoop(void){
             else {
                 HandleHovertankMovement();
                 UpdateCameraPos();
+                HandleGun();
             }
 
             // Update the scene
@@ -215,12 +218,14 @@ void Game::MainLoop(void){
                 last_time = current_time;
             }
             scene_.Draw(camera_);
+            scene_.Update();
         }
 
         // Push buffer drawn in the background onto the display
         glfwSwapBuffers(window_);
 
         Input::update();
+        
 
         // Update other events like input handling
         glfwPollEvents();
@@ -262,6 +267,27 @@ void Game::HandleHovertankMovement() {
         glm::quat rotation = glm::angleAxis(-rot_factor, tank->GetUp());
         tank->Rotate(rotation);
     }
+    
+}
+
+void Game::HandleGun() {
+    if (Input::getKey(INPUT_KEY_SPACE)) {
+        Resource* geom = resman_.GetResource("Cube");
+        if (!geom) {
+            throw(GameException(std::string("Could not find resource \"") + "Cube" + std::string("\"")));
+        }
+
+        Resource* mat = resman_.GetResource("Simple");
+        if (!mat) {
+            throw(GameException(std::string("Could not find resource \"") + "Simple" + std::string("\"")));
+        }
+        hero->shootProjectile("Projectile", geom, mat, &scene_);
+        //hero->shootThrowable("Throwable", geom, mat, &scene_);
+    }
+    //handle shooting cool down
+    hero->coolOff();
+    hero->removeDeadProjectiles(&scene_);
+    hero->removeDeadThrowables(&scene_);
 }
 
 void Game::UpdateCameraPos() {
@@ -350,7 +376,6 @@ SceneNode *Game::CreateInstance(std::string entity_name, std::string object_name
             throw(GameException(std::string("Could not find resource \"")+texture_name+std::string("\"")));
         }
     }
-
     SceneNode *scn = scene_.CreateNode<T>(entity_name, geom, mat, tex);
     return scn;
     
