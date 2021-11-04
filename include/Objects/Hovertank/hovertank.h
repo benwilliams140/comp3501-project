@@ -11,6 +11,7 @@
 
 #include "Control/resource.h"
 #include "Control/scene_node.h"
+#include "Objects/Hovertank/hovertank_turret.h"
 
 namespace game {
 
@@ -28,34 +29,33 @@ namespace game {
 		glm::vec3 GetRight();
 		glm::vec3 GetUp();
 
-		// Get/set attributes specific to HoverTanks
-		glm::quat GetAngM(void) const;
+		// getters
 		float GetSpeed();
 		glm::vec3 GetVelocity();
 		float GetStrength();
+		HoverTankTurret* GetTurret();
 
-		void SetAngM(glm::quat angm);
+		// setters
 		void SetSpeed(float newSpeed);
 		void SetVelocity(glm::vec3 newVelocity);
 		void SetStrength(float newStrength);
+		void SetTurret(HoverTankTurret* turret);
 
 
 		// Update geometry configuration
-		void Update(void);
+		virtual void Update(void) override;
 
 	private:
 		void movementControl();
 		bool collisionDetection();
 
 		// Angular momentum of HoverTank
-		glm::quat angm_;
 		float speed;
 		float strength;
-		float colliderBox_x;//we cam change this later, doesn't have to be a float
-		float colliderBox_y;//we cam change this later, doesn't have to be a float
-		float colliderBox_z;//we cam change this later, doesn't have to be a float
 		glm::vec3 velocity;
 		glm::vec3 forward_;
+
+		HoverTankTurret* turret_;
 	}; // class HoverTank
 
 }

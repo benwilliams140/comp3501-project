@@ -24,19 +24,12 @@ namespace game {
 		// Destructor
 		~HoverTankTrack();
 
-		// Get/set attributes specific to HoverTankTracks
-		glm::quat GetAngM(void) const;
-		void SetAngM(glm::quat angm);
-
-
 		// Update geometry configuration
-		void Update(void);
+		virtual void Update(void) override;
 
 	private:
 		void ActivateEffect();
 		void DeactivateEffect();
-		// Angular momentum of HoverTankTrack
-		glm::quat angm_;
 		bool toggle;
 	}; // class HoverTankTrack
 

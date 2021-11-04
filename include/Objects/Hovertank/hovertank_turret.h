@@ -2,6 +2,7 @@
 #define HOVERTANKTURRET_H_
 
 #include <string>
+#include <map>
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -11,9 +12,10 @@
 
 #include "Control/resource.h"
 #include "Control/scene_node.h"
+#include "Objects/Hovertank/Abilities/ability.h"
+#include "Objects/Projectiles/projectile.h"
 
 namespace game {
-
 	// Abstraction of an HoverTankTurret
 	class HoverTankTurret : public SceneNode {
 
@@ -24,16 +26,28 @@ namespace game {
 		// Destructor
 		~HoverTankTurret();
 
-		// Get/set attributes specific to HoverTankTurrets
-		glm::quat GetAngM(void) const;
-		void SetAngM(glm::quat angm);
-
 		// Update geometry configuration
-		void Update(void);
+		virtual void Update(void) override;
 
+		// use the currently selected ability
+		void UseSelectedAbility(Projectile** outProj, glm::vec3 forward, Resource* geometry, Resource* material, Resource* texture = nullptr);
+		void SelectNextAbility();
+		void SelectPreviousAbility();
+		bool AddAbility(Ability*); // add an ability to the turret's inventory
+		std::vector<Projectile*> RemoveDeadProjectiles(); // finds any projectiles that are no longer alive
+
+		// getters
+		glm::vec3 GetForward();
+		int GetSelectedIndex();
+
+		// setters
+		void SetForward(glm::vec3 forward);
+	
 	private:
-		// Angular momentum of HoverTankTurret
-		glm::quat angm_;
+		std::vector<Ability*> availableAbilities_;
+		std::vector<Ability*>::iterator selectedAbility_;
+		const int abilityInventorySize_ = 4; // maximum number of abilities
+		glm::vec3 forward_;
 	}; // class HoverTankTurret
 
 } // namespace game

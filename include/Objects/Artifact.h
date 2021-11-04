@@ -19,14 +19,13 @@ namespace game {
 
 	public:
 		// Create Artifact from given resources
-		Artifact(const std::string name, const Resource* geometry, const Resource* material, const std::string artName, float val, int artifactId);
+		Artifact(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture = nullptr);
 
 		// Destructor
 		~Artifact();
 
 		// Get/set attributes specific to Artifacts
-		glm::quat GetAngM(void) const;
-		void SetAngM(glm::quat angm);
+		void Setup(const std::string artName, float val, int artifactId);
 
 		bool isFound();
 		float Discover();
@@ -38,16 +37,9 @@ namespace game {
 		// Update geometry configuration
 		void Update(void);
 
-		bool collisionDetection();
+		
 
 	private:
-		// Angular momentum of Artifact
-		glm::quat angm_;
-
-		//doesn't have to be a square, we can change it later
-		float colliderBox_x;
-		float colliderBox_y;
-		float colliderBox_z;
 
 		int id;
 		bool found;

@@ -22,19 +22,21 @@
 #include "Control/GUI/Menus/pause_menu.h"
 #include "Control/GUI/Menus/hud.h"
 #include "Control/path_config.h"
+#include "Control/time.h"
 
 #include "Renderer/camera.h"
 
 #include "Objects/Hovertank/hovertank.h"
 #include "Objects/Hovertank/hovertank_track.h"
 #include "Objects/Hovertank/hovertank_turret.h"
-#include "Objects/Hovertank/machine_gun.h"
+#include "Objects/Hovertank/Abilities/machine_gun.h"
+#include "Objects/Hovertank/Abilities/energy_cannon.h"
 #include "Objects/Hovertank/scanner.h"
 #include "Objects/terrain.h"
 #include "Objects/Artifact.h"
 #include "Objects/Player.h"
-#include "Objects/Projectile.h"
-#include "Objects/Throwable.h"
+#include "Objects/Projectiles/linear_projectile.h"
+#include "Objects/Projectiles/parabolic_projectile.h"
 
 // object/resource names
 #define HOVERTANK_BASE "HovertankChassis"
@@ -117,12 +119,13 @@ namespace game {
             static void ResizeCallback(GLFWwindow* window, int width, int height);
 
             // handle movement
-            void HandleHovertankMovement();
+            void HandleHovertankInput();
             void UpdateCameraPos();
-            void HandleGun();
+
             // Create an instance of an object stored in the resource manager
             template <typename T>
             T* CreateInstance(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name = std::string(""));
+            Resource* GetResource(std::string res); // get the resource listed
     }; // class Game
 
 } // namespace game

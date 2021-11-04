@@ -16,21 +16,9 @@ namespace game {
 	}
 
 
-	glm::quat Scanner::GetAngM(void) const {
-
-		return angm_;
-	}
-
-
-	void Scanner::SetAngM(glm::quat angm) {
-
-		angm_ = angm;
-	}
-
-
 	void Scanner::Update(void) {
 
-		Rotate(angm_);
+		Rotate(GetAngM());
 	}
 
 } // namespace game

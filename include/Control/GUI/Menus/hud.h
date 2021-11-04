@@ -37,10 +37,10 @@ namespace game {
 		const struct ProjectileSelection {
 			float widthRatio = 0.15f;
 			float heightRatio = 0.025f;
-			int inventorySize = 4;
 		} projSelection_;
 
 		void RenderHealthBar(Game* game, int windowWidth, int windowHeight);
 		void RenderEnergyBar(Game* game, int windowWidth, int windowHeight);
+		void RenderProjectileSelection(Game* game, int windowWidth, int windowHeight);
 	}; // MainMenu class
 } // namespace game

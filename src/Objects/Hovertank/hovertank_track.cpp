@@ -17,21 +17,8 @@ namespace game {
 	}
 
 
-	glm::quat HoverTankTrack::GetAngM(void) const {
-
-		return angm_;
-	}
-
-
-	void HoverTankTrack::SetAngM(glm::quat angm) {
-
-		angm_ = angm;
-	}
-
-
 	void HoverTankTrack::Update(void) {
-
-		Rotate(angm_);
+		Rotate(GetAngM());
 	}
 
 	void HoverTankTrack::ActivateEffect() {

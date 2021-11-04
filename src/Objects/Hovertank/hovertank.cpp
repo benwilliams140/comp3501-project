@@ -11,9 +11,7 @@ namespace game {
 	HoverTank::HoverTank(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : SceneNode(name, geometry, material, texture) {
 		velocity = glm::vec3(0, 0, 0);
 		forward_ = glm::vec3(0, 0, 1); // consider taking this in as a parameter
-		colliderBox_x = 10;
-		colliderBox_y = 10;
-		colliderBox_z = 10;
+		turret_ = nullptr;
 	}
 
 	HoverTank::~HoverTank() {
@@ -31,11 +29,6 @@ namespace game {
 		return GetOrientation() * glm::normalize(glm::vec3(0, 1, 0)); // hardcoded up vector for now
 	}
 
-	glm::quat HoverTank::GetAngM(void) const {
-
-		return angm_;
-	}
-
 	float HoverTank::GetSpeed(void) {
 		return speed;
 	}
@@ -48,8 +41,8 @@ namespace game {
 		return strength;
 	}
 
-	void HoverTank::SetAngM(glm::quat angm) {
-		angm_ = angm;
+	HoverTankTurret* HoverTank::GetTurret() {
+		return turret_;
 	}
 
 	void HoverTank::SetSpeed(float newSpeed) {
@@ -62,6 +55,10 @@ namespace game {
 
 	void HoverTank::SetStrength(float newStrength) {
 		strength = newStrength;
+	}
+
+	void HoverTank::SetTurret(HoverTankTurret* turret) {
+		turret_ = turret;
 	}
 
 	void HoverTank::Update(void) {

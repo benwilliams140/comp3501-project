@@ -190,6 +190,8 @@ void Game::SetupScene(void) {
     HoverTankTurret* hovertank_turret = CreateInstance<HoverTankTurret>(HOVERTANK_TURRET, HOVERTANK_TURRET, hovertankMaterial);
     hovertank_turret->Translate(glm::vec3(0.f, 1.1f, -0.25f));
     hovertank_turret->SetParent(hovertank_base);
+    hovertank_turret->SetForward(hovertank_base->GetForward());
+    hovertank_base->SetTurret(hovertank_turret);
 
     // create hovertank tracks
     std::string trackLocations[] = { "BL", "BR", "FL", "FR" };
@@ -202,6 +204,14 @@ void Game::SetupScene(void) {
         float dz = -1.0f + 4.0f * (floor(i / 2)); // back tracks (i=0,1) should translate (z) by -1, front (i=2,3) by 3
         hovertank_tracks.at(i)->Translate(glm::vec3(dx, dy, dz));
     }
+
+    // load the wheel model as the machine gun temporarily
+    EnergyCannon* machine_gun = CreateInstance<EnergyCannon>("MachineGun", HOVERTANK_TRACK_BL, hovertankMaterial);
+    machine_gun->Rotate(glm::angleAxis(glm::radians(180.0f), hovertank_base->GetForward()));
+    machine_gun->Translate(glm::vec3(0.0f, 1.0f, -0.0f));
+    machine_gun->Scale(glm::vec3(0.75));
+    machine_gun->SetParent(hovertank_turret);
+    hovertank_turret->AddAbility(machine_gun);
 }
 
 void Game::MainLoop(void){
@@ -237,24 +247,20 @@ void Game::MainLoop(void){
         }
         // update and render game when running
         else if (state_ == State::RUNNING) {
+            Time::Update();
+
             // handle camera/tank movement
             if (freeroam_) {
                 UpdateCameraMovement(camera_);
             }
             else {
-                HandleHovertankMovement();
+                HandleHovertankInput();
                 UpdateCameraPos();
-                HandleGun();
             }
 
-            // Update the scene
-            static double last_time = 0;
-            double current_time = glfwGetTime();
-            if ((current_time - last_time) > 0.01) {
-                // Animate the scene
-                //scene_.Update();
-
-                last_time = current_time;
+            std::vector<Projectile*> projectilesToRemove = player_->GetTank()->GetTurret()->RemoveDeadProjectiles();
+            for (auto it = projectilesToRemove.begin(); it != projectilesToRemove.end(); ++it) {
+                scene_.RemoveNode((*it)->GetName());
             }
             scene_.Draw(camera_);
             scene_.Update();
@@ -274,7 +280,7 @@ void Game::MainLoop(void){
     }
 }
 
-void Game::HandleHovertankMovement() {
+void Game::HandleHovertankInput() {
     HoverTank* tank = (HoverTank*) scene_.GetNode(HOVERTANK_BASE);
     float rot_factor = glm::pi<float>() / 180;
     float trans_factor = 0.25f;
@@ -309,27 +315,19 @@ void Game::HandleHovertankMovement() {
         glm::quat rotation = glm::angleAxis(-rot_factor, tank->GetUp());
         tank->Rotate(rotation);
     }
-    
-}
-
-void Game::HandleGun() {
+    // shoot currently selected projectile
     if (Input::getKey(INPUT_KEY_SPACE)) {
-        Resource* geom = resman_.GetResource("Cube");
-        if (!geom) {
-            throw(GameException(std::string("Could not find resource \"") + "Cube" + std::string("\"")));
+        Resource* geom = GetResource("Cube");
+        Resource* mat = GetResource("Simple");
+        Resource* tex = GetResource("RockyTexture");
+        Projectile* outProj = nullptr;
+        player_->GetTank()->GetTurret()->UseSelectedAbility(&outProj, player_->GetTank()->GetForward(), geom, mat, tex);
+        if (outProj) {
+            outProj->SetPosition(player_->GetTank()->GetPosition());
+            outProj->Scale(glm::vec3(0.5f));
+            scene_.AddNode(outProj);
         }
-
-        Resource* mat = resman_.GetResource("Simple");
-        if (!mat) {
-            throw(GameException(std::string("Could not find resource \"") + "Simple" + std::string("\"")));
-        }
-        player_->shootProjectile("Projectile", geom, mat, &scene_);
-        //hero->shootThrowable("Throwable", geom, mat, &scene_);
     }
-    //handle shooting cool down
-    player_->coolOff();
-    player_->removeDeadProjectiles(&scene_);
-    player_->removeDeadThrowables(&scene_);
 }
 
 void Game::UpdateCameraPos() {
@@ -401,27 +399,23 @@ Game::~Game(){
 
 template <typename T>
 T *Game::CreateInstance(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name){
-    Resource *geom = resman_.GetResource(object_name);
-    if (!geom){
-        throw(GameException(std::string("Could not find resource \"")+object_name+std::string("\"")));
+    // retrieve resources (index 0 - object, 1 - material, 2 - texture)
+    Resource* geom = GetResource(object_name);
+    Resource* mat = GetResource(material_name);
+    Resource* tex = nullptr;
+    if (texture_name != "") {
+        tex = GetResource(texture_name);
     }
-
-    Resource *mat = resman_.GetResource(material_name);
-    if (!mat){
-        throw(GameException(std::string("Could not find resource \"")+material_name+std::string("\"")));
-    }
-
-    Resource *tex = NULL;
-    if (texture_name != ""){
-        tex = resman_.GetResource(texture_name);
-        if (!tex){
-            throw(GameException(std::string("Could not find resource \"")+texture_name+std::string("\"")));
-        }
-    }
-
     T* scn = scene_.CreateNode<T>(entity_name, geom, mat, tex);
     return scn;
     
+}
+
+Resource* Game::GetResource(std::string res) {
+    Resource* resource = resman_.GetResource(res);
+    if (!resource) {
+        throw(GameException(std::string("Could not find resource \"") + res + std::string("\"")));
+    }
 }
 
 Camera* Game::GetCamera() {
