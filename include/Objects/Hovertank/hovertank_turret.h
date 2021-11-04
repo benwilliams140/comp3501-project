@@ -38,6 +38,7 @@ namespace game {
 
 		// getters
 		glm::vec3 GetForward();
+		int GetSelectedIndex();
 
 		// setters
 		void SetForward(glm::vec3 forward);

@@ -55,12 +55,16 @@ namespace game {
 		return projectilesToRemove;
 	}
 
-	void HoverTankTurret::SetForward(glm::vec3 forward) {
-		forward_ = forward;
+	int HoverTankTurret::GetSelectedIndex() {
+		return selectedAbility_ - availableAbilities_.begin(); // calculates the index of the selected ability
 	}
 
 	glm::vec3 HoverTankTurret::GetForward(void) {
 		return GetOrientation() * glm::normalize(forward_);
+	}
+
+	void HoverTankTurret::SetForward(glm::vec3 forward) {
+		forward_ = forward;
 	}
 
 } // namespace game 
