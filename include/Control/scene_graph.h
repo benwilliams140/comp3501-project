@@ -11,6 +11,11 @@
 #include "Objects/Hovertank/hovertank.h"
 #include "Objects/Hovertank/hovertank_track.h"
 #include "Objects/Hovertank/hovertank_turret.h"
+#include "Objects/Hovertank/Abilities/machine_gun.h"
+#include "Objects/Hovertank/Abilities/energy_cannon.h"
+#include "Objects/Projectiles/linear_projectile.h"
+#include "Objects/Projectiles/parabolic_projectile.h"
+#include "Objects/Artifact.h"
 #include "Control/resource.h"
 #include "Renderer/camera.h"
 
@@ -43,7 +48,7 @@ namespace game {
             void AddNode(SceneNode *node);
             // Find a scene node with a specific name
             SceneNode *GetNode(std::string node_name) const;
-            void removeNode(std::string node_name);
+            void RemoveNode(std::string node_name);
             // Get node const iterator
             std::vector<SceneNode *>::const_iterator begin() const;
             std::vector<SceneNode *>::const_iterator end() const;
@@ -52,7 +57,7 @@ namespace game {
             void Draw(Camera *camera);
 
             // Update entire scene
-            void Update(void);
+            void Update();
 
     }; // class SceneGraph
 

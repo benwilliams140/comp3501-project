@@ -39,7 +39,7 @@ T* SceneGraph::CreateNode(std::string node_name, Resource *geometry, Resource *m
     T* scn = new T(node_name, geometry, material, texture);
 
     // Add node to the scene
-    node_.push_back(scn);
+    AddNode(scn);
 
     return scn;
 }
@@ -50,9 +50,11 @@ template SceneNode* SceneGraph::CreateNode<SceneNode>(std::string node_name, Res
 template HoverTank* SceneGraph::CreateNode<HoverTank>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
 template HoverTankTrack* SceneGraph::CreateNode<HoverTankTrack>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
 template HoverTankTurret* SceneGraph::CreateNode<HoverTankTurret>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
+template MachineGun* SceneGraph::CreateNode<MachineGun>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
+template EnergyCannon* SceneGraph::CreateNode<EnergyCannon>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
+template Artifact* SceneGraph::CreateNode<Artifact>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
 
 void SceneGraph::AddNode(SceneNode *node){
-
     node_.push_back(node);
 }
 
@@ -69,11 +71,13 @@ SceneNode *SceneGraph::GetNode(std::string node_name) const {
 
 }
 
-void SceneGraph::removeNode(std::string node_name) {
+void SceneGraph::RemoveNode(std::string node_name) {
     //deletes the specified node
     for (int i = 0; i < node_.size(); i++) {
         if (node_[i]->GetName() == node_name) {
+            SceneNode* node = node_[i];
             node_.erase(begin() + i);
+            delete node;
             return;
         }
     }
@@ -102,7 +106,7 @@ void SceneGraph::Draw(Camera *camera) {
 }
 
 
-void SceneGraph::Update(void){
+void SceneGraph::Update(){
 
     for (int i = 0; i < node_.size(); i++){
         node_[i]->Update();

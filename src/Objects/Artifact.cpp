@@ -8,24 +8,18 @@
 
 namespace game {
 
-	Artifact::Artifact(const std::string name, const Resource* geometry, const Resource* material, const std::string artName, float val, int artifactId) : SceneNode(name, geometry, material) {
-		artifactName = artifactName;
-		value = val;
-		id = artifactId;
+	Artifact::Artifact(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : SceneNode(name, geometry, material, texture) {
 		found = false;
-		colliderBox_x = 10;
-		colliderBox_y = 10;
-		colliderBox_z = 10;
 	}
 
 
 	Artifact::~Artifact() {
 	}
 
-
-	glm::quat Artifact::GetAngM(void) const {
-
-		return angm_;
+	void Artifact::Setup(const std::string artName, float val, int artifactId) {
+		artifactName = artifactName;
+		value = val;
+		id = artifactId;
 	}
 
 	int Artifact::GetId(){
@@ -49,19 +43,14 @@ namespace game {
 		return 0;
 	}
 
-	void Artifact::SetAngM(glm::quat angm) {
-
-		angm_ = angm;
-	}
-
 
 	void Artifact::Update(void) {
 
-		Rotate(angm_);
+		Rotate(GetAngM());
 	}
+
 	bool Artifact::isFound() {
 		return found;
 	}
-	bool Artifact::collisionDetection() { return false; }
 
 } // namespace game 

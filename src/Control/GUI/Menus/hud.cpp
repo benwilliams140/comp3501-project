@@ -35,6 +35,7 @@ namespace game {
 
 		RenderHealthBar(game, windowWidth, windowHeight);
 		RenderEnergyBar(game, windowWidth, windowHeight);
+		RenderProjectileSelection(game, windowWidth, windowHeight);
 
 		// render the energy bar (can replace the base colour with an image)
 
@@ -94,5 +95,9 @@ namespace game {
 		ImGui::BeginDisabled();
 		ImGui::VSliderFloat("", ImVec2(energyBarBaseWidth, energyBarBaseHeight), &energy, 0, game->GetPlayer()->GetMaxEnergy(), "%.2f", 0);
 		ImGui::EndDisabled();
+	}
+
+	void HUD::RenderProjectileSelection(Game* game, int windowWidth, int windowHeight) {
+
 	}
 } // namespace game

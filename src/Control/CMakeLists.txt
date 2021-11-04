@@ -7,4 +7,5 @@ target_sources(${PROJ_NAME} PUBLIC
 	${CMAKE_CURRENT_SOURCE_DIR}/scene_graph.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/scene_node.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/input.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/time.cpp
 )
