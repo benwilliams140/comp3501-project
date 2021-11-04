@@ -206,12 +206,19 @@ void Game::SetupScene(void) {
     }
 
     // load the wheel model as the machine gun temporarily
-    EnergyCannon* machine_gun = CreateInstance<EnergyCannon>("MachineGun", HOVERTANK_TRACK_BL, hovertankMaterial);
+    MachineGun* machine_gun = CreateInstance<MachineGun>("MachineGun", HOVERTANK_TRACK_BL, hovertankMaterial);
     machine_gun->Rotate(glm::angleAxis(glm::radians(180.0f), hovertank_base->GetForward()));
     machine_gun->Translate(glm::vec3(0.0f, 1.0f, -0.0f));
     machine_gun->Scale(glm::vec3(0.75));
     machine_gun->SetParent(hovertank_turret);
     hovertank_turret->AddAbility(machine_gun);
+
+    EnergyCannon* energy_cannon = CreateInstance<EnergyCannon>("MachineGun", HOVERTANK_TRACK_BL, hovertankMaterial);
+    energy_cannon->Rotate(glm::angleAxis(glm::radians(180.0f), hovertank_base->GetForward()));
+    energy_cannon->Translate(glm::vec3(0.0f, 1.0f, -0.0f));
+    energy_cannon->Scale(glm::vec3(0.75));
+    energy_cannon->SetParent(hovertank_turret);
+    hovertank_turret->AddAbility(energy_cannon);
 }
 
 void Game::MainLoop(void){
@@ -265,8 +272,9 @@ void Game::MainLoop(void){
             scene_.Draw(camera_);
             scene_.Update();
 
-            // render the HUD overtop of the game
+            // render the HUD overtop of the game and handle its input
             menus_[MenuType::HUD]->Render();
+            menus_[MenuType::HUD]->HandleInput();
         }
 
         // Push buffer drawn in the background onto the display

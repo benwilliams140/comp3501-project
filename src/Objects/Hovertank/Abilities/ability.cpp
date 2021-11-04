@@ -11,7 +11,7 @@ namespace game {
 	}
 
 	void Ability::UpdateCooldown() {
-		cooldown_ -= Time::GetDeltaTime();
+		cooldown_ = std::max(cooldown_ - Time::GetDeltaTime(), 0.0f);
 	}
 
 	void Ability::StartCooldown() {
@@ -30,5 +30,13 @@ namespace game {
 		}
 
 		return projectilesToRemove;
+	}
+
+	float Ability::GetCooldown() {
+		return cooldown_;
+	}
+
+	float Ability::GetMaxCooldown() {
+		return maxCooldown_;
 	}
 }; // namespace game

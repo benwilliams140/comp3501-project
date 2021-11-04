@@ -10,7 +10,17 @@ namespace game {
 	}
 
 	void HUD::HandleInput() {
+		void* ptr = glfwGetWindowUserPointer(window);
+		Game* game = (Game*)ptr;
+		HoverTankTurret* turret = game->GetPlayer()->GetTank()->GetTurret();
 
+		glm::vec2 scroll = Input::getMouseScroll();
+		if (scroll.y < 0) { // select next ability when the mouse is scrolled down
+			turret->SelectNextAbility();
+		}
+		else if (scroll.y > 0) { // select previous ability when the mouse is scrolled up
+			turret->SelectPreviousAbility();
+		}
 	}
 	
 	void HUD::Render() {
@@ -28,7 +38,8 @@ namespace game {
 
 		ImGuiWindowFlags flags = ImGuiWindowFlags_NoBackground |
 			ImGuiWindowFlags_NoTitleBar |
-			ImGuiWindowFlags_NoResize |
+			ImGuiWindowFlags_NoResize | 
+			ImGuiWindowFlags_NoScrollWithMouse |
 			ImGuiWindowFlags_NoScrollbar;
 
 		ImGui::Begin("HUD", (bool*)true, flags);
@@ -98,6 +109,40 @@ namespace game {
 	}
 
 	void HUD::RenderProjectileSelection(Game* game, int windowWidth, int windowHeight) {
+		HoverTankTurret* turret = game->GetPlayer()->GetTank()->GetTurret();
+		float projSelectionWidth = windowWidth * projSelection_.widthRatio;
+		float projSelectionHeight = windowHeight * projSelection_.heightRatio;
+		float projSelectionX = windowWidth / 2 - projSelectionWidth / 2;
+		float projSelectionY = windowHeight - projSelectionHeight - 5;
 
+		// can add a background image instead
+		ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(projSelectionX, projSelectionY), ImVec2(projSelectionX + projSelectionWidth, projSelectionY + projSelectionHeight), projSelection_.backgroundColor, 0.0f, 0);
+		
+		// render square for the abilities
+		std::vector<Ability*> abilities = turret->GetAbilities();
+
+		const float abilityGap = 2.5f;
+		const float totalAbilityGap = abilityGap * (turret->GetMaxAbilities() + 1);
+		const float abilityWidth = (projSelectionWidth - totalAbilityGap) / turret->GetMaxAbilities();
+		const float abilityHeight = projSelectionHeight - abilityGap * 2;
+		for (int i = 0; i < turret->GetMaxAbilities(); ++i) {
+			float abilityX = projSelectionX + abilityGap + (abilityWidth + abilityGap) * i;
+			float abilityY = projSelectionY + abilityGap;
+			// renders the background for each ability
+			ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(abilityX, abilityY), ImVec2(abilityX + abilityWidth, abilityY + abilityHeight), projSelection_.abilityColor, 0.0f, 0);
+			
+			// renders the rectangle showing which ability is selected
+			if (i == turret->GetSelectedIndex()) {
+				ImGui::GetWindowDrawList()->AddRect(ImVec2(abilityX, abilityY), ImVec2(abilityX + abilityWidth, abilityY + abilityHeight), projSelection_.selectedColor, 0.0f, 0);
+			}
+
+			// renders the rectangle showing the cooldown on each ability
+			// note that not all abilities in the inventory are necessarily filled
+			if (i < abilities.size()) {
+				float cooldownHeight = abilityHeight * abilities.at(i)->GetCooldown() / abilities.at(i)->GetMaxCooldown();
+				float cooldownY = abilityY + abilityHeight - cooldownHeight;
+				ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(abilityX, cooldownY), ImVec2(abilityX + abilityWidth, cooldownY + cooldownHeight), projSelection_.cooldownColor, 0.0f, 0);
+			}
+		}
 	}
 } // namespace game

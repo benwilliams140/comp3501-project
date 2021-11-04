@@ -16,6 +16,6 @@ namespace game {
 	void Menu::HandleInput() {
 		// ImGui already handles most input, this is mostly just for specialized additional features
 		//		eg. Using the scroll wheel to select items in an HUD element
-		// base menu object should not have any additional input
+		// base menu object should not have any additional input (that I can think of)
 	}
 } // namespace game

@@ -24,15 +24,21 @@ namespace game {
 
 	void HoverTankTurret::SelectNextAbility() {
 		// increase the vector iterator, wrapping to the beginning if needed
-		if (++selectedAbility_ == availableAbilities_.end()) {
+		if (selectedAbility_ + 1 == availableAbilities_.end()) {
 			selectedAbility_ = availableAbilities_.begin();
+		}
+		else {
+			++selectedAbility_;
 		}
 	}
 
 	void HoverTankTurret::SelectPreviousAbility() {
 		// decrease the vector iterator, wrapping to the end if needed
-		if (selectedAbility_-- == availableAbilities_.begin()) {
+		if (selectedAbility_ == availableAbilities_.begin()) {
 			selectedAbility_ = availableAbilities_.end() - 1;
+		}
+		else {
+			--selectedAbility_;
 		}
 	}
 	
@@ -61,6 +67,14 @@ namespace game {
 
 	glm::vec3 HoverTankTurret::GetForward(void) {
 		return GetOrientation() * glm::normalize(forward_);
+	}
+	
+	std::vector<Ability*> HoverTankTurret::GetAbilities() {
+		return availableAbilities_;
+	}
+
+	int HoverTankTurret::GetMaxAbilities() {
+		return abilityInventorySize_;
 	}
 
 	void HoverTankTurret::SetForward(glm::vec3 forward) {

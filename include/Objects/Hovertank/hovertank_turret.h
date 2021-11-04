@@ -39,6 +39,8 @@ namespace game {
 		// getters
 		glm::vec3 GetForward();
 		int GetSelectedIndex();
+		std::vector<Ability*> GetAbilities();
+		int GetMaxAbilities();
 
 		// setters
 		void SetForward(glm::vec3 forward);
