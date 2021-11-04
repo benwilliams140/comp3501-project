@@ -131,17 +131,17 @@ namespace game {
 			// renders the background for each ability
 			ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(abilityX, abilityY), ImVec2(abilityX + abilityWidth, abilityY + abilityHeight), projSelection_.abilityColor, 0.0f, 0);
 			
-			// renders the rectangle showing which ability is selected
-			if (i == turret->GetSelectedIndex()) {
-				ImGui::GetWindowDrawList()->AddRect(ImVec2(abilityX, abilityY), ImVec2(abilityX + abilityWidth, abilityY + abilityHeight), projSelection_.selectedColor, 0.0f, 0);
-			}
-
 			// renders the rectangle showing the cooldown on each ability
 			// note that not all abilities in the inventory are necessarily filled
 			if (i < abilities.size()) {
 				float cooldownHeight = abilityHeight * abilities.at(i)->GetCooldown() / abilities.at(i)->GetMaxCooldown();
 				float cooldownY = abilityY + abilityHeight - cooldownHeight;
 				ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(abilityX, cooldownY), ImVec2(abilityX + abilityWidth, cooldownY + cooldownHeight), projSelection_.cooldownColor, 0.0f, 0);
+			}
+
+			// renders the rectangle showing which ability is selected
+			if (i == turret->GetSelectedIndex()) {
+				ImGui::GetWindowDrawList()->AddRect(ImVec2(abilityX, abilityY), ImVec2(abilityX + abilityWidth, abilityY + abilityHeight), projSelection_.selectedColor, 0.0f, 0);
 			}
 		}
 	}
