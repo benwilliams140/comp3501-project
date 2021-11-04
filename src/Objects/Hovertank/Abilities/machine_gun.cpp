@@ -20,7 +20,9 @@ namespace game {
 		if (cooldown_ > 0) return; // need to wait
 
 		static int num = 0; // used to give unique names to each projectile
+		// creates a new linear projectile and stores it in the outProj pointer
 		*outProj = new LinearProjectile("MachineGunProjectile" + std::to_string(num++), geometry, material, texture);
+		// sets properties for the projectile
 		(*outProj)->SetVelocity(forward * 50.f);
 		(*outProj)->SetLifespan(3.0f);
 		projectiles_.push_back(*outProj);

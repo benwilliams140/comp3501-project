@@ -16,6 +16,7 @@
 #include "Objects/Projectiles/projectile.h"
 
 namespace game {
+	// helper class to add projectile ability to other classes (eg. MachineGun, EnergyCannon)
 	class Ability {
 	public:
 		Ability(float maxCooldown);

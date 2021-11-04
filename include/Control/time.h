@@ -5,10 +5,11 @@
 namespace game {
 class Time {
 public:
-	static float GetDeltaTime();
-	static float GetElapsedTime();
-	static void Initialize();
-	static void Update();
+	static void Initialize(); // initialize time values
+	static void Update(); // update time values
+
+	static float GetDeltaTime(); // get time since last frame
+	static float GetElapsedTime(); // get time since program start
 
 private:
 	static float elapsedTime_, lastTime_, deltaTime_;

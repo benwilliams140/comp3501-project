@@ -29,11 +29,12 @@ namespace game {
 		// Update geometry configuration
 		virtual void Update(void) override;
 
+		// use the currently selected ability
 		void UseSelectedAbility(Projectile** outProj, glm::vec3 forward, Resource* geometry, Resource* material, Resource* texture = nullptr);
 		void SelectNextAbility();
 		void SelectPreviousAbility();
-		bool AddAbility(Ability*);
-		std::vector<Projectile*> RemoveDeadProjectiles();
+		bool AddAbility(Ability*); // add an ability to the turret's inventory
+		std::vector<Projectile*> RemoveDeadProjectiles(); // finds any projectiles that are no longer alive
 
 		// getters
 		glm::vec3 GetForward();
@@ -44,7 +45,7 @@ namespace game {
 	private:
 		std::vector<Ability*> availableAbilities_;
 		std::vector<Ability*>::iterator selectedAbility_;
-		const int abilityInventorySize_ = 4;
+		const int abilityInventorySize_ = 4; // maximum number of abilities
 		glm::vec3 forward_;
 	}; // class HoverTankTurret
 

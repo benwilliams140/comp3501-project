@@ -19,9 +19,12 @@ namespace game {
 		if (cooldown_ > 0) return; // need to wait
 
 		static int num = 0; // used to give unique names to each projectile
+		// creates a new parabolic projectile and stores it in the outProj pointer
 		*outProj = new ParabolicProjectile("EnergyCannonProjectile" + std::to_string(num++), geometry, material, texture);
+		// set properties for this new projectile
 		(*outProj)->SetVelocity((forward + glm::vec3(0.0f, 1.0f, 0.0f)) * 10.0f); // make it slightly angled
 		(*outProj)->SetLifespan(5.0f);
+		
 		projectiles_.push_back(*outProj);
 
 		StartCooldown();
