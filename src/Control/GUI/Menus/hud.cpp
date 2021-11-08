@@ -74,13 +74,6 @@ namespace game {
 		ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(healthBarBaseX, healthBarBaseY), ImVec2(healthBarBaseX + healthBarBaseWidth, healthBarBaseY + healthBarBaseHeight), healthBar_.backgroundColor, 0.0f, 0);
 		ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(healthBarX, healthBarY), ImVec2(healthBarX + healthBarWidth, healthBarY + healthBarHeight), healthBar_.foregroundColor, 0.0f, 0);
 		ImGui::GetWindowDrawList()->AddText(ImVec2(healthBarBaseX + healthBarBaseWidth / 2 - 10, healthBarBaseY + healthBarBaseHeight / 2 - 8), healthBar_.textColor, std::to_string((int)health).c_str());
-
-		// render a second option for a health bar using the slider widget
-		ImGui::PushItemWidth(healthBarBaseWidth);
-		ImGui::SetCursorPos(ImVec2(healthBarBaseX, healthBarY + healthBarBaseHeight + 5));
-		ImGui::BeginDisabled();
-		ImGui::SliderFloat("", &health, 0, game->GetPlayer()->GetMaxHealth(), "%.2f", 0);
-		ImGui::EndDisabled();
 	}
 
 	void HUD::RenderEnergyBar(Game* game, int windowWidth, int windowHeight) {
@@ -100,12 +93,6 @@ namespace game {
 		// render the energy bar (can replace the base colour with an image)
 		ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(energyBarBaseX, energyBarBaseY), ImVec2(energyBarBaseX + energyBarBaseWidth, energyBarBaseY + energyBarBaseHeight), energyBar_.backgroundColor, 0.0f, 0);
 		ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(energyBarX, energyBarY), ImVec2(energyBarX + energyBarWidth, energyBarY + energyBarHeight), energyBar_.foregroundColor, 0.0f, 0);
-		
-		// render a second option for an energy bar using the slider widget
-		ImGui::SetCursorPos(ImVec2(energyBarBaseX - energyBarBaseWidth - 5, energyBarBaseY));
-		ImGui::BeginDisabled();
-		ImGui::VSliderFloat("", ImVec2(energyBarBaseWidth, energyBarBaseHeight), &energy, 0, game->GetPlayer()->GetMaxEnergy(), "%.2f", 0);
-		ImGui::EndDisabled();
 	}
 
 	void HUD::RenderProjectileSelection(Game* game, int windowWidth, int windowHeight) {
