@@ -12,10 +12,9 @@ namespace game {
 
 	HoverTank::HoverTank(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : SceneNode(name, geometry, material, texture) {
 		velocity = glm::vec3(0, 0, 0);
-		forward_ = glm::vec3(0, 0, -1); // consider taking this in as a parameter
-		colliderBox_x = 10;
-		colliderBox_y = 10;
-		colliderBox_z = 10;
+    forward_ = glm::vec3(0, 0, 1); // consider taking this in as a parameter
+		turret_ = nullptr;
+		//forward_ = glm::vec3(0, 0, -1); // consider taking this in as a parameter
 		fwdSpeed_ = sideSpeed_ = 0;
 		maxSpeed_ = 1.0f;
 	}
@@ -25,9 +24,27 @@ namespace game {
 	void HoverTank::Update(void) {
 		// Update tank movement
 		motionControl();
+    //shootingControl();
+    
 		// Check for terrain collision
 		terrainCollision();
 	}
+  
+  /*void HoverTank::shootingControl() {
+    // shoot currently selected projectile
+    if (Input::getKey(INPUT_KEY_SPACE)) {
+        Resource* geom = GetResource("Cube");
+        Resource* mat = GetResource("Simple");
+        Resource* tex = GetResource("RockyTexture");
+        Projectile* outProj = nullptr;
+        turret_->UseSelectedAbility(&outProj, player_->GetTank()->GetForward(), geom, mat, tex);
+        if (outProj) {
+            outProj->SetPosition(player_->GetTank()->GetPosition());
+            outProj->Scale(glm::vec3(0.5f));
+            scene_.AddNode(outProj);
+        }
+    } 
+  }*/
 
 	void HoverTank::motionControl() {
 		float rot_factor = glm::pi<float>() / 180;
@@ -115,11 +132,19 @@ namespace game {
 		return strength;
 	}
 
+	HoverTankTurret* HoverTank::GetTurret() {
+		return turret_;
+	}
+  
 	void HoverTank::SetVelocity(glm::vec3 newVelocity) {
 		velocity = newVelocity;
 	}
 
 	void HoverTank::SetStrength(float newStrength) {
 		strength = newStrength;
+	}
+
+	void HoverTank::SetTurret(HoverTankTurret* turret) {
+		turret_ = turret;
 	}
 }

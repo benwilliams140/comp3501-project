@@ -5,6 +5,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 #include <time.h>
+#include <sstream>
 
 namespace game {
 
@@ -14,7 +15,6 @@ namespace game {
 		energy = ePoints;
 		maxEnergy = ePoints;
 		tank = theTank;
-		alive = true;
 		money = 0;
 	}
 
@@ -73,16 +73,13 @@ namespace game {
 	}
 
 	bool Player::isAlive() {
-		return alive;
+		return health > 0;
 	}
 
 	
 	void Player::decreaseHealth(float damage) {
 		//have the player take damage and lose health
 		health = health - damage;
-		if (health <= 0) {//if true then the player is dead, and set alive to false
-			alive = false;
-		}
 	}
 
 	void Player::repair(float gain) {
@@ -149,4 +146,6 @@ namespace game {
 			std::cout << "Artifact Name: " << artifacts[i]->GetArtifactName() << "ID: "<< artifacts[i]->GetName()<< "Value: "<< artifacts[i]->GetValue()<<"\n";
 		}
 	}
+
+	
 }

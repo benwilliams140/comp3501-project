@@ -10,6 +10,13 @@
 #include "Control/scene_node.h"
 #include "Objects/Hovertank/hovertank.h"
 #include "Objects/terrain.h"
+#include "Objects/Hovertank/hovertank_track.h"
+#include "Objects/Hovertank/hovertank_turret.h"
+#include "Objects/Hovertank/Abilities/machine_gun.h"
+#include "Objects/Hovertank/Abilities/energy_cannon.h"
+#include "Objects/Projectiles/linear_projectile.h"
+#include "Objects/Projectiles/parabolic_projectile.h"
+#include "Objects/Artifact.h"
 #include "Control/resource.h"
 #include "Renderer/camera.h"
 
@@ -37,11 +44,12 @@ namespace game {
             // Create a scene node from the specified resources
             // templated to add classes that extend from SceneNode (definitions are in cpp file)
             template <typename T>
-            SceneNode* CreateNode(std::string node_name, Resource *geometry, Resource *material, Resource *texture = NULL);
+            T* CreateNode(std::string node_name, Resource *geometry, Resource *material, Resource *texture = NULL);
             // Add an already-created node
             void AddNode(SceneNode *node);
             // Find a scene node with a specific name
             SceneNode *GetNode(std::string node_name) const;
+            void RemoveNode(std::string node_name);
             // Get node const iterator
             std::vector<SceneNode *>::const_iterator begin() const;
             std::vector<SceneNode *>::const_iterator end() const;
@@ -50,7 +58,7 @@ namespace game {
             void Draw(Camera *camera);
 
             // Update entire scene
-            void Update(void);
+            void Update();
 
     }; // class SceneGraph
 

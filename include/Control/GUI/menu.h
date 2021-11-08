@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 
+#include <GL/glew.h>
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
 #include <GLFW/glfw3.h>
@@ -15,6 +16,7 @@
 #define TEXT_COLOR ImVec4(0, 0, 0, 1)
 
 namespace game {
+	// add any new menu types here (maybe an inventory, artifact screen, shop, etc.)
 	enum class MenuType {
 		MAIN,
 		PAUSE,
@@ -23,14 +25,18 @@ namespace game {
 
 	class Menu {
 	public:
-		Menu();
+		Menu(GLFWwindow* window);
 		~Menu();
 
-		void addVariable(void* var);
+		void AddVariable(void* var);
 
-		virtual void Render(GLFWwindow* window) = 0;
+		// overridden by specialized Menu classes (eg. MainMenu)
+		virtual void Render() = 0; // handles rendering ImGui widgets (no base implementation)
+		virtual void HandleInput(); // handles any additional input for menus
 
 	protected:
-		std::vector<void*> variables;
+		GLFWwindow* window;
+		std::vector<void*> variables; // not currently used - idea is to store menu-specific variables
+										// that will be edited by ImGui widgets (eg. the FOV in the pause menu)
 	}; // Menu class
 } // namespace game

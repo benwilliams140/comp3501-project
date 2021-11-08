@@ -24,16 +24,8 @@ namespace game {
 		// Destructor
 		~Scanner();
 
-		// Get/set attributes specific to Scanners
-		glm::quat GetAngM(void) const;
-		void SetAngM(glm::quat angm);
-
 		// Update geometry configuration
-		void Update(void);
-
-	private:
-		// Angular momentum of Scanner
-		glm::quat angm_;
+		virtual void Update(void) override;
 	}; // class Scanner
 
 } // namespace game

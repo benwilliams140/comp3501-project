@@ -7,9 +7,10 @@ namespace game {
 
 // Main window settings
 const std::string window_title_g = "Demo";
-const unsigned int window_width_g = 800;
-const unsigned int window_height_g = 600;
+const unsigned int window_width_g = 1280;
+const unsigned int window_height_g = 720;
 const bool window_full_screen_g = false;
+
 
 
 
@@ -35,7 +36,7 @@ void Game::Init(void){
     InitWindow();
     InitView();
     InitEventHandlers();
-    InitMenus();
+    InitMenus(); // must be called after the GLFWwindow is initialized
 
     // Set variables
     state_ = State::STOPPED;
@@ -47,6 +48,9 @@ void Game::InitWindow(void){
     if (!glfwInit()){
         throw(GameException(std::string("Could not initialize the GLFW library")));
     }
+
+    // not sure if we want the window to be resizable (we could make resolution a setting?)
+    // glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
     // Create a window and its OpenGL context
     if (window_full_screen_g){
@@ -80,8 +84,9 @@ void Game::InitMenus() {
     ImGui::StyleColorsClassic();
 
     // create menus
-    menus_[MenuType::MAIN] = new MainMenu();
-    menus_[MenuType::PAUSE] = new PauseMenu();
+    menus_[MenuType::MAIN] = new MainMenu(window_);
+    menus_[MenuType::PAUSE] = new PauseMenu(window_);
+    menus_[MenuType::HUD] = new HUD(window_);
 }
 
 void Game::InitView(void){
@@ -128,6 +133,18 @@ void Game::SetupResources(void) {
     // Load geometry
     filename = std::string(MESH_DIRECTORY) + std::string("/cube.mesh");
     resman_.LoadResource(ResourceType::Mesh, "Cube", filename.c_str());
+    filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Chassis.mesh");
+    resman_.LoadResource(ResourceType::Mesh, HOVERTANK_BASE, filename.c_str());
+    filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Cylinder.mesh");
+    resman_.LoadResource(ResourceType::Mesh, HOVERTANK_TURRET, filename.c_str());
+    filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Wheel_BL.mesh");
+    resman_.LoadResource(ResourceType::Mesh, HOVERTANK_TRACK_BL, filename.c_str());
+    filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Wheel_BR.mesh");
+    resman_.LoadResource(ResourceType::Mesh, HOVERTANK_TRACK_BR, filename.c_str());
+    filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Wheel_FL.mesh");
+    resman_.LoadResource(ResourceType::Mesh, HOVERTANK_TRACK_FL, filename.c_str());
+    filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Wheel_FR.mesh");
+    resman_.LoadResource(ResourceType::Mesh, HOVERTANK_TRACK_FR, filename.c_str());
 
     // Load shaders
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/textured_material");
@@ -138,6 +155,8 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Material, "Simple", filename.c_str());
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/lit");
     resman_.LoadResource(ResourceType::Material, "Lighting", filename.c_str());
+    filename = std::string(MATERIAL_DIRECTORY) + std::string("/material");
+    resman_.LoadResource(ResourceType::Material, "BasicMaterial", filename.c_str());
 
     // Load texture
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/rocky.png");
@@ -160,8 +179,47 @@ void Game::SetupScene(void) {
     terrain->Translate(glm::vec3(-50.f));
     terrain_ = (Terrain*)terrain;
 
-    SceneNode* hovertank_base = CreateInstance<HoverTank>("Hovertank Base", "Cube", "Simple", "RockyTexture");
-    hovertank_base->Translate(glm::vec3(0.f, 0.f, -0.f));
+    // create hovertank hierarchy
+    // to convert blender coordinates to opengl coordinates: (x, y, z) -> (x, z, -y)
+    // if scaling: multiply all translation values by the scale factor
+    // if a new model is loaded, will probably need to update these translations
+    std::string hovertankMaterial = "Simple";
+    HoverTank* hovertank_base = CreateInstance<HoverTank>(HOVERTANK_BASE, HOVERTANK_BASE, hovertankMaterial);
+    player_ = new Player(100.f, 100.f, hovertank_base);
+    player_->SetEnergy(75.0f); // for demo purposes
+    player_->SetHealth(75.0f); // for demo purposes
+    HoverTankTurret* hovertank_turret = CreateInstance<HoverTankTurret>(HOVERTANK_TURRET, HOVERTANK_TURRET, hovertankMaterial);
+    hovertank_turret->Translate(glm::vec3(0.f, 1.1f, -0.25f));
+    hovertank_turret->SetParent(hovertank_base);
+    hovertank_turret->SetForward(hovertank_base->GetForward());
+    hovertank_base->SetTurret(hovertank_turret);
+
+    // create hovertank tracks
+    std::string trackLocations[] = { "BL", "BR", "FL", "FR" };
+    std::vector<HoverTankTrack*> hovertank_tracks;
+    for (int i = 0; i < 4; ++i) {
+        hovertank_tracks.push_back(CreateInstance<HoverTankTrack>("HovertankTrack" + trackLocations[i], "HovertankTrack" + trackLocations[i], hovertankMaterial));
+        hovertank_tracks.at(i)->SetParent(hovertank_base);
+        float dx = -1.5f + 3.0f * ((i + 1) % 2); // left tracks (i=0,2) should translate (x) by 1.5, right (i=1,3) by -1.5
+        float dy = -0.3f; // all tracks should translate (y) by -.3
+        float dz = -1.0f + 4.0f * (floor(i / 2)); // back tracks (i=0,1) should translate (z) by -1, front (i=2,3) by 3
+        hovertank_tracks.at(i)->Translate(glm::vec3(dx, dy, dz));
+    }
+
+    // load the wheel model as the machine gun temporarily
+    MachineGun* machine_gun = CreateInstance<MachineGun>("MachineGun", HOVERTANK_TRACK_BL, hovertankMaterial);
+    machine_gun->Rotate(glm::angleAxis(glm::radians(180.0f), hovertank_base->GetForward()));
+    machine_gun->Translate(glm::vec3(0.0f, 1.0f, -0.0f));
+    machine_gun->Scale(glm::vec3(0.75));
+    machine_gun->SetParent(hovertank_turret);
+    hovertank_turret->AddAbility(machine_gun);
+
+    EnergyCannon* energy_cannon = CreateInstance<EnergyCannon>("MachineGun", HOVERTANK_TRACK_BL, hovertankMaterial);
+    energy_cannon->Rotate(glm::angleAxis(glm::radians(180.0f), hovertank_base->GetForward()));
+    energy_cannon->Translate(glm::vec3(0.0f, 1.0f, -0.0f));
+    energy_cannon->Scale(glm::vec3(0.75));
+    energy_cannon->SetParent(hovertank_turret);
+    hovertank_turret->AddAbility(energy_cannon);
 }
 
 void Game::MainLoop(void){
@@ -188,15 +246,17 @@ void Game::MainLoop(void){
 
         // render main menu when game is stopped
         if (state_ == State::STOPPED) {
-            menus_[MenuType::MAIN]->Render(window_);
+            menus_[MenuType::MAIN]->Render();
         }
         // render pause menu and frozen game state in the background when paused
         else if (state_ == State::PAUSED) {
             scene_.Draw(camera_);
-            menus_[MenuType::PAUSE]->Render(window_);
+            menus_[MenuType::PAUSE]->Render();
         }
         // update and render game when running
         else if (state_ == State::RUNNING) {
+            Time::Update();
+
             // handle camera/tank movement
             if (freeroam_) {
                 UpdateCameraMovement(camera_);
@@ -205,31 +265,48 @@ void Game::MainLoop(void){
                 UpdateCameraPos();
             }
 
-            // Update the scene
-            static double last_time = 0;
-            double current_time = glfwGetTime();
-            if ((current_time - last_time) > 0.01) {
-                // Animate the scene
-                //scene_.Update();
-
-                last_time = current_time;
+            std::vector<Projectile*> projectilesToRemove = player_->GetTank()->GetTurret()->RemoveDeadProjectiles();
+            for (auto it = projectilesToRemove.begin(); it != projectilesToRemove.end(); ++it) {
+                scene_.RemoveNode((*it)->GetName());
             }
             scene_.Update();
             scene_.Draw(camera_);
+            scene_.Update();
+
+            // render the HUD overtop of the game and handle its input
+            menus_[MenuType::HUD]->Render();
+            menus_[MenuType::HUD]->HandleInput();
         }
 
         // Push buffer drawn in the background onto the display
         glfwSwapBuffers(window_);
 
         Input::update();
+        
 
         // Update other events like input handling
         glfwPollEvents();
     }
 }
 
+/*
+    // shoot currently selected projectile
+    if (Input::getKey(INPUT_KEY_SPACE)) {
+        Resource* geom = GetResource("Cube");
+        Resource* mat = GetResource("Simple");
+        Resource* tex = GetResource("RockyTexture");
+        Projectile* outProj = nullptr;
+        player_->GetTank()->GetTurret()->UseSelectedAbility(&outProj, player_->GetTank()->GetForward(), geom, mat, tex);
+        if (outProj) {
+            outProj->SetPosition(player_->GetTank()->GetPosition());
+            outProj->Scale(glm::vec3(0.5f));
+            scene_.AddNode(outProj);
+        }
+    }
+}*/
+
 void Game::UpdateCameraPos() {
-    HoverTank* tank = (HoverTank*)scene_.GetNode("Hovertank Base");
+    HoverTank* tank = (HoverTank*)scene_.GetNode(HOVERTANK_BASE);
     camera_->SetPosition(tank->GetPosition() - tank->GetForward() * 15.f + tank->GetUp() * 5.f);
     camera_->SetView(camera_->GetPosition(), tank->GetPosition(), tank->GetUp());
 }
@@ -295,12 +372,37 @@ Game::~Game(){
     glfwTerminate();
 }
 
+template <typename T>
+T *Game::CreateInstance(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name){
+    // retrieve resources (index 0 - object, 1 - material, 2 - texture)
+    Resource* geom = GetResource(object_name);
+    Resource* mat = GetResource(material_name);
+    Resource* tex = nullptr;
+    if (texture_name != "") {
+        tex = GetResource(texture_name);
+    }
+    T* scn = scene_.CreateNode<T>(entity_name, geom, mat, tex);
+    return scn;
+    
+}
+
+Resource* Game::GetResource(std::string res) {
+    Resource* resource = resman_.GetResource(res);
+    if (!resource) {
+        throw(GameException(std::string("Could not find resource \"") + res + std::string("\"")));
+    }
+}
+
 Camera* Game::GetCamera() {
     return camera_;
 }
 
 Terrain* Game::GetTerrain() {
     return terrain_;
+}
+
+Player* Game::GetPlayer() {
+    return player_;
 }
 
 void Game::SetState(State state) {
