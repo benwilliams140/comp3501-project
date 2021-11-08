@@ -9,6 +9,7 @@
 
 #include "Control/scene_node.h"
 #include "Objects/Hovertank/hovertank.h"
+#include "Objects/terrain.h"
 #include "Control/resource.h"
 #include "Renderer/camera.h"
 

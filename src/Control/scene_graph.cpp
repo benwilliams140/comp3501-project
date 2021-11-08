@@ -48,6 +48,7 @@ SceneNode* SceneGraph::CreateNode(std::string node_name, Resource *geometry, Res
 // NOTE: Add more explicit function definitions here (eg. for terrain)
 template SceneNode* SceneGraph::CreateNode<SceneNode>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
 template SceneNode* SceneGraph::CreateNode<HoverTank>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
+template SceneNode* SceneGraph::CreateNode<Terrain>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
 
 void SceneGraph::AddNode(SceneNode *node){
 

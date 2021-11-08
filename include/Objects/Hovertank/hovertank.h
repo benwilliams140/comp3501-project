@@ -11,6 +11,7 @@
 
 #include "Control/resource.h"
 #include "Control/scene_node.h"
+#include "Objects/terrain.h"
 
 namespace game {
 
@@ -44,8 +45,8 @@ namespace game {
 		void Update(void);
 
 	private:
-		void movementControl();
-		bool collisionDetection();
+		void motionControl();
+		void terrainCollision();
 
 		// Angular momentum of HoverTank
 		glm::quat angm_;

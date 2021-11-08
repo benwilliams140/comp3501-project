@@ -123,7 +123,7 @@ void Game::SetupResources(void) {
 
     // Load terrain
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/terrain_height_map.png");
-    resman_.LoadResource(ResourceType::Terrain, "Terrain", filename.c_str(), glm::vec3(1.0f));
+    resman_.LoadResource(ResourceType::Terrain, "Terrain", filename.c_str(), glm::vec3(5.0f, 1.0f, 5.0f));
 
     // Load geometry
     filename = std::string(MESH_DIRECTORY) + std::string("/cube.mesh");
@@ -156,11 +156,12 @@ void Game::SetupScene(void) {
     //game::SceneNode *mytorus = CreateInstance("MyTorus1", "SimpleTorusMesh", "Procedural", "RockyTexture");
     //game::SceneNode *mytorus = CreateInstance("MyTorus1", "SeamlessTorusMesh", "Lighting", "RockyTexture");
 
-    SceneNode* terrain = CreateInstance<SceneNode>("Terrain Object", "Terrain", "Simple", "uv6");
+    SceneNode* terrain = CreateInstance<Terrain>("Terrain Object", "Terrain", "Simple", "uv6");
     terrain->Translate(glm::vec3(-50.f));
+    terrain_ = (Terrain*)terrain;
+
     SceneNode* hovertank_base = CreateInstance<HoverTank>("Hovertank Base", "Cube", "Simple", "RockyTexture");
-    hovertank_base->Translate(glm::vec3(0.f, 0.f, -5.f));
-    
+    hovertank_base->Translate(glm::vec3(0.f, 0.f, -0.f));
 }
 
 void Game::MainLoop(void){
@@ -201,7 +202,6 @@ void Game::MainLoop(void){
                 UpdateCameraMovement(camera_);
             }
             else {
-                HandleHovertankMovement();
                 UpdateCameraPos();
             }
 
@@ -214,6 +214,7 @@ void Game::MainLoop(void){
 
                 last_time = current_time;
             }
+            scene_.Update();
             scene_.Draw(camera_);
         }
 
@@ -224,43 +225,6 @@ void Game::MainLoop(void){
 
         // Update other events like input handling
         glfwPollEvents();
-    }
-}
-
-void Game::HandleHovertankMovement() {
-    HoverTank* tank = (HoverTank*) scene_.GetNode("Hovertank Base");
-    float rot_factor = glm::pi<float>() / 180;
-    float trans_factor = 0.25f;
-
-    // Translate forward/backward
-    if (Input::getKey(INPUT_KEY_W)) {
-        tank->Translate(tank->GetForward() * trans_factor);
-    }
-    if (Input::getKey(INPUT_KEY_S)) {
-        tank->Translate(-tank->GetForward() * trans_factor);
-    }
-    // Translate left/right
-    if (Input::getKey(INPUT_KEY_A)) {
-        tank->Translate(-tank->GetRight() * trans_factor);
-    }
-    if (Input::getKey(INPUT_KEY_D)) {
-        tank->Translate(tank->GetRight() * trans_factor);
-    }
-    // Translate up/down
-    if (Input::getKey(INPUT_KEY_Q)) {
-        tank->Translate(tank->GetUp() * trans_factor);
-    }
-    if (Input::getKey(INPUT_KEY_E)) {
-        tank->Translate(-tank->GetUp() * trans_factor);
-    }
-    // Rotate yaw
-    if (Input::getKey(INPUT_KEY_LEFT)) {
-        glm::quat rotation = glm::angleAxis(rot_factor, tank->GetUp());
-        tank->Rotate(rotation);
-    }
-    if (Input::getKey(INPUT_KEY_RIGHT)) {
-        glm::quat rotation = glm::angleAxis(-rot_factor, tank->GetUp());
-        tank->Rotate(rotation);
     }
 }
 
@@ -331,33 +295,12 @@ Game::~Game(){
     glfwTerminate();
 }
 
-template <typename T>
-SceneNode *Game::CreateInstance(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name){
-    Resource *geom = resman_.GetResource(object_name);
-    if (!geom){
-        throw(GameException(std::string("Could not find resource \"")+object_name+std::string("\"")));
-    }
-
-    Resource *mat = resman_.GetResource(material_name);
-    if (!mat){
-        throw(GameException(std::string("Could not find resource \"")+material_name+std::string("\"")));
-    }
-
-    Resource *tex = NULL;
-    if (texture_name != ""){
-        tex = resman_.GetResource(texture_name);
-        if (!tex){
-            throw(GameException(std::string("Could not find resource \"")+texture_name+std::string("\"")));
-        }
-    }
-
-    SceneNode *scn = scene_.CreateNode<T>(entity_name, geom, mat, tex);
-    return scn;
-    
-}
-
 Camera* Game::GetCamera() {
     return camera_;
+}
+
+Terrain* Game::GetTerrain() {
+    return terrain_;
 }
 
 void Game::SetState(State state) {

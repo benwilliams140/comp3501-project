@@ -30,6 +30,7 @@ namespace game {
         vao_ = geometry->GetVAO();
         ebo_ = geometry->GetEBO();
         size_ = geometry->GetSize();
+        geometry_ = geometry;
 
         // Set material (shader program)
         if (material->GetType() != ResourceType::Material) {
@@ -120,6 +121,10 @@ namespace game {
 
     GLuint SceneNode::GetMaterial(void) const {
         return material_;
+    }
+
+    const Resource* SceneNode::GetGeometry(void) const {
+        return geometry_;
     }
 
     glm::mat4 SceneNode::GetWorldTransform(void) const {

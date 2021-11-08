@@ -6,6 +6,8 @@
 #include <iostream>
 #include <time.h>
 
+#include "Control/game.h"
+
 namespace game {
 
 	HoverTank::HoverTank(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : SceneNode(name, geometry, material, texture) {
@@ -16,7 +18,56 @@ namespace game {
 		colliderBox_z = 10;
 	}
 
-	HoverTank::~HoverTank() {
+	HoverTank::~HoverTank() {}
+
+	void HoverTank::Update(void) {
+		// Update tank movement
+		motionControl();
+		// Check for terrain collision
+		terrainCollision();
+	}
+
+	void HoverTank::motionControl() {
+		float rot_factor = glm::pi<float>() / 180;
+		float trans_factor = 0.25f;
+
+		// Translate by gravity
+		Translate(glm::vec3(0, -0.35f, 0));
+
+		// Translate forward/backward
+		if (Input::getKey(INPUT_KEY_W)) {
+			Translate(GetForward() * trans_factor);
+		}
+		if (Input::getKey(INPUT_KEY_S)) {
+			Translate(-GetForward() * trans_factor);
+		}
+		// Translate left/right
+		if (Input::getKey(INPUT_KEY_A)) {
+			Translate(-GetRight() * trans_factor);
+		}
+		if (Input::getKey(INPUT_KEY_D)) {
+			Translate(GetRight() * trans_factor);
+		}
+		// Rotate yaw
+		if (Input::getKey(INPUT_KEY_LEFT)) {
+			glm::quat rotation = glm::angleAxis(rot_factor, GetUp());
+			Rotate(rotation);
+		}
+		if (Input::getKey(INPUT_KEY_RIGHT)) {
+			glm::quat rotation = glm::angleAxis(-rot_factor, GetUp());
+			Rotate(rotation);
+		}
+	}
+
+	void HoverTank::terrainCollision() { 
+		Terrain* terrain = Game::GetInstance().GetTerrain();
+		glm::vec3 position = this->GetPosition();
+
+		glm::vec3 hitpoint; // return value for terrain collision
+		if (terrain->Collision(position, 1, hitpoint)) {
+			hitpoint.y += 1.0f; // add height of tank to hitpoint
+			Translate(glm::vec3(0, hitpoint.y - position.y, 0));
+		}
 	}
 
 	glm::vec3 HoverTank::GetForward(void) {
@@ -63,13 +114,4 @@ namespace game {
 	void HoverTank::SetStrength(float newStrength) {
 		strength = newStrength;
 	}
-
-	void HoverTank::Update(void) {
-
-	}
-
-	void HoverTank::movementControl() {}
-
-	bool HoverTank::collisionDetection() { return false; }
-
 }

@@ -54,11 +54,14 @@ namespace game {
 
     // Game application
     class Game {
+        public:
+            // Create singleton instance
+            static Game& GetInstance() {
+                static Game instance;
+                return instance;
+            }
 
         public:
-            // Constructor and destructor
-            Game(void);
-            ~Game();
             // Call Init() before calling any other method
             void Init(void); 
             // Set up resources for the game
@@ -68,11 +71,38 @@ namespace game {
             // Run the game: keep the application active
             void MainLoop(void); 
 
+            // Create an instance of an object stored in the resource manager
+            template <typename T>
+            SceneNode* CreateInstance(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name = std::string("")) {
+                Resource *geom = resman_.GetResource(object_name);
+                if (!geom){  throw(GameException(std::string("Could not find resource \"")+object_name+std::string("\""))); }
+
+                Resource *mat = resman_.GetResource(material_name);
+                if (!mat){ throw(GameException(std::string("Could not find resource \"")+material_name+std::string("\""))); }
+
+                Resource *tex = NULL;
+                if (texture_name != ""){
+                    tex = resman_.GetResource(texture_name);
+                    if (!tex){ throw(GameException(std::string("Could not find resource \"")+texture_name+std::string("\""))); }
+                }
+
+                return scene_.CreateNode<T>(entity_name, geom, mat, tex);
+            }
+
+            // Getters/Setters
+            Camera* GetCamera();
+            Terrain* GetTerrain();
             void SetState(State state);
 
-            Camera* GetCamera();
+            // Delete these function to be sure they don't accidentlly create copies of the instance
+            Game(Game const&) = delete;
+            void operator=(Game const&) = delete;
 
         private:
+            // Constructor and destructor
+            Game(void);
+            ~Game();
+
             // GLFW window
             GLFWwindow* window_;
 
@@ -85,8 +115,9 @@ namespace game {
             // Resources available to the game
             ResourceManager resman_;
 
-            // Camera abstraction
+            // Game objects
             Camera* camera_;
+            Terrain* terrain_;
 
             bool freeroam_;
             State state_;
@@ -102,14 +133,8 @@ namespace game {
             static void ResizeCallback(GLFWwindow* window, int width, int height);
 
             // handle movement
-            void HandleHovertankMovement();
             void UpdateCameraPos();
-
-            // Create an instance of an object stored in the resource manager
-            template <typename T>
-            SceneNode *CreateInstance(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name = std::string(""));
     }; // class Game
-
 } // namespace game
 
 #endif // GAME_H_
