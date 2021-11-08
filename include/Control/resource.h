@@ -15,6 +15,13 @@ namespace game {
     // Possible resource types
     enum class ResourceType { Material, PointSet, Mesh, Texture, Terrain };
 
+    struct TerrainData {
+        int width, length; // Width equals amount of edges (amount of vertices + 1) in the x-axis, Length equals amount of edges (amount of vertices + 1) in the z-axis.
+        glm::vec3 scale; // The terrain geometry's scale
+        float* heightMatrix; // Matrix which holds height information per vertex
+        glm::vec3* smoothNormals; // Array of normals of every vertex
+    };
+
     // Class that holds one resource
     class Resource {
 
@@ -32,9 +39,7 @@ namespace game {
             struct {
                 util::Vao* vao_; // Buffers for geometry
                 util::Ebo* ebo_;
-                int width_, length_; // Width equals amount of edges (amount of vertices + 1) in the x-axis, Length equals amount of edges (amount of vertices + 1) in the z-axis.
-                glm::vec3 scale_; // The terrain's initial scaling
-                float* heightMatrix_; // Matrix which holds height information per vertex
+                TerrainData* terrainData_;
             };
         };
         GLsizei size_; // Number of primitives in geometry
@@ -42,7 +47,7 @@ namespace game {
     public:
         Resource(ResourceType type, std::string name, GLuint resource, GLsizei size);
         Resource(ResourceType type, std::string name, util::Vao* vao, util::Ebo* ebo, GLsizei size);
-        Resource(ResourceType type, std::string name, util::Vao* vao, util::Ebo* ebo, GLsizei size, int width, int length, glm::vec3 scale, float* heightMatrix);
+        Resource(ResourceType type, std::string name, util::Vao* vao, util::Ebo* ebo, GLsizei size, TerrainData* terrainData);
         ~Resource();
         ResourceType GetType(void) const;
         const std::string GetName(void) const;
@@ -50,10 +55,7 @@ namespace game {
         util::Vao* GetVAO(void) const;
         util::Ebo* GetEBO(void) const;
         GLsizei GetSize(void) const;
-        int GetWidth(void) const;
-        int GetLength(void) const;
-        glm::vec3 GetScale(void) const;
-        float* GetHeightMatrix(void) const;
+        TerrainData* GetTerrainData(void) const;
 
     }; // class Resource
 

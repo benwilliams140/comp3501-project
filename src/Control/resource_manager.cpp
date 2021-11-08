@@ -27,9 +27,9 @@ namespace game {
         resource_.push_back(res);
     }
 
-    void ResourceManager::AddResource(ResourceType type, const std::string name, util::Vao* vao, util::Ebo* ebo, GLsizei size, int width, int length, glm::vec3 scale, float* heightMatrix) {
+    void ResourceManager::AddResource(ResourceType type, const std::string name, util::Vao* vao, util::Ebo* ebo, GLsizei size, TerrainData* terrainData) {
         Resource* res;
-        res = new Resource(type, name, vao, ebo, size, width, length, scale, heightMatrix);
+        res = new Resource(type, name, vao, ebo, size, terrainData);
 
         resource_.push_back(res);
     }
@@ -417,8 +417,11 @@ namespace game {
         delete[] normals;
         delete[] indices;
 
+        // Create TerrainData
+        TerrainData* terrainData = new TerrainData{ width, length, scale, heightMatrix, nullptr };
+
         // Create resource
-        AddResource(ResourceType::Terrain, object_name, vao, ebo, indCount, width, length, scale, heightMatrix);
+        AddResource(ResourceType::Terrain, object_name, vao, ebo, indCount, terrainData);
     }
 
     //**************************************************************************************************//

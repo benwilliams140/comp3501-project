@@ -24,11 +24,11 @@ namespace game {
 	}
 
 	float Terrain::GetHeightAt(int x, int z) {
-		return geometry_->GetHeightMatrix()[(x * geometry_->GetLength()) + z];
+		return geometry_->GetTerrainData()->heightMatrix[(x * geometry_->GetTerrainData()->length) + z];
 	}
 
 	Point3 Terrain::GetPointAt(int x, int z) {
-		Vector3 scale = geometry_->GetScale();
+		Vector3 scale = geometry_->GetTerrainData()->scale;
 		return GetPosition() + Vector3(x * scale.x, GetHeightAt(x, z), z * scale.z);;
 	}
 
@@ -49,7 +49,7 @@ namespace game {
 
 		// Initial variables
 		Vector3 offset = GetPosition(); // translation of the terrain
-		Vector3 scale = geometry_->GetScale(); // scale of the terrain
+		Vector3 scale = geometry_->GetTerrainData()->scale; // scale of the terrain
 
 		// Reverse point at
 		int x = (long)((P.x - offset.x) / scale.x); // (long) truncates
