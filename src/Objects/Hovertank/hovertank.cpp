@@ -16,6 +16,8 @@ namespace game {
 		colliderBox_x = 10;
 		colliderBox_y = 10;
 		colliderBox_z = 10;
+		fwdSpeed_ = sideSpeed_ = 0;
+		maxSpeed_ = 1.0f;
 	}
 
 	HoverTank::~HoverTank() {}
@@ -30,24 +32,47 @@ namespace game {
 	void HoverTank::motionControl() {
 		float rot_factor = glm::pi<float>() / 180;
 		float trans_factor = 0.25f;
-
-		// Translate by gravity
-		Translate(glm::vec3(0, -0.35f, 0));
+		float friction = 0.01f;
+		
+		// Reduce speed by friction
+		if (fwdSpeed_ != 0) {
+			if (fwdSpeed_ > friction) { fwdSpeed_ -= friction; } 
+			else if (fwdSpeed_ < -friction) { fwdSpeed_ += friction; } 
+			else { fwdSpeed_ = 0; }
+		}
+		if (sideSpeed_ != 0) {
+			if (sideSpeed_ > friction) { sideSpeed_ -= friction; } 
+			else if (sideSpeed_ < -friction) { sideSpeed_ += friction; } 
+			else { sideSpeed_ = 0; }
+		}
 
 		// Translate forward/backward
 		if (Input::getKey(INPUT_KEY_W)) {
-			Translate(GetForward() * trans_factor);
+			fwdSpeed_ += 0.1f;
 		}
 		if (Input::getKey(INPUT_KEY_S)) {
-			Translate(-GetForward() * trans_factor);
+			fwdSpeed_ -= 0.1f;
 		}
 		// Translate left/right
 		if (Input::getKey(INPUT_KEY_A)) {
-			Translate(-GetRight() * trans_factor);
+			sideSpeed_ -= 0.1f;
 		}
 		if (Input::getKey(INPUT_KEY_D)) {
-			Translate(GetRight() * trans_factor);
+			sideSpeed_ += 0.1f;
 		}
+		
+		// Clamp to max speed
+		if (fwdSpeed_ > maxSpeed_) fwdSpeed_ = maxSpeed_;
+		if (fwdSpeed_ < -maxSpeed_) fwdSpeed_ = -maxSpeed_;
+		if (sideSpeed_ > maxSpeed_) sideSpeed_ = maxSpeed_;
+		if (sideSpeed_ < -maxSpeed_) sideSpeed_ = -maxSpeed_;
+
+		// Translate by gravity
+		Translate(glm::vec3(0, -0.35f, 0));
+		// Translate by speed
+		Translate(GetForward() * fwdSpeed_);
+		Translate(GetRight() * sideSpeed_);
+
 		// Rotate yaw
 		if (Input::getKey(INPUT_KEY_LEFT)) {
 			glm::quat rotation = glm::angleAxis(rot_factor, GetUp());
@@ -82,29 +107,12 @@ namespace game {
 		return GetOrientation() * glm::normalize(glm::vec3(0, 1, 0)); // hardcoded up vector for now
 	}
 
-	glm::quat HoverTank::GetAngM(void) const {
-
-		return angm_;
-	}
-
-	float HoverTank::GetSpeed(void) {
-		return speed;
-	}
-
 	glm::vec3 HoverTank::GetVelocity(void) {
 		return velocity;
 	}
 
 	float HoverTank::GetStrength() {
 		return strength;
-	}
-
-	void HoverTank::SetAngM(glm::quat angm) {
-		angm_ = angm;
-	}
-
-	void HoverTank::SetSpeed(float newSpeed) {
-		speed = newSpeed;
 	}
 
 	void HoverTank::SetVelocity(glm::vec3 newVelocity) {

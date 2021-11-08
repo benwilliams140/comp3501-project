@@ -31,15 +31,11 @@ namespace game {
 
 		// Get/set attributes specific to HoverTanks
 		glm::quat GetAngM(void) const;
-		float GetSpeed();
 		glm::vec3 GetVelocity();
 		float GetStrength();
 
-		void SetAngM(glm::quat angm);
-		void SetSpeed(float newSpeed);
 		void SetVelocity(glm::vec3 newVelocity);
 		void SetStrength(float newStrength);
-
 
 		// Update geometry configuration
 		void Update(void);
@@ -49,8 +45,8 @@ namespace game {
 		void terrainCollision();
 
 		// Angular momentum of HoverTank
-		glm::quat angm_;
-		float speed;
+		float fwdSpeed_, sideSpeed_;
+		float maxSpeed_;
 		float strength;
 		float colliderBox_x;//we cam change this later, doesn't have to be a float
 		float colliderBox_y;//we cam change this later, doesn't have to be a float

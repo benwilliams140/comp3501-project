@@ -7,16 +7,7 @@ using namespace Math;
 
 
 namespace game {
-	Terrain::Terrain(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : SceneNode(name, geometry, material) {
-		p0_node = Game::GetInstance().CreateInstance<SceneNode>("p0", "Cube", "Simple", "uv6");
-		p0_node->SetScale(Vector3(0.2f));
-		p1_node = Game::GetInstance().CreateInstance<SceneNode>("p1", "Cube", "Simple", "uv6");
-		p1_node->SetScale(Vector3(0.2f));
-		p2_node = Game::GetInstance().CreateInstance<SceneNode>("p2", "Cube", "Simple", "uv6");
-		p2_node->SetScale(Vector3(0.2f));
-		p3_node = Game::GetInstance().CreateInstance<SceneNode>("p3", "Cube", "Simple", "uv6");
-		p3_node->SetScale(Vector3(0.2f));
-	}
+	Terrain::Terrain(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : SceneNode(name, geometry, material, texture) {}
 	Terrain::~Terrain() {}
 
 	void Terrain::Update(void) {
@@ -60,12 +51,6 @@ namespace game {
 		Point3 p1 = GetPointAt(x + 1, z);
 		Point3 p2 = GetPointAt(x + 1, z + 1);
 		Point3 p3 = GetPointAt(x, z + 1);
-
-		// For Debugging, shows position of 4 corners
-		p0_node->SetPosition(p0);
-		p1_node->SetPosition(p1);
-		p2_node->SetPosition(p2);
-		p3_node->SetPosition(p3);
 
 		float t;
 		// Check both triangles for hits
