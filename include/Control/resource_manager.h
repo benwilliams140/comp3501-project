@@ -25,7 +25,7 @@ namespace game {
         // Add a resource that was already loaded and allocated to memory
         void AddResource(ResourceType type, const std::string name, GLuint resource, GLsizei size);
         void AddResource(ResourceType type, const std::string name, util::Vao* vao, util::Ebo* ebo, GLsizei size);
-        void AddResource(ResourceType type, const std::string name, util::Vao* vao, util::Ebo* ebo, GLsizei size, int width, int length, glm::vec3 scale, float* heightMatrix);
+        void AddResource(ResourceType type, const std::string name, util::Vao* vao, util::Ebo* ebo, GLsizei size, TerrainData* terrainData);
         // Load a resource from a file, according to the specified type
         void LoadResource(ResourceType type, const std::string name, const char* filename, glm::vec3 scale = glm::vec3(1.0f));
         // Get the resource with the specified name

@@ -128,7 +128,7 @@ void Game::SetupResources(void) {
 
     // Load terrain
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/terrain_height_map.png");
-    resman_.LoadResource(ResourceType::Terrain, "Terrain", filename.c_str(), glm::vec3(1.0f));
+    resman_.LoadResource(ResourceType::Terrain, "Terrain", filename.c_str(), glm::vec3(5.0f, 1.0f, 5.0f));
 
     // Load geometry
     filename = std::string(MESH_DIRECTORY) + std::string("/cube.mesh");
@@ -175,8 +175,9 @@ void Game::SetupScene(void) {
     //game::SceneNode *mytorus = CreateInstance("MyTorus1", "SimpleTorusMesh", "Procedural", "RockyTexture");
     //game::SceneNode *mytorus = CreateInstance("MyTorus1", "SeamlessTorusMesh", "Lighting", "RockyTexture");
 
-    SceneNode* terrain = CreateInstance<SceneNode>("Terrain Object", "Terrain", "Simple", "uv6");
+    SceneNode* terrain = CreateInstance<Terrain>("Terrain Object", "Terrain", "Simple", "uv6");
     terrain->Translate(glm::vec3(-50.f));
+    terrain_ = (Terrain*)terrain;
 
     // create hovertank hierarchy
     // to convert blender coordinates to opengl coordinates: (x, y, z) -> (x, z, -y)
@@ -261,7 +262,6 @@ void Game::MainLoop(void){
                 UpdateCameraMovement(camera_);
             }
             else {
-                HandleHovertankInput();
                 UpdateCameraPos();
             }
 
@@ -269,6 +269,7 @@ void Game::MainLoop(void){
             for (auto it = projectilesToRemove.begin(); it != projectilesToRemove.end(); ++it) {
                 scene_.RemoveNode((*it)->GetName());
             }
+            scene_.Update();
             scene_.Draw(camera_);
             scene_.Update();
 
@@ -288,41 +289,7 @@ void Game::MainLoop(void){
     }
 }
 
-void Game::HandleHovertankInput() {
-    HoverTank* tank = (HoverTank*) scene_.GetNode(HOVERTANK_BASE);
-    float rot_factor = glm::pi<float>() / 180;
-    float trans_factor = 0.25f;
-
-    // Translate forward/backward
-    if (Input::getKey(INPUT_KEY_W)) {
-        tank->Translate(tank->GetForward() * trans_factor);
-    }
-    if (Input::getKey(INPUT_KEY_S)) {
-        tank->Translate(-tank->GetForward() * trans_factor);
-    }
-    // Translate left/right
-    if (Input::getKey(INPUT_KEY_A)) {
-        tank->Translate(-tank->GetRight() * trans_factor);
-    }
-    if (Input::getKey(INPUT_KEY_D)) {
-        tank->Translate(tank->GetRight() * trans_factor);
-    }
-    // Translate up/down
-    if (Input::getKey(INPUT_KEY_Q)) {
-        tank->Translate(tank->GetUp() * trans_factor);
-    }
-    if (Input::getKey(INPUT_KEY_E)) {
-        tank->Translate(-tank->GetUp() * trans_factor);
-    }
-    // Rotate yaw
-    if (Input::getKey(INPUT_KEY_LEFT)) {
-        glm::quat rotation = glm::angleAxis(rot_factor, tank->GetUp());
-        tank->Rotate(rotation);
-    }
-    if (Input::getKey(INPUT_KEY_RIGHT)) {
-        glm::quat rotation = glm::angleAxis(-rot_factor, tank->GetUp());
-        tank->Rotate(rotation);
-    }
+/*
     // shoot currently selected projectile
     if (Input::getKey(INPUT_KEY_SPACE)) {
         Resource* geom = GetResource("Cube");
@@ -336,7 +303,7 @@ void Game::HandleHovertankInput() {
             scene_.AddNode(outProj);
         }
     }
-}
+}*/
 
 void Game::UpdateCameraPos() {
     HoverTank* tank = (HoverTank*)scene_.GetNode(HOVERTANK_BASE);
@@ -428,6 +395,10 @@ Resource* Game::GetResource(std::string res) {
 
 Camera* Game::GetCamera() {
     return camera_;
+}
+
+Terrain* Game::GetTerrain() {
+    return terrain_;
 }
 
 Player* Game::GetPlayer() {

@@ -11,6 +11,7 @@
 
 #include "Control/resource.h"
 #include "Control/scene_node.h"
+#include "Objects/terrain.h"
 #include "Objects/Hovertank/hovertank_turret.h"
 
 namespace game {
@@ -41,16 +42,15 @@ namespace game {
 		void SetStrength(float newStrength);
 		void SetTurret(HoverTankTurret* turret);
 
-
 		// Update geometry configuration
 		virtual void Update(void) override;
 
 	private:
-		void movementControl();
-		bool collisionDetection();
+		void motionControl();
+		void terrainCollision();
 
-		// Angular momentum of HoverTank
-		float speed;
+		float fwdSpeed_, sideSpeed_;
+		float maxSpeed_;
 		float strength;
 		glm::vec3 velocity;
 		glm::vec3 forward_;

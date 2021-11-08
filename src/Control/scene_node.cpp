@@ -30,6 +30,7 @@ namespace game {
         vao_ = geometry->GetVAO();
         ebo_ = geometry->GetEBO();
         size_ = geometry->GetSize();
+        geometry_ = geometry;
 
         // Set material (shader program)
         if (material->GetType() != ResourceType::Material) {
@@ -132,6 +133,10 @@ namespace game {
         return material_;
     }
 
+    const Resource* SceneNode::GetGeometry(void) const {
+        return geometry_;
+    }
+    
     bool SceneNode::CollisionDetection(SceneNode* other) {
         return false; // no collision detection for base node
     }

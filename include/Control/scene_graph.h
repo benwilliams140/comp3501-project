@@ -9,6 +9,7 @@
 
 #include "Control/scene_node.h"
 #include "Objects/Hovertank/hovertank.h"
+#include "Objects/terrain.h"
 #include "Objects/Hovertank/hovertank_track.h"
 #include "Objects/Hovertank/hovertank_turret.h"
 #include "Objects/Hovertank/Abilities/machine_gun.h"

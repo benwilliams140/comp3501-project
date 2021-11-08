@@ -62,9 +62,13 @@ namespace game {
         util::Ebo* GetEBO(void) const;
         GLsizei GetSize(void) const;
         GLuint GetMaterial(void) const;
+        const Resource* GetGeometry(void) const;
 
         // Other variables
         glm::mat4 GetWorldTransform(void) const;
+
+    protected:
+        const Resource* geometry_; // Reference to the geometry
 
     private:
         std::string name_; // Name of the scene node

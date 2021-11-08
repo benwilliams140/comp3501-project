@@ -47,6 +47,7 @@ T* SceneGraph::CreateNode(std::string node_name, Resource *geometry, Resource *m
 // definitions for generic function
 // NOTE: Add more explicit function definitions here (eg. for terrain, other hovertank parts)
 template SceneNode* SceneGraph::CreateNode<SceneNode>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
+template SceneNode* SceneGraph::CreateNode<Terrain>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
 template HoverTank* SceneGraph::CreateNode<HoverTank>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
 template HoverTankTrack* SceneGraph::CreateNode<HoverTankTrack>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
 template HoverTankTurret* SceneGraph::CreateNode<HoverTankTurret>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
