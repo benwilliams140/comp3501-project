@@ -6,17 +6,101 @@
 #include <iostream>
 #include <time.h>
 
+#include "Control/game.h"
+
 namespace game {
 
 	HoverTank::HoverTank(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : SceneNode(name, geometry, material, texture) {
 		velocity = glm::vec3(0, 0, 0);
-		forward_ = glm::vec3(0, 0, -1); // consider taking this in as a parameter
-		colliderBox_x = 10;
-		colliderBox_y = 10;
-		colliderBox_z = 10;
+	    forward_ = glm::vec3(0, 0, 1); // consider taking this in as a parameter
+		turret_ = nullptr;
+		//forward_ = glm::vec3(0, 0, -1); // consider taking this in as a parameter
+		fwdSpeed_ = sideSpeed_ = 0;
+		maxSpeed_ = 0.2f;
 	}
 
-	HoverTank::~HoverTank() {
+	HoverTank::~HoverTank() {}
+
+	void HoverTank::Update(void) {
+		// Update tank movement
+		motionControl();
+		shootingControl();
+    
+		// Check for terrain collision
+		terrainCollision();
+	}
+  
+  void HoverTank::shootingControl() {
+    // shoot currently selected projectile
+    if (Input::getKey(INPUT_KEY_SPACE)) {
+        Projectile* proj = turret_->UseSelectedAbility(GetPosition(), GetForward());
+    } 
+  }
+
+	void HoverTank::motionControl() {
+		float rot_factor = glm::pi<float>() / 180;
+		float speedIncrease = 0.05f;
+		float friction = 0.002f;
+		
+		// Reduce speed by friction
+		if (fwdSpeed_ != 0) {
+			if (fwdSpeed_ > friction) { fwdSpeed_ -= friction; } 
+			else if (fwdSpeed_ < -friction) { fwdSpeed_ += friction; } 
+			else { fwdSpeed_ = 0; }
+		}
+		if (sideSpeed_ != 0) {
+			if (sideSpeed_ > friction) { sideSpeed_ -= friction; } 
+			else if (sideSpeed_ < -friction) { sideSpeed_ += friction; } 
+			else { sideSpeed_ = 0; }
+		}
+
+		// Translate forward/backward
+		if (Input::getKey(INPUT_KEY_W)) {
+			fwdSpeed_ += speedIncrease;
+		}
+		if (Input::getKey(INPUT_KEY_S)) {
+			fwdSpeed_ -= speedIncrease;
+		}
+		// Translate left/right
+		if (Input::getKey(INPUT_KEY_A)) {
+			sideSpeed_ -= speedIncrease;
+		}
+		if (Input::getKey(INPUT_KEY_D)) {
+			sideSpeed_ += speedIncrease;
+		}
+		
+		// Clamp to max speed
+		if (fwdSpeed_ > maxSpeed_) fwdSpeed_ = maxSpeed_;
+		if (fwdSpeed_ < -maxSpeed_) fwdSpeed_ = -maxSpeed_;
+		if (sideSpeed_ > maxSpeed_) sideSpeed_ = maxSpeed_;
+		if (sideSpeed_ < -maxSpeed_) sideSpeed_ = -maxSpeed_;
+
+		// Translate by gravity
+		Translate(glm::vec3(0, -0.35f, 0));
+		// Translate by speed
+		Translate(GetForward() * fwdSpeed_);
+		Translate(GetRight() * sideSpeed_);
+
+		// Rotate yaw
+		if (Input::getKey(INPUT_KEY_LEFT)) {
+			glm::quat rotation = glm::angleAxis(rot_factor, GetUp());
+			Rotate(rotation);
+		}
+		if (Input::getKey(INPUT_KEY_RIGHT)) {
+			glm::quat rotation = glm::angleAxis(-rot_factor, GetUp());
+			Rotate(rotation);
+		}
+	}
+
+	void HoverTank::terrainCollision() { 
+		Terrain* terrain = Game::GetInstance().GetTerrain();
+		glm::vec3 position = this->GetPosition();
+
+		glm::vec3 hitpoint; // return value for terrain collision
+		if (terrain->Collision(position, 1, hitpoint)) {
+			hitpoint.y += 2.0f; // add height of tank to hitpoint
+			Translate(glm::vec3(0, hitpoint.y - position.y, 0));
+		}
 	}
 
 	glm::vec3 HoverTank::GetForward(void) {
@@ -31,15 +115,6 @@ namespace game {
 		return GetOrientation() * glm::normalize(glm::vec3(0, 1, 0)); // hardcoded up vector for now
 	}
 
-	glm::quat HoverTank::GetAngM(void) const {
-
-		return angm_;
-	}
-
-	float HoverTank::GetSpeed(void) {
-		return speed;
-	}
-
 	glm::vec3 HoverTank::GetVelocity(void) {
 		return velocity;
 	}
@@ -48,14 +123,10 @@ namespace game {
 		return strength;
 	}
 
-	void HoverTank::SetAngM(glm::quat angm) {
-		angm_ = angm;
+	HoverTankTurret* HoverTank::GetTurret() {
+		return turret_;
 	}
-
-	void HoverTank::SetSpeed(float newSpeed) {
-		speed = newSpeed;
-	}
-
+  
 	void HoverTank::SetVelocity(glm::vec3 newVelocity) {
 		velocity = newVelocity;
 	}
@@ -64,12 +135,7 @@ namespace game {
 		strength = newStrength;
 	}
 
-	void HoverTank::Update(void) {
-
+	void HoverTank::SetTurret(HoverTankTurret* turret) {
+		turret_ = turret;
 	}
-
-	void HoverTank::movementControl() {}
-
-	bool HoverTank::collisionDetection() { return false; }
-
 }

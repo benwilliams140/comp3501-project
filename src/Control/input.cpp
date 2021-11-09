@@ -13,6 +13,7 @@ namespace game {
 	Point2 Input::mousePosition;
 	Point2 Input::mouseDownPosition;
 	Point2 Input::mousePositionDelta;
+	Point2 Input::mouseScrollDelta;
 
 	float Input::keyboardAxisSensitivity;
 	float Input::mouseAxisSensitivity;
@@ -51,6 +52,7 @@ namespace game {
 
 	Point2 Input::getMousePosition() { return Input::mousePosition; }
 	Point2 Input::getMouseDownPosition() { return Input::mouseDownPosition; }
+	Point2 Input::getMouseScroll() { return Input::mouseScrollDelta; }
 
 	void Input::setKey(std::string keyName, bool current, bool pressed, bool released) {
 
@@ -82,6 +84,7 @@ namespace game {
 		glfwSetKeyCallback(window, Input::keyCallBack);
 		glfwSetCursorPosCallback(window, Input::mousePositionCallback);
 		glfwSetMouseButtonCallback(window, Input::mouseButtonCallback);
+		glfwSetScrollCallback(window, Input::mouseScrollCallback);
 		
 		// Set input sensitivity variables
 		keyboardAxisSensitivity = 60.0f;
@@ -162,6 +165,7 @@ namespace game {
 		for (auto itr = mouseButtons.begin(); itr != mouseButtons.end(); itr++) {
 			itr->second.pressed = false; itr->second.released = false;
 		}
+		Input::mouseScrollDelta = Point2(0, 0);
 	}
 
 #define keyPress(keyName) if(!keys[keyName].current) keys[keyName].pressed = true; keys[keyName].current = true
@@ -329,5 +333,9 @@ namespace game {
 		Point2 lastMousePosition = Input::mousePosition;
 		Input::mousePosition = Point2(xpos, ypos);
 		Input::mousePositionDelta = lastMousePosition - Input::mousePosition;
+	}
+
+	void Input::mouseScrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
+		Input::mouseScrollDelta = Point2(xoffset, yoffset);
 	}
 }

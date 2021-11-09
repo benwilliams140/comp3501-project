@@ -19,19 +19,25 @@ namespace game {
         size_ = size;
     }
 
-    Resource::Resource(ResourceType type, std::string name, util::Vao* vao, util::Ebo* ebo, GLsizei size, int width, int length, glm::vec3 scale, float* heightMatrix) {
+    Resource::Resource(ResourceType type, std::string name, util::Vao* vao, util::Ebo* ebo, GLsizei size, TerrainData* terrainData) {
         type_ = type;
         name_ = name;
         vao_ = vao;
         ebo_ = ebo;
         size_ = size;
-        width_ = width;
-        length_ = length;
-        scale_ = scale;
-        heightMatrix_ = heightMatrix;
+        terrainData_ = terrainData;
     }
 
-    Resource::~Resource() {}
+    Resource::~Resource() {
+        if (type_ == ResourceType::Mesh) {
+            delete vao_;
+            delete ebo_;
+        } else if (type_ == ResourceType::Terrain) {
+            delete vao_;
+            delete ebo_;
+            delete terrainData_;
+        }
+    }
 
     ResourceType Resource::GetType(void) const {
         return type_;
@@ -57,20 +63,8 @@ namespace game {
         return size_;
     }
 
-    int Resource::GetWidth(void) const {
-        return width_;
-    }
-
-    int Resource::GetLength(void) const {
-        return length_;
-    }
-
-    glm::vec3 Resource::GetScale(void) const {
-        return scale_;
-    }
-
-    float* Resource::GetHeightMatrix(void) const {
-        return heightMatrix_;
+    TerrainData* Resource::GetTerrainData(void) const {
+        return terrainData_;
     }
 
 } // namespace game

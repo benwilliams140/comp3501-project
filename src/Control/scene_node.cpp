@@ -30,6 +30,7 @@ namespace game {
         vao_ = geometry->GetVAO();
         ebo_ = geometry->GetEBO();
         size_ = geometry->GetSize();
+        geometry_ = geometry;
 
         // Set material (shader program)
         if (material->GetType() != ResourceType::Material) {
@@ -49,11 +50,13 @@ namespace game {
         // Other attributes
         scale_ = glm::vec3(1.0, 1.0, 1.0);
         parent_ = nullptr;
+
+        colliderBox_ = glm::vec3(0);
     }
 
     SceneNode::~SceneNode() {}
 
-    const std::string SceneNode::GetName(void) const {
+    std::string SceneNode::GetName(void) const {
         return name_;
     }
 
@@ -71,6 +74,14 @@ namespace game {
 
     SceneNode* SceneNode::GetParent(void) const {
         return parent_;
+    }
+
+    glm::quat SceneNode::GetAngM(void) const {
+        return angm_;
+    }
+
+    void SceneNode::SetAngM(glm::quat angm) {
+        angm_ = angm;
     }
 
     void SceneNode::SetPosition(glm::vec3 position) {
@@ -122,6 +133,14 @@ namespace game {
         return material_;
     }
 
+    const Resource* SceneNode::GetGeometry(void) const {
+        return geometry_;
+    }
+    
+    bool SceneNode::CollisionDetection(SceneNode* other) {
+        return false; // no collision detection for base node
+    }
+
     glm::mat4 SceneNode::GetWorldTransform(void) const {
         // Calculate world transformation without scale
         glm::mat4 transf = glm::translate(glm::mat4(1.0), position_) * glm::mat4_cast(orientation_);
@@ -156,7 +175,7 @@ namespace game {
         }
     }
 
-    void SceneNode::Update(void) {
+    void SceneNode::Update() {
         // Do nothing for this generic type of scene node
     }
 

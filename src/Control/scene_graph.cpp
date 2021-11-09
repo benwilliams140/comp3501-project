@@ -33,24 +33,31 @@ glm::vec3 SceneGraph::GetBackgroundColor(void) const {
 
 // generic CreateNode function
 template <typename T>
-SceneNode* SceneGraph::CreateNode(std::string node_name, Resource *geometry, Resource *material, Resource *texture){
+T* SceneGraph::CreateNode(std::string node_name, Resource *geometry, Resource *material, Resource *texture){
 
     // Create scene node with the specified resources
-    SceneNode* scn = new T(node_name, geometry, material, texture);
+    T* scn = new T(node_name, geometry, material, texture);
 
     // Add node to the scene
-    node_.push_back(scn);
+    AddNode(scn);
 
     return scn;
 }
 
 // definitions for generic function
-// NOTE: Add more explicit function definitions here (eg. for terrain)
+// NOTE: Add more explicit function definitions here (eg. for terrain, other hovertank parts)
 template SceneNode* SceneGraph::CreateNode<SceneNode>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
-template SceneNode* SceneGraph::CreateNode<HoverTank>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
+template Terrain* SceneGraph::CreateNode<Terrain>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
+template HoverTank* SceneGraph::CreateNode<HoverTank>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
+template HoverTankTrack* SceneGraph::CreateNode<HoverTankTrack>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
+template HoverTankTurret* SceneGraph::CreateNode<HoverTankTurret>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
+template MachineGun* SceneGraph::CreateNode<MachineGun>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
+template EnergyCannon* SceneGraph::CreateNode<EnergyCannon>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
+template Artifact* SceneGraph::CreateNode<Artifact>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
+template LinearProjectile* SceneGraph::CreateNode<LinearProjectile>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
+template ParabolicProjectile* SceneGraph::CreateNode<ParabolicProjectile>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
 
 void SceneGraph::AddNode(SceneNode *node){
-
     node_.push_back(node);
 }
 
@@ -65,6 +72,19 @@ SceneNode *SceneGraph::GetNode(std::string node_name) const {
     }
     return NULL;
 
+}
+
+void SceneGraph::RemoveNode(std::string node_name) {
+    //deletes the specified node
+    for (int i = 0; i < node_.size(); i++) {
+        if (node_[i]->GetName() == node_name) {
+            SceneNode* node = node_[i];
+            node_.erase(begin() + i);
+            delete node;
+            return;
+        }
+    }
+    
 }
 
 
@@ -89,10 +109,11 @@ void SceneGraph::Draw(Camera *camera) {
 }
 
 
-void SceneGraph::Update(void){
+void SceneGraph::Update(){
 
     for (int i = 0; i < node_.size(); i++){
         node_[i]->Update();
+        
     }
 }
 

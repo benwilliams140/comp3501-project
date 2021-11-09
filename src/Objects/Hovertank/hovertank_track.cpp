@@ -8,7 +8,7 @@
 
 namespace game {
 
-	HoverTankTrack::HoverTankTrack(const std::string name, const Resource* geometry, const Resource* material) : SceneNode(name, geometry, material) {
+	HoverTankTrack::HoverTankTrack(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : SceneNode(name, geometry, material, texture) {
 		toggle = false;
 	}
 
@@ -17,21 +17,8 @@ namespace game {
 	}
 
 
-	glm::quat HoverTankTrack::GetAngM(void) const {
-
-		return angm_;
-	}
-
-
-	void HoverTankTrack::SetAngM(glm::quat angm) {
-
-		angm_ = angm;
-	}
-
-
 	void HoverTankTrack::Update(void) {
-
-		Rotate(angm_);
+		Rotate(GetAngM());
 	}
 
 	void HoverTankTrack::ActivateEffect() {

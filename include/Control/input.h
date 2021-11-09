@@ -17,6 +17,7 @@ namespace game {
 		static void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mods);
 		static void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 		static void mousePositionCallback(GLFWwindow* window, double xpos, double ypos);
+		static void mouseScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
 
 		static bool getKey(std::string keyName); // Returns true if key is pressed and not released
 		static bool getKeyDown(std::string keyName); // Returns true if key is pressed, resets every frames
@@ -28,6 +29,7 @@ namespace game {
 
 		static Point2 getMousePosition(); // Mouse position relative to window
 		static Point2 getMouseDownPosition(); // Mouse position relative to window when the last left button down occured
+		static Point2 getMouseScroll(); // Mouse scroll delta
 		static float getAxis(std::string axis); // Horizontal or Vertical
 
 		static void setKey(std::string keyName, bool current, bool pressed, bool released);
@@ -41,6 +43,7 @@ namespace game {
 		static Point2 mousePosition;
 		static Point2 mouseDownPosition;
 		static Point2 mousePositionDelta;
+		static Point2 mouseScrollDelta;
 
 		static float keyboardAxisSensitivity;
 		static float mouseAxisSensitivity;

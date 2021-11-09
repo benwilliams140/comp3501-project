@@ -1,4 +1,4 @@
-#version 130
+#version 330 core
 
 // Attributes passed from the vertex shader
 in vec3 position_interp;
@@ -10,11 +10,10 @@ in vec3 light_pos;
 // Uniform (global) buffer
 uniform sampler2D texture_map;
 
-
-void main() 
-{
+void main() {
     // Retrieve texture value
-    vec4 pixel = texture(texture_map, uv_interp);
+    //vec4 pixel = texture(texture_map, uv_interp);
+	vec4 pixel = vec4(0.6, 0.6, 0.6, 1);
 
 	vec3 v = vec3(0,0,0);
 	vec3 vv = normalize(v - position_interp);

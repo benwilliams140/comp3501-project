@@ -20,18 +20,31 @@
 #include "Control/GUI/menu.h"
 #include "Control/GUI/Menus/main_menu.h"
 #include "Control/GUI/Menus/pause_menu.h"
+#include "Control/GUI/Menus/hud.h"
 #include "Control/path_config.h"
+#include "Control/time.h"
 
 #include "Renderer/camera.h"
 
 #include "Objects/Hovertank/hovertank.h"
 #include "Objects/Hovertank/hovertank_track.h"
 #include "Objects/Hovertank/hovertank_turret.h"
-#include "Objects/Hovertank/machine_gun.h"
+#include "Objects/Hovertank/Abilities/machine_gun.h"
+#include "Objects/Hovertank/Abilities/energy_cannon.h"
 #include "Objects/Hovertank/scanner.h"
 #include "Objects/terrain.h"
 #include "Objects/Artifact.h"
 #include "Objects/Player.h"
+#include "Objects/Projectiles/linear_projectile.h"
+#include "Objects/Projectiles/parabolic_projectile.h"
+
+// object/resource names
+#define HOVERTANK_BASE "HovertankChassis"
+#define HOVERTANK_TURRET "HovertankCylinder"
+#define HOVERTANK_TRACK_BL "HovertankTrackBL"
+#define HOVERTANK_TRACK_BR "HovertankTrackBR"
+#define HOVERTANK_TRACK_FL "HovertankTrackFL"
+#define HOVERTANK_TRACK_FR "HovertankTrackFR"
 
 namespace game {
 
@@ -54,11 +67,14 @@ namespace game {
 
     // Game application
     class Game {
+        public:
+            // Create singleton instance
+            static Game& GetInstance() {
+                static Game instance;
+                return instance;
+            }
 
         public:
-            // Constructor and destructor
-            Game(void);
-            ~Game();
             // Call Init() before calling any other method
             void Init(void); 
             // Set up resources for the game
@@ -68,11 +84,34 @@ namespace game {
             // Run the game: keep the application active
             void MainLoop(void); 
 
-            void SetState(State state);
+            // Create an instance of an object stored in the resource manager
+            template <typename T>
+            T* CreateInstance(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name = std::string("")) {
+                Resource* geom = GetResource(object_name);
+                Resource* mat = GetResource(material_name);
+                Resource* tex = nullptr;
+                if (texture_name != "") {
+                    tex = GetResource(texture_name);
+                }
+                return scene_.CreateNode<T>(entity_name, geom, mat, tex);
+            }
 
+            // Getters/Setters
             Camera* GetCamera();
 
+            Player* GetPlayer();
+            Terrain* GetTerrain();
+            void SetState(State state);
+
+            // Delete these function to be sure they don't accidentlly create copies of the instance
+            Game(Game const&) = delete;
+            void operator=(Game const&) = delete;           
+
         private:
+            // Constructor and destructor
+            Game(void);
+            ~Game();
+
             // GLFW window
             GLFWwindow* window_;
 
@@ -85,8 +124,12 @@ namespace game {
             // Resources available to the game
             ResourceManager resman_;
 
-            // Camera abstraction
+            // Game objects
             Camera* camera_;
+            Terrain* terrain_;
+
+            // Player
+            Player* player_;
 
             bool freeroam_;
             State state_;
@@ -102,14 +145,11 @@ namespace game {
             static void ResizeCallback(GLFWwindow* window, int width, int height);
 
             // handle movement
-            void HandleHovertankMovement();
             void UpdateCameraPos();
+            void HandleHovertankInput(); // this might need to be removed
 
-            // Create an instance of an object stored in the resource manager
-            template <typename T>
-            SceneNode *CreateInstance(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name = std::string(""));
+            Resource* GetResource(std::string res); // get the resource listed
     }; // class Game
-
 } // namespace game
 
 #endif // GAME_H_

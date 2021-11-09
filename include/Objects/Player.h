@@ -11,7 +11,10 @@
 #include <glm/gtc/quaternion.hpp>
 
 #include "Objects/Artifact.h"
+#include "Objects/Projectiles/linear_projectile.h"
+#include "Objects/Projectiles/parabolic_projectile.h"
 #include "Objects/Hovertank/hovertank.h"
+#include "Control/scene_graph.h"
 
 namespace game {
 
@@ -47,6 +50,8 @@ namespace game {
 		void addArtifact(Artifact *newArtifact);
 		Artifact* GetArtifact(int id);
 		void printArtifacts();
+
+
 	private:
 		std::vector<Artifact*> artifacts;
 		float health;
@@ -55,7 +60,6 @@ namespace game {
 		float maxEnergy;
 		float money;
 		HoverTank* tank;
-		bool alive;
 		
 	}; // class Player
 
