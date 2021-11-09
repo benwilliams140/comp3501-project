@@ -86,7 +86,7 @@ namespace game {
 
             // Create an instance of an object stored in the resource manager
             template <typename T>
-            SceneNode* CreateInstance(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name = std::string("")) {
+            T* CreateInstance(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name = std::string("")) {
                 Resource *geom = resman_.GetResource(object_name);
                 if (!geom){  throw(GameException(std::string("Could not find resource \"")+object_name+std::string("\""))); }
 
@@ -154,9 +154,6 @@ namespace game {
             void UpdateCameraPos();
             void HandleHovertankInput(); // this might need to be removed
 
-            // Create an instance of an object stored in the resource manager
-            template <typename T>
-            T* CreateInstance(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name = std::string(""));
             Resource* GetResource(std::string res); // get the resource listed
     }; // class Game
 } // namespace game

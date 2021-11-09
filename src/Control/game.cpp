@@ -175,9 +175,9 @@ void Game::SetupScene(void) {
     //game::SceneNode *mytorus = CreateInstance("MyTorus1", "SimpleTorusMesh", "Procedural", "RockyTexture");
     //game::SceneNode *mytorus = CreateInstance("MyTorus1", "SeamlessTorusMesh", "Lighting", "RockyTexture");
 
-    SceneNode* terrain = CreateInstance<Terrain>("Terrain Object", "Terrain", "Simple", "uv6");
+    Terrain* terrain = CreateInstance<Terrain>("Terrain Object", "Terrain", "Lighting", "uv6");
     terrain->Translate(glm::vec3(-50.f));
-    terrain_ = (Terrain*)terrain;
+    terrain_ = terrain;
 
     // create hovertank hierarchy
     // to convert blender coordinates to opengl coordinates: (x, y, z) -> (x, z, -y)
@@ -370,20 +370,6 @@ void Game::ResizeCallback(GLFWwindow* window, int width, int height){
 Game::~Game(){
     
     glfwTerminate();
-}
-
-template <typename T>
-T *Game::CreateInstance(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name){
-    // retrieve resources (index 0 - object, 1 - material, 2 - texture)
-    Resource* geom = GetResource(object_name);
-    Resource* mat = GetResource(material_name);
-    Resource* tex = nullptr;
-    if (texture_name != "") {
-        tex = GetResource(texture_name);
-    }
-    T* scn = scene_.CreateNode<T>(entity_name, geom, mat, tex);
-    return scn;
-    
 }
 
 Resource* Game::GetResource(std::string res) {
