@@ -12,7 +12,7 @@ namespace game {
 
 	HoverTank::HoverTank(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : SceneNode(name, geometry, material, texture) {
 		velocity = glm::vec3(0, 0, 0);
-    forward_ = glm::vec3(0, 0, 1); // consider taking this in as a parameter
+	    forward_ = glm::vec3(0, 0, 1); // consider taking this in as a parameter
 		turret_ = nullptr;
 		//forward_ = glm::vec3(0, 0, -1); // consider taking this in as a parameter
 		fwdSpeed_ = sideSpeed_ = 0;
