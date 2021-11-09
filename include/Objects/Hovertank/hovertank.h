@@ -31,13 +31,11 @@ namespace game {
 		glm::vec3 GetUp();
 
 		// getters
-		float GetSpeed();
 		glm::vec3 GetVelocity();
 		float GetStrength();
 		HoverTankTurret* GetTurret();
 
 		// setters
-		void SetSpeed(float newSpeed);
 		void SetVelocity(glm::vec3 newVelocity);
 		void SetStrength(float newStrength);
 		void SetTurret(HoverTankTurret* turret);

@@ -175,9 +175,9 @@ void Game::SetupScene(void) {
     //game::SceneNode *mytorus = CreateInstance("MyTorus1", "SimpleTorusMesh", "Procedural", "RockyTexture");
     //game::SceneNode *mytorus = CreateInstance("MyTorus1", "SeamlessTorusMesh", "Lighting", "RockyTexture");
 
-    SceneNode* terrain = CreateInstance<Terrain>("Terrain Object", "Terrain", "Simple", "uv6");
+    Terrain* terrain = CreateInstance<Terrain>("Terrain Object", "Terrain", "Lighting", "uv6");
     terrain->Translate(glm::vec3(-50.f));
-    terrain_ = (Terrain*)terrain;
+    terrain_ = terrain;
 
     // create hovertank hierarchy
     // to convert blender coordinates to opengl coordinates: (x, y, z) -> (x, z, -y)

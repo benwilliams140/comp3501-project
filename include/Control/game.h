@@ -87,18 +87,6 @@ namespace game {
             // Create an instance of an object stored in the resource manager
             template <typename T>
             T* CreateInstance(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name = std::string("")) {
-                /*Resource *geom = resman_.GetResource(object_name);
-                if (!geom){  throw(GameException(std::string("Could not find resource \"")+object_name+std::string("\""))); }
-
-                Resource *mat = resman_.GetResource(material_name);
-                if (!mat){ throw(GameException(std::string("Could not find resource \"")+material_name+std::string("\""))); }
-
-                Resource *tex = NULL;
-                if (texture_name != ""){
-                    tex = resman_.GetResource(texture_name);
-                    if (!tex){ throw(GameException(std::string("Could not find resource \"")+texture_name+std::string("\""))); }
-                }*/
-
                 Resource* geom = GetResource(object_name);
                 Resource* mat = GetResource(material_name);
                 Resource* tex = nullptr;

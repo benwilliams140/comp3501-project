@@ -16,7 +16,7 @@ namespace game {
 		turret_ = nullptr;
 		//forward_ = glm::vec3(0, 0, -1); // consider taking this in as a parameter
 		fwdSpeed_ = sideSpeed_ = 0;
-		maxSpeed_ = 1.0f;
+		maxSpeed_ = 0.2f;
 	}
 
 	HoverTank::~HoverTank() {}
@@ -48,8 +48,8 @@ namespace game {
 
 	void HoverTank::motionControl() {
 		float rot_factor = glm::pi<float>() / 180;
-		float trans_factor = 0.25f;
-		float friction = 0.01f;
+		float speedIncrease = 0.05f;
+		float friction = 0.002f;
 		
 		// Reduce speed by friction
 		if (fwdSpeed_ != 0) {
@@ -65,17 +65,17 @@ namespace game {
 
 		// Translate forward/backward
 		if (Input::getKey(INPUT_KEY_W)) {
-			fwdSpeed_ += 0.1f;
+			fwdSpeed_ += speedIncrease;
 		}
 		if (Input::getKey(INPUT_KEY_S)) {
-			fwdSpeed_ -= 0.1f;
+			fwdSpeed_ -= speedIncrease;
 		}
 		// Translate left/right
 		if (Input::getKey(INPUT_KEY_A)) {
-			sideSpeed_ -= 0.1f;
+			sideSpeed_ -= speedIncrease;
 		}
 		if (Input::getKey(INPUT_KEY_D)) {
-			sideSpeed_ += 0.1f;
+			sideSpeed_ += speedIncrease;
 		}
 		
 		// Clamp to max speed
@@ -107,7 +107,7 @@ namespace game {
 
 		glm::vec3 hitpoint; // return value for terrain collision
 		if (terrain->Collision(position, 1, hitpoint)) {
-			hitpoint.y += 1.0f; // add height of tank to hitpoint
+			hitpoint.y += 2.0f; // add height of tank to hitpoint
 			Translate(glm::vec3(0, hitpoint.y - position.y, 0));
 		}
 	}
