@@ -24,27 +24,18 @@ namespace game {
 	void HoverTank::Update(void) {
 		// Update tank movement
 		motionControl();
-    //shootingControl();
+		shootingControl();
     
 		// Check for terrain collision
 		terrainCollision();
 	}
   
-  /*void HoverTank::shootingControl() {
+  void HoverTank::shootingControl() {
     // shoot currently selected projectile
     if (Input::getKey(INPUT_KEY_SPACE)) {
-        Resource* geom = GetResource("Cube");
-        Resource* mat = GetResource("Simple");
-        Resource* tex = GetResource("RockyTexture");
-        Projectile* outProj = nullptr;
-        turret_->UseSelectedAbility(&outProj, player_->GetTank()->GetForward(), geom, mat, tex);
-        if (outProj) {
-            outProj->SetPosition(player_->GetTank()->GetPosition());
-            outProj->Scale(glm::vec3(0.5f));
-            scene_.AddNode(outProj);
-        }
+        Projectile* proj = turret_->UseSelectedAbility(GetPosition(), GetForward());
     } 
-  }*/
+  }
 
 	void HoverTank::motionControl() {
 		float rot_factor = glm::pi<float>() / 180;

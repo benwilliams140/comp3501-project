@@ -45,6 +45,7 @@ namespace game {
 
 	private:
 		void motionControl();
+		void shootingControl();
 		void terrainCollision();
 
 		float fwdSpeed_, sideSpeed_;

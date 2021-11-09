@@ -53,20 +53,6 @@ namespace game {
 			ImGui::EndPopup();
 		}
 
-		// quit comfirmation popup definition
-		
-		if (ImGui::BeginPopupModal("Quit Confirmation", nullptr, 0)) {
-			ImGui::Text("Are you sure you want to quit?");
-			if (ImGui::Button("OK")) {
-				game->SetState(State::STOPPED);
-			}
-			ImGui::SameLine();
-			if (ImGui::Button("Cancel")) {
-				ImGui::CloseCurrentPopup();
-			}
-			ImGui::EndPopup();
-		}
-
 		// setup colours for elements
 		ImGui::PushStyleColor(ImGuiCol_Button, BUTTON_COLOR);
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, BUTTON_HOVERED_COLOR);
@@ -88,7 +74,7 @@ namespace game {
 		// quit button definition
 		ImGui::SetCursorPos(ImVec2(windowWidth / 2 - BUTTON_WIDTH / 2, windowHeight / 2 + BUTTON_HEIGHT / 2 + 5));
 		if (ImGui::Button("Exit to Menu", ImVec2(BUTTON_WIDTH, BUTTON_HEIGHT))) {
-			ImGui::OpenPopup("Quit Confirmation");
+			game->SetState(State::STOPPED);
 		}
 
 		ImGui::PopStyleColor(4);

@@ -265,13 +265,14 @@ void Game::MainLoop(void){
                 UpdateCameraPos();
             }
 
+            // removes dead projectiles
             std::vector<Projectile*> projectilesToRemove = player_->GetTank()->GetTurret()->RemoveDeadProjectiles();
             for (auto it = projectilesToRemove.begin(); it != projectilesToRemove.end(); ++it) {
                 scene_.RemoveNode((*it)->GetName());
             }
+
             scene_.Update();
             scene_.Draw(camera_);
-            scene_.Update();
 
             // render the HUD overtop of the game and handle its input
             menus_[MenuType::HUD]->Render();

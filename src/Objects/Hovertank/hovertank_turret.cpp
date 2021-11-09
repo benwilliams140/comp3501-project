@@ -16,10 +16,10 @@ namespace game {
 		Rotate(this->GetAngM());
 	}
 
-	void HoverTankTurret::UseSelectedAbility(Projectile** outProj, glm::vec3 forward, Resource* geometry, Resource* material, Resource* texture) {
-		if (selectedAbility_ == availableAbilities_.end()) return; // no selected ability (probably because none are added)
+	Projectile* HoverTankTurret::UseSelectedAbility(glm::vec3 position, glm::vec3 forward) {
+		if (selectedAbility_ == availableAbilities_.end()) return nullptr; // no selected ability (probably because none are added)
 
-		(*selectedAbility_)->UseAbility(outProj, forward, geometry, material, texture);
+		return (*selectedAbility_)->UseAbility(position, forward);
 	}
 
 	void HoverTankTurret::SelectNextAbility() {

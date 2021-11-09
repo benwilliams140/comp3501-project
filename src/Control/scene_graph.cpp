@@ -54,6 +54,8 @@ template HoverTankTurret* SceneGraph::CreateNode<HoverTankTurret>(std::string no
 template MachineGun* SceneGraph::CreateNode<MachineGun>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
 template EnergyCannon* SceneGraph::CreateNode<EnergyCannon>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
 template Artifact* SceneGraph::CreateNode<Artifact>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
+template LinearProjectile* SceneGraph::CreateNode<LinearProjectile>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
+template ParabolicProjectile* SceneGraph::CreateNode<ParabolicProjectile>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
 
 void SceneGraph::AddNode(SceneNode *node){
     node_.push_back(node);

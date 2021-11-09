@@ -30,7 +30,7 @@ namespace game {
 		virtual void Update(void) override;
 
 		// use the currently selected ability
-		void UseSelectedAbility(Projectile** outProj, glm::vec3 forward, Resource* geometry, Resource* material, Resource* texture = nullptr);
+		Projectile* UseSelectedAbility(glm::vec3 position, glm::vec3 forward);
 		void SelectNextAbility();
 		void SelectPreviousAbility();
 		bool AddAbility(Ability*); // add an ability to the turret's inventory
