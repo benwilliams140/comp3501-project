@@ -372,20 +372,6 @@ Game::~Game(){
     glfwTerminate();
 }
 
-template <typename T>
-T *Game::CreateInstance(std::string entity_name, std::string object_name, std::string material_name, std::string texture_name){
-    // retrieve resources (index 0 - object, 1 - material, 2 - texture)
-    Resource* geom = GetResource(object_name);
-    Resource* mat = GetResource(material_name);
-    Resource* tex = nullptr;
-    if (texture_name != "") {
-        tex = GetResource(texture_name);
-    }
-    T* scn = scene_.CreateNode<T>(entity_name, geom, mat, tex);
-    return scn;
-    
-}
-
 Resource* Game::GetResource(std::string res) {
     Resource* resource = resman_.GetResource(res);
     if (!resource) {
