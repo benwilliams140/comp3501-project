@@ -1,7 +1,9 @@
 #include "Control/GUI/Menus/hud.h"
+#include "Control/game.h"
+#include "Control/input.h"
 
 namespace game {
-	HUD::HUD(GLFWwindow* window) : Menu(window) {
+	HUD::HUD() : Menu() {
 
 	}
 
@@ -10,9 +12,7 @@ namespace game {
 	}
 
 	void HUD::HandleInput() {
-		void* ptr = glfwGetWindowUserPointer(window);
-		Game* game = (Game*)ptr;
-		HoverTankTurret* turret = game->GetPlayer()->GetTank()->GetTurret();
+		HoverTankTurret* turret = Game::GetInstance().GetPlayer()->GetTank()->GetTurret();
 
 		glm::vec2 scroll = Input::getMouseScroll();
 		if (scroll.y < 0) { // select next ability when the mouse is scrolled down
@@ -21,6 +21,29 @@ namespace game {
 		else if (scroll.y > 0) { // select previous ability when the mouse is scrolled up
 			turret->SelectPreviousAbility();
 		}
+
+		// might be a better way of doing this with a new function in the input class
+		int index = -1;
+		if (Input::getKey(INPUT_KEY_1)) {
+			index = 0;
+		}
+		else if (Input::getKey(INPUT_KEY_2)) {
+			index = 1;
+		}
+		else if (Input::getKey(INPUT_KEY_3)) {
+			index = 2;
+		}
+		else if (Input::getKey(INPUT_KEY_4)) {
+			index = 3;
+		}
+
+		// index is valid
+		if (turret->GetAbilities().size() > index && index != -1) {
+			while (turret->GetSelectedIndex() != index) {
+				if (index < turret->GetSelectedIndex()) turret->SelectPreviousAbility();
+				else turret->SelectNextAbility();
+			}
+		}
 	}
 	
 	void HUD::Render() {
@@ -28,11 +51,8 @@ namespace game {
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		void* ptr = glfwGetWindowUserPointer(window);
-		Game* game = (Game*)ptr;
-
 		int windowWidth, windowHeight;
-		glfwGetWindowSize(window, &windowWidth, &windowHeight);
+		glfwGetWindowSize(Game::GetInstance().GetWindow(), &windowWidth, &windowHeight);
 		ImGui::SetNextWindowSize(ImVec2(windowWidth, windowHeight));
 		ImGui::SetNextWindowPos(ImVec2(0, 0));
 
@@ -44,9 +64,9 @@ namespace game {
 
 		ImGui::Begin("HUD", (bool*)true, flags);
 
-		RenderHealthBar(game, windowWidth, windowHeight);
-		RenderEnergyBar(game, windowWidth, windowHeight);
-		RenderProjectileSelection(game, windowWidth, windowHeight);
+		RenderHealthBar(windowWidth, windowHeight);
+		RenderEnergyBar(windowWidth, windowHeight);
+		RenderProjectileSelection(windowWidth, windowHeight);
 
 		// render the energy bar (can replace the base colour with an image)
 
@@ -56,29 +76,30 @@ namespace game {
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	}
 
-	void HUD::RenderHealthBar(Game* game, int windowWidth, int windowHeight) {
+	void HUD::RenderHealthBar(int windowWidth, int windowHeight) {
 		// calculate health bar position and size
-		float health = game->GetPlayer()->GetHealth();
+		float health = Game::GetInstance().GetPlayer()->GetHealth();
 		// outer rectangle
 		float healthBarBaseWidth = windowWidth * healthBar_.widthRatio;
 		float healthBarBaseHeight = windowHeight * healthBar_.heightRatio;
 		float healthBarBaseX = windowWidth / 2 - healthBarBaseWidth / 2;
 		float healthBarBaseY = 5;
 		// inner rectangle
-		float healthBarWidth = (healthBarBaseWidth - 4.0f) * health / game->GetPlayer()->GetMaxHealth();
+		float healthBarWidth = (healthBarBaseWidth - 4.0f) * health / Game::GetInstance().GetPlayer()->GetMaxHealth();
 		float healthBarHeight = healthBarBaseHeight - 4.0f;
 		float healthBarX = healthBarBaseX + 2.0f;
 		float healthBarY = healthBarBaseY + 2.0f;
 
 		// render the health bar (can replace the base colour with an image)
-		ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(healthBarBaseX, healthBarBaseY), ImVec2(healthBarBaseX + healthBarBaseWidth, healthBarBaseY + healthBarBaseHeight), healthBar_.backgroundColor, 0.0f, 0);
+		//ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(healthBarBaseX, healthBarBaseY), ImVec2(healthBarBaseX + healthBarBaseWidth, healthBarBaseY + healthBarBaseHeight), healthBar_.backgroundColor, 0.0f, 0);
+		ImGui::GetWindowDrawList()->AddImage(healthBar_.backgroundImage, ImVec2(healthBarBaseX, healthBarBaseY), ImVec2(healthBarBaseX + healthBarBaseWidth, healthBarBaseY + healthBarBaseHeight));
 		ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(healthBarX, healthBarY), ImVec2(healthBarX + healthBarWidth, healthBarY + healthBarHeight), healthBar_.foregroundColor, 0.0f, 0);
 		ImGui::GetWindowDrawList()->AddText(ImVec2(healthBarBaseX + healthBarBaseWidth / 2 - 10, healthBarBaseY + healthBarBaseHeight / 2 - 8), healthBar_.textColor, std::to_string((int)health).c_str());
 	}
 
-	void HUD::RenderEnergyBar(Game* game, int windowWidth, int windowHeight) {
+	void HUD::RenderEnergyBar(int windowWidth, int windowHeight) {
 		// calculate energy bar positions and sizes
-		float energy = game->GetPlayer()->GetEnergy();
+		float energy = Game::GetInstance().GetPlayer()->GetEnergy();
 		// outer rectangle
 		float energyBarBaseWidth = windowWidth * energyBar_.widthRatio;
 		float energyBarBaseHeight = windowHeight * energyBar_.heightRatio;
@@ -86,7 +107,7 @@ namespace game {
 		float energyBarBaseY = windowHeight - energyBarBaseHeight - 2.0f;
 		// inner rectangle
 		float energyBarWidth = energyBarBaseWidth - 6.0f;
-		float energyBarHeight = (energyBarBaseHeight - 4.0f) * energy / game->GetPlayer()->GetMaxEnergy();
+		float energyBarHeight = (energyBarBaseHeight - 4.0f) * energy / Game::GetInstance().GetPlayer()->GetMaxEnergy();
 		float energyBarX = energyBarBaseX + 2.0f;
 		float energyBarY = energyBarBaseY + energyBarBaseHeight - 2.0f - energyBarHeight;
 
@@ -95,8 +116,8 @@ namespace game {
 		ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(energyBarX, energyBarY), ImVec2(energyBarX + energyBarWidth, energyBarY + energyBarHeight), energyBar_.foregroundColor, 0.0f, 0);
 	}
 
-	void HUD::RenderProjectileSelection(Game* game, int windowWidth, int windowHeight) {
-		HoverTankTurret* turret = game->GetPlayer()->GetTank()->GetTurret();
+	void HUD::RenderProjectileSelection(int windowWidth, int windowHeight) {
+		HoverTankTurret* turret = Game::GetInstance().GetPlayer()->GetTank()->GetTurret();
 		float projSelectionWidth = windowWidth * projSelection_.widthRatio;
 		float projSelectionHeight = windowHeight * projSelection_.heightRatio;
 		float projSelectionX = windowWidth / 2 - projSelectionWidth / 2;
@@ -116,8 +137,11 @@ namespace game {
 			float abilityX = projSelectionX + abilityGap + (abilityWidth + abilityGap) * i;
 			float abilityY = projSelectionY + abilityGap;
 			// renders the background for each ability
+			//ImGui::GetWindowDrawList()->AddImage()
 			ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(abilityX, abilityY), ImVec2(abilityX + abilityWidth, abilityY + abilityHeight), projSelection_.abilityColor, 0.0f, 0);
 			
+			
+
 			// renders the rectangle showing the cooldown on each ability
 			// note that not all abilities in the inventory are necessarily filled
 			if (i < abilities.size()) {

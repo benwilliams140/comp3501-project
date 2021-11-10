@@ -84,9 +84,9 @@ void Game::InitMenus() {
     ImGui::StyleColorsClassic();
 
     // create menus
-    menus_[MenuType::MAIN] = new MainMenu(window_);
-    menus_[MenuType::PAUSE] = new PauseMenu(window_);
-    menus_[MenuType::HUD] = new HUD(window_);
+    menus_[MenuType::MAIN] = new MainMenu();
+    menus_[MenuType::PAUSE] = new PauseMenu();
+    menus_[MenuType::HUD] = new HUD();
 }
 
 void Game::InitView(void){
@@ -382,6 +382,11 @@ Resource* Game::GetResource(std::string res) {
 
 Camera* Game::GetCamera() {
     return camera_;
+}
+
+GLFWwindow* Game::GetWindow()
+{
+    return window_;
 }
 
 Terrain* Game::GetTerrain() {

@@ -98,7 +98,7 @@ namespace game {
 
             // Getters/Setters
             Camera* GetCamera();
-
+            GLFWwindow* GetWindow();
             Player* GetPlayer();
             Terrain* GetTerrain();
             void SetState(State state);

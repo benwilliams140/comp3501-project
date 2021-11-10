@@ -1,7 +1,9 @@
 #include "Control/GUI/Menus/pause_menu.h"
+#include "Control/game.h"
+
 
 namespace game {
-	PauseMenu::PauseMenu(GLFWwindow* window) : Menu(window) {
+	PauseMenu::PauseMenu() : Menu() {
 		
 	}
 
@@ -14,11 +16,8 @@ namespace game {
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		void* ptr = glfwGetWindowUserPointer(window);
-		Game* game = (Game*)ptr;
-
 		int windowWidth, windowHeight;
-		glfwGetWindowSize(window, &windowWidth, &windowHeight);
+		glfwGetWindowSize(Game::GetInstance().GetWindow(), &windowWidth, &windowHeight);
 		ImGui::SetNextWindowSize(ImVec2(windowWidth, windowHeight));
 		ImGui::SetNextWindowPos(ImVec2(0, 0));
 
@@ -34,12 +33,25 @@ namespace game {
 		// set window position for the following modals
 		ImGui::SetNextWindowPos(ImVec2(windowWidth / 2, windowHeight / 2));
 
+		// quit comfirmation popup definition
+		if (ImGui::BeginPopupModal("Quit Confirmation", nullptr, 0)) {
+			ImGui::Text("Are you sure you want to quit?");
+			if (ImGui::Button("OK")) {
+				Game::GetInstance().SetState(State::STOPPED);
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Cancel")) {
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::EndPopup();
+		}
+
 		// settings popup definition
 		if (ImGui::BeginPopupModal("Settings", nullptr, 0)) {
-			float fov = game->GetCamera()->GetFOV();
+			float fov = Game::GetInstance().GetCamera()->GetFOV();
 			if (ImGui::SliderFloat("FOV", &fov, 30.f, 90.f)) {
 				// currently saving settings on change...
-				game->GetCamera()->SetFOV(fov, windowWidth, windowHeight);
+				Game::GetInstance().GetCamera()->SetFOV(fov, windowWidth, windowHeight);
 			}
 
 			if (ImGui::Button("OK")) {
@@ -47,6 +59,7 @@ namespace game {
 				ImGui::CloseCurrentPopup();
 			}
 			ImGui::SameLine();
+			// if saving on change then the cancel button isn't necessary
 			if (ImGui::Button("Cancel")) {
 				ImGui::CloseCurrentPopup();
 			}
@@ -62,7 +75,7 @@ namespace game {
 		// resume button definition
 		ImGui::SetCursorPos(ImVec2(windowWidth / 2 - BUTTON_WIDTH / 2, windowHeight / 2 - 3 * BUTTON_HEIGHT / 2- 15));
 		if (ImGui::Button("Resume", ImVec2(BUTTON_WIDTH, BUTTON_HEIGHT))) {
-			game->SetState(State::RUNNING);
+			Game::GetInstance().SetState(State::RUNNING);
 		}
 
 		// settings button definition
@@ -74,7 +87,7 @@ namespace game {
 		// quit button definition
 		ImGui::SetCursorPos(ImVec2(windowWidth / 2 - BUTTON_WIDTH / 2, windowHeight / 2 + BUTTON_HEIGHT / 2 + 5));
 		if (ImGui::Button("Exit to Menu", ImVec2(BUTTON_WIDTH, BUTTON_HEIGHT))) {
-			game->SetState(State::STOPPED);
+			ImGui::OpenPopup("Quit Confirmation");
 		}
 
 		ImGui::PopStyleColor(4);
