@@ -126,9 +126,10 @@ void Game::SetupResources(void) {
     //resman_.CreateSeamlessTorus("SeamlessTorusMesh", 0.8, 0.35, 80, 80);
     //resman_.CreateCylinder("SimpleCylinderMesh", 2.0, 0.4, 30, 30);
 
-    // Load terrain
-    filename = std::string(TEXTURE_DIRECTORY) + std::string("/terrain_height_map.png");
-    resman_.LoadResource(ResourceType::Terrain, "Terrain", filename.c_str(), glm::vec3(5.0f, 1.0f, 5.0f));
+    // Load/Create terrain
+    resman_.CreateTerrain("Terrain", glm::vec3(2.5f, 1.0f, 2.5f));
+    //filename = std::string(TEXTURE_DIRECTORY) + std::string("/terrain_height_map.png");
+    //resman_.LoadResource(ResourceType::Terrain, "Terrain", filename.c_str(), glm::vec3(5.0f, 1.0f, 5.0f));
 
     // Load geometry
     filename = std::string(MESH_DIRECTORY) + std::string("/cube.mesh");
