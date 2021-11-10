@@ -53,6 +53,8 @@ namespace game {
         // variable
         virtual void Draw(Camera* camera);
 
+        // Initialize scene node
+        void Init();
         // Update the node
         virtual void Update(void);
 
@@ -89,6 +91,8 @@ namespace game {
 
         // Set matrices that transform the node in a shader program
         void SetupShader(GLuint program);
+        virtual void InitShaderUniform(GLuint program);
+        virtual void UpdateShaderUniform(GLuint program);
 
     }; // class SceneNode
 
