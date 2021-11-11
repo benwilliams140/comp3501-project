@@ -1,9 +1,10 @@
 #include "Objects/Hovertank/Abilities/energy_cannon.h"
 #include "Control/game.h"
+#include "Control/GUI/menu.h"
 
 namespace game {
 	EnergyCannon::EnergyCannon(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) 
-		: Ability(5.0f), SceneNode(name, geometry, material, texture) {
+		: Ability(5.0f, Menu::LoadImage("parabolic.png")), SceneNode(name, geometry, material, texture) {
 
 	}
 

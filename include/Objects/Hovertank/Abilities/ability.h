@@ -8,6 +8,7 @@
 #include <glm/glm.hpp>
 #define GLM_FORCE_RADIANS
 #include <glm/gtc/quaternion.hpp>
+#include <imgui.h>
 
 #include "Control/resource.h"
 #include "Control/scene_node.h"
@@ -19,7 +20,7 @@ namespace game {
 	// helper class to add projectile ability to other classes (eg. MachineGun, EnergyCannon)
 	class Ability {
 	public:
-		Ability(float maxCooldown);
+		Ability(float maxCooldown, ImTextureID hudTexture);
 		~Ability();
 
 		void UpdateCooldown(); // decreases cooldown by deltaTime
@@ -33,10 +34,12 @@ namespace game {
 		// getters
 		float GetCooldown();
 		float GetMaxCooldown();
+		ImTextureID GetHUDTexture();
 
 	protected:
 		float cooldown_, maxCooldown_;
 		std::vector<Projectile*> projectiles_;
+		ImTextureID hudTexture_;
 	}; // class Ability
 
 } // namespace game

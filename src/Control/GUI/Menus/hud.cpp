@@ -85,16 +85,14 @@ namespace game {
 		float healthBarBaseX = windowWidth / 2 - healthBarBaseWidth / 2;
 		float healthBarBaseY = 5;
 		// inner rectangle
-		float healthBarWidth = (healthBarBaseWidth - 4.0f) * health / Game::GetInstance().GetPlayer()->GetMaxHealth();
-		float healthBarHeight = healthBarBaseHeight - 4.0f;
-		float healthBarX = healthBarBaseX + 2.0f;
-		float healthBarY = healthBarBaseY + 2.0f;
+		float healthBarWidth = (healthBarBaseWidth - 20.0f) * health / Game::GetInstance().GetPlayer()->GetMaxHealth();
+		float healthBarHeight = healthBarBaseHeight - 20.0f;
+		float healthBarX = healthBarBaseX + 10.0f;
+		float healthBarY = healthBarBaseY + 11.0f;
 
-		// render the health bar (can replace the base colour with an image)
-		//ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(healthBarBaseX, healthBarBaseY), ImVec2(healthBarBaseX + healthBarBaseWidth, healthBarBaseY + healthBarBaseHeight), healthBar_.backgroundColor, 0.0f, 0);
+		// render the health bar
 		ImGui::GetWindowDrawList()->AddImage(healthBar_.backgroundImage, ImVec2(healthBarBaseX, healthBarBaseY), ImVec2(healthBarBaseX + healthBarBaseWidth, healthBarBaseY + healthBarBaseHeight));
 		ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(healthBarX, healthBarY), ImVec2(healthBarX + healthBarWidth, healthBarY + healthBarHeight), healthBar_.foregroundColor, 0.0f, 0);
-		ImGui::GetWindowDrawList()->AddText(ImVec2(healthBarBaseX + healthBarBaseWidth / 2 - 10, healthBarBaseY + healthBarBaseHeight / 2 - 8), healthBar_.textColor, std::to_string((int)health).c_str());
 	}
 
 	void HUD::RenderEnergyBar(int windowWidth, int windowHeight) {
@@ -106,13 +104,13 @@ namespace game {
 		float energyBarBaseX = windowWidth - energyBarBaseWidth - 2.0f;
 		float energyBarBaseY = windowHeight - energyBarBaseHeight - 2.0f;
 		// inner rectangle
-		float energyBarWidth = energyBarBaseWidth - 6.0f;
-		float energyBarHeight = (energyBarBaseHeight - 4.0f) * energy / Game::GetInstance().GetPlayer()->GetMaxEnergy();
-		float energyBarX = energyBarBaseX + 2.0f;
-		float energyBarY = energyBarBaseY + energyBarBaseHeight - 2.0f - energyBarHeight;
+		float energyBarWidth = energyBarBaseWidth - 38.0f;
+		float energyBarHeight = (energyBarBaseHeight - 10.0f) * energy / Game::GetInstance().GetPlayer()->GetMaxEnergy();
+		float energyBarX = energyBarBaseX + 20.5f;
+		float energyBarY = energyBarBaseY + energyBarBaseHeight - 5.0f - energyBarHeight;
 
 		// render the energy bar (can replace the base colour with an image)
-		ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(energyBarBaseX, energyBarBaseY), ImVec2(energyBarBaseX + energyBarBaseWidth, energyBarBaseY + energyBarBaseHeight), energyBar_.backgroundColor, 0.0f, 0);
+		ImGui::GetWindowDrawList()->AddImage(energyBar_.backgroundImage, ImVec2(energyBarBaseX, energyBarBaseY), ImVec2(energyBarBaseX + energyBarBaseWidth, energyBarBaseY + energyBarBaseHeight));
 		ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(energyBarX, energyBarY), ImVec2(energyBarX + energyBarWidth, energyBarY + energyBarHeight), energyBar_.foregroundColor, 0.0f, 0);
 	}
 
@@ -136,18 +134,20 @@ namespace game {
 		for (int i = 0; i < turret->GetMaxAbilities(); ++i) {
 			float abilityX = projSelectionX + abilityGap + (abilityWidth + abilityGap) * i;
 			float abilityY = projSelectionY + abilityGap;
-			// renders the background for each ability
-			//ImGui::GetWindowDrawList()->AddImage()
-			ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(abilityX, abilityY), ImVec2(abilityX + abilityWidth, abilityY + abilityHeight), projSelection_.abilityColor, 0.0f, 0);
 			
-			
-
+			// renders the image for each available ability
 			// renders the rectangle showing the cooldown on each ability
 			// note that not all abilities in the inventory are necessarily filled
 			if (i < abilities.size()) {
+				ImGui::GetWindowDrawList()->AddImage(abilities.at(i)->GetHUDTexture(), ImVec2(abilityX, abilityY), ImVec2(abilityX + abilityWidth, abilityY + abilityHeight));
+
 				float cooldownHeight = abilityHeight * abilities.at(i)->GetCooldown() / abilities.at(i)->GetMaxCooldown();
 				float cooldownY = abilityY + abilityHeight - cooldownHeight;
 				ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(abilityX, cooldownY), ImVec2(abilityX + abilityWidth, cooldownY + cooldownHeight), projSelection_.cooldownColor, 0.0f, 0);
+			}
+			// render a blank rectangle where abilities aren't filled
+			else {
+				ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(abilityX, abilityY), ImVec2(abilityX + abilityWidth, abilityY + abilityHeight), projSelection_.abilityColor, 0.0f, 0);
 			}
 
 			// renders the rectangle showing which ability is selected

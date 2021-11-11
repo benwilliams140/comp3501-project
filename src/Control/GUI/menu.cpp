@@ -23,16 +23,12 @@ namespace game {
 	}
 	ImTextureID Menu::LoadImage(std::string filename)
 	{
-		std::string filepath = TEXTURE_DIRECTORY + std::string("/") + filename;
-		// must first load the image with SOIL and then create a texture with OpenGL
-		int width, height, channels;
-		unsigned char* image = SOIL_load_image(filepath.c_str(), &width, &height, &channels, SOIL_LOAD_AUTO);
+		std::string filepath = TEXTURE_DIRECTORY + std::string("/gui/") + filename;
+		GLuint textureID = SOIL_load_OGL_texture(filepath.c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
+		if (!textureID) {
+			throw(std::ios_base::failure(std::string("Error loading texture ") + std::string(filename) + std::string(": ") + std::string(SOIL_last_result())));
+		}
 
-		GLuint textureID;
-		glGenTextures(1, &textureID);
-		glBindTexture(GL_TEXTURE_2D, textureID);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-
-		return (ImTextureID) textureID;
+		return (void*) (intptr_t) textureID;
 	}
 } // namespace game

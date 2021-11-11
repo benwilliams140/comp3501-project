@@ -21,16 +21,15 @@ namespace game {
 		*/
 		const struct HealthBar {
 			float widthRatio = 0.2f;
-			float heightRatio = 0.025f;
-			ImTextureID backgroundImage = Menu::LoadImage("energy_bar_background.png");
-			ImU32 foregroundColor = IM_COL32(0, 255, 0, 255);
-			ImU32 textColor = IM_COL32(0, 0, 0, 255);
+			float heightRatio = 0.05f;
+			ImTextureID backgroundImage = Menu::LoadImage("health_bar_background.png");
+			ImU32 foregroundColor = IM_COL32(0, 200, 0, 255);
 		} healthBar_;
 
 		const struct EnergyBar {
-			float widthRatio = 0.02f;
-			float heightRatio = 0.2f;
-			ImU32 backgroundColor = IM_COL32(160, 160, 160, 155);
+			float widthRatio = 0.045f;
+			float heightRatio = 0.25f;
+			ImTextureID backgroundImage = Menu::LoadImage("energy_bar_background.png");
 			ImU32 foregroundColor = IM_COL32(0, 255, 255, 255);
 		} energyBar_;
 

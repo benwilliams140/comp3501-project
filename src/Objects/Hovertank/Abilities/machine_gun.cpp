@@ -1,10 +1,11 @@
 #include "Objects/Hovertank/Abilities/machine_gun.h"
 #include "Control/game.h"
+#include "Control/GUI/menu.h"
 
 namespace game {
 
 	MachineGun::MachineGun(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) 
-		: Ability(0.25f), SceneNode(name, geometry, material, texture) {
+		: Ability(0.25f, Menu::LoadImage("linear.png")), SceneNode(name, geometry, material, texture) {
 	}
 
 

@@ -1,9 +1,10 @@
 #include "Objects/Hovertank/Abilities/ability.h"
 
 namespace game {
-	Ability::Ability(float maxCooldown) {
+	Ability::Ability(float maxCooldown, ImTextureID hudTexture) {
 		cooldown_ = 0.0f;
 		maxCooldown_ = maxCooldown;
+		hudTexture_ = hudTexture;
 	}
 
 	Ability::~Ability() {
@@ -38,5 +39,9 @@ namespace game {
 
 	float Ability::GetMaxCooldown() {
 		return maxCooldown_;
+	}
+	ImTextureID Ability::GetHUDTexture()
+	{
+		return hudTexture_;
 	}
 }; // namespace game

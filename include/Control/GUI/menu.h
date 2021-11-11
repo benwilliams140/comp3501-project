@@ -34,11 +34,11 @@ namespace game {
 		virtual void Render() = 0; // handles rendering ImGui widgets (no base implementation)
 		virtual void HandleInput(); // handles any additional input for menus
 
+		// loads an image using SOIL for use in one of the GUIs
+		static ImTextureID LoadImage(std::string filename);
+
 	protected:
 		std::vector<void*> variables; // not currently used - idea is to store menu-specific variables
 										// that will be edited by ImGui widgets (eg. the FOV in the pause menu)
-
-		// loads an image using SOIL for use in one of the GUIs
-		static ImTextureID LoadImage(std::string filename);
 	}; // Menu class
 } // namespace game
