@@ -220,6 +220,8 @@ void Game::SetupScene(void) {
     energy_cannon->Scale(glm::vec3(0.75));
     energy_cannon->SetParent(hovertank_turret);
     hovertank_turret->AddAbility(energy_cannon);
+
+    
 }
 
 void Game::MainLoop(void){
