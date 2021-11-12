@@ -35,7 +35,15 @@ namespace game {
 		// shoot currently selected projectile
 		if (Input::getKey(INPUT_KEY_SPACE)) {
 			Projectile* proj = turret_->UseSelectedAbility(GetPosition(), GetForward());
-		} 
+		}
+		if(Input::getKey(INPUT_KEY_Q)) { // left
+			glm::quat rot = glm::angleAxis(((glm::pi<float>() * 60) / 180) * Time::GetDeltaTime(), GetUp());
+			turret_->Rotate(rot);
+		}
+		if (Input::getKey(INPUT_KEY_E)) { // right
+			glm::quat rot = glm::angleAxis(-((glm::pi<float>() * 60) / 180) * Time::GetDeltaTime(), GetUp());
+			turret_->Rotate(rot);
+		}
 	}
 
 	void HoverTank::motionControl() {
