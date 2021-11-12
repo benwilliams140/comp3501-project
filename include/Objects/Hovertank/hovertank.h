@@ -39,6 +39,7 @@ namespace game {
 		void SetVelocity(glm::vec3 newVelocity);
 		void SetStrength(float newStrength);
 		void SetTurret(HoverTankTurret* turret);
+		void SetSpeedMultiple(float multiple);
 
 		// Update geometry configuration
 		virtual void Update(void) override;
@@ -49,7 +50,7 @@ namespace game {
 		void terrainCollision();
 
 		float fwdSpeed_, sideSpeed_;
-		float maxSpeed_;
+		float maxSpeed_, speedMultiple_;
 		float strength;
 		glm::vec3 velocity;
 		glm::vec3 forward_;

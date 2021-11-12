@@ -21,6 +21,8 @@ namespace game {
 		//		eg. Using the scroll wheel to select items in an HUD element
 		// base menu object should not have any additional input (that I can think of)
 	}
+
+	// make sure the image you are loading has an alpha channel
 	ImTextureID Menu::LoadImage(std::string filename)
 	{
 		std::string filepath = TEXTURE_DIRECTORY + std::string("/gui/") + filename;

@@ -38,7 +38,7 @@ namespace game {
 			float heightRatio = 0.05f;
 			ImU32 backgroundColor = IM_COL32(100, 100, 100, 155);
 			ImU32 abilityColor = IM_COL32(160, 160, 160, 255);
-			ImU32 cooldownColor = IM_COL32(140, 140, 140, 255);
+			ImU32 cooldownColor = IM_COL32(140, 140, 140, 200);
 			ImU32 selectedColor = IM_COL32(255, 255, 255, 255);
 		} projSelection_;
 

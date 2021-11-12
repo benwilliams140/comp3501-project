@@ -17,6 +17,7 @@ namespace game {
 		//forward_ = glm::vec3(0, 0, -1); // consider taking this in as a parameter
 		fwdSpeed_ = sideSpeed_ = 0;
 		maxSpeed_ = 0.2f;
+		speedMultiple_ = 1.0f; // used to change speed effects on the tanks (eg. going through mud)
 	}
 
 	HoverTank::~HoverTank() {}
@@ -29,13 +30,13 @@ namespace game {
 		// Check for terrain collision
 		terrainCollision();
 	}
-  
-  void HoverTank::shootingControl() {
-    // shoot currently selected projectile
-    if (Input::getKey(INPUT_KEY_SPACE)) {
-        Projectile* proj = turret_->UseSelectedAbility(GetPosition(), GetForward());
-    } 
-  }
+
+	void HoverTank::shootingControl() {
+		// shoot currently selected projectile
+		if (Input::getKey(INPUT_KEY_SPACE)) {
+			Projectile* proj = turret_->UseSelectedAbility(GetPosition(), GetForward());
+		} 
+	}
 
 	void HoverTank::motionControl() {
 		float rot_factor = glm::pi<float>() / 180;
@@ -78,8 +79,8 @@ namespace game {
 		// Translate by gravity
 		Translate(glm::vec3(0, -0.35f, 0));
 		// Translate by speed
-		Translate(GetForward() * fwdSpeed_);
-		Translate(GetRight() * sideSpeed_);
+		Translate(GetForward() * fwdSpeed_ * speedMultiple_);
+		Translate(GetRight() * sideSpeed_ * speedMultiple_);
 
 		// Rotate yaw
 		if (Input::getKey(INPUT_KEY_LEFT)) {
@@ -137,5 +138,9 @@ namespace game {
 
 	void HoverTank::SetTurret(HoverTankTurret* turret) {
 		turret_ = turret;
+	}
+	
+	void HoverTank::SetSpeedMultiple(float multiple) {
+		speedMultiple_ = multiple;
 	}
 }
