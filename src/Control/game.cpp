@@ -84,9 +84,9 @@ void Game::InitMenus() {
     ImGui::StyleColorsClassic();
 
     // create menus
-    menus_[MenuType::MAIN] = new MainMenu(window_);
-    menus_[MenuType::PAUSE] = new PauseMenu(window_);
-    menus_[MenuType::HUD] = new HUD(window_);
+    menus_[MenuType::MAIN] = new MainMenu();
+    menus_[MenuType::PAUSE] = new PauseMenu();
+    menus_[MenuType::HUD] = new HUD();
 }
 
 void Game::InitView(void){
@@ -312,8 +312,11 @@ void Game::MainLoop(void){
 
 void Game::UpdateCameraPos() {
     HoverTank* tank = (HoverTank*)scene_.GetNode(HOVERTANK_BASE);
-    camera_->SetPosition(tank->GetPosition() - tank->GetForward() * 15.f + tank->GetUp() * 5.f);
-    camera_->SetView(camera_->GetPosition(), tank->GetPosition(), tank->GetUp());
+    HoverTankTurret* turret = tank->GetTurret();
+    glm::vec3 pos = glm::vec3(turret->GetWorldTransform() * glm::vec4(turret->GetPosition(), 1));
+    glm::vec3 forward = tank->GetOrientation() * turret->GetForward();
+    camera_->SetPosition(pos - forward * 15.f + tank->GetUp() * 3.0f);
+    camera_->SetView(camera_->GetPosition(), pos, tank->GetUp());
 }
 
 void UpdateCameraMovement(Camera* camera) {
@@ -386,6 +389,11 @@ Resource* Game::GetResource(std::string res) {
 
 Camera* Game::GetCamera() {
     return camera_;
+}
+
+GLFWwindow* Game::GetWindow()
+{
+    return window_;
 }
 
 Terrain* Game::GetTerrain() {
