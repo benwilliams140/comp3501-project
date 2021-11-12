@@ -148,16 +148,10 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Mesh, HOVERTANK_TRACK_FR, filename.c_str());
 
     // Load shaders
-    filename = std::string(MATERIAL_DIRECTORY) + std::string("/textured_material");
-    resman_.LoadResource(ResourceType::Material, "TextureShader", filename.c_str());
-    filename = std::string(MATERIAL_DIRECTORY) + std::string("/corona");
-    resman_.LoadResource(ResourceType::Material, "Procedural", filename.c_str());
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/simple_texture");
     resman_.LoadResource(ResourceType::Material, "Simple", filename.c_str());
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/lit");
     resman_.LoadResource(ResourceType::Material, "Lighting", filename.c_str());
-    filename = std::string(MATERIAL_DIRECTORY) + std::string("/material");
-    resman_.LoadResource(ResourceType::Material, "BasicMaterial", filename.c_str());
 
     // Load texture
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/rocky.png");

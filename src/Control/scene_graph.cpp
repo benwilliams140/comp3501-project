@@ -31,32 +31,6 @@ glm::vec3 SceneGraph::GetBackgroundColor(void) const {
     return background_color_;
 }
 
-// generic CreateNode function
-template <typename T>
-T* SceneGraph::CreateNode(std::string node_name, Resource *geometry, Resource *material, Resource *texture){
-
-    // Create scene node with the specified resources
-    T* scn = new T(node_name, geometry, material, texture);
-
-    // Add node to the scene
-    AddNode(scn);
-
-    return scn;
-}
-
-// definitions for generic function
-// NOTE: Add more explicit function definitions here (eg. for terrain, other hovertank parts)
-template SceneNode* SceneGraph::CreateNode<SceneNode>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
-template Terrain* SceneGraph::CreateNode<Terrain>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
-template HoverTank* SceneGraph::CreateNode<HoverTank>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
-template HoverTankTrack* SceneGraph::CreateNode<HoverTankTrack>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
-template HoverTankTurret* SceneGraph::CreateNode<HoverTankTurret>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
-template MachineGun* SceneGraph::CreateNode<MachineGun>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
-template EnergyCannon* SceneGraph::CreateNode<EnergyCannon>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
-template Artifact* SceneGraph::CreateNode<Artifact>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
-template LinearProjectile* SceneGraph::CreateNode<LinearProjectile>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
-template ParabolicProjectile* SceneGraph::CreateNode<ParabolicProjectile>(std::string node_name, Resource* geometry, Resource* material, Resource* texture);
-
 void SceneGraph::AddNode(SceneNode *node){
     node_.push_back(node);
 }
