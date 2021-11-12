@@ -35,6 +35,10 @@
 #include "Objects/terrain.h"
 #include "Objects/Artifact.h"
 #include "Objects/Player.h"
+#include "Objects/EnergySource.h"
+#include "Objects/EnvironmentObject.h"
+#include "Objects/Rock.h"
+#include "Objects/Tree.h"
 #include "Objects/Projectiles/linear_projectile.h"
 #include "Objects/Projectiles/parabolic_projectile.h"
 

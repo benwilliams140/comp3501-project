@@ -17,6 +17,7 @@
 #include "Objects/Projectiles/linear_projectile.h"
 #include "Objects/Projectiles/parabolic_projectile.h"
 #include "Objects/Artifact.h"
+#include "Objects/EnvironmentObject.h"
 #include "Control/resource.h"
 #include "Renderer/camera.h"
 
