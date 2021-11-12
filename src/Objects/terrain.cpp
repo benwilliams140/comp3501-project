@@ -83,4 +83,12 @@ namespace game {
 		return true;
 	}
 
+	void Terrain::InitShaderUniform(GLuint program) {
+		TerrainData* terrainData = geometry_->GetTerrainData();
+		GLint terrain_bounds_var = glGetUniformLocation(program, "terrain_bounds");
+		glUniform2f(terrain_bounds_var, terrainData->minHeight + this->GetPosition().y, terrainData->maxHeight + GetPosition().y);
+	}
+
+	void Terrain::UpdateShaderUniform(GLuint program) {}
+
 } // namespace game

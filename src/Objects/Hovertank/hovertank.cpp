@@ -16,7 +16,7 @@ namespace game {
 		turret_ = nullptr;
 		//forward_ = glm::vec3(0, 0, -1); // consider taking this in as a parameter
 		fwdSpeed_ = sideSpeed_ = 0;
-		maxSpeed_ = 0.2f;
+		maxSpeed_ = 30.0f;
 		speedMultiple_ = 1.0f; // used to change speed effects on the tanks (eg. going through mud)
 	}
 
@@ -47,9 +47,11 @@ namespace game {
 	}
 
 	void HoverTank::motionControl() {
-		float rot_factor = glm::pi<float>() / 180;
-		float speedIncrease = 0.05f;
-		float friction = 0.002f;
+		float rot_factor = ((glm::pi<float>() * 60) / 180) * Time::GetDeltaTime();
+		float maxSpeed = maxSpeed_ * Time::GetDeltaTime();
+		float speedIncrease = 2.0f * Time::GetDeltaTime();
+		float friction = 0.5f * Time::GetDeltaTime();
+		float gravity = 9.81f * Time::GetDeltaTime();
 		
 		// Reduce speed by friction
 		if (fwdSpeed_ != 0) {
@@ -79,13 +81,13 @@ namespace game {
 		}
 		
 		// Clamp to max speed
-		if (fwdSpeed_ > maxSpeed_) fwdSpeed_ = maxSpeed_;
-		if (fwdSpeed_ < -maxSpeed_) fwdSpeed_ = -maxSpeed_;
-		if (sideSpeed_ > maxSpeed_) sideSpeed_ = maxSpeed_;
-		if (sideSpeed_ < -maxSpeed_) sideSpeed_ = -maxSpeed_;
+		if (fwdSpeed_ > maxSpeed) fwdSpeed_ = maxSpeed;
+		if (fwdSpeed_ < -maxSpeed) fwdSpeed_ = -maxSpeed;
+		if (sideSpeed_ > maxSpeed) sideSpeed_ = maxSpeed;
+		if (sideSpeed_ < -maxSpeed) sideSpeed_ = -maxSpeed;
 
 		// Translate by gravity
-		Translate(glm::vec3(0, -0.35f, 0));
+		Translate(glm::vec3(0, -gravity, 0));
 		// Translate by speed
 		Translate(GetForward() * fwdSpeed_ * speedMultiple_);
 		Translate(GetRight() * sideSpeed_ * speedMultiple_);
