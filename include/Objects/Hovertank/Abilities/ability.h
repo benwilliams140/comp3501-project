@@ -8,6 +8,7 @@
 #include <glm/glm.hpp>
 #define GLM_FORCE_RADIANS
 #include <glm/gtc/quaternion.hpp>
+#include <imgui.h>
 
 #include "Control/resource.h"
 #include "Control/scene_node.h"
@@ -19,7 +20,7 @@ namespace game {
 	// helper class to add projectile ability to other classes (eg. MachineGun, EnergyCannon)
 	class Ability {
 	public:
-		Ability(float maxCooldown);
+		Ability(float maxCooldown, ImTextureID hudTexture);
 		~Ability();
 
 		void UpdateCooldown(); // decreases cooldown by deltaTime
@@ -27,16 +28,17 @@ namespace game {
 		std::vector<Projectile*> RemoveDeadProjectiles(); // removes any expired projectiles
 
 		// takes in the resources used to create a projectile, returns a Projectile in the outProj parameter
-		virtual void UseAbility(Projectile** outProj, glm::vec3 forward, Resource* geometry, Resource* material, Resource* texture = nullptr) = 0; // base ability should not be usable
 		virtual Projectile* UseAbility(glm::vec3 position, glm::vec3 forward) = 0; // base ability should not be usable
 
 		// getters
 		float GetCooldown();
 		float GetMaxCooldown();
+		ImTextureID GetHUDTexture();
 
 	protected:
 		float cooldown_, maxCooldown_;
 		std::vector<Projectile*> projectiles_;
+		ImTextureID hudTexture_;
 	}; // class Ability
 
 } // namespace game

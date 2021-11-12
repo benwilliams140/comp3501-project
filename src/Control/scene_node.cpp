@@ -175,9 +175,17 @@ namespace game {
         }
     }
 
+    void SceneNode::Init() {
+        // Init shader uniforms
+        this->InitShaderUniform(material_);
+    }
+
     void SceneNode::Update() {
         // Do nothing for this generic type of scene node
     }
+
+    void SceneNode::InitShaderUniform(GLuint program) {}
+    void SceneNode::UpdateShaderUniform(GLuint program) {}
 
     void SceneNode::SetupShader(GLuint program) {
         // Multiply world transformation with scale
@@ -212,6 +220,9 @@ namespace game {
         GLint timer_var = glGetUniformLocation(program, "timer");
         double current_time = glfwGetTime();
         glUniform1f(timer_var, (float)current_time);
+
+        // Updates uniforms depending on type of object
+        this->UpdateShaderUniform(program);
     }
 
 } // namespace game;

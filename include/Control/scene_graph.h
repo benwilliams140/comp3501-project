@@ -17,6 +17,7 @@
 #include "Objects/Projectiles/linear_projectile.h"
 #include "Objects/Projectiles/parabolic_projectile.h"
 #include "Objects/Artifact.h"
+#include "Objects/EnvironmentObject.h"
 #include "Control/resource.h"
 #include "Renderer/camera.h"
 
@@ -42,9 +43,19 @@ namespace game {
             glm::vec3 GetBackgroundColor(void) const;
             
             // Create a scene node from the specified resources
-            // templated to add classes that extend from SceneNode (definitions are in cpp file)
+           // generic CreateNode function
             template <typename T>
-            T* CreateNode(std::string node_name, Resource *geometry, Resource *material, Resource *texture = NULL);
+            T* CreateNode(std::string node_name, Resource* geometry, Resource* material, Resource* texture) {
+
+                // Create scene node with the specified resources
+                T* scn = new T(node_name, geometry, material, texture);
+
+                // Add node to the scene
+                AddNode(scn);
+
+                return scn;
+            }
+
             // Add an already-created node
             void AddNode(SceneNode *node);
             // Find a scene node with a specific name

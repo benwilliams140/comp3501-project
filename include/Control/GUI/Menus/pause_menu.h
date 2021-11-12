@@ -1,12 +1,11 @@
 #pragma once
 
 #include "Control/GUI/menu.h"
-#include "Control/game.h"
 
 namespace game {
 	class PauseMenu : public Menu {
 	public:
-		PauseMenu(GLFWwindow* window);
+		PauseMenu();
 		~PauseMenu();
 		
 		virtual void Render() override;

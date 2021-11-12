@@ -19,7 +19,8 @@ namespace game {
 	Projectile* HoverTankTurret::UseSelectedAbility(glm::vec3 position, glm::vec3 forward) {
 		if (selectedAbility_ == availableAbilities_.end()) return nullptr; // no selected ability (probably because none are added)
 
-		return (*selectedAbility_)->UseAbility(position, forward);
+		position = glm::vec3(GetWorldTransform() * glm::vec4(GetPosition(), 1.0f));
+		return (*selectedAbility_)->UseAbility(position, GetOrientation() * forward);
 	}
 
 	void HoverTankTurret::SelectNextAbility() {

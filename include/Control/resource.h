@@ -19,7 +19,8 @@ namespace game {
         int width, length; // Width equals amount of edges (amount of vertices + 1) in the x-axis, Length equals amount of edges (amount of vertices + 1) in the z-axis.
         glm::vec3 scale; // The terrain geometry's scale
         float* heightMatrix; // Matrix which holds height information per vertex
-        glm::vec3* smoothNormals; // Array of normals of every vertex
+        float minHeight, maxHeight;
+        glm::vec3* normalMatrix; // Array of normals of every vertex
     };
 
     // Class that holds one resource
