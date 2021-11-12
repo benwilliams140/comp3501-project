@@ -1,5 +1,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
+#include <glm/gtc/noise.hpp>
 #include <stdexcept>
 #include <fstream>
 #include <sstream>
@@ -281,7 +282,41 @@ namespace game {
     struct Vector3 { float x, y, z; };
     struct Vector2 { float x, y; };
 
-    void CalculateTerrainHeight(const char* filename, int* width, int* length, float** heightMatrix) {
+    float CalculatePerlinNoise(int width, int length, int xVert, int zVert, float frequency, float scale) {
+        float x = (1.0f / (width - 1)) * xVert;
+        float z = (1.0f / (length - 1)) * zVert;
+        float result = 0.0f;
+        float freq = frequency;
+        float scal = scale;
+
+        for (int oct = 0; oct < 4; oct++) {
+            result += glm::perlin(glm::vec2(x * freq, z * freq)) / scal;
+            freq *= 2.0f;
+            scal *= scale;
+        }
+        return result;
+    }
+
+    // Calculates terrain height from perlin noise
+    void CalculateTerrainHeight(int width, int length, float** heightMatrix, float* minHeight, float* maxHeight) {
+        *heightMatrix = new float[width * length];
+        *maxHeight = INT_MIN;
+        *minHeight = INT_MAX;
+        int seed = 69;
+        for (int i = 0; i < width; ++i) {
+            for (int j = 0; j < length; ++j) {
+                float height = -glm::abs(CalculatePerlinNoise(width+seed, length+seed, i, j, 0.275f, 0.35f));
+                height += -glm::abs(CalculatePerlinNoise(width+seed, length+seed, i, j, 2.75f, 0.7f));
+                height += -glm::abs(CalculatePerlinNoise(width+seed, length+seed, i, j, 12.5f, 1.0f));
+                if (height < *minHeight) *minHeight = height;
+                else if (height > *maxHeight) *maxHeight = height;
+                (*heightMatrix)[i * length + j] = height;
+            }
+        }
+    }
+
+    // Calculates terrain height from height map
+    void CalculateTerrainHeight(const char* filename, int *width, int *length, float** heightMatrix, float* minHeight, float* maxHeight) {
         // Read height map data
         int nChannels = 0;
         int rawWidth, rawLength;
@@ -299,8 +334,7 @@ namespace game {
             for (int i = 0; i < vertexCount * nChannels; i += nChannels) {
                 (*heightMatrix)[curInd++] = (float)(rawHeightData[i]);
             }
-        }
-        else {
+        } else {
             *width = NULL;
             *length = NULL;
             *heightMatrix = NULL;
@@ -364,11 +398,29 @@ namespace game {
     void ResourceManager::LoadTerrain(const std::string object_name, const char* filename, glm::vec3 scale) {
         // Input data
         int width, length;
+        float minHeight, maxHeight;
         float* heightMatrix = nullptr;
-        CalculateTerrainHeight(filename, &width, &length, &heightMatrix);
-        int vertexCount = width * length;
+        CalculateTerrainHeight(filename, &width, &length, &heightMatrix, &minHeight, &maxHeight);
 
+        // Generate the terrain
+        GenerateTerrain(object_name, width, length, scale, heightMatrix, minHeight, maxHeight);
+    }
+
+    // Creates a terrain from perlin noise function
+    void ResourceManager::CreateTerrain(std::string object_name, glm::vec3 scale) {
+        // Input data
+        int width = 500, length = 500;
+        float minHeight, maxHeight;
+        float* heightMatrix = nullptr;
+        CalculateTerrainHeight(width, length, &heightMatrix, &minHeight, &maxHeight);
+
+        // Generate the terrain
+        GenerateTerrain(object_name, width, length, scale, heightMatrix, minHeight, maxHeight);
+    }
+
+    void ResourceManager::GenerateTerrain(std::string object_name, int width, int length, glm::vec3 scale, float* heightMatrix, float minHeight, float maxHeight) {
         // Output data
+        int vertexCount = width * length;
         Vector3* vertices = new Vector3[vertexCount];
         Vector3* normals = new Vector3[vertexCount];
         Vector2* uvs = new Vector2[vertexCount];
@@ -418,7 +470,7 @@ namespace game {
         delete[] indices;
 
         // Create TerrainData
-        TerrainData* terrainData = new TerrainData{ width, length, scale, heightMatrix, nullptr };
+        TerrainData* terrainData = new TerrainData{ width, length, scale, heightMatrix, minHeight, maxHeight, nullptr };
 
         // Create resource
         AddResource(ResourceType::Terrain, object_name, vao, ebo, indCount, terrainData);

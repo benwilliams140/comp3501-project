@@ -32,6 +32,8 @@ namespace game {
         Resource* GetResource(const std::string name) const;
 
         // Methods to create specific resources
+        // Create the geometry for a terrain from perlin noise
+        void CreateTerrain(std::string object_name, glm::vec3 scale);
         // Create the geometry for a torus and add it to the list of resources
         void CreateTorus(std::string object_name, float loop_radius = 0.6, float circle_radius = 0.2, int num_loop_samples = 90, int num_circle_samples = 30);
         void CreateSeamlessTorus(std::string object_name, float loop_radius = 0.6, float circle_radius = 0.2, int num_loop_samples = 90, int num_circle_samples = 30);
@@ -57,6 +59,9 @@ namespace game {
         void LoadMesh(const std::string name, const char* filename);
         // Loads a terrain from height map image
         void LoadTerrain(const std::string name, const char* filename, glm::vec3 scale);
+
+        // Generates the terrain from input data
+        void GenerateTerrain(std::string object_name, int width, int length, glm::vec3 scale, float* heightMatrix, float minHeight, float maxHeight);
 
     }; // class ResourceManager
 
