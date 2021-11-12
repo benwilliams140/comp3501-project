@@ -28,7 +28,6 @@ namespace game {
 		std::vector<Projectile*> RemoveDeadProjectiles(); // removes any expired projectiles
 
 		// takes in the resources used to create a projectile, returns a Projectile in the outProj parameter
-		virtual void UseAbility(Projectile** outProj, glm::vec3 forward, Resource* geometry, Resource* material, Resource* texture = nullptr) = 0; // base ability should not be usable
 		virtual Projectile* UseAbility(glm::vec3 position, glm::vec3 forward) = 0; // base ability should not be usable
 
 		// getters
