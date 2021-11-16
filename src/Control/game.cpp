@@ -175,7 +175,7 @@ void Game::SetupScene(void) {
     player_->SetEnergy(75.0f); // for demo purposes
     player_->SetHealth(75.0f); // for demo purposes
     HoverTankTurret* hovertank_turret = CreateInstance<HoverTankTurret>(HOVERTANK_TURRET, HOVERTANK_TURRET, hovertankMaterial, "uv6");
-    hovertank_turret->Translate(glm::vec3(0.f, 1.255f, -0.4f));
+    hovertank_turret->Translate(glm::vec3(0.f, 1.055f, -0.4f));
     hovertank_turret->SetParent(hovertank_base);
     hovertank_turret->SetForward(hovertank_base->GetForward());
     hovertank_base->SetTurret(hovertank_turret);
@@ -211,7 +211,6 @@ void Game::SetupScene(void) {
 
     Scanner* tank_scanner = CreateInstance<Scanner>("Scanner", HOVERTANK_SCANNER, hovertankMaterial, "uv6");
     tank_scanner->Translate(glm::vec3(0.0f, 0.345, 1.0375f));
-    tank_scanner->Rotate(glm::angleAxis(glm::radians(-90.0f), hovertank_base->GetRight()));
     tank_scanner->SetParent(hovertank_turret);
 
     // Initialize certain scene nodes

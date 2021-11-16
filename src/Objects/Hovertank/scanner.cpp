@@ -13,7 +13,6 @@ namespace game {
 		// Initialize the scan cone effect
 		scanCone_ = Game::GetInstance().CreateInstance<SceneNode>("Scan Cone", HOVERTANK_SCANNER_CONE, "Simple", "uv6");
 		scanCone_->SetParent(this);
-		scanCone_->Rotate(glm::angleAxis(glm::radians(180.0f), glm::vec3(1,0,0)));
 		scanCone_->SetActive(false);
 		
 		scanning_ = false;
