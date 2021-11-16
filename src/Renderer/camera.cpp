@@ -6,6 +6,10 @@
 #include <iostream>
 
 #include "Renderer/camera.h"
+#include "Control/time.h"
+#include "Control/input.h"
+#include "Objects/Hovertank/hovertank.h"
+#include "Objects/Hovertank/hovertank_turret.h"
 
 namespace game {
 
@@ -188,6 +192,67 @@ void Camera::SetupViewMatrix(void){
 
     // Combine translation and view matrix in proper order
     view_matrix_ *= trans;
+}
+
+// Update camera to be in third person view of the tank object
+void Camera::UpdateCameraToTarget(HoverTank* tank) {
+    HoverTankTurret* turret = tank->GetTurret();
+    glm::vec3 pos = glm::vec3(turret->GetWorldTransform() * glm::vec4(turret->GetPosition(), 1));
+    glm::vec3 forward = tank->GetOrientation() * turret->GetForward();
+    SetPosition(pos - forward * 10.f + tank->GetUp() * 3.0f);
+    SetView(GetPosition(), pos, tank->GetUp());
+}
+
+// Update camera to be in freeroam
+void Camera::UpdateCameraFreeroam() {
+    float rot_factor(glm::pi<float>() / 180);
+    float trans_factor = 1.0 * Time::GetDeltaTime();
+    if (Input::getKey(INPUT_KEY_LEFT_SHIFT)) {
+        trans_factor *= 10;
+    }
+    
+    // Translate forward/backward
+    if (Input::getKey(INPUT_KEY_W)){
+        Translate(GetForward()*trans_factor);
+    }
+    if (Input::getKey(INPUT_KEY_S)){
+        Translate(-GetForward()*trans_factor);
+    }
+    // Translate left/right
+    if (Input::getKey(INPUT_KEY_A)){
+        Translate(-GetSide()*trans_factor);
+    }
+    if (Input::getKey(INPUT_KEY_D)){
+        Translate(GetSide()*trans_factor);
+    }
+    // Translate up/down
+    if (Input::getKey(INPUT_KEY_Q)){
+        Translate(GetUp()*trans_factor);
+    }
+    if (Input::getKey(INPUT_KEY_E)){
+        Translate(-GetUp()*trans_factor);
+    }
+    // Rotate pitch
+    if (Input::getKey(INPUT_KEY_UP)){
+        Pitch(rot_factor);
+    }
+    if (Input::getKey(INPUT_KEY_DOWN)){
+        Pitch(-rot_factor);
+    }
+    // Rotate yaw
+    if (Input::getKey(INPUT_KEY_LEFT)){
+        Yaw(rot_factor);
+    }
+    if (Input::getKey(INPUT_KEY_RIGHT)){
+        Yaw(-rot_factor);
+    }
+    // Rotate roll
+    if (Input::getKey(INPUT_KEY_COMMA)){
+        Roll(-rot_factor);
+    }
+    if (Input::getKey(INPUT_KEY_PERIOD)){
+        Roll(rot_factor);
+    }
 }
 
 } // namespace game

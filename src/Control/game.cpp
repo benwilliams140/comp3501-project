@@ -11,21 +11,14 @@ const unsigned int window_width_g = 1280;
 const unsigned int window_height_g = 720;
 const bool window_full_screen_g = false;
 
-
-
-
 // Viewport and camera settings
 glm::vec3 camera_position_g(0.5, 0.5, 10.0);
 glm::vec3 camera_look_at_g(0.0, 0.0, 0.0);
 glm::vec3 camera_up_g(0.0, 1.0, 0.0);
 const glm::vec3 viewport_background_color_g(0.1, 0.1, 0.1);
 
-
 // Materials 
 const std::string material_directory_g = MATERIAL_DIRECTORY;
-
-// Forward function declarations
-void UpdateCameraMovement(Camera*);
 
 Game::Game(void){
     // do nothing
@@ -122,9 +115,6 @@ void Game::SetupResources(void) {
 
     // Create geometry of the objects
     resman_.CreateQuad("FlatSurface");
-    //resman_.CreateTorus("SimpleTorusMesh", 0.8, 0.35, 30, 30);
-    //resman_.CreateSeamlessTorus("SeamlessTorusMesh", 0.8, 0.35, 80, 80);
-    //resman_.CreateCylinder("SimpleCylinderMesh", 2.0, 0.4, 30, 30);
 
     // Load/Create terrain
     resman_.CreateTerrain("Terrain", glm::vec3(2.5f, 1.0f, 2.5f));
@@ -136,7 +126,7 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Mesh, "Cube", filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Chassis.mesh");
     resman_.LoadResource(ResourceType::Mesh, HOVERTANK_BASE, filename.c_str());
-    filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Cylinder.mesh");
+    filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Turret.mesh");
     resman_.LoadResource(ResourceType::Mesh, HOVERTANK_TURRET, filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Wheel_BL.mesh");
     resman_.LoadResource(ResourceType::Mesh, HOVERTANK_TRACK_BL, filename.c_str());
@@ -146,6 +136,12 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Mesh, HOVERTANK_TRACK_FL, filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Wheel_FR.mesh");
     resman_.LoadResource(ResourceType::Mesh, HOVERTANK_TRACK_FR, filename.c_str());
+    filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Scanner.mesh");
+    resman_.LoadResource(ResourceType::Mesh, HOVERTANK_SCANNER, filename.c_str());
+    filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Scanner_Cone.mesh");
+    resman_.LoadResource(ResourceType::Mesh, HOVERTANK_SCANNER_CONE, filename.c_str());
+    filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Machine_Gun.mesh");
+    resman_.LoadResource(ResourceType::Mesh, HOVERTANK_MACHINE_GUN, filename.c_str());
 
     // Load shaders
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/simple_texture");
@@ -164,12 +160,7 @@ void Game::SetupScene(void) {
     // Set background color for the scene
     scene_.SetBackgroundColor(viewport_background_color_g);
 
-    // Create an object for showing the texture
-    // instance contains identifier, geometry, shader, and texture
-    //game::SceneNode *mytorus = CreateInstance("MyTorus1", "SimpleTorusMesh", "TextureShader", "RockyTexture");
-    //game::SceneNode *mytorus = CreateInstance("MyTorus1", "SimpleTorusMesh", "Procedural", "RockyTexture");
-    //game::SceneNode *mytorus = CreateInstance("MyTorus1", "SeamlessTorusMesh", "Lighting", "RockyTexture");
-
+    // Create Terrain Instance
     Terrain* terrain = CreateInstance<Terrain>("Terrain Object", "Terrain", "Lighting", "uv6");
     terrain->Translate(glm::vec3(-50.f));
     terrain_ = terrain;
@@ -179,12 +170,12 @@ void Game::SetupScene(void) {
     // if scaling: multiply all translation values by the scale factor
     // if a new model is loaded, will probably need to update these translations
     std::string hovertankMaterial = "Simple";
-    HoverTank* hovertank_base = CreateInstance<HoverTank>(HOVERTANK_BASE, HOVERTANK_BASE, hovertankMaterial);
+    HoverTank* hovertank_base = CreateInstance<HoverTank>(HOVERTANK_BASE, HOVERTANK_BASE, hovertankMaterial, "uv6");
     player_ = new Player(100.f, 100.f, hovertank_base);
     player_->SetEnergy(75.0f); // for demo purposes
     player_->SetHealth(75.0f); // for demo purposes
-    HoverTankTurret* hovertank_turret = CreateInstance<HoverTankTurret>(HOVERTANK_TURRET, HOVERTANK_TURRET, hovertankMaterial);
-    hovertank_turret->Translate(glm::vec3(0.f, 1.1f, -0.25f));
+    HoverTankTurret* hovertank_turret = CreateInstance<HoverTankTurret>(HOVERTANK_TURRET, HOVERTANK_TURRET, hovertankMaterial, "uv6");
+    hovertank_turret->Translate(glm::vec3(0.f, 1.255f, -0.4f));
     hovertank_turret->SetParent(hovertank_base);
     hovertank_turret->SetForward(hovertank_base->GetForward());
     hovertank_base->SetTurret(hovertank_turret);
@@ -193,28 +184,35 @@ void Game::SetupScene(void) {
     std::string trackLocations[] = { "BL", "BR", "FL", "FR" };
     std::vector<HoverTankTrack*> hovertank_tracks;
     for (int i = 0; i < 4; ++i) {
-        hovertank_tracks.push_back(CreateInstance<HoverTankTrack>("HovertankTrack" + trackLocations[i], "HovertankTrack" + trackLocations[i], hovertankMaterial));
+        hovertank_tracks.push_back(CreateInstance<HoverTankTrack>("HovertankTrack" + trackLocations[i], "HovertankTrack" + trackLocations[i], hovertankMaterial, "uv6"));
         hovertank_tracks.at(i)->SetParent(hovertank_base);
-        float dx = -1.5f + 3.0f * ((i + 1) % 2); // left tracks (i=0,2) should translate (x) by 1.5, right (i=1,3) by -1.5
+        float dx = -1.4f + 2.8f * ((i + 1) % 2); // left tracks (i=0,2) should translate (x) by 1.4, right (i=1,3) by -1.4
         float dy = -0.3f; // all tracks should translate (y) by -.3
-        float dz = -1.0f + 4.0f * (floor(i / 2)); // back tracks (i=0,1) should translate (z) by -1, front (i=2,3) by 3
+        float dz = -1.0f + 3.0f * (floor(i / 2)); // back tracks (i=0,1) should translate (z) by -1, front (i=2,3) by 3
         hovertank_tracks.at(i)->Translate(glm::vec3(dx, dy, dz));
     }
 
     // load the wheel model as the machine gun temporarily
-    MachineGun* machine_gun = CreateInstance<MachineGun>("MachineGun", HOVERTANK_TRACK_BL, hovertankMaterial);
+    MachineGun* machine_gun = CreateInstance<MachineGun>("MachineGun", HOVERTANK_MACHINE_GUN, hovertankMaterial, "uv6");
     machine_gun->Rotate(glm::angleAxis(glm::radians(180.0f), hovertank_base->GetForward()));
-    machine_gun->Translate(glm::vec3(0.0f, 1.0f, -0.0f));
+    machine_gun->Translate(glm::vec3(0.0f, 0.2555f, 0.0f));
     machine_gun->Scale(glm::vec3(0.75));
     machine_gun->SetParent(hovertank_turret);
+    machine_gun->SetActive(false);
     hovertank_turret->AddAbility(machine_gun);
 
-    EnergyCannon* energy_cannon = CreateInstance<EnergyCannon>("MachineGun", HOVERTANK_TRACK_BL, hovertankMaterial);
+    EnergyCannon* energy_cannon = CreateInstance<EnergyCannon>("MachineGun", HOVERTANK_MACHINE_GUN, hovertankMaterial, "uv6");
     energy_cannon->Rotate(glm::angleAxis(glm::radians(180.0f), hovertank_base->GetForward()));
-    energy_cannon->Translate(glm::vec3(0.0f, 1.0f, -0.0f));
+    energy_cannon->Translate(glm::vec3(0.0f, 0.2555f, 0.0f));
     energy_cannon->Scale(glm::vec3(0.75));
     energy_cannon->SetParent(hovertank_turret);
+    energy_cannon->SetActive(false);
     hovertank_turret->AddAbility(energy_cannon);
+
+    Scanner* tank_scanner = CreateInstance<Scanner>("Scanner", HOVERTANK_SCANNER, hovertankMaterial, "uv6");
+    tank_scanner->Translate(glm::vec3(0.0f, 0.345, 1.0375f));
+    tank_scanner->Rotate(glm::angleAxis(glm::radians(-90.0f), hovertank_base->GetRight()));
+    tank_scanner->SetParent(hovertank_turret);
 
     // Initialize certain scene nodes
     terrain_->Init();
@@ -257,10 +255,9 @@ void Game::MainLoop(void){
 
             // handle camera/tank movement
             if (freeroam_) {
-                UpdateCameraMovement(camera_);
-            }
-            else {
-                UpdateCameraPos();
+                camera_->UpdateCameraFreeroam();
+            } else {
+                camera_->UpdateCameraToTarget((HoverTank*)scene_.GetNode(HOVERTANK_BASE));
             }
 
             // removes dead projectiles
@@ -304,63 +301,6 @@ void Game::MainLoop(void){
     }
 }*/
 
-void Game::UpdateCameraPos() {
-    HoverTank* tank = (HoverTank*)scene_.GetNode(HOVERTANK_BASE);
-    HoverTankTurret* turret = tank->GetTurret();
-    glm::vec3 pos = glm::vec3(turret->GetWorldTransform() * glm::vec4(turret->GetPosition(), 1));
-    glm::vec3 forward = tank->GetOrientation() * turret->GetForward();
-    camera_->SetPosition(pos - forward * 15.f + tank->GetUp() * 3.0f);
-    camera_->SetView(camera_->GetPosition(), pos, tank->GetUp());
-}
-
-void UpdateCameraMovement(Camera* camera) {
-    float rot_factor(glm::pi<float>() / 180);
-    float trans_factor = 1.0;
-    
-    // Translate forward/backward
-    if (Input::getKey(INPUT_KEY_W)){
-        camera->Translate(camera->GetForward()*trans_factor);
-    }
-    if (Input::getKey(INPUT_KEY_S)){
-        camera->Translate(-camera->GetForward()*trans_factor);
-    }
-    // Translate left/right
-    if (Input::getKey(INPUT_KEY_A)){
-        camera->Translate(-camera->GetSide()*trans_factor);
-    }
-    if (Input::getKey(INPUT_KEY_D)){
-        camera->Translate(camera->GetSide()*trans_factor);
-    }
-    // Translate up/down
-    if (Input::getKey(INPUT_KEY_Q)){
-        camera->Translate(camera->GetUp()*trans_factor);
-    }
-    if (Input::getKey(INPUT_KEY_E)){
-        camera->Translate(-camera->GetUp()*trans_factor);
-    }
-    // Rotate pitch
-    if (Input::getKey(INPUT_KEY_UP)){
-        camera->Pitch(rot_factor);
-    }
-    if (Input::getKey(INPUT_KEY_DOWN)){
-        camera->Pitch(-rot_factor);
-    }
-    // Rotate yaw
-    if (Input::getKey(INPUT_KEY_LEFT)){
-        camera->Yaw(rot_factor);
-    }
-    if (Input::getKey(INPUT_KEY_RIGHT)){
-        camera->Yaw(-rot_factor);
-    }
-    // Rotate roll
-    if (Input::getKey(INPUT_KEY_COMMA)){
-        camera->Roll(-rot_factor);
-    }
-    if (Input::getKey(INPUT_KEY_PERIOD)){
-        camera->Roll(rot_factor);
-    }
-}
-
 void Game::ResizeCallback(GLFWwindow* window, int width, int height){
     // Set up viewport and camera projection based on new window size
     glViewport(0, 0, width, height);
@@ -400,6 +340,10 @@ Player* Game::GetPlayer() {
 
 void Game::SetState(State state) {
     state_ = state;
+}
+
+bool Game::GetFreeroam() const {
+    return freeroam_;
 }
 
 } // namespace game

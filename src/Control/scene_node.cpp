@@ -52,6 +52,7 @@ namespace game {
         parent_ = nullptr;
 
         colliderBox_ = glm::vec3(0);
+        active_ = true;
     }
 
     SceneNode::~SceneNode() {}
@@ -82,6 +83,14 @@ namespace game {
 
     void SceneNode::SetAngM(glm::quat angm) {
         angm_ = angm;
+    }
+
+    bool SceneNode::GetActive(void) const{
+        return active_;
+    }
+
+    void SceneNode::SetActive(bool active) {
+        active_ = active;
     }
 
     void SceneNode::SetPosition(glm::vec3 position) {

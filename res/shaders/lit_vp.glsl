@@ -26,7 +26,8 @@ void main() {
     gl_Position = projection_mat * view_mat * world_mat * vec4(vertex, 1.0);
 
     position_interp = vec3(view_mat * world_mat * vec4(vertex, 1.0));
-    normal_interp = vec3(normal_mat * vec4(normal, 0.0));
+    normal_interp = vec3(view_mat * world_mat * vec4(normal, 0.0));
+    //normal_interp = vec3(normal_mat * vec4(normal, 0.0));
     color_interp = vec4(color, 1.0);
     uv_interp = uv;
 

@@ -19,13 +19,19 @@ namespace game {
 
 	public:
 		// Create Scanner from given resources
-		Scanner(const std::string name, const Resource* geometry, const Resource* material);
+		Scanner(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture);
 
 		// Destructor
 		~Scanner();
 
 		// Update geometry configuration
 		virtual void Update(void) override;
+
+	private:
+		SceneNode* scanCone_;
+		bool scanning_;
+		float scanStartTime;
+
 	}; // class Scanner
 
 } // namespace game

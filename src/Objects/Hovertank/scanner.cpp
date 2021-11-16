@@ -5,20 +5,46 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 #include <time.h>
+#include <control/game.h>
 
 namespace game {
 
-	Scanner::Scanner(const std::string name, const Resource* geometry, const Resource* material) : SceneNode(name, geometry, material) {
+	Scanner::Scanner(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : SceneNode(name, geometry, material, texture) {
+		// Initialize the scan cone effect
+		scanCone_ = Game::GetInstance().CreateInstance<SceneNode>("Scan Cone", HOVERTANK_SCANNER_CONE, "Simple", "uv6");
+		scanCone_->SetParent(this);
+		scanCone_->Rotate(glm::angleAxis(glm::radians(180.0f), glm::vec3(1,0,0)));
+		scanCone_->SetActive(false);
+		
+		scanning_ = false;
 	}
 
-
-	Scanner::~Scanner() {
-	}
-
+	Scanner::~Scanner() {}
 
 	void Scanner::Update(void) {
+		if (scanning_) {
+			static float scanMaxTime = 2.0f;
+			float scanDeltaTime = Time::GetElapsedTime() - scanStartTime;
+			float rot_factor = 20.0f * Time::GetDeltaTime();
 
-		Rotate(GetAngM());
+			// Update scanning animation
+			if (scanDeltaTime < (scanMaxTime/2.0f)) {
+				Rotate(glm::angleAxis(glm::radians(rot_factor), glm::vec3(1,0,0)));
+			} else if (scanDeltaTime < scanMaxTime) {
+				Rotate(glm::angleAxis(glm::radians(-rot_factor), glm::vec3(1,0,0)));
+			} else {
+				// Stop scanning
+				scanCone_->SetActive(false);
+				scanning_ = false;
+			}
+		} else {
+			// Start scanning
+			if (Input::getKeyDown(INPUT_KEY_C)) {
+				scanning_ = true;
+				scanStartTime = Time::GetElapsedTime();
+				scanCone_->SetActive(true);
+			}
+		}
 	}
 
 } // namespace game

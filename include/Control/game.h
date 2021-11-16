@@ -45,6 +45,9 @@
 // object/resource names
 #define HOVERTANK_BASE "HovertankChassis"
 #define HOVERTANK_TURRET "HovertankCylinder"
+#define HOVERTANK_SCANNER "HovertankScanner"
+#define HOVERTANK_SCANNER_CONE "HovertankScannerCone"
+#define HOVERTANK_MACHINE_GUN "HovertankMachineGun"
 #define HOVERTANK_TRACK_BL "HovertankTrackBL"
 #define HOVERTANK_TRACK_BR "HovertankTrackBR"
 #define HOVERTANK_TRACK_FL "HovertankTrackFL"
@@ -106,6 +109,7 @@ namespace game {
             Player* GetPlayer();
             Terrain* GetTerrain();
             void SetState(State state);
+            bool GetFreeroam() const;
 
             // Delete these function to be sure they don't accidentlly create copies of the instance
             Game(Game const&) = delete;
@@ -147,10 +151,6 @@ namespace game {
             // Methods to handle events
             static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
             static void ResizeCallback(GLFWwindow* window, int width, int height);
-
-            // handle movement
-            void UpdateCameraPos();
-            void HandleHovertankInput(); // this might need to be removed
 
             Resource* GetResource(std::string res); // get the resource listed
     }; // class Game

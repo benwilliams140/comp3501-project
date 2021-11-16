@@ -34,6 +34,7 @@ namespace game {
         glm::vec3 GetScale(void) const;
         SceneNode* GetParent(void) const;
         glm::quat GetAngM(void) const;
+        bool GetActive(void) const;
 
         // Set node attributes
         void SetPosition(glm::vec3 position);
@@ -41,6 +42,7 @@ namespace game {
         void SetScale(glm::vec3 scale);
         void SetParent(SceneNode* parent);
         void SetAngM(glm::quat angm);
+        void SetActive(bool active);
 
         // Perform transformations on node
         void Translate(glm::vec3 trans);
@@ -85,6 +87,7 @@ namespace game {
         glm::vec3 scale_; // Scale of node
         glm::quat angm_; // angular momentum
         SceneNode* parent_; // Parent node
+        bool active_; // Whether or not the object should be updated and drawn
 
         // should set the x,y,z values to 0 when a node does not need collision
         glm::vec3 colliderBox_;

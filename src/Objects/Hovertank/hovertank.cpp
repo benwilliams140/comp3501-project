@@ -23,9 +23,11 @@ namespace game {
 	HoverTank::~HoverTank() {}
 
 	void HoverTank::Update(void) {
-		// Update tank movement
-		motionControl();
-		shootingControl();
+		// Update tank movement if game is not in freeroam
+		if (!Game::GetInstance().GetFreeroam()) {
+			motionControl();
+			shootingControl();
+		}
     
 		// Check for terrain collision
 		terrainCollision();
