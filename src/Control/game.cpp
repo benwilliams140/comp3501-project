@@ -128,14 +128,10 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Mesh, HOVERTANK_BASE, filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Turret.mesh");
     resman_.LoadResource(ResourceType::Mesh, HOVERTANK_TURRET, filename.c_str());
-    filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Wheel_BL.mesh");
-    resman_.LoadResource(ResourceType::Mesh, HOVERTANK_TRACK_BL, filename.c_str());
-    filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Wheel_BR.mesh");
-    resman_.LoadResource(ResourceType::Mesh, HOVERTANK_TRACK_BR, filename.c_str());
-    filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Wheel_FL.mesh");
-    resman_.LoadResource(ResourceType::Mesh, HOVERTANK_TRACK_FL, filename.c_str());
-    filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Wheel_FR.mesh");
-    resman_.LoadResource(ResourceType::Mesh, HOVERTANK_TRACK_FR, filename.c_str());
+    filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Track_Rear.mesh");
+    resman_.LoadResource(ResourceType::Mesh, HOVERTANK_TRACK_REAR, filename.c_str());
+    filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Track_Front.mesh");
+    resman_.LoadResource(ResourceType::Mesh, HOVERTANK_TRACK_FRONT, filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Scanner.mesh");
     resman_.LoadResource(ResourceType::Mesh, HOVERTANK_SCANNER, filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Scanner_Cone.mesh");
@@ -154,6 +150,8 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Texture, "RockyTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/uv6.png");
     resman_.LoadResource(ResourceType::Texture, "uv6", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/track_texture.png");
+    resman_.LoadResource(ResourceType::Texture, "TrackTexture", filename.c_str());
 }
 
 void Game::SetupScene(void) {
@@ -181,10 +179,10 @@ void Game::SetupScene(void) {
     hovertank_base->SetTurret(hovertank_turret);
 
     // create hovertank tracks
-    std::string trackLocations[] = { "BL", "BR", "FL", "FR" };
+    std::string trackLocations[] = { "Rear", "Rear", "Front", "Front" };
     std::vector<HoverTankTrack*> hovertank_tracks;
     for (int i = 0; i < 4; ++i) {
-        hovertank_tracks.push_back(CreateInstance<HoverTankTrack>("HovertankTrack" + trackLocations[i], "HovertankTrack" + trackLocations[i], hovertankMaterial, "uv6"));
+        hovertank_tracks.push_back(CreateInstance<HoverTankTrack>("HovertankTrack" + trackLocations[i], "HovertankTrack" + trackLocations[i], hovertankMaterial, "TrackTexture"));
         hovertank_tracks.at(i)->SetParent(hovertank_base);
         float dx = -1.4f + 2.8f * ((i + 1) % 2); // left tracks (i=0,2) should translate (x) by 1.4, right (i=1,3) by -1.4
         float dy = -0.3f; // all tracks should translate (y) by -.3

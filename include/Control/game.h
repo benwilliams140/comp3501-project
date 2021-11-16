@@ -48,10 +48,8 @@
 #define HOVERTANK_SCANNER "HovertankScanner"
 #define HOVERTANK_SCANNER_CONE "HovertankScannerCone"
 #define HOVERTANK_MACHINE_GUN "HovertankMachineGun"
-#define HOVERTANK_TRACK_BL "HovertankTrackBL"
-#define HOVERTANK_TRACK_BR "HovertankTrackBR"
-#define HOVERTANK_TRACK_FL "HovertankTrackFL"
-#define HOVERTANK_TRACK_FR "HovertankTrackFR"
+#define HOVERTANK_TRACK_REAR "HovertankTrackRear"
+#define HOVERTANK_TRACK_FRONT "HovertankTrackFront"
 
 namespace game {
 
