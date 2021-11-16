@@ -25,7 +25,9 @@ namespace game {
 	void HoverTank::Update(void) {
 		// Update tank movement if game is not in freeroam
 		if (!Game::GetInstance().GetFreeroam()) {
-			motionControl();
+			if (!scanner_->IsScanning()) {
+				motionControl();
+			}
 			shootingControl();
 		}
     
@@ -150,6 +152,10 @@ namespace game {
 
 	void HoverTank::SetTurret(HoverTankTurret* turret) {
 		turret_ = turret;
+	}
+
+	void HoverTank::SetScanner(Scanner* scanner) {
+		scanner_ = scanner;
 	}
 	
 	void HoverTank::SetSpeedMultiple(float multiple) {

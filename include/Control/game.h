@@ -108,6 +108,7 @@ namespace game {
             GLFWwindow* GetWindow();
             Player* GetPlayer();
             Terrain* GetTerrain();
+            std::vector<Artifact*>& GetArtifacts();
             void SetState(State state);
             bool GetFreeroam() const;
 
@@ -135,6 +136,7 @@ namespace game {
             // Game objects
             Camera* camera_;
             Terrain* terrain_;
+            std::vector<Artifact*> artifacts_;
 
             // Player
             Player* player_;

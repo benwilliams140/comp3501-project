@@ -47,7 +47,7 @@ namespace game {
 		void gainMoney(float gain);
 		bool purchase(float payment);
 
-		void addArtifact(Artifact *newArtifact);
+		void DiscoveredArtifact(Artifact *newArtifact);
 		Artifact* GetArtifact(int id);
 		void printArtifacts();
 

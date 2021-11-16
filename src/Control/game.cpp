@@ -162,7 +162,7 @@ void Game::SetupScene(void) {
 
     // Create Terrain Instance
     Terrain* terrain = CreateInstance<Terrain>("Terrain Object", "Terrain", "Lighting", "uv6");
-    terrain->Translate(glm::vec3(-50.f));
+    terrain->Translate(glm::vec3(-625.f, 0.0F, -625.0F));
     terrain_ = terrain;
 
     // create hovertank hierarchy
@@ -208,10 +208,17 @@ void Game::SetupScene(void) {
     energy_cannon->SetParent(hovertank_turret);
     energy_cannon->SetActive(false);
     hovertank_turret->AddAbility(energy_cannon);
+    
+    // Create Hovertank scanner
+    Scanner* hovertank_scanner = CreateInstance<Scanner>("Scanner", HOVERTANK_SCANNER, hovertankMaterial, "uv6");
+    hovertank_scanner->Translate(glm::vec3(0.0f, 0.345, 1.0375f));
+    hovertank_scanner->SetParent(hovertank_turret);
+    hovertank_base->SetScanner(hovertank_scanner);
 
-    Scanner* tank_scanner = CreateInstance<Scanner>("Scanner", HOVERTANK_SCANNER, hovertankMaterial, "uv6");
-    tank_scanner->Translate(glm::vec3(0.0f, 0.345, 1.0375f));
-    tank_scanner->SetParent(hovertank_turret);
+    // Create Artifacts
+    Artifact* artifact1 = CreateInstance<Artifact>("Artifact 1", "Cube", "Simple", "uv6");
+    artifact1->SetPosition(glm::vec3(5.0f, -11.0f, 25.0f));
+    artifacts_.push_back(artifact1);
 
     // Initialize certain scene nodes
     terrain_->Init();
@@ -343,6 +350,10 @@ void Game::SetState(State state) {
 
 bool Game::GetFreeroam() const {
     return freeroam_;
+}
+
+std::vector<Artifact*>& Game::GetArtifacts() {
+    return artifacts_;
 }
 
 } // namespace game

@@ -11,6 +11,7 @@
 
 #include "Control/resource.h"
 #include "Control/scene_node.h"
+#include "Objects/Artifact.h"
 
 namespace game {
 
@@ -27,10 +28,13 @@ namespace game {
 		// Update geometry configuration
 		virtual void Update(void) override;
 
+		bool IsScanning() const;
+
 	private:
 		SceneNode* scanCone_;
+		Artifact* artifact_;
 		bool scanning_;
-		float scanStartTime;
+		float scanStartTime_;
 
 	}; // class Scanner
 

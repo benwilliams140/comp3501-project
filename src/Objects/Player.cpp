@@ -19,31 +19,26 @@ namespace game {
 	}
 
 
-	Player::~Player() {
-	}
+	Player::~Player() {}
+
 	//getters
 	float Player::GetHealth(void) {
-
 		return health;
 	}
 
 	float Player::GetMaxHealth(void) {
-
 		return maxHealth;
 	}
 
 	float Player::GetEnergy(void) {
-
 		return energy;
 	}
 
 	float Player::GetMaxEnergy(void) {
-
 		return maxEnergy;
 	}
 
 	float Player::GetMoney(void) {
-
 		return money;
 	}
 
@@ -53,22 +48,18 @@ namespace game {
 
 	//setters
 	void Player::SetHealth(float newHealth) {
-
 		health = newHealth;
 	}
 
 	void Player::SetMaxHealth(float newHealth) {
-
 		maxHealth = newHealth;
 	}
 
 	void Player::SetEnergy(float newEnergy) {
-
 		energy = newEnergy;
 	}
 
 	void Player::SetMaxEnergy(float newEnergy) {
-
 		maxEnergy = newEnergy;
 	}
 
@@ -125,7 +116,7 @@ namespace game {
 		}
 	}
 
-	void Player::addArtifact(Artifact* newArtifact) {
+	void Player::DiscoveredArtifact(Artifact* newArtifact) {
 		//add a discovered artifact
 		artifacts.push_back(newArtifact);
 	}
