@@ -150,8 +150,8 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Texture, "RockyTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/uv6.png");
     resman_.LoadResource(ResourceType::Texture, "uv6", filename.c_str());
-    filename = std::string(TEXTURE_DIRECTORY) + std::string("/track_texture.png");
-    resman_.LoadResource(ResourceType::Texture, "TrackTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/hovertank_texture.png");
+    resman_.LoadResource(ResourceType::Texture, "HovertankTexture", filename.c_str());
 }
 
 void Game::SetupScene(void) {
@@ -168,11 +168,11 @@ void Game::SetupScene(void) {
     // if scaling: multiply all translation values by the scale factor
     // if a new model is loaded, will probably need to update these translations
     std::string hovertankMaterial = "Simple";
-    HoverTank* hovertank_base = CreateInstance<HoverTank>(HOVERTANK_BASE, HOVERTANK_BASE, hovertankMaterial, "uv6");
+    HoverTank* hovertank_base = CreateInstance<HoverTank>(HOVERTANK_BASE, HOVERTANK_BASE, hovertankMaterial, "HovertankTexture");
     player_ = new Player(100.f, 100.f, hovertank_base);
     player_->SetEnergy(75.0f); // for demo purposes
     player_->SetHealth(75.0f); // for demo purposes
-    HoverTankTurret* hovertank_turret = CreateInstance<HoverTankTurret>(HOVERTANK_TURRET, HOVERTANK_TURRET, hovertankMaterial, "uv6");
+    HoverTankTurret* hovertank_turret = CreateInstance<HoverTankTurret>(HOVERTANK_TURRET, HOVERTANK_TURRET, hovertankMaterial, "HovertankTexture");
     hovertank_turret->Translate(glm::vec3(0.f, 1.055f, -0.4f));
     hovertank_turret->SetParent(hovertank_base);
     hovertank_turret->SetForward(hovertank_base->GetForward());
@@ -182,7 +182,7 @@ void Game::SetupScene(void) {
     std::string trackLocations[] = { "Rear", "Rear", "Front", "Front" };
     std::vector<HoverTankTrack*> hovertank_tracks;
     for (int i = 0; i < 4; ++i) {
-        hovertank_tracks.push_back(CreateInstance<HoverTankTrack>("HovertankTrack" + trackLocations[i], "HovertankTrack" + trackLocations[i], hovertankMaterial, "TrackTexture"));
+        hovertank_tracks.push_back(CreateInstance<HoverTankTrack>("HovertankTrack" + trackLocations[i], "HovertankTrack" + trackLocations[i], hovertankMaterial, "HovertankTexture"));
         hovertank_tracks.at(i)->SetParent(hovertank_base);
         float dx = -1.4f + 2.8f * ((i + 1) % 2); // left tracks (i=0,2) should translate (x) by 1.4, right (i=1,3) by -1.4
         float dy = -0.3f; // all tracks should translate (y) by -.3
