@@ -44,7 +44,7 @@ namespace game {
 		void SetEnergy(float newEnergy);
 		void SetMaxEnergy(float newEnergy);
 		void energyLost(float lostEnergy);
-		void gainMoney(float gain);
+		void AddMoney(float money);
 		bool purchase(float payment);
 
 		void DiscoveredArtifact(Artifact *newArtifact);

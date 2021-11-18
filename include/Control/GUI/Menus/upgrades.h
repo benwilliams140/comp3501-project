@@ -15,28 +15,43 @@ namespace game {
 	private:
 		/*
 		Properties related to upgrade elements
-		All ratios are in reference to the window size
 		*/
-		struct UpgradeIndices {
-			int speed = 0;
-			int health = 0;
-			int energy = 0;
+		struct WeaponUpgrade {
 			bool machineGun = false;
+			int machineGunCost = 2500;
 			bool energyCannon = false;
-		} upgradeIndices_;
+			int energyCannonCost = 5000;
+		} weaponUpgrade_;
+
+		struct SpeedUpgrade {
+			int index = 0;
+			int cost = 2000;
+			float multiplier = 2.0f;
+		} speedUpgrade_;
+
+		struct HealthUpgrade {
+			int index = 0;
+			int cost = 2000;
+			float multiplier = 2.0f;
+		} healthUpgrade_;
+
+		struct EnergyUpgrade {
+			int index = 0;
+			int cost = 2000;
+			float multiplier = 2.0f;
+		} energyUpgrade_;
 
 		const struct Button {
 			float widthRatio = 0.15f;
 			float heightRatio = 0.075f;
 		} button_;
-		/*
-		const struct HealthBar {
-			float widthRatio = 0.2f;
-			float heightRatio = 0.05f;
-			ImTextureID backgroundImage = Menu::LoadImage("health_bar_background.png");
-			ImU32 foregroundColor = IM_COL32(0, 200, 0, 255);
-		} healthBar_;*/
 
+		const struct PointsLabel {
+			float widthRatio = 0.15f;
+			float heightRatio = 0.075f;
+		} pointsLabel_;
+
+		void RenderPoints(int points, ImVec2 windowSize);
 		void RenderWeaponUpgrades(int points, ImVec2 buttonSize);
 		void RenderSpeedUpgrades(int points, ImVec2 buttonSize);
 		void RenderHealthUpgrades(int points, ImVec2 buttonSize);

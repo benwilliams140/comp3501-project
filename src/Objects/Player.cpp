@@ -101,8 +101,8 @@ namespace game {
 		}
 	}
 
-	void Player::gainMoney(float gain) {
-		money += gain;
+	void Player::AddMoney(float money) {
+		this->money += money;
 	}
 
 	bool Player::purchase(float payment) {

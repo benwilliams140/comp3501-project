@@ -171,8 +171,7 @@ void Game::SetupScene(void) {
     std::string hovertankMaterial = "Simple";
     HoverTank* hovertank_base = CreateInstance<HoverTank>(HOVERTANK_BASE, HOVERTANK_BASE, hovertankMaterial, "uv6");
     player_ = new Player(100.f, 100.f, hovertank_base);
-    player_->SetEnergy(75.0f); // for demo purposes
-    player_->SetHealth(75.0f); // for demo purposes
+    player_->AddMoney(100000);
     HoverTankTurret* hovertank_turret = CreateInstance<HoverTankTurret>(HOVERTANK_TURRET, HOVERTANK_TURRET, hovertankMaterial, "uv6");
     hovertank_turret->Translate(glm::vec3(0.f, 1.055f, -0.4f));
     hovertank_turret->SetParent(hovertank_base);
@@ -295,30 +294,12 @@ void Game::MainLoop(void){
 
         // Push buffer drawn in the background onto the display
         glfwSwapBuffers(window_);
-
         Input::update();
-        
 
         // Update other events like input handling
         glfwPollEvents();
     }
 }
-
-/*
-    // shoot currently selected projectile
-    if (Input::getKey(INPUT_KEY_SPACE)) {
-        Resource* geom = GetResource("Cube");
-        Resource* mat = GetResource("Simple");
-        Resource* tex = GetResource("RockyTexture");
-        Projectile* outProj = nullptr;
-        player_->GetTank()->GetTurret()->UseSelectedAbility(&outProj, player_->GetTank()->GetForward(), geom, mat, tex);
-        if (outProj) {
-            outProj->SetPosition(player_->GetTank()->GetPosition());
-            outProj->Scale(glm::vec3(0.5f));
-            scene_.AddNode(outProj);
-        }
-    }
-}*/
 
 void Game::ResizeCallback(GLFWwindow* window, int width, int height){
     // Set up viewport and camera projection based on new window size
