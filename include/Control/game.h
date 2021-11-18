@@ -21,6 +21,7 @@
 #include "Control/GUI/Menus/main_menu.h"
 #include "Control/GUI/Menus/pause_menu.h"
 #include "Control/GUI/Menus/hud.h"
+#include "Control/GUI/Menus/upgrades.h"
 #include "Control/path_config.h"
 #include "Control/time.h"
 
@@ -67,7 +68,8 @@ namespace game {
     enum class State {
         PAUSED,
         RUNNING,
-        STOPPED
+        STOPPED,
+        UPGRADES
     };
 
     // Game application

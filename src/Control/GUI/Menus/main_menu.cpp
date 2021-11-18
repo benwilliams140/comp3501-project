@@ -35,15 +35,17 @@ namespace game {
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, BUTTON_ACTIVE_COLOR);
 		ImGui::PushStyleColor(ImGuiCol_Text, TEXT_COLOR);
 
+		ImVec2 buttonSize = ImVec2(windowWidth * button_.widthRatio, windowHeight * button_.heightRatio);
+
 		// start button definition
-		ImGui::SetCursorPos(ImVec2(windowWidth / 2 - BUTTON_WIDTH / 2, windowHeight / 2 - 3 * BUTTON_HEIGHT / 2 - 5));
-		if (ImGui::Button("Start", ImVec2(BUTTON_WIDTH, BUTTON_HEIGHT))) {
+		ImGui::SetCursorPos(ImVec2(windowWidth / 2 - buttonSize.x / 2, windowHeight / 2 - 3 * buttonSize.y / 2 - 5));
+		if (ImGui::Button("Start", buttonSize)) {
 			Game::GetInstance().SetState(State::RUNNING);
 		}
 
 		// quit button definition
-		ImGui::SetCursorPos(ImVec2(windowWidth / 2 - BUTTON_WIDTH / 2, windowHeight / 2 - BUTTON_HEIGHT / 2 + 5));
-		if (ImGui::Button("Quit", ImVec2(BUTTON_WIDTH, BUTTON_HEIGHT))) {
+		ImGui::SetCursorPos(ImVec2(windowWidth / 2 - buttonSize.x / 2, windowHeight / 2 - buttonSize.y / 2 + 5));
+		if (ImGui::Button("Quit", buttonSize)) {
 			glfwSetWindowShouldClose(Game::GetInstance().GetWindow(), GL_TRUE);
 		}
 

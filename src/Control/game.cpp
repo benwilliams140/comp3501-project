@@ -80,6 +80,7 @@ void Game::InitMenus() {
     menus_[MenuType::MAIN] = new MainMenu();
     menus_[MenuType::PAUSE] = new PauseMenu();
     menus_[MenuType::HUD] = new HUD();
+    menus_[MenuType::UPGRADES] = new Upgrades();
 }
 
 void Game::InitView(void){
@@ -234,7 +235,16 @@ void Game::MainLoop(void){
             switch (state_) {
             case State::PAUSED: state_ = State::RUNNING; break;
             case State::RUNNING: state_ = State::PAUSED; break;
+            case State::UPGRADES: state_ = State::PAUSED; break; // switch to pause menu
             default: break;
+            }
+        }
+        // Press 'U' key to open/close the upgrades screen
+        if (Input::getKeyDown(INPUT_KEY_U)) {
+            switch (state_) {
+            case State::PAUSED: state_ = State::UPGRADES; break; // switch to upgrades screen
+            case State::RUNNING: state_ = State::UPGRADES; break;
+            case State::UPGRADES: state_ = State::RUNNING; break;
             }
         }
 
@@ -252,6 +262,11 @@ void Game::MainLoop(void){
         else if (state_ == State::PAUSED) {
             scene_.Draw(camera_);
             menus_[MenuType::PAUSE]->Render();
+        }
+        // render upgrades screen and frozen game state in the background
+        else if (state_ == State::UPGRADES) {
+            scene_.Draw(camera_);
+            menus_[MenuType::UPGRADES]->Render();
         }
         // update and render game when running
         else if (state_ == State::RUNNING) {

@@ -42,8 +42,8 @@ namespace game {
 			ImU32 selectedColor = IM_COL32(255, 255, 255, 255);
 		} projSelection_;
 
-		void RenderHealthBar(int windowWidth, int windowHeight);
-		void RenderEnergyBar(int windowWidth, int windowHeight);
-		void RenderProjectileSelection(int windowWidth, int windowHeight);
+		void RenderHealthBar(ImVec2 windowSize, ImVec2 windowRatio);
+		void RenderEnergyBar(ImVec2 windowSize, ImVec2 windowRatio);
+		void RenderProjectileSelection(ImVec2 windowSize, ImVec2 windowRatio);
 	}; // MainMenu class
 } // namespace game
