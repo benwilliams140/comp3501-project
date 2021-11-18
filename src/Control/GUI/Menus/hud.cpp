@@ -45,7 +45,19 @@ namespace game {
 			}
 		}
 	}
-	
+
+	void HUD::ActivateTooltip(std::string text, float time) {
+		infoBar_.text = text;
+		infoBar_.lifespan = time;
+	}
+
+	void HUD::DeactivateTooltip() {
+		// reset properties
+		infoBar_.active = false;
+		infoBar_.lifespan = 0.0f;
+		infoBar_.text = "";
+	}
+
 	void HUD::Render() {
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -58,14 +70,15 @@ namespace game {
 
 		ImGuiWindowFlags flags = ImGuiWindowFlags_NoBackground |
 			ImGuiWindowFlags_NoTitleBar |
-			ImGuiWindowFlags_NoResize | 
+			ImGuiWindowFlags_NoResize |
 			ImGuiWindowFlags_NoScrollWithMouse |
 			ImGuiWindowFlags_NoScrollbar;
 
 		ImGui::Begin("HUD", (bool*)true, flags);
 
 		ImVec2 windowSize = ImVec2(windowWidth, windowHeight);
-		ImVec2 windowRatio = ImVec2((float) windowWidth / initialWindowWidth, (float) windowHeight / initialWindowHeight);
+		ImVec2 windowRatio = ImVec2((float)windowWidth / initialWindowWidth, (float)windowHeight / initialWindowHeight);
+		RenderInformationBar(windowSize, windowRatio);
 		RenderHealthBar(windowSize, windowRatio);
 		RenderEnergyBar(windowSize, windowRatio);
 		RenderProjectileSelection(windowSize, windowRatio);
@@ -74,6 +87,31 @@ namespace game {
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	}
+
+	void HUD::RenderInformationBar(ImVec2 windowSize, ImVec2 windowRatio) {
+		infoBar_.lifespan -= Time::GetDeltaTime();
+		infoBar_.active = infoBar_.lifespan > 0.0f ? true : false; // set active property based on remaining lifespan
+
+		if (!infoBar_.active) return; // don't render if not active
+
+		float textX = windowSize.x / 2;
+		float textY = windowSize.y / 2;
+
+		ImGuiWindowFlags flags = ImGuiWindowFlags_NoCollapse |
+			ImGuiWindowFlags_NoInputs |
+			ImGuiWindowFlags_NoMove |
+			ImGuiWindowFlags_NoResize |
+			ImGuiWindowFlags_NoScrollbar |
+			ImGuiWindowFlags_NoScrollWithMouse;
+		ImGui::SetNextWindowPos(ImVec2(textX, textY));
+		ImVec2 textSize = ImGui::CalcTextSize(infoBar_.text.c_str());
+		ImGui::SetNextWindowSize(ImVec2(std::max(60.0f, textSize.x * 1.5f), textSize.y * 4)); // make window fit text size
+		if(ImGui::BeginPopupModal("Tooltip", nullptr, flags)) {
+			ImGui::Text(infoBar_.text.c_str());
+			ImGui::EndPopup();
+		}
+		ImGui::OpenPopup("Tooltip", flags);
 	}
 
 	void HUD::RenderHealthBar(ImVec2 windowSize, ImVec2 windowRatio) {
@@ -105,7 +143,7 @@ namespace game {
 		float energyBarBaseY = windowSize.y - energyBarBaseHeight - 2.0f * windowRatio.y;
 		// inner rectangle
 		float energyBarWidth = energyBarBaseWidth - 38.0f * windowRatio.x;
-		float energyBarHeight = (energyBarBaseHeight - 10.0f * windowRatio.y) * energy / Game::GetInstance().GetPlayer()->GetMaxEnergy();
+		float energyBarHeight = (energyBarBaseHeight - 15.0f * windowRatio.y) * energy / Game::GetInstance().GetPlayer()->GetMaxEnergy();
 		float energyBarX = energyBarBaseX + 20.5f * windowRatio.x;
 		float energyBarY = energyBarBaseY + energyBarBaseHeight - 5.0f * windowRatio.y - energyBarHeight;
 

@@ -52,7 +52,11 @@ namespace game {
 		float pointsY = 5.0f;
 
 		ImGui::SetCursorPos(ImVec2(pointsX, pointsY));
+		ImGui::SetWindowFontScale(3.0f); // super old API that isn't great, but it works
+										// should probably create separate ImFont objects  with different 
+										// fonts and sizes but that's for another time
 		ImGui::Text(std::to_string(points).c_str());
+		ImGui::SetWindowFontScale(1.0f);
 	}
 
 	void Upgrades::RenderWeaponUpgrades(int points, ImVec2 buttonSize)

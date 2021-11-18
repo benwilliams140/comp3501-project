@@ -171,7 +171,7 @@ void Game::SetupScene(void) {
     std::string hovertankMaterial = "Simple";
     HoverTank* hovertank_base = CreateInstance<HoverTank>(HOVERTANK_BASE, HOVERTANK_BASE, hovertankMaterial, "uv6");
     player_ = new Player(100.f, 100.f, hovertank_base);
-    player_->AddMoney(100000);
+    player_->AddMoney(100000); // for demo purposes
     HoverTankTurret* hovertank_turret = CreateInstance<HoverTankTurret>(HOVERTANK_TURRET, HOVERTANK_TURRET, hovertankMaterial, "uv6");
     hovertank_turret->Translate(glm::vec3(0.f, 1.055f, -0.4f));
     hovertank_turret->SetParent(hovertank_base);
@@ -271,12 +271,18 @@ void Game::MainLoop(void){
         else if (state_ == State::RUNNING) {
             Time::Update();
 
-            // handle camera/tank movement
+            // handle camera movement
             if (freeroam_) {
                 camera_->UpdateCameraFreeroam();
             } else {
                 camera_->UpdateCameraToTarget((HoverTank*)scene_.GetNode(HOVERTANK_BASE));
             }
+
+            // for tooltip testing
+            if (Input::getKeyDown(INPUT_KEY_T)) {
+                ((HUD*)menus_[MenuType::HUD])->ActivateTooltip("Test", 1.0f);
+            }
+            
 
             // removes dead projectiles
             std::vector<Projectile*> projectilesToRemove = player_->GetTank()->GetTurret()->RemoveDeadProjectiles();

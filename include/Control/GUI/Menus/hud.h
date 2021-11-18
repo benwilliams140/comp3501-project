@@ -14,11 +14,20 @@ namespace game {
 		virtual void Render() override;
 		virtual void HandleInput() override;
 
+		void ActivateTooltip(std::string text, float time);
+		void DeactivateTooltip();
+
 	private:
 		/*
 		Properties related to HUD elements
 		All ratios are in reference to the window size
 		*/
+		struct InformationBar {
+			bool active = false;
+			std::string text = "";
+			float lifespan = 0.0f;
+		} infoBar_;
+
 		const struct HealthBar {
 			float widthRatio = 0.2f;
 			float heightRatio = 0.05f;
@@ -42,6 +51,7 @@ namespace game {
 			ImU32 selectedColor = IM_COL32(255, 255, 255, 255);
 		} projSelection_;
 
+		void RenderInformationBar(ImVec2 windowSize, ImVec2 windowRatio);
 		void RenderHealthBar(ImVec2 windowSize, ImVec2 windowRatio);
 		void RenderEnergyBar(ImVec2 windowSize, ImVec2 windowRatio);
 		void RenderProjectileSelection(ImVec2 windowSize, ImVec2 windowRatio);
