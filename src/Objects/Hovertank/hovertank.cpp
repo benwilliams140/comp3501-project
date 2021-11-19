@@ -60,13 +60,9 @@ namespace game {
 		acceleration_.y -= gravity;
 
 		// Accelerate due to frition
-		if (velocity_.x != 0.0f) {
-			if (velocity_.x > 0.0f)      velocity_.x -= friction;
-			else if (velocity_.x < 0.0f) velocity_.x += friction;
-		}
-		if (velocity_.z != 0.0f) {
-			if (velocity_.z > 0.0f)      velocity_.z -= friction;
-			else if (velocity_.z < 0.0f) velocity_.z += friction;
+		if (velocity_.x != 0.0f || velocity_.z != 0) {
+			// Add friction force in the same direction as velocity
+			acceleration_ += glm::normalize(glm::vec3(velocity_.x, 0.0f, velocity_.z)) * -friction;
 		}
 
 		// Accelerate forward/backward
