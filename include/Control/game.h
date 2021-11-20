@@ -69,7 +69,8 @@ namespace game {
         PAUSED,
         RUNNING,
         STOPPED,
-        UPGRADES
+        UPGRADES,
+        GAME_OVER
     };
 
     // Game application

@@ -189,23 +189,6 @@ void Game::SetupScene(void) {
         float dz = -1.0f + 3.0f * (floor(i / 2)); // back tracks (i=0,1) should translate (z) by -1, front (i=2,3) by 3
         hovertank_tracks.at(i)->Translate(glm::vec3(dx, dy, dz));
     }
-
-    // load the wheel model as the machine gun temporarily
-    MachineGun* machine_gun = CreateInstance<MachineGun>("MachineGun", HOVERTANK_MACHINE_GUN, hovertankMaterial, "uv6");
-    machine_gun->Rotate(glm::angleAxis(glm::radians(180.0f), hovertank_base->GetForward()));
-    machine_gun->Translate(glm::vec3(0.0f, 0.2555f, 0.0f));
-    machine_gun->Scale(glm::vec3(0.75));
-    machine_gun->SetParent(hovertank_turret);
-    machine_gun->SetActive(false);
-    hovertank_turret->AddAbility(machine_gun);
-
-    EnergyCannon* energy_cannon = CreateInstance<EnergyCannon>("MachineGun", HOVERTANK_MACHINE_GUN, hovertankMaterial, "uv6");
-    energy_cannon->Rotate(glm::angleAxis(glm::radians(180.0f), hovertank_base->GetForward()));
-    energy_cannon->Translate(glm::vec3(0.0f, 0.2555f, 0.0f));
-    energy_cannon->Scale(glm::vec3(0.75));
-    energy_cannon->SetParent(hovertank_turret);
-    energy_cannon->SetActive(false);
-    hovertank_turret->AddAbility(energy_cannon);
     
     // Create Hovertank scanner
     Scanner* hovertank_scanner = CreateInstance<Scanner>("Scanner", HOVERTANK_SCANNER, hovertankMaterial, "uv6");
@@ -290,6 +273,7 @@ void Game::MainLoop(void){
                 scene_.RemoveNode((*it)->GetName());
             }
 
+            player_->Update(); // player has it's own update method
             scene_.Update();
             scene_.Draw(camera_);
 

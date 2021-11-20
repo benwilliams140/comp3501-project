@@ -42,6 +42,7 @@ namespace game {
 		void SetTurret(HoverTankTurret* turret);
 		void SetScanner(Scanner* scanner);
 		void SetSpeedMultiple(float multiple);
+		void IncreaseMaxSpeed(float increase);
 
 		// Update geometry configuration
 		virtual void Update(void) override;

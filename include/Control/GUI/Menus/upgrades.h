@@ -27,18 +27,21 @@ namespace game {
 			int index = 0;
 			int cost = 2000;
 			float multiplier = 2.0f;
+			float increase = 10.0f;
 		} speedUpgrade_;
 
 		struct HealthUpgrade {
 			int index = 0;
 			int cost = 2000;
 			float multiplier = 2.0f;
+			float increase = 50.0f;
 		} healthUpgrade_;
 
 		struct EnergyUpgrade {
 			int index = 0;
 			int cost = 2000;
 			float multiplier = 2.0f;
+			float increase = 50.0f;
 		} energyUpgrade_;
 
 		const struct Button {
@@ -56,5 +59,9 @@ namespace game {
 		void RenderSpeedUpgrades(int points, ImVec2 buttonSize);
 		void RenderHealthUpgrades(int points, ImVec2 buttonSize);
 		void RenderEnergyUpgrades(int points, ImVec2 buttonSize);
+
+		void HandleSpeedUpgradeButtonClick();
+		void HandleHealthUpgradeButtonClick();
+		void HandleEnergyUpgradeButtonClick();
 	}; // MainMenu class
 } // namespace game

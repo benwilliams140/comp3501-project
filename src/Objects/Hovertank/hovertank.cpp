@@ -16,7 +16,7 @@ namespace game {
 		turret_ = nullptr;
 		//forward_ = glm::vec3(0, 0, -1); // consider taking this in as a parameter
 		fwdSpeed_ = sideSpeed_ = 0;
-		maxSpeed_ = 30.0f;
+		maxSpeed_ = 20.0f;
 		speedMultiple_ = 1.0f; // used to change speed effects on the tanks (eg. going through mud)
 	}
 
@@ -160,5 +160,10 @@ namespace game {
 	
 	void HoverTank::SetSpeedMultiple(float multiple) {
 		speedMultiple_ = multiple;
+	}
+
+	void HoverTank::IncreaseMaxSpeed(float increase)
+	{
+		maxSpeed_ += increase;
 	}
 }
