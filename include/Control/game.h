@@ -42,6 +42,10 @@
 #include "Objects/Tree.h"
 #include "Objects/Projectiles/linear_projectile.h"
 #include "Objects/Projectiles/parabolic_projectile.h"
+#include "Objects/Hazards/hazard.h"
+#include "Objects/Hazards/acid_pool.h"
+#include "Objects/Hazards/mud_pool.h"
+#include "Objects/Hazards/geyser.h"
 
 // object/resource names
 #define HOVERTANK_BASE "HovertankChassis"
@@ -102,6 +106,14 @@ namespace game {
                     tex = GetResource(texture_name);
                 }
                 return scene_.CreateNode<T>(entity_name, geom, mat, tex);
+            }
+
+            template <typename T>
+            void SetHazardEffectiveness(float effectiveness) {
+                std::vector<T*> hazards = scene_.GetSimilarNodes<T>();
+                for (auto it = hazards.begin(); it != hazards.end(); ++it) {
+                    ((Hazard*) *it)->SetEffectiveness(effectiveness);
+                }
             }
 
             // Getters/Setters

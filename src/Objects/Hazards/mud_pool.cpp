@@ -27,6 +27,6 @@ namespace game {
 
 	void MudPool::Effect()
 	{
-		Game::GetInstance().GetPlayer()->GetTank()->SetSpeedMultiple(0.25f);
+		Game::GetInstance().GetPlayer()->GetTank()->SetSpeedMultiple(effectiveness / 4.0f);
 	}
 }
