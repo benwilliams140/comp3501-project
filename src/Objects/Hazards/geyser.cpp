@@ -33,6 +33,6 @@ namespace game {
 	void Geyser::Effect()
 	{
 		HoverTank* tank = Game::GetInstance().GetPlayer()->GetTank();
-		tank->SetVelocity(tank->GetVelocity() + glm::vec3(0.0f, 20.0f, 0.0f)); // edit this value as necessary
+		tank->SetVelocity(tank->GetVelocity() + effectiveness * glm::vec3(0.0f, 50.0f, 0.0f)); // edit this value as necessary
 	}
 }
