@@ -20,7 +20,7 @@ namespace game {
 
 	public:
 		// Create EnvironmentObject from given resources
-		EnvironmentObject(const std::string name, const Resource* geometry, const Resource* material);
+		EnvironmentObject(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture);
 
 		// Destructor
 		~EnvironmentObject();
@@ -28,12 +28,18 @@ namespace game {
 		// Update geometry configuration
 		virtual void Update(void) override;
 
+		void InitPositions(int seed, int amount);
+
 		glm::vec3* GetPositions();
-		void SetPositions(glm::vec3* listOfPos);
+		size_t GetPositionsSize(void) const;
+		void SetPositions(glm::vec3** listOfPos, size_t sizeOfPos);
 
 	private:
-		glm::vec3* positions;
+		virtual void InitShaderUniform(GLuint program);
+		virtual void UpdateShaderUniform(GLuint program);
 
+		glm::vec3* positions_;
+		size_t positionsSize_;
 
 	}; // class EnvironmentObject
 

@@ -142,6 +142,8 @@ void Game::SetupResources(void) {
     // Load shaders
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/simple_texture");
     resman_.LoadResource(ResourceType::Material, "Simple", filename.c_str());
+    filename = std::string(MATERIAL_DIRECTORY) + std::string("/instancing");
+    resman_.LoadResource(ResourceType::Material, "Instanced", filename.c_str());
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/lit");
     resman_.LoadResource(ResourceType::Material, "Lighting", filename.c_str());
 
@@ -218,8 +220,13 @@ void Game::SetupScene(void) {
     artifact1->SetPosition(glm::vec3(5.0f, -11.0f, 25.0f));
     artifacts_.push_back(artifact1);
 
+    // Create Environment Objects
+    EnvironmentObject* rocks = CreateInstance<EnvironmentObject>("Rocks", "Cube", "Instanced", "uv6");
+    rocks->InitPositions(1337, 100);
+
     // Initialize certain scene nodes
     terrain_->Init();
+    rocks->Init();
 }
 
 void Game::MainLoop(void){

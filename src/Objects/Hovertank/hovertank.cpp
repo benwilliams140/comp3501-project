@@ -111,6 +111,7 @@ namespace game {
 			hitpoint.y += 2.0f; // add height of tank to hitpoint
 			if (position.y <= hitpoint.y) {
 				Translate(glm::vec3(0, hitpoint.y - position.y, 0));
+				velocity_.y = 0;
 			}
 		}
 	}

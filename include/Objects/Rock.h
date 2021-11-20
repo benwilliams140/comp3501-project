@@ -19,7 +19,7 @@ namespace game {
 
 	public:
 		// Create Rock from given resources
-		Rock(const std::string name, const Resource* geometry, const Resource* material);
+		Rock(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture);
 
 		// Destructor
 		~Rock();

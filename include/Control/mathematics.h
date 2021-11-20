@@ -16,6 +16,10 @@ namespace Math {
 	// AxB = [A2B3 - A3B2, A3B1 - A1B3, A1B2 - A2B1]
 	inline Vector3 cross(Vector3 A, Vector3 B) { return Vector3((A.y * B.z) - (A.z * B.y), (A.z * B.x) - (A.x * B.z), (A.x * B.y) - (A.y * B.x)); }
 
+	// Random Generation Functions
+	inline float randRangeFloat(float min, float max) { return min + ((float)std::rand() / (float)RAND_MAX) * (max - min); }
+	inline int randRangeInt(int min, int max) { return min + std::rand() * (max - min); }
+
 	class Plane { // [a, b, c, d] = [Nx, Ny, Nz, -N.p0]
 	public:
 		Plane(Normal normal, Point3 p0) {
