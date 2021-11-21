@@ -18,6 +18,7 @@ namespace game {
 		fwdSpeed_ = sideSpeed_ = 0;
 		maxSpeed_ = 30.0f;
 		speedMultiple_ = 1.0f; // used to change speed effects on the tanks (eg. going through mud)
+		SetCollisionBox(glm::vec3(2.5f, 2.5f, 2.5));
 	}
 
 	HoverTank::~HoverTank() {}

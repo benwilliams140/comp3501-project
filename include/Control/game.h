@@ -7,6 +7,7 @@
 #include <iostream>
 #include <time.h>
 #include <sstream>
+#include <vector>
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -39,8 +40,11 @@
 #include "Objects/EnvironmentObject.h"
 #include "Objects/Rock.h"
 #include "Objects/Tree.h"
+#include "Objects/Projectiles/Enemy_linear_projectile.h"
 #include "Objects/Projectiles/linear_projectile.h"
 #include "Objects/Projectiles/parabolic_projectile.h"
+#include "Objects/Enemy.h"
+#include "Objects/ShooterEnemy.h"
 
 // object/resource names
 #define HOVERTANK_BASE "HovertankChassis"
@@ -106,10 +110,13 @@ namespace game {
             Player* GetPlayer();
             Terrain* GetTerrain();
             void SetState(State state);
+            std::vector<Projectile*> GetEnemyProjectiles();
 
             // Delete these function to be sure they don't accidentlly create copies of the instance
             Game(Game const&) = delete;
-            void operator=(Game const&) = delete;           
+            void operator=(Game const&) = delete;     
+
+            std::vector<Projectile*> RemoveDeadEnemyProjectiles();
 
         private:
             // Constructor and destructor
@@ -134,6 +141,10 @@ namespace game {
 
             // Player
             Player* player_;
+
+            std::vector<Enemy*> enemies_;
+            std::vector<Projectile*> enemy_projectiles_;
+
 
             bool freeroam_;
             State state_;
