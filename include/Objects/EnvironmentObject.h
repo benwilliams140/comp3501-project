@@ -32,7 +32,9 @@ namespace game {
 
 		glm::vec3* GetPositions();
 		size_t GetPositionsSize(void) const;
+		unsigned int GetInstanceGroupID(void) const;
 		void SetPositions(glm::vec3** listOfPos, size_t sizeOfPos);
+		void SetInstanceGroupID(unsigned int id);
 
 	private:
 		virtual void InitShaderUniform(GLuint program);
@@ -40,6 +42,7 @@ namespace game {
 
 		glm::vec3* positions_;
 		size_t positionsSize_;
+		unsigned int instGroupID_;
 
 	}; // class EnvironmentObject
 

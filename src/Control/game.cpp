@@ -221,12 +221,25 @@ void Game::SetupScene(void) {
     artifacts_.push_back(artifact1);
 
     // Create Environment Objects
-    EnvironmentObject* rocks = CreateInstance<EnvironmentObject>("Rocks", "Cube", "Instanced", "uv6");
-    rocks->InitPositions(1337, 100);
+    EnvironmentObject* rocks1 = CreateInstance<EnvironmentObject>("Rocks 1", "Cube", "Instanced", "RockyTexture");
+    rocks1->InitPositions(1337, 250);
+    rocks1->SetInstanceGroupID(0);
+    EnvironmentObject* rocks2 = CreateInstance<EnvironmentObject>("Rocks 2", "Cube", "Instanced", "uv6");
+    rocks2->InitPositions(65156, 250);
+    rocks2->SetInstanceGroupID(1);
+    EnvironmentObject* rocks3 = CreateInstance<EnvironmentObject>("Rocks 3", "Cube", "Instanced", "HovertankTexture");
+    rocks3->InitPositions(351351, 250);
+    rocks3->SetInstanceGroupID(2);
+    EnvironmentObject* rocks4 = CreateInstance<EnvironmentObject>("Plant", "Cube", "Instanced", "uv6");
+    rocks4->InitPositions(7516331, 250);
+    rocks4->SetInstanceGroupID(3);
 
     // Initialize certain scene nodes
     terrain_->Init();
-    rocks->Init();
+    rocks1->Init();
+    rocks2->Init();
+    rocks3->Init();
+    rocks4->Init();
 }
 
 void Game::MainLoop(void){
