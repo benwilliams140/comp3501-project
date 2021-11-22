@@ -27,6 +27,6 @@ namespace game {
 
 	void AcidPool::Effect()
 	{
-		Game::GetInstance().GetPlayer()->decreaseHealth(damage_);
+		Game::GetInstance().GetPlayer()->decreaseHealth(damage_ * effectiveness);
 	}
 }

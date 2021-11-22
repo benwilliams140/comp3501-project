@@ -13,6 +13,7 @@
 #include "Control/scene_node.h"
 #include "Objects/terrain.h"
 #include "Objects/Hovertank/hovertank_turret.h"
+#include "Objects/Hovertank/scanner.h"
 
 namespace game {
 
@@ -36,10 +37,12 @@ namespace game {
 		HoverTankTurret* GetTurret();
 
 		// setters
-		void SetVelocity(glm::vec3 newVelocity);
+		void AddForce(glm::vec3 direction, float force);
 		void SetStrength(float newStrength);
 		void SetTurret(HoverTankTurret* turret);
+		void SetScanner(Scanner* scanner);
 		void SetSpeedMultiple(float multiple);
+		void IncreaseMaxSpeed(float increase);
 
 		// Update geometry configuration
 		virtual void Update(void) override;
@@ -49,13 +52,16 @@ namespace game {
 		void shootingControl();
 		void terrainCollision();
 
-		float fwdSpeed_, sideSpeed_;
-		float maxSpeed_, speedMultiple_;
+		glm::vec3 velocity_;
+		glm::vec3 acceleration_;
+		float maxVelocity_;
+		float speedMultiple_;
+
 		float strength;
-		glm::vec3 velocity;
 		glm::vec3 forward_;
 
 		HoverTankTurret* turret_;
+		Scanner* scanner_;
 	}; // class HoverTank
 
 }

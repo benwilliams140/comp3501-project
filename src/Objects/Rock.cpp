@@ -8,7 +8,7 @@
 
 namespace game {
 
-	Rock::Rock(const std::string name, const Resource* geometry, const Resource* material) : EnvironmentObject(name, geometry, material) {
+	Rock::Rock(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : EnvironmentObject(name, geometry, material, texture) {
 	}
 
 

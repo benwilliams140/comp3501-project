@@ -22,6 +22,7 @@
 #include "Control/GUI/Menus/main_menu.h"
 #include "Control/GUI/Menus/pause_menu.h"
 #include "Control/GUI/Menus/hud.h"
+#include "Control/GUI/Menus/upgrades.h"
 #include "Control/path_config.h"
 #include "Control/time.h"
 
@@ -45,14 +46,19 @@
 #include "Objects/Projectiles/parabolic_projectile.h"
 #include "Objects/Enemy.h"
 #include "Objects/ShooterEnemy.h"
+#include "Objects/Hazards/hazard.h"
+#include "Objects/Hazards/acid_pool.h"
+#include "Objects/Hazards/mud_pool.h"
+#include "Objects/Hazards/geyser.h"
 
 // object/resource names
 #define HOVERTANK_BASE "HovertankChassis"
 #define HOVERTANK_TURRET "HovertankCylinder"
-#define HOVERTANK_TRACK_BL "HovertankTrackBL"
-#define HOVERTANK_TRACK_BR "HovertankTrackBR"
-#define HOVERTANK_TRACK_FL "HovertankTrackFL"
-#define HOVERTANK_TRACK_FR "HovertankTrackFR"
+#define HOVERTANK_SCANNER "HovertankScanner"
+#define HOVERTANK_SCANNER_CONE "HovertankScannerCone"
+#define HOVERTANK_MACHINE_GUN "HovertankMachineGun"
+#define HOVERTANK_TRACK_REAR "HovertankTrackRear"
+#define HOVERTANK_TRACK_FRONT "HovertankTrackFront"
 
 namespace game {
 
@@ -70,7 +76,9 @@ namespace game {
     enum class State {
         PAUSED,
         RUNNING,
-        STOPPED
+        STOPPED,
+        UPGRADES,
+        GAME_OVER
     };
 
     // Game application
@@ -104,13 +112,24 @@ namespace game {
                 return scene_.CreateNode<T>(entity_name, geom, mat, tex);
             }
 
+            template <typename T>
+            void SetHazardEffectiveness(float effectiveness) {
+                std::vector<T*> hazards = scene_.GetSimilarNodes<T>();
+                for (auto it = hazards.begin(); it != hazards.end(); ++it) {
+                    ((Hazard*) *it)->SetEffectiveness(effectiveness);
+                }
+            }
+
             // Getters/Setters
             Camera* GetCamera();
             GLFWwindow* GetWindow();
             Player* GetPlayer();
             Terrain* GetTerrain();
+            std::vector<Artifact*>& GetArtifacts();
             void SetState(State state);
+
             std::vector<Projectile*> GetEnemyProjectiles();
+            bool GetFreeroam() const;
 
             // Delete these function to be sure they don't accidentlly create copies of the instance
             Game(Game const&) = delete;
@@ -138,6 +157,7 @@ namespace game {
             // Game objects
             Camera* camera_;
             Terrain* terrain_;
+            std::vector<Artifact*> artifacts_;
 
             // Player
             Player* player_;
@@ -158,10 +178,6 @@ namespace game {
             // Methods to handle events
             static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
             static void ResizeCallback(GLFWwindow* window, int width, int height);
-
-            // handle movement
-            void UpdateCameraPos();
-            void HandleHovertankInput(); // this might need to be removed
 
             Resource* GetResource(std::string res); // get the resource listed
     }; // class Game

@@ -1,4 +1,5 @@
 #include "Objects/Player.h"
+#include "Control/game.h"
 #include <stdexcept>
 #define GLM_FORCE_RADIANS
 #include <glm/gtc/type_ptr.hpp>
@@ -16,34 +17,40 @@ namespace game {
 		maxEnergy = ePoints;
 		tank = theTank;
 		money = 0;
+		healthRegenCooldown_ = 0.0f;
+		energyRegenCooldown_ = 0.0f;
 	}
 
 
-	Player::~Player() {
+	Player::~Player() {}
+
+	void Player::Update()
+	{
+		energyRegenCooldown_ -= Time::GetDeltaTime();
+		healthRegenCooldown_ -= Time::GetDeltaTime();
+
+		if (energyRegenCooldown_ <= 0.0f) recharge(15.0f * Time::GetDeltaTime());
+		if (healthRegenCooldown_ <= 0.0f) repair(15.0f * Time::GetDeltaTime());
 	}
+
 	//getters
 	float Player::GetHealth(void) {
-
 		return health;
 	}
 
 	float Player::GetMaxHealth(void) {
-
 		return maxHealth;
 	}
 
 	float Player::GetEnergy(void) {
-
 		return energy;
 	}
 
 	float Player::GetMaxEnergy(void) {
-
 		return maxEnergy;
 	}
 
 	float Player::GetMoney(void) {
-
 		return money;
 	}
 
@@ -53,22 +60,18 @@ namespace game {
 
 	//setters
 	void Player::SetHealth(float newHealth) {
-
 		health = newHealth;
 	}
 
 	void Player::SetMaxHealth(float newHealth) {
-
 		maxHealth = newHealth;
 	}
 
 	void Player::SetEnergy(float newEnergy) {
-
 		energy = newEnergy;
 	}
 
 	void Player::SetMaxEnergy(float newEnergy) {
-
 		maxEnergy = newEnergy;
 	}
 
@@ -80,6 +83,10 @@ namespace game {
 	void Player::decreaseHealth(float damage) {
 		//have the player take damage and lose health
 		health = health - damage;
+		healthRegenCooldown_ = maxCooldown_;
+		if (health <= 0.0f) {
+			Game::GetInstance().SetState(State::GAME_OVER);
+		}
 	}
 
 	void Player::repair(float gain) {
@@ -95,6 +102,7 @@ namespace game {
 	void Player::energyLost(float lostEnergy) {
 		//make the tank the player controls lose energy
 		energy = energy - lostEnergy;
+		energyRegenCooldown_ = maxCooldown_;
 		if (energy < 0) {//make sure it doesn't go below zero
 			energy = 0;
 		}
@@ -110,8 +118,8 @@ namespace game {
 		}
 	}
 
-	void Player::gainMoney(float gain) {
-		money += gain;
+	void Player::AddMoney(float money) {
+		this->money += money;
 	}
 
 	bool Player::purchase(float payment) {
@@ -125,7 +133,7 @@ namespace game {
 		}
 	}
 
-	void Player::addArtifact(Artifact* newArtifact) {
+	void Player::DiscoveredArtifact(Artifact* newArtifact) {
 		//add a discovered artifact
 		artifacts.push_back(newArtifact);
 	}

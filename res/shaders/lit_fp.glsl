@@ -14,6 +14,7 @@ void main() {
     // Retrieve texture value
     //vec4 pixel = texture(texture_map, uv_interp);
 	vec4 pixel = vec4(0.6, 0.6, 0.6, 1);
+	vec3 normal = normalize(normal_interp);
 
 	vec3 v = vec3(0,0,0);
 	vec3 vv = normalize(v - position_interp);
@@ -21,8 +22,8 @@ void main() {
 	vec3 lv = normalize(l - position_interp);
 	vec3 h = normalize((vv+lv)/2);
 
-	float diffuse = dot(normal_interp,lv);
-	float spec = max(0.0,dot(normal_interp,h));
+	float diffuse = dot(normal,lv);
+	float spec = max(0.0,dot(normal,h));
 
 	spec = pow(spec,132);
 

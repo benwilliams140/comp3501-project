@@ -28,6 +28,8 @@ namespace game {
 		// Destructor
 		~Player();
 
+		void Update();
+
 		float GetHealth();
 		float GetMaxHealth();
 		void repair(float gain);
@@ -44,10 +46,10 @@ namespace game {
 		void SetEnergy(float newEnergy);
 		void SetMaxEnergy(float newEnergy);
 		void energyLost(float lostEnergy);
-		void gainMoney(float gain);
+		void AddMoney(float money);
 		bool purchase(float payment);
 
-		void addArtifact(Artifact *newArtifact);
+		void DiscoveredArtifact(Artifact *newArtifact);
 		Artifact* GetArtifact(int id);
 		void printArtifacts();
 
@@ -60,6 +62,9 @@ namespace game {
 		float maxEnergy;
 		float money;
 		HoverTank* tank;
+
+		const float maxCooldown_ = 3.0f;
+		float energyRegenCooldown_, healthRegenCooldown_;
 		
 	}; // class Player
 

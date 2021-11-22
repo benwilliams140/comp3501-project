@@ -1,11 +1,12 @@
 #include "Control/GUI/menu.h"
 #include "Control/path_config.h"
+#include "Control/game.h"
 #include <SOIL/SOIL.h>
 
 
 namespace game {
 	Menu::Menu() {
-
+		glfwGetWindowSize(Game::GetInstance().GetWindow(), &initialWindowWidth, &initialWindowHeight);
 	}
 
 	Menu::~Menu() {

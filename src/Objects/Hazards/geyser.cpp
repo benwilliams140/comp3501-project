@@ -6,11 +6,13 @@ namespace game {
 	{
 		// generate a random number between 30 and 60 for the cooldown
 		maxCooldown_ = (float)rand() / (float)RAND_MAX * (60.0f - 30.0f) + 30.0f;
+		// boolean for whether the tank was launched in the air or not
+		launched_ = false; 
+		// start time of the effect
+		startTime_ = 0;
 	}
 
-	Geyser::~Geyser()
-	{
-	}
+	Geyser::~Geyser() {}
 
 	void Geyser::Update()
 	{
@@ -23,6 +25,14 @@ namespace game {
 				Effect();
 			}
 		}
+		if (launched_) {
+			// Adds a constant force to the tank for 3 seconds
+			if ((Time::GetElapsedTime() - startTime_) <= 3.0f) {
+				Game::GetInstance().GetPlayer()->GetTank()->AddForce(effectiveness * glm::vec3(0.0f, 1.0f, 0.0f), 0.8f);
+			} else {
+				launched_ = false;
+			}
+		}
 	}
 
 	bool Geyser::CollisionDetection(SceneNode* other)
@@ -32,7 +42,7 @@ namespace game {
 
 	void Geyser::Effect()
 	{
-		HoverTank* tank = Game::GetInstance().GetPlayer()->GetTank();
-		tank->SetVelocity(tank->GetVelocity() + glm::vec3(0.0f, 20.0f, 0.0f)); // edit this value as necessary
+		launched_ = true;
+		startTime_ = Time::GetElapsedTime();
 	}
 }
