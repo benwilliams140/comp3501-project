@@ -19,7 +19,7 @@ namespace game {
 
 	public:
 		// Create ShooterEnemy from given resources
-		ShooterEnemy(const std::string name, const Resource* geometry, const Resource* material);
+		ShooterEnemy(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture = nullptr);
 
 		// Destructor
 		~ShooterEnemy();

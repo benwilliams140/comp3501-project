@@ -23,7 +23,7 @@ namespace game {
 
 	public:
 		// Create Enemy from given resources
-		Enemy(const std::string name, const Resource* geometry, const Resource* material);
+		Enemy(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture = nullptr);
 
 		// Destructor
 		~Enemy();

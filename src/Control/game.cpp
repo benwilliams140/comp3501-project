@@ -223,13 +223,8 @@ void Game::SetupScene(void) {
     pool->SetPosition(glm::vec3(5.0f, 0.0f, 25.0f));
     pool->Scale(glm::vec3(20));
 
-    Resource* geom = GetResource("Cube");
-    Resource* mat = GetResource("Simple");
-    Resource* tex = GetResource("RockyTexture");
-
-    ShooterEnemy* enemy = new ShooterEnemy("Enemy", geom, mat);
-    enemy->SetPosition(enemy->GetPosition() - glm::vec3(0.0f,62.0f,0.0f));
-    scene_.AddNode(enemy);
+    ShooterEnemy* enemy = CreateInstance<ShooterEnemy>("Enemy", "Cube", "Simple", "uv6");
+    enemy->SetPosition(glm::vec3(10.0f, -5.0f, 25.0f));
     enemies_.push_back(enemy);
 
     // Initialize certain scene nodes

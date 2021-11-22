@@ -9,7 +9,7 @@
 
 namespace game {
 
-	ShooterEnemy::ShooterEnemy(const std::string name, const Resource* geometry, const Resource* material) : Enemy(name, geometry, material) {
+	ShooterEnemy::ShooterEnemy(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : Enemy(name, geometry, material, texture) {
 		SetAwarnessBox(glm::vec3(20.0f, 20.0f, 20.0f));
 	}
 
