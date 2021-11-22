@@ -6,7 +6,7 @@ namespace game {
 // They are written here as global variables, but ideally they should be loaded from a configuration file
 
 // Main window settings
-const std::string window_title_g = "Demo";
+const std::string window_title_g = "Game";
 const unsigned int window_width_g = 1280;
 const unsigned int window_height_g = 720;
 const bool window_full_screen_g = false;
@@ -223,6 +223,15 @@ void Game::SetupScene(void) {
     pool->SetPosition(glm::vec3(5.0f, 0.0f, 25.0f));
     pool->Scale(glm::vec3(20));
 
+    Resource* geom = GetResource("Cube");
+    Resource* mat = GetResource("Simple");
+    Resource* tex = GetResource("RockyTexture");
+
+    ShooterEnemy* enemy = new ShooterEnemy("Enemy", geom, mat);
+    enemy->SetPosition(enemy->GetPosition() - glm::vec3(0.0f,62.0f,0.0f));
+    scene_.AddNode(enemy);
+    enemies_.push_back(enemy);
+
     // Initialize certain scene nodes
     terrain_->Init();
     rocks1->Init();
@@ -298,11 +307,20 @@ void Game::MainLoop(void){
             for (auto it = projectilesToRemove.begin(); it != projectilesToRemove.end(); ++it) {
                 scene_.RemoveNode((*it)->GetName());
             }
+     
+            //remove dead enemy projectiles
+            std::vector<Projectile*> enemyprojecttilesToRemove = RemoveDeadEnemyProjectiles();
+            for (auto it = enemyprojecttilesToRemove.begin(); it != enemyprojecttilesToRemove.end(); ++it) {
+                scene_.RemoveNode((*it)->GetName());
+            }
 
             player_->Update(); // player has it's own update method
             scene_.Update();
             scene_.Draw(camera_);
+            
 
+            
+            
             // render the HUD overtop of the game and handle its input
             menus_[MenuType::HUD]->Render();
             menus_[MenuType::HUD]->HandleInput();
@@ -337,6 +355,20 @@ Resource* Game::GetResource(std::string res) {
     }
 }
 
+std::vector<Projectile*> Game::RemoveDeadEnemyProjectiles() {
+    std::vector<Projectile*> projectilesToRemove;
+
+    //goes through entire list of enemy projectiles, if it's dead get rid of it
+    for (int i = enemy_projectiles_.size() - 1; i >= 0; i--) {
+        if (!enemy_projectiles_[i]->IsAlive()) {
+            projectilesToRemove.push_back(enemy_projectiles_[i]);
+            enemy_projectiles_.erase(enemy_projectiles_.begin() + i);
+        }
+    }
+
+    return projectilesToRemove;
+}
+
 Camera* Game::GetCamera() {
     return camera_;
 }
@@ -356,6 +388,10 @@ Player* Game::GetPlayer() {
 
 void Game::SetState(State state) {
     state_ = state;
+}
+
+std::vector<Projectile*> Game::GetEnemyProjectiles() {
+    return enemy_projectiles_;
 }
 
 bool Game::GetFreeroam() const {

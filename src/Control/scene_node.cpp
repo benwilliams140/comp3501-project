@@ -63,6 +63,10 @@ namespace game {
         return name_;
     }
 
+    glm::vec3 SceneNode::GetCollisionBox(void) const {
+        return colliderBox_;
+    }
+
     glm::vec3 SceneNode::GetPosition(void) const {
         return position_;
     }
@@ -109,6 +113,10 @@ namespace game {
 
     void SceneNode::SetParent(SceneNode* parent) {
         parent_ = parent;
+    }
+
+    void SceneNode::SetCollisionBox(glm::vec3 box) {
+        colliderBox_ = box;
     }
 
     void SceneNode::Translate(glm::vec3 trans) {

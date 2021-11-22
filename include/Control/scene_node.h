@@ -34,6 +34,7 @@ namespace game {
         glm::vec3 GetScale(void) const;
         SceneNode* GetParent(void) const;
         glm::quat GetAngM(void) const;
+        glm::vec3 GetCollisionBox(void) const;
         bool GetActive(void) const;
 
         // Set node attributes
@@ -42,6 +43,7 @@ namespace game {
         void SetScale(glm::vec3 scale);
         void SetParent(SceneNode* parent);
         void SetAngM(glm::quat angm);
+        void SetCollisionBox(glm::vec3 box);
         void SetActive(bool active);
 
         // Perform transformations on node
