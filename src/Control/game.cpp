@@ -139,6 +139,8 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Mesh, HOVERTANK_SCANNER_CONE, filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Machine_Gun.mesh");
     resman_.LoadResource(ResourceType::Mesh, HOVERTANK_MACHINE_GUN, filename.c_str());
+    filename = std::string(MESH_DIRECTORY) + std::string("/environment") + std::string("/pool.mesh");
+    resman_.LoadResource(ResourceType::Mesh, "Pool", filename.c_str());
 
     // Load shaders
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/simple_texture");
@@ -200,6 +202,10 @@ void Game::SetupScene(void) {
     Artifact* artifact1 = CreateInstance<Artifact>("Artifact 1", "Cube", "Simple", "uv6");
     artifact1->SetPosition(glm::vec3(5.0f, -11.0f, 25.0f));
     artifacts_.push_back(artifact1);
+
+    AcidPool* pool = CreateInstance<AcidPool>("AcidPool1", "Pool", "Simple", "RockyTexture");
+    pool->SetPosition(glm::vec3(5.0f, 0.0f, 25.0f));
+    pool->Scale(glm::vec3(20));
 
     // Initialize certain scene nodes
     terrain_->Init();

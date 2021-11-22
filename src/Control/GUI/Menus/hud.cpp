@@ -98,12 +98,15 @@ namespace game {
 		float textX = windowSize.x / 2;
 		float textY = windowSize.y / 2;
 
+		ImGui::SetNextWindowBgAlpha(0.0f);
 		ImGuiWindowFlags flags = ImGuiWindowFlags_NoCollapse |
 			ImGuiWindowFlags_NoInputs |
 			ImGuiWindowFlags_NoMove |
 			ImGuiWindowFlags_NoResize |
 			ImGuiWindowFlags_NoScrollbar |
-			ImGuiWindowFlags_NoScrollWithMouse;
+			ImGuiWindowFlags_NoScrollWithMouse |
+			ImGuiWindowFlags_NoTitleBar |
+			ImGuiWindowFlags_NoBackground;
 		ImGui::SetNextWindowPos(ImVec2(textX, textY));
 		ImVec2 textSize = ImGui::CalcTextSize(infoBar_.text.c_str());
 		ImGui::SetNextWindowSize(ImVec2(std::max(60.0f, textSize.x * 1.5f), textSize.y * 4)); // make window fit text size
