@@ -13,6 +13,8 @@ namespace game {
 
 	private:
 		float cooldown_, maxCooldown_;
+		bool launched_;
+		float startTime_;
 
 		virtual void Effect() override;
 

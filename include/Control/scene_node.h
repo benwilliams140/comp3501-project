@@ -73,6 +73,8 @@ namespace game {
 
     protected:
         const Resource* geometry_; // Reference to the geometry
+        bool instanced_;
+        GLsizei instanceAmount_;
 
     private:
         std::string name_; // Name of the scene node

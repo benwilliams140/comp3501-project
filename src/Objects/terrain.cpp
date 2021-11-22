@@ -10,17 +10,49 @@ namespace game {
 	Terrain::Terrain(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : SceneNode(name, geometry, material, texture) {}
 	Terrain::~Terrain() {}
 
-	void Terrain::Update(void) {
+	void Terrain::Update(void) {}
 
+	float Terrain::GetHeightAt(float x, float z) {
+		// Initial variables
+		Vector3 offset = GetPosition(); // translation of the terrain
+		Vector3 scale = geometry_->GetTerrainData()->scale; // scale of the terrain
+
+		// Reverse point at
+		int xIndex = (long)((x - offset.x) / scale.x); // (long) truncates
+		int zIndex = (long)((z - offset.z) / scale.z); // (long) truncates
+
+		// Find all 4 vertices on terrain
+		Point3 p0 = GetPointAt(xIndex, zIndex);
+		Point3 p1 = GetPointAt(xIndex + 1, zIndex);
+		Point3 p2 = GetPointAt(xIndex + 1, zIndex + 1);
+		Point3 p3 = GetPointAt(xIndex, zIndex + 1);
+
+		// Calculate interpolation factors
+		float interpFactorX = (x - p0.x) / scale.x;
+		float interpFactorZ = (z - p0.z) / scale.z;
+
+		// Calculate interpolation for each edge
+		float interpX1 = glm::mix( p0.y, p1.y, interpFactorX);
+		float interpX2 = glm::mix( p3.y, p2.y, interpFactorX);
+		float interpZ1 = glm::mix( p0.y, p3.y, interpFactorZ);
+		float interpZ2 = glm::mix( p1.y, p2.y, interpFactorZ);
+
+		// Average interpolations and return
+		float finalInterp = (interpX1 + interpX2 + interpZ1 + interpZ2) / 4.0f;
+		return finalInterp;
 	}
 
-	float Terrain::GetHeightAt(int x, int z) {
+	float Terrain::GetVertexHeightAt(int x, int z) {
+		// Check for index out of bound
+		if (x >= geometry_->GetTerrainData()->width || x < 0 || z >= geometry_->GetTerrainData()->length || z < 0) 
+			return NULL;
+
 		return geometry_->GetTerrainData()->heightMatrix[(x * geometry_->GetTerrainData()->length) + z];
 	}
 
 	Point3 Terrain::GetPointAt(int x, int z) {
 		Vector3 scale = geometry_->GetTerrainData()->scale;
-		return GetPosition() + Vector3(x * scale.x, GetHeightAt(x, z), z * scale.z);;
+		return GetPosition() + Vector3(x * scale.x, GetVertexHeightAt(x, z), z * scale.z);;
 	}
 
    /**
@@ -90,5 +122,13 @@ namespace game {
 	}
 
 	void Terrain::UpdateShaderUniform(GLuint program) {}
+
+	float Terrain::GetWidth(void) const {
+		return ((float)geometry_->GetTerrainData()->width) * geometry_->GetTerrainData()->scale.x;
+	}
+
+	float Terrain::GetLength(void) const {
+		return ((float)geometry_->GetTerrainData()->length) * geometry_->GetTerrainData()->scale.z;
+	}
 
 } // namespace game

@@ -11,12 +11,11 @@
 namespace game {
 
 	HoverTank::HoverTank(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : SceneNode(name, geometry, material, texture) {
-		velocity = glm::vec3(0, 0, 0);
-	    forward_ = glm::vec3(0, 0, 1); // consider taking this in as a parameter
+    forward_ = glm::vec3(0, 0, 1); // consider taking this in as a parameter
 		turret_ = nullptr;
-		//forward_ = glm::vec3(0, 0, -1); // consider taking this in as a parameter
-		fwdSpeed_ = sideSpeed_ = 0;
-		maxSpeed_ = 20.0f;
+		velocity_ = glm::vec3(0);
+		acceleration_ = glm::vec3(0);
+		maxVelocity_ = 30.0f;
 		speedMultiple_ = 1.0f; // used to change speed effects on the tanks (eg. going through mud)
 	}
 
@@ -51,58 +50,53 @@ namespace game {
 	}
 
 	void HoverTank::motionControl() {
-		float rot_factor = ((glm::pi<float>() * 60) / 180) * Time::GetDeltaTime();
-		float maxSpeed = maxSpeed_ * Time::GetDeltaTime();
-		float speedIncrease = 2.0f * Time::GetDeltaTime();
-		float friction = 0.5f * Time::GetDeltaTime();
-		float gravity = 9.81f * Time::GetDeltaTime();
-		
-		// Reduce speed by friction
-		if (fwdSpeed_ != 0) {
-			if (fwdSpeed_ > friction) { fwdSpeed_ -= friction; } 
-			else if (fwdSpeed_ < -friction) { fwdSpeed_ += friction; } 
-			else { fwdSpeed_ = 0; }
-		}
-		if (sideSpeed_ != 0) {
-			if (sideSpeed_ > friction) { sideSpeed_ -= friction; } 
-			else if (sideSpeed_ < -friction) { sideSpeed_ += friction; } 
-			else { sideSpeed_ = 0; }
+		static float rot_factor = (glm::pi<float>() * 60) / 180;
+		static float speedIncrease = 2.0f;
+		static float gravity = 1.0f;
+		static float friction = 0.25f;
+
+		// Accelerate due to gravity
+		acceleration_.y -= gravity;
+
+		// Accelerate due to frition
+		if (velocity_.x != 0.0f || velocity_.z != 0) {
+			// Add friction force in the same direction as velocity
+			acceleration_ += glm::normalize(glm::vec3(velocity_.x, 0.0f, velocity_.z)) * -friction;
 		}
 
-		// Translate forward/backward
+		// Accelerate forward/backward
 		if (Input::getKey(INPUT_KEY_W)) {
-			fwdSpeed_ += speedIncrease;
+			acceleration_ += GetForward() * speedIncrease;
 		}
 		if (Input::getKey(INPUT_KEY_S)) {
-			fwdSpeed_ -= speedIncrease;
+			acceleration_ -= GetForward() * speedIncrease;
 		}
-		// Translate left/right
+		// Accelerate left/right
 		if (Input::getKey(INPUT_KEY_A)) {
-			sideSpeed_ -= speedIncrease;
+			acceleration_ -= GetRight() * speedIncrease;
 		}
 		if (Input::getKey(INPUT_KEY_D)) {
-			sideSpeed_ += speedIncrease;
+			acceleration_ += GetRight() * speedIncrease;
 		}
 		
 		// Clamp to max speed
-		if (fwdSpeed_ > maxSpeed) fwdSpeed_ = maxSpeed;
-		if (fwdSpeed_ < -maxSpeed) fwdSpeed_ = -maxSpeed;
-		if (sideSpeed_ > maxSpeed) sideSpeed_ = maxSpeed;
-		if (sideSpeed_ < -maxSpeed) sideSpeed_ = -maxSpeed;
+		float magnitude = sqrt(pow(velocity_.x, 2.0f) + pow(velocity_.y, 2.0f) + pow(velocity_.z, 2.0f));
+		if (magnitude > maxVelocity_) {
+			velocity_ /= magnitude;
+			velocity_ *= maxVelocity_;
+		}
 
-		// Translate by gravity
-		Translate(glm::vec3(0, -gravity, 0));
-		// Translate by speed
-		Translate(GetForward() * fwdSpeed_ * speedMultiple_);
-		Translate(GetRight() * sideSpeed_ * speedMultiple_);
+		velocity_ += acceleration_; // Increment velocity by acceleration
+		acceleration_ = glm::vec3(0); // Reset acceleration
+		Translate(velocity_ * speedMultiple_ * Time::GetDeltaTime()); // Translate by velocity
 
 		// Rotate yaw
 		if (Input::getKey(INPUT_KEY_LEFT)) {
-			glm::quat rotation = glm::angleAxis(rot_factor, GetUp());
+			glm::quat rotation = glm::angleAxis(rot_factor * Time::GetDeltaTime(), GetUp());
 			Rotate(rotation);
 		}
 		if (Input::getKey(INPUT_KEY_RIGHT)) {
-			glm::quat rotation = glm::angleAxis(-rot_factor, GetUp());
+			glm::quat rotation = glm::angleAxis(-rot_factor * Time::GetDeltaTime(), GetUp());
 			Rotate(rotation);
 		}
 	}
@@ -114,7 +108,10 @@ namespace game {
 		glm::vec3 hitpoint; // return value for terrain collision
 		if (terrain->Collision(position, 1, hitpoint)) {
 			hitpoint.y += 2.0f; // add height of tank to hitpoint
-			Translate(glm::vec3(0, hitpoint.y - position.y, 0));
+			if (position.y <= hitpoint.y) {
+				Translate(glm::vec3(0, hitpoint.y - position.y, 0));
+				velocity_.y = 0;
+			}
 		}
 	}
 
@@ -131,7 +128,7 @@ namespace game {
 	}
 
 	glm::vec3 HoverTank::GetVelocity(void) {
-		return velocity;
+		return velocity_;
 	}
 
 	float HoverTank::GetStrength() {
@@ -141,9 +138,10 @@ namespace game {
 	HoverTankTurret* HoverTank::GetTurret() {
 		return turret_;
 	}
-  
-	void HoverTank::SetVelocity(glm::vec3 newVelocity) {
-		velocity = newVelocity;
+
+	// Takes a normalized direction vector and a force value
+	void HoverTank::AddForce(glm::vec3 direction, float force) {
+		acceleration_ += direction * force;
 	}
 
 	void HoverTank::SetStrength(float newStrength) {
