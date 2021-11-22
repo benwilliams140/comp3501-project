@@ -56,6 +56,17 @@ namespace game {
                 return scn;
             }
 
+            template <typename T>
+            std::vector<T*> GetSimilarNodes() {
+                std::vector<T*> nodes;
+                for (auto it = begin(); it != end(); ++it) {
+                    if (dynamic_cast<const T*>(*it)) {
+                        nodes.push_back((T*) *it);
+                    }
+                }
+                return nodes;
+            }
+
             // Add an already-created node
             void AddNode(SceneNode *node);
             // Find a scene node with a specific name

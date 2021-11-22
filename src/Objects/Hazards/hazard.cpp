@@ -9,4 +9,9 @@ Hazard::Hazard(std::string name, Resource* geometry, Resource* material, Resourc
 Hazard::~Hazard()
 {
 }
+
+void Hazard::SetEffectiveness(float effectiveness)
+{
+	this->effectiveness = effectiveness;
+}
 } // namespace game

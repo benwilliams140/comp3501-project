@@ -52,12 +52,19 @@ namespace game {
         parent_ = nullptr;
 
         colliderBox_ = glm::vec3(0);
+        active_ = true;
+        instanced_ = false;
+        instanceAmount_ = 1;
     }
 
     SceneNode::~SceneNode() {}
 
     std::string SceneNode::GetName(void) const {
         return name_;
+    }
+
+    glm::vec3 SceneNode::GetCollisionBox(void) const {
+        return colliderBox_;
     }
 
     glm::vec3 SceneNode::GetPosition(void) const {
@@ -84,6 +91,14 @@ namespace game {
         angm_ = angm;
     }
 
+    bool SceneNode::GetActive(void) const{
+        return active_;
+    }
+
+    void SceneNode::SetActive(bool active) {
+        active_ = active;
+    }
+
     void SceneNode::SetPosition(glm::vec3 position) {
         position_ = position;
     }
@@ -98,6 +113,10 @@ namespace game {
 
     void SceneNode::SetParent(SceneNode* parent) {
         parent_ = parent;
+    }
+
+    void SceneNode::SetCollisionBox(glm::vec3 box) {
+        colliderBox_ = box;
     }
 
     void SceneNode::Translate(glm::vec3 trans) {
@@ -171,12 +190,16 @@ namespace game {
             glDrawArrays(mode_, 0, size_);
         }
         else {
-            glDrawElements(mode_, size_, GL_UNSIGNED_INT, 0);
+            if(instanced_)
+                glDrawElementsInstanced(mode_, size_, GL_UNSIGNED_INT, 0, instanceAmount_);
+            else
+                glDrawElements(mode_, size_, GL_UNSIGNED_INT, 0);
         }
     }
 
     void SceneNode::Init() {
         // Init shader uniforms
+        glUseProgram(material_);
         this->InitShaderUniform(material_);
     }
 

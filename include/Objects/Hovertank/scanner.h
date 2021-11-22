@@ -11,6 +11,7 @@
 
 #include "Control/resource.h"
 #include "Control/scene_node.h"
+#include "Objects/Artifact.h"
 
 namespace game {
 
@@ -19,13 +20,22 @@ namespace game {
 
 	public:
 		// Create Scanner from given resources
-		Scanner(const std::string name, const Resource* geometry, const Resource* material);
+		Scanner(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture);
 
 		// Destructor
 		~Scanner();
 
 		// Update geometry configuration
 		virtual void Update(void) override;
+
+		bool IsScanning() const;
+
+	private:
+		SceneNode* scanCone_;
+		Artifact* artifact_;
+		bool scanning_;
+		float scanStartTime_;
+
 	}; // class Scanner
 
 } // namespace game

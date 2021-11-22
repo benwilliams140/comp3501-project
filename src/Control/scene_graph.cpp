@@ -75,19 +75,17 @@ std::vector<SceneNode *>::const_iterator SceneGraph::end() const {
 
 
 void SceneGraph::Draw(Camera *camera) {
-
     // Draw all scene nodes
     for (int i = 0; i < node_.size(); i++){
-        node_[i]->Draw(camera);
+        if(node_[i]->GetActive()) node_[i]->Draw(camera);
     }
 }
 
 
 void SceneGraph::Update(){
-
+    // Update all scene nodes
     for (int i = 0; i < node_.size(); i++){
-        node_[i]->Update();
-        
+        if(node_[i]->GetActive()) node_[i]->Update();
     }
 }
 

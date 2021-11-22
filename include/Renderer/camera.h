@@ -7,6 +7,7 @@
 #include <glm/glm.hpp>
 
 namespace game {
+    class HoverTank;
 
     // Abstraction of a camera
     class Camera {
@@ -37,6 +38,10 @@ namespace game {
             void Pitch(float angle);
             void Yaw(float angle);
             void Roll(float angle);
+
+            // Different update functions
+            void UpdateCameraToTarget(HoverTank* target);
+            void UpdateCameraFreeroam();
 
             // Set the view from camera parameters: initial position of camera,
             // point looking at, and up vector
