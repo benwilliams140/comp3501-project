@@ -1,4 +1,3 @@
-#pragma once
 #ifndef ENVIRONMENTOBJECT_H
 #define ENVIRONMENTOBJECT_H
 

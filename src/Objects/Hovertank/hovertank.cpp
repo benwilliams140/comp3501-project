@@ -162,6 +162,6 @@ namespace game {
 
 	void HoverTank::IncreaseMaxSpeed(float increase)
 	{
-		maxSpeed_ += increase;
+		maxVelocity_ += increase;
 	}
 }
