@@ -11,9 +11,8 @@
 namespace game {
 
 	HoverTank::HoverTank(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : SceneNode(name, geometry, material, texture) {
-	    forward_ = glm::vec3(0, 0, 1); // consider taking this in as a parameter
+    forward_ = glm::vec3(0, 0, 1); // consider taking this in as a parameter
 		turret_ = nullptr;
-
 		velocity_ = glm::vec3(0);
 		acceleration_ = glm::vec3(0);
 		maxVelocity_ = 30.0f;
@@ -159,5 +158,10 @@ namespace game {
 	
 	void HoverTank::SetSpeedMultiple(float multiple) {
 		speedMultiple_ = multiple;
+	}
+
+	void HoverTank::IncreaseMaxSpeed(float increase)
+	{
+		maxSpeed_ += increase;
 	}
 }

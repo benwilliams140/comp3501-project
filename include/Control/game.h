@@ -21,6 +21,7 @@
 #include "Control/GUI/Menus/main_menu.h"
 #include "Control/GUI/Menus/pause_menu.h"
 #include "Control/GUI/Menus/hud.h"
+#include "Control/GUI/Menus/upgrades.h"
 #include "Control/path_config.h"
 #include "Control/time.h"
 
@@ -41,6 +42,10 @@
 #include "Objects/Tree.h"
 #include "Objects/Projectiles/linear_projectile.h"
 #include "Objects/Projectiles/parabolic_projectile.h"
+#include "Objects/Hazards/hazard.h"
+#include "Objects/Hazards/acid_pool.h"
+#include "Objects/Hazards/mud_pool.h"
+#include "Objects/Hazards/geyser.h"
 
 // object/resource names
 #define HOVERTANK_BASE "HovertankChassis"
@@ -67,7 +72,9 @@ namespace game {
     enum class State {
         PAUSED,
         RUNNING,
-        STOPPED
+        STOPPED,
+        UPGRADES,
+        GAME_OVER
     };
 
     // Game application
@@ -99,6 +106,14 @@ namespace game {
                     tex = GetResource(texture_name);
                 }
                 return scene_.CreateNode<T>(entity_name, geom, mat, tex);
+            }
+
+            template <typename T>
+            void SetHazardEffectiveness(float effectiveness) {
+                std::vector<T*> hazards = scene_.GetSimilarNodes<T>();
+                for (auto it = hazards.begin(); it != hazards.end(); ++it) {
+                    ((Hazard*) *it)->SetEffectiveness(effectiveness);
+                }
             }
 
             // Getters/Setters

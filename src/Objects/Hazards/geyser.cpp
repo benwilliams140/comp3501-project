@@ -28,7 +28,7 @@ namespace game {
 		if (launched_) {
 			// Adds a constant force to the tank for 3 seconds
 			if ((Time::GetElapsedTime() - startTime_) <= 3.0f) {
-				Game::GetInstance().GetPlayer()->GetTank()->AddForce(glm::vec3(0.0f, 1.0f, 0.0f), 0.8f);
+				Game::GetInstance().GetPlayer()->GetTank()->AddForce(effectiveness * glm::vec3(0.0f, 1.0f, 0.0f), 0.8f);
 			} else {
 				launched_ = false;
 			}

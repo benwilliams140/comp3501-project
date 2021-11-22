@@ -80,6 +80,7 @@ void Game::InitMenus() {
     menus_[MenuType::MAIN] = new MainMenu();
     menus_[MenuType::PAUSE] = new PauseMenu();
     menus_[MenuType::HUD] = new HUD();
+    menus_[MenuType::UPGRADES] = new Upgrades();
 }
 
 void Game::InitView(void){
@@ -138,6 +139,8 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Mesh, HOVERTANK_SCANNER_CONE, filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Machine_Gun.mesh");
     resman_.LoadResource(ResourceType::Mesh, HOVERTANK_MACHINE_GUN, filename.c_str());
+    filename = std::string(MESH_DIRECTORY) + std::string("/environment") + std::string("/pool.mesh");
+    resman_.LoadResource(ResourceType::Mesh, "Pool", filename.c_str());
 
     // Load shaders
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/simple_texture");
@@ -172,8 +175,8 @@ void Game::SetupScene(void) {
     std::string hovertankMaterial = "Simple";
     HoverTank* hovertank_base = CreateInstance<HoverTank>(HOVERTANK_BASE, HOVERTANK_BASE, hovertankMaterial, "HovertankTexture");
     player_ = new Player(100.f, 100.f, hovertank_base);
-    player_->SetEnergy(75.0f); // for demo purposes
-    player_->SetHealth(75.0f); // for demo purposes
+    player_->AddMoney(100000); // for demo purposes
+  
     HoverTankTurret* hovertank_turret = CreateInstance<HoverTankTurret>(HOVERTANK_TURRET, HOVERTANK_TURRET, hovertankMaterial, "HovertankTexture");
     hovertank_turret->Translate(glm::vec3(0.f, 1.055f, -0.4f));
     hovertank_turret->SetParent(hovertank_base);
@@ -191,23 +194,6 @@ void Game::SetupScene(void) {
         float dz = -1.0f + 3.0f * (floor(i / 2)); // back tracks (i=0,1) should translate (z) by -1, front (i=2,3) by 3
         hovertank_tracks.at(i)->Translate(glm::vec3(dx, dy, dz));
     }
-
-    // load the wheel model as the machine gun temporarily
-    MachineGun* machine_gun = CreateInstance<MachineGun>("MachineGun", HOVERTANK_MACHINE_GUN, hovertankMaterial, "uv6");
-    machine_gun->Rotate(glm::angleAxis(glm::radians(180.0f), hovertank_base->GetForward()));
-    machine_gun->Translate(glm::vec3(0.0f, 0.2555f, 0.0f));
-    machine_gun->Scale(glm::vec3(0.75));
-    machine_gun->SetParent(hovertank_turret);
-    machine_gun->SetActive(false);
-    hovertank_turret->AddAbility(machine_gun);
-
-    EnergyCannon* energy_cannon = CreateInstance<EnergyCannon>("MachineGun", HOVERTANK_MACHINE_GUN, hovertankMaterial, "uv6");
-    energy_cannon->Rotate(glm::angleAxis(glm::radians(180.0f), hovertank_base->GetForward()));
-    energy_cannon->Translate(glm::vec3(0.0f, 0.2555f, 0.0f));
-    energy_cannon->Scale(glm::vec3(0.75));
-    energy_cannon->SetParent(hovertank_turret);
-    energy_cannon->SetActive(false);
-    hovertank_turret->AddAbility(energy_cannon);
     
     // Create Hovertank scanner
     Scanner* hovertank_scanner = CreateInstance<Scanner>("Scanner", HOVERTANK_SCANNER, hovertankMaterial, "uv6");
@@ -220,7 +206,6 @@ void Game::SetupScene(void) {
     artifact1->SetPosition(glm::vec3(5.0f, -11.0f, 25.0f));
     artifacts_.push_back(artifact1);
 
-    // Create Environment Objects
     EnvironmentObject* rocks1 = CreateInstance<EnvironmentObject>("Rocks 1", "Cube", "Instanced", "RockyTexture");
     rocks1->InitPositions(1337, 250);
     rocks1->SetInstanceGroupID(0);
@@ -233,6 +218,10 @@ void Game::SetupScene(void) {
     EnvironmentObject* rocks4 = CreateInstance<EnvironmentObject>("Plant", "Cube", "Instanced", "uv6");
     rocks4->InitPositions(7516331, 250);
     rocks4->SetInstanceGroupID(3);
+
+    AcidPool* pool = CreateInstance<AcidPool>("AcidPool1", "Pool", "Simple", "RockyTexture");
+    pool->SetPosition(glm::vec3(5.0f, 0.0f, 25.0f));
+    pool->Scale(glm::vec3(20));
 
     // Initialize certain scene nodes
     terrain_->Init();
@@ -254,7 +243,16 @@ void Game::MainLoop(void){
             switch (state_) {
             case State::PAUSED: state_ = State::RUNNING; break;
             case State::RUNNING: state_ = State::PAUSED; break;
+            case State::UPGRADES: state_ = State::PAUSED; break; // switch to pause menu
             default: break;
+            }
+        }
+        // Press 'U' key to open/close the upgrades screen
+        if (Input::getKeyDown(INPUT_KEY_U)) {
+            switch (state_) {
+            case State::PAUSED: state_ = State::UPGRADES; break; // switch to upgrades screen
+            case State::RUNNING: state_ = State::UPGRADES; break;
+            case State::UPGRADES: state_ = State::RUNNING; break;
             }
         }
 
@@ -273,16 +271,27 @@ void Game::MainLoop(void){
             scene_.Draw(camera_);
             menus_[MenuType::PAUSE]->Render();
         }
+        // render upgrades screen and frozen game state in the background
+        else if (state_ == State::UPGRADES) {
+            scene_.Draw(camera_);
+            menus_[MenuType::UPGRADES]->Render();
+        }
         // update and render game when running
         else if (state_ == State::RUNNING) {
             Time::Update();
 
-            // handle camera/tank movement
+            // handle camera movement
             if (freeroam_) {
                 camera_->UpdateCameraFreeroam();
             } else {
                 camera_->UpdateCameraToTarget((HoverTank*)scene_.GetNode(HOVERTANK_BASE));
             }
+
+            // for tooltip testing
+            if (Input::getKeyDown(INPUT_KEY_T)) {
+                ((HUD*)menus_[MenuType::HUD])->ActivateTooltip("Test", 1.0f);
+            }
+            
 
             // removes dead projectiles
             std::vector<Projectile*> projectilesToRemove = player_->GetTank()->GetTurret()->RemoveDeadProjectiles();
@@ -290,6 +299,7 @@ void Game::MainLoop(void){
                 scene_.RemoveNode((*it)->GetName());
             }
 
+            player_->Update(); // player has it's own update method
             scene_.Update();
             scene_.Draw(camera_);
 
@@ -300,30 +310,12 @@ void Game::MainLoop(void){
 
         // Push buffer drawn in the background onto the display
         glfwSwapBuffers(window_);
-
         Input::update();
-        
 
         // Update other events like input handling
         glfwPollEvents();
     }
 }
-
-/*
-    // shoot currently selected projectile
-    if (Input::getKey(INPUT_KEY_SPACE)) {
-        Resource* geom = GetResource("Cube");
-        Resource* mat = GetResource("Simple");
-        Resource* tex = GetResource("RockyTexture");
-        Projectile* outProj = nullptr;
-        player_->GetTank()->GetTurret()->UseSelectedAbility(&outProj, player_->GetTank()->GetForward(), geom, mat, tex);
-        if (outProj) {
-            outProj->SetPosition(player_->GetTank()->GetPosition());
-            outProj->Scale(glm::vec3(0.5f));
-            scene_.AddNode(outProj);
-        }
-    }
-}*/
 
 void Game::ResizeCallback(GLFWwindow* window, int width, int height){
     // Set up viewport and camera projection based on new window size
