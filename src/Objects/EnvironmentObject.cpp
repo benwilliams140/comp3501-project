@@ -35,7 +35,7 @@ namespace game {
 		for (int i = 0; i < amount; i++) {
 			float x = randRangeFloat(-450, 450);
 			float z = randRangeFloat(-450, 450);
-			float y = terrain->GetHeightAt(x, z) + 1.0f;
+			float y = terrain->GetHeightAt(x, z);
 			positions_[i] = glm::vec3(x, y, z);
 		}
 	}
