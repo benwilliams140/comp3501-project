@@ -20,11 +20,6 @@ namespace game {
 		}
 	}
 
-	bool AcidPool::CollisionDetection(SceneNode* other)
-	{
-		return false;
-	}
-
 	void AcidPool::Effect()
 	{
 		Game::GetInstance().GetPlayer()->decreaseHealth(damage_ * effectiveness);

@@ -9,7 +9,6 @@ public:
 	~MudPool();
 
 	virtual void Update() override;
-	virtual bool CollisionDetection(SceneNode* other) override;
 
 private:
 	virtual void Effect() override;

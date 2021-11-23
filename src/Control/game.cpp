@@ -157,6 +157,12 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Texture, "uv6", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/hovertank_texture.png");
     resman_.LoadResource(ResourceType::Texture, "HovertankTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/environment") + std::string("/mud.png");
+    resman_.LoadResource(ResourceType::Texture, "MudTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/environment") + std::string("/acid.png");
+    resman_.LoadResource(ResourceType::Texture, "AcidTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/environment") + std::string("/geyser.png");
+    resman_.LoadResource(ResourceType::Texture, "GeyserTexture", filename.c_str());
 }
 
 void Game::SetupScene(void) {
@@ -219,9 +225,23 @@ void Game::SetupScene(void) {
     rocks4->InitPositions(7516331, 250);
     rocks4->SetInstanceGroupID(3);
 
-    AcidPool* pool = CreateInstance<AcidPool>("AcidPool1", "Pool", "Simple", "RockyTexture");
-    pool->SetPosition(glm::vec3(5.0f, 0.0f, 25.0f));
-    pool->Scale(glm::vec3(20));
+    // should be using the CalculateTerrainHeightAt function to place the hazards (and make a function for it?)
+    // should also calculate collision box based on scale
+    // this is all temporary
+    AcidPool* acidPool = CreateInstance<AcidPool>("AcidPool1", "Pool", "Simple", "AcidTexture");
+    acidPool->SetPosition(glm::vec3(5.0f, -14.0f, 40.0f));
+    acidPool->Scale(glm::vec3(15));
+    acidPool->SetCollisionBox(glm::vec3(15.0f, 10.0f, 15.0f));
+
+    MudPool* mudPool = CreateInstance<MudPool>("MudPool1", "Pool", "Simple", "MudTexture");
+    mudPool->SetPosition(glm::vec3(45.0f, -9.0f, 40.0f));
+    mudPool->Scale(glm::vec3(15));
+    mudPool->SetCollisionBox(glm::vec3(15.0f, 10.0f, 15.0f));
+
+    Geyser* geyser = CreateInstance<Geyser>("Geyser1", "Pool", "Simple", "GeyserTexture");
+    geyser->SetPosition(glm::vec3(-35.0f, -20.0f, 40.0f));
+    geyser->Scale(glm::vec3(15));
+    geyser->SetCollisionBox(glm::vec3(15.0f, 10.0f, 15.0f));
 
     ShooterEnemy* enemy = CreateInstance<ShooterEnemy>("Enemy", "Cube", "Simple", "uv6");
     enemy->SetPosition(glm::vec3(10.0f, -5.0f, 25.0f));

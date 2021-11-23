@@ -156,8 +156,18 @@ namespace game {
         return geometry_;
     }
     
+    // basic collision detection for all nodes, override this function to implement a different variation
     bool SceneNode::CollisionDetection(SceneNode* other) {
-        return false; // no collision detection for base node
+        // calculate the bounding boxes
+        glm::vec3 thisMin = GetPosition() - GetCollisionBox();
+        glm::vec3 thisMax = GetPosition() + GetCollisionBox();
+        glm::vec3 otherMin = other->GetPosition() - other->GetCollisionBox();
+        glm::vec3 otherMax = other->GetPosition() + other->GetCollisionBox();
+
+        // detect collision
+        return (thisMin.x <= otherMax.x && thisMax.x >= otherMax.x) &&
+            (thisMin.y <= otherMax.y && thisMax.y >= otherMax.y) &&
+            (thisMin.z <= otherMax.z && thisMax.z >= otherMax.z);
     }
 
     glm::mat4 SceneNode::GetWorldTransform(void) const {
