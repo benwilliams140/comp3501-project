@@ -12,7 +12,7 @@ public:
 
 	void SetEffectiveness(float effectiveness);
 
-	Math::AABBCollider GetCollider();
+	virtual Math::AABBCollider GetCollider();
 
 protected:
 	float effectiveness = 1.0f; // should always start at 1.0, until the hovertank is upgraded

@@ -14,8 +14,9 @@ void Hazard::SetEffectiveness(float effectiveness)
 {
 	this->effectiveness = effectiveness;
 }
+
 Math::AABBCollider Hazard::GetCollider()
 {
-	return { GetPosition() - GetScale(), GetPosition() + GetScale() };
+	return { GetPosition() - GetScale() * 0.65f, GetPosition() + GetScale() * 0.65f };
 }
 } // namespace game
