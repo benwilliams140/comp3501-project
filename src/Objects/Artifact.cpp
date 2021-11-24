@@ -7,6 +7,7 @@
 #include <time.h>
 
 namespace game {
+	using namespace Math;
 
 	Artifact::Artifact(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : SceneNode(name, geometry, material, texture) {
 		found = false;
@@ -43,7 +44,6 @@ namespace game {
 		return 0;
 	}
 
-
 	void Artifact::Update(void) {
 
 		Rotate(GetAngM());
@@ -53,4 +53,7 @@ namespace game {
 		return found;
 	}
 
+	SphereCollider Artifact::GetCollider(void) const {
+		return {GetPosition(), 2.0f};
+	}
 } // namespace game 

@@ -28,7 +28,8 @@ namespace game {
 		// Update geometry configuration
 		virtual void Update(void) override;
 
-		bool IsScanning() const;
+		bool IsScanning(void) const;
+		glm::vec3 GetScanPoint(void) const;
 
 	private:
 		SceneNode* scanCone_;

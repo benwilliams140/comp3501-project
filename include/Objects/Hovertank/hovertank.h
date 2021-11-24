@@ -49,6 +49,7 @@ namespace game {
 
 	private:
 		void motionControl();
+		void turretControl();
 		void shootingControl();
 		void terrainCollision();
 

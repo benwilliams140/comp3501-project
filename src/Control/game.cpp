@@ -399,4 +399,8 @@ std::vector<Artifact*>& Game::GetArtifacts() {
     return artifacts_;
 }
 
+std::unordered_map<MenuType, Menu*>& Game::GetMenus(void) {
+    return menus_;
+}
+
 } // namespace game

@@ -15,7 +15,7 @@ namespace game {
 		turret_ = nullptr;
 		velocity_ = glm::vec3(0);
 		acceleration_ = glm::vec3(0);
-		maxVelocity_ = 30.0f;
+		maxVelocity_ = 20.0f;
 		speedMultiple_ = 1.0f; // used to change speed effects on the tanks (eg. going through mud)
 		SetCollisionBox(glm::vec3(2.5f, 2.5f, 2.5));
 	}
@@ -27,6 +27,7 @@ namespace game {
 		if (!Game::GetInstance().GetFreeroam()) {
 			if (!scanner_->IsScanning()) {
 				motionControl();
+				turretControl();
 			}
 			shootingControl();
 		}
@@ -40,6 +41,10 @@ namespace game {
 		if (Input::getKey(INPUT_KEY_SPACE)) {
 			Projectile* proj = turret_->UseSelectedAbility(GetPosition(), GetForward());
 		}
+	}
+
+	void HoverTank::turretControl() {
+		// Rotate hovertank's turret
 		if(Input::getKey(INPUT_KEY_Q)) { // left
 			glm::quat rot = glm::angleAxis(((glm::pi<float>() * 60) / 180) * Time::GetDeltaTime(), GetUp());
 			turret_->Rotate(rot);
@@ -52,9 +57,9 @@ namespace game {
 
 	void HoverTank::motionControl() {
 		static float rot_factor = (glm::pi<float>() * 60) / 180;
-		static float speedIncrease = 2.0f;
+		static float speedIncrease = 1.0f;
 		static float gravity = 1.0f;
-		static float friction = 0.25f;
+		static float friction = 0.35f;
 
 		// Accelerate due to gravity
 		acceleration_.y -= gravity;

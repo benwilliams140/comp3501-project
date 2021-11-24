@@ -126,6 +126,7 @@ namespace game {
             Player* GetPlayer();
             Terrain* GetTerrain();
             std::vector<Artifact*>& GetArtifacts();
+            std::unordered_map<MenuType, Menu*>& GetMenus(void);
             void SetState(State state);
 
             std::vector<Projectile*> GetEnemyProjectiles();
