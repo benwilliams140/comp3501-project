@@ -132,6 +132,8 @@ namespace game {
 		ImGui::SetNextWindowPos(ImVec2(textX, textY));
 		ImVec2 textSize = ImGui::CalcTextSize(infoBar_.text.c_str());
 		ImGui::SetNextWindowSize(ImVec2(std::max(60.0f, textSize.x * 1.5f), textSize.y * 4)); // make window fit text size
+		ImGuiStyle& style = ImGui::GetStyle();
+		style.Colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0, 0, 0, 0);
 		if(ImGui::BeginPopupModal("Tooltip", nullptr, flags)) {
 			
 			ImGui::EndPopup();

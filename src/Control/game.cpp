@@ -125,6 +125,8 @@ void Game::SetupResources(void) {
     // Load geometry
     filename = std::string(MESH_DIRECTORY) + std::string("/cube.mesh");
     resman_.LoadResource(ResourceType::Mesh, "Cube", filename.c_str());
+    filename = std::string(MESH_DIRECTORY) + std::string("/sphere.mesh");
+    resman_.LoadResource(ResourceType::Mesh, "Sphere", filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Chassis.mesh");
     resman_.LoadResource(ResourceType::Mesh, HOVERTANK_BASE, filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Turret.mesh");
@@ -141,6 +143,8 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Mesh, HOVERTANK_MACHINE_GUN, filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("/environment") + std::string("/pool.mesh");
     resman_.LoadResource(ResourceType::Mesh, "Pool", filename.c_str());
+    filename = std::string(MESH_DIRECTORY) + std::string("/environment") + std::string("/rock1.mesh");
+    resman_.LoadResource(ResourceType::Mesh, "Rock1", filename.c_str());
 
     // Load shaders
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/simple_texture");
@@ -212,7 +216,7 @@ void Game::SetupScene(void) {
     artifact1->SetPosition(glm::vec3(5.0f, -11.0f, 25.0f));
     artifacts_.push_back(artifact1);
 
-    EnvironmentObject* rocks1 = CreateInstance<EnvironmentObject>("Rocks 1", "Cube", "Instanced", "RockyTexture");
+    EnvironmentObject* rocks1 = CreateInstance<EnvironmentObject>("Rocks 1", "Rock1", "Instanced", "RockyTexture");
     rocks1->InitPositions(1337, 250);
     rocks1->SetInstanceGroupID(0);
     EnvironmentObject* rocks2 = CreateInstance<EnvironmentObject>("Rocks 2", "Cube", "Instanced", "uv6");

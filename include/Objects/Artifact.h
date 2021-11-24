@@ -11,6 +11,7 @@
 
 #include "Control/resource.h"
 #include "Control/scene_node.h"
+#include "Control/mathematics.h"
 
 namespace game {
 
@@ -37,7 +38,8 @@ namespace game {
 		// Update geometry configuration
 		void Update(void);
 
-		
+		// Collider
+		Math::SphereCollider GetCollider(void) const;
 
 	private:
 

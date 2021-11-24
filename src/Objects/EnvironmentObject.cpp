@@ -18,13 +18,25 @@ namespace game {
 	EnvironmentObject::EnvironmentObject(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : SceneNode(name, geometry, material, texture) {
 		instanced_ = true;
 		instGroupID_ = 0;
+		colliderRadius_ = 1.0f;
+		tank_ = Game::GetInstance().GetPlayer()->GetTank();
 	}
 
 	EnvironmentObject::~EnvironmentObject() {
 		delete[] positions_;
 	}
 
-	void EnvironmentObject::Update(void) {}
+	void EnvironmentObject::Update(void) {
+		HovertankCollision();
+	}
+
+	void EnvironmentObject::HovertankCollision() {
+		for (int i = 0; i < positionsSize_; i++) {
+			if (Math::isCollidingSphereToSphere(tank_->GetCollider(), {positions_[i], colliderRadius_})) {
+				// TODO - move tank away from object and remove velocity in that direction
+			}
+		}
+	}
 
 	void EnvironmentObject::InitPositions(int seed, int amount) {
 		Terrain* terrain = Game::GetInstance().GetTerrain();
@@ -35,7 +47,7 @@ namespace game {
 		for (int i = 0; i < amount; i++) {
 			float x = randRangeFloat(-450, 450);
 			float z = randRangeFloat(-450, 450);
-			float y = terrain->GetHeightAt(x, z) + 1.0f;
+			float y = terrain->GetHeightAt(x, z);
 			positions_[i] = glm::vec3(x, y, z);
 		}
 	}
@@ -69,5 +81,9 @@ namespace game {
 
 	void EnvironmentObject::SetInstanceGroupID(unsigned int id) {
 		if(id < MAX_INST_GROUPS) instGroupID_ = id;
+	}
+
+	void EnvironmentObject::SetColliderRadius(float radius) {
+		if(radius >= 0) colliderRadius_ = radius;
 	}
 }

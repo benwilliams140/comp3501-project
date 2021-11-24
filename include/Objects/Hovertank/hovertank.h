@@ -35,6 +35,7 @@ namespace game {
 		glm::vec3 GetVelocity();
 		float GetStrength();
 		HoverTankTurret* GetTurret();
+		Math::SphereCollider GetCollider(void) const;
 
 		// setters
 		void AddForce(glm::vec3 direction, float force);
@@ -50,6 +51,7 @@ namespace game {
 
 	private:
 		void motionControl();
+		void turretControl();
 		void shootingControl();
 		void terrainCollision();
 
@@ -64,6 +66,8 @@ namespace game {
 
 		HoverTankTurret* turret_;
 		Scanner* scanner_;
+		//SceneNode* colliderTest_;
+
 	}; // class HoverTank
 
 }
