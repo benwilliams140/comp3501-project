@@ -43,6 +43,7 @@ namespace game {
 		void SetTurret(HoverTankTurret* turret);
 		void SetScanner(Scanner* scanner);
 		void SetSpeedMultiple(float multiple);
+		void SetSpeedEffectMultiple(float multiple);
 		void IncreaseMaxSpeed(float increase);
 
 		// Update geometry configuration
@@ -57,7 +58,8 @@ namespace game {
 		glm::vec3 velocity_;
 		glm::vec3 acceleration_;
 		float maxVelocity_;
-		float speedMultiple_;
+		float speedMultiple_; // for upgrades
+		float speedEffectMultiple_; // for mud hazard (and boost?)
 
 		float strength;
 		glm::vec3 forward_;

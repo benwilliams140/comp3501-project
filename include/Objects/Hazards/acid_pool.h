@@ -9,7 +9,6 @@ namespace game {
 		~AcidPool();
 
 		virtual void Update() override;
-		virtual bool CollisionDetection(SceneNode* other) override;
 
 	private:
 		float cooldown_;

@@ -18,6 +18,7 @@ namespace game {
 		acceleration_ = glm::vec3(0);
 		maxVelocity_ = 20.0f;
 		speedMultiple_ = 1.0f; // used to change speed effects on the tanks (eg. going through mud)
+		speedEffectMultiple_ = 1.0f; // used for speed effects (eg. mud, boost)
 		SetCollisionBox(glm::vec3(2.5f, 2.5f, 2.5));
 
 		//colliderTest_ = Game::GetInstance().CreateInstance<SceneNode>("collider", "Sphere", "Simple", "uv6");
@@ -105,7 +106,7 @@ namespace game {
 
 		velocity_ += acceleration_; // Increment velocity by acceleration
 		acceleration_ = glm::vec3(0); // Reset acceleration
-		Translate(velocity_ * speedMultiple_ * Time::GetDeltaTime()); // Translate by velocity
+		Translate(velocity_ * speedMultiple_ * speedEffectMultiple_ * Time::GetDeltaTime()); // Translate by velocity
 
 		// Rotate yaw
 		if (Input::getKey(INPUT_KEY_LEFT)) {
@@ -179,6 +180,11 @@ namespace game {
 	
 	void HoverTank::SetSpeedMultiple(float multiple) {
 		speedMultiple_ = multiple;
+	}
+
+	void HoverTank::SetSpeedEffectMultiple(float multiple)
+	{
+		speedEffectMultiple_ = multiple;
 	}
 
 	void HoverTank::IncreaseMaxSpeed(float increase)

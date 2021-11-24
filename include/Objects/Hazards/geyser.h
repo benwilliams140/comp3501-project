@@ -9,7 +9,6 @@ namespace game {
 		~Geyser();
 
 		virtual void Update() override;
-		virtual bool CollisionDetection(SceneNode* other) override;
 
 	private:
 		float cooldown_, maxCooldown_;

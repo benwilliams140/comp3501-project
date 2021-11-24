@@ -58,6 +58,10 @@ namespace game {
 		infoBar_.text = "";
 	}
 
+	void HUD::StartInjuredEffect() {
+		injuredEffect_.startTime = injuredEffect_.maxTime;
+	}
+
 	void HUD::Render() {
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -74,19 +78,33 @@ namespace game {
 			ImGuiWindowFlags_NoScrollWithMouse |
 			ImGuiWindowFlags_NoScrollbar;
 
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+
 		ImGui::Begin("HUD", (bool*)true, flags);
 
 		ImVec2 windowSize = ImVec2(windowWidth, windowHeight);
 		ImVec2 windowRatio = ImVec2((float)windowWidth / initialWindowWidth, (float)windowHeight / initialWindowHeight);
+		
+		RenderInjuredEffect(windowSize);
 		RenderInformationBar(windowSize, windowRatio);
 		RenderHealthBar(windowSize, windowRatio);
 		RenderEnergyBar(windowSize, windowRatio);
 		RenderProjectileSelection(windowSize, windowRatio);
 
 		ImGui::End();
+		ImGui::PopStyleVar(2);
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	}
+
+	void HUD::RenderInjuredEffect(ImVec2 windowSize)
+	{
+		injuredEffect_.startTime -= Time::GetDeltaTime();
+		ImGui::PushStyleVar(ImGuiStyleVar_Alpha, injuredEffect_.startTime / injuredEffect_.maxTime);
+		ImGui::Image(injuredEffect_.effect, windowSize);
+		ImGui::PopStyleVar(1);
 	}
 
 	void HUD::RenderInformationBar(ImVec2 windowSize, ImVec2 windowRatio) {
@@ -98,6 +116,10 @@ namespace game {
 		float textX = windowSize.x / 2;
 		float textY = windowSize.y / 2;
 
+		ImGui::SetCursorPos(ImVec2(textX, textY));
+		ImGui::Text(infoBar_.text.c_str());
+
+		/*
 		ImGui::SetNextWindowBgAlpha(0.0f);
 		ImGuiWindowFlags flags = ImGuiWindowFlags_NoCollapse |
 			ImGuiWindowFlags_NoInputs |
@@ -113,10 +135,10 @@ namespace game {
 		ImGuiStyle& style = ImGui::GetStyle();
 		style.Colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0, 0, 0, 0);
 		if(ImGui::BeginPopupModal("Tooltip", nullptr, flags)) {
-			ImGui::Text(infoBar_.text.c_str());
+			
 			ImGui::EndPopup();
 		}
-		ImGui::OpenPopup("Tooltip", flags);
+		ImGui::OpenPopup("Tooltip", flags);*/
 	}
 
 	void HUD::RenderHealthBar(ImVec2 windowSize, ImVec2 windowRatio) {
