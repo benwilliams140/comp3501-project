@@ -183,8 +183,8 @@ namespace game {
 		speedEffectMultiple_ = multiple;
 	}
 
-	void HoverTank::IncreaseMaxSpeed(float increase)
+	void HoverTank::IncreaseSpeedMultiple(float increase)
 	{
-		maxVelocity_ += increase;
+		speedMultiple_ += increase;
 	}
 }

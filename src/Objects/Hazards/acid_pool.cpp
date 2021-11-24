@@ -15,7 +15,7 @@ namespace game {
 	{
 		cooldown_ -= Time::GetDeltaTime();
 		Math::SphereCollider tankBox = Game::GetInstance().GetPlayer()->GetTank()->GetCollider();
-		if (cooldown_ <= 0.0f && Math::isCollidingSphereToAABB(tankBox, GetCollider())) {
+		if (cooldown_ <= 0.0f && Math::isCollidingSphereToSphere(tankBox, GetCollider())) {
 			Effect();
 			cooldown_ = maxCooldown_;
 		}

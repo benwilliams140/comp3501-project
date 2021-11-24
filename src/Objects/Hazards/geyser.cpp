@@ -11,7 +11,7 @@ namespace game {
 		launched_ = false; 
 		// start time of the effect
 		startTime_ = 0;
-		effectiveness = 10.0f;
+		effectiveness = 1.0f;
 	}
 
 	Geyser::~Geyser() {}
@@ -24,14 +24,14 @@ namespace game {
 
 			// test if the tank is colliding
 			Math::SphereCollider tankBox = Game::GetInstance().GetPlayer()->GetTank()->GetCollider();
-			if (Math::isCollidingSphereToAABB(tankBox, GetCollider())) {
+			if (Math::isCollidingSphereToSphere(tankBox, GetCollider())) {
 				Effect();
 			}
 		}
 		if (launched_) {
 			// Adds a constant force to the tank for 0.5 seconds
 			if ((Time::GetElapsedTime() - startTime_) <= 0.5f) {
-				Game::GetInstance().GetPlayer()->GetTank()->AddForce(effectiveness * glm::vec3(0.0f, 1.0f, 0.0f), 0.8f);
+				Game::GetInstance().GetPlayer()->GetTank()->AddForce(effectiveness * glm::vec3(0.0f, 15.0f, 0.0f), 0.8f);
 			} else {
 				launched_ = false;
 			}

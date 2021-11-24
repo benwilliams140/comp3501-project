@@ -44,7 +44,7 @@ namespace game {
 		void SetScanner(Scanner* scanner);
 		void SetSpeedMultiple(float multiple);
 		void SetSpeedEffectMultiple(float multiple);
-		void IncreaseMaxSpeed(float increase);
+		void IncreaseSpeedMultiple(float increase);
 
 		// Update geometry configuration
 		virtual void Update(void) override;

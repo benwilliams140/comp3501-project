@@ -12,8 +12,8 @@ namespace game {
 
 	private:
 		float cooldown_;
-		const float maxCooldown_ = 0.25f; // cooldown between damage effect
-		const float damage_ = 2.5f;
+		const float maxCooldown_ = 0.2f; // cooldown between damage effect
+		const float damage_ = 5.0f;
 
 		virtual void Effect() override;
 	};

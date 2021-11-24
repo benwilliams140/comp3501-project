@@ -259,6 +259,8 @@ void Game::SetupScene(void) {
 void Game::MainLoop(void){
     // Loop while the user did not close the window
     while (!glfwWindowShouldClose(window_)){
+        Time::Update(); // time should update every frame
+
         // Clear background
         glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -303,8 +305,6 @@ void Game::MainLoop(void){
         }
         // update and render game when running
         else if (state_ == State::RUNNING) {
-            Time::Update();
-
             // handle camera movement
             if (freeroam_) {
                 camera_->UpdateCameraFreeroam();

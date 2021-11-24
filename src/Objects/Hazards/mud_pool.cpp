@@ -14,7 +14,7 @@ namespace game {
 	void MudPool::Update()
 	{
 		Math::SphereCollider tankBox = Game::GetInstance().GetPlayer()->GetTank()->GetCollider();
-		if (Math::isCollidingSphereToAABB(tankBox, GetCollider())) {
+		if (Math::isCollidingSphereToSphere(tankBox, GetCollider())) {
 			Effect();
 		}
 		else {
