@@ -2,6 +2,7 @@
 
 #include "Control/scene_node.h"
 #include "Control/time.h"
+#include "Control/mathematics.h"
 
 namespace game {
 class Hazard : public SceneNode {
@@ -10,6 +11,8 @@ public:
 	~Hazard();
 
 	void SetEffectiveness(float effectiveness);
+
+	Math::AABBCollider GetCollider();
 
 protected:
 	float effectiveness = 1.0f; // should always start at 1.0, until the hovertank is upgraded

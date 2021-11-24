@@ -23,7 +23,8 @@ namespace game {
 			// should start geyser rendering here (is it happening in a shader?)
 
 			// test if the tank is colliding
-			if (CollisionDetection(Game::GetInstance().GetPlayer()->GetTank())) {
+			Math::SphereCollider tankBox = Game::GetInstance().GetPlayer()->GetTank()->GetCollider();
+			if (Math::isCollidingSphereToAABB(tankBox, GetCollider())) {
 				Effect();
 			}
 		}

@@ -51,7 +51,6 @@ namespace game {
         scale_ = glm::vec3(1.0, 1.0, 1.0);
         parent_ = nullptr;
 
-        colliderBox_ = glm::vec3(0);
         active_ = true;
         instanced_ = false;
         instanceAmount_ = 1;
@@ -61,10 +60,6 @@ namespace game {
 
     std::string SceneNode::GetName(void) const {
         return name_;
-    }
-
-    glm::vec3 SceneNode::GetCollisionBox(void) const {
-        return colliderBox_;
     }
 
     glm::vec3 SceneNode::GetPosition(void) const {
@@ -115,10 +110,6 @@ namespace game {
         parent_ = parent;
     }
 
-    void SceneNode::SetCollisionBox(glm::vec3 box) {
-        colliderBox_ = box;
-    }
-
     void SceneNode::Translate(glm::vec3 trans) {
         position_ += trans;
     }
@@ -154,20 +145,6 @@ namespace game {
 
     const Resource* SceneNode::GetGeometry(void) const {
         return geometry_;
-    }
-    
-    // basic collision detection for all nodes, override this function to implement a different variation
-    bool SceneNode::CollisionDetection(SceneNode* other) {
-        // calculate the bounding boxes
-        glm::vec3 thisMin = GetPosition() - GetCollisionBox();
-        glm::vec3 thisMax = GetPosition() + GetCollisionBox();
-        glm::vec3 otherMin = other->GetPosition() - other->GetCollisionBox();
-        glm::vec3 otherMax = other->GetPosition() + other->GetCollisionBox();
-
-        // detect collision
-        return (thisMin.x <= otherMax.x && thisMax.x >= otherMax.x) &&
-            (thisMin.y <= otherMax.y && thisMax.y >= otherMax.y) &&
-            (thisMin.z <= otherMax.z && thisMax.z >= otherMax.z);
     }
 
     glm::mat4 SceneNode::GetWorldTransform(void) const {

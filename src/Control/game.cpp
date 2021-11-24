@@ -235,17 +235,14 @@ void Game::SetupScene(void) {
     AcidPool* acidPool = CreateInstance<AcidPool>("AcidPool1", "Pool", "Simple", "AcidTexture");
     acidPool->SetPosition(glm::vec3(5.0f, -14.0f, 40.0f));
     acidPool->Scale(glm::vec3(15));
-    acidPool->SetCollisionBox(glm::vec3(15.0f, 10.0f, 15.0f));
 
     MudPool* mudPool = CreateInstance<MudPool>("MudPool1", "Pool", "Simple", "MudTexture");
     mudPool->SetPosition(glm::vec3(45.0f, -9.0f, 40.0f));
     mudPool->Scale(glm::vec3(15));
-    mudPool->SetCollisionBox(glm::vec3(15.0f, 10.0f, 15.0f));
 
     Geyser* geyser = CreateInstance<Geyser>("Geyser1", "Pool", "Simple", "GeyserTexture");
     geyser->SetPosition(glm::vec3(-35.0f, -20.0f, 40.0f));
     geyser->Scale(glm::vec3(15));
-    geyser->SetCollisionBox(glm::vec3(15.0f, 10.0f, 15.0f));
 
     ShooterEnemy* enemy = CreateInstance<ShooterEnemy>("Enemy", "Cube", "Simple", "uv6");
     enemy->SetPosition(glm::vec3(10.0f, -5.0f, 25.0f));

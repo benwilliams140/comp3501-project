@@ -51,7 +51,7 @@ namespace game {
 					// Check for point vs. cube collision
 					if (isCollidingSphereToSphere({GetScanPoint(), 0.5F}, (*itr)->GetCollider())) {
 						// Activate button prompt
-						((HUD*)Game::GetInstance().GetMenus()[MenuType::HUD])->ActivateTooltip("[C] scan", 0.01f);
+						((HUD*)Game::GetInstance().GetMenu(MenuType::HUD))->ActivateTooltip("[C] Scan Object", 0.25f);
 						
 						// Start scanning
 						if (Input::getKeyDown(INPUT_KEY_C)) {

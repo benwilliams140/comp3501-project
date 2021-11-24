@@ -34,7 +34,6 @@ namespace game {
         glm::vec3 GetScale(void) const;
         SceneNode* GetParent(void) const;
         glm::quat GetAngM(void) const;
-        glm::vec3 GetCollisionBox(void) const;
         bool GetActive(void) const;
 
         // Set node attributes
@@ -43,15 +42,12 @@ namespace game {
         void SetScale(glm::vec3 scale);
         void SetParent(SceneNode* parent);
         void SetAngM(glm::quat angm);
-        void SetCollisionBox(glm::vec3 box);
         void SetActive(bool active);
 
         // Perform transformations on node
         void Translate(glm::vec3 trans);
         void Rotate(glm::quat rot);
         void Scale(glm::vec3 scale);
-
-        virtual bool CollisionDetection(SceneNode* other);
 
         // Draw the node according to scene parameters in 'camera'
         // variable
@@ -92,9 +88,6 @@ namespace game {
         glm::quat angm_; // angular momentum
         SceneNode* parent_; // Parent node
         bool active_; // Whether or not the object should be updated and drawn
-
-        // should set the x,y,z values to 0 when a node does not need collision
-        glm::vec3 colliderBox_;
 
         // Set matrices that transform the node in a shader program
         void SetupShader(GLuint program);

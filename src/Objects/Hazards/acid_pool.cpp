@@ -14,7 +14,8 @@ namespace game {
 	void AcidPool::Update()
 	{
 		cooldown_ -= Time::GetDeltaTime();
-		if (cooldown_ <= 0.0f && CollisionDetection(Game::GetInstance().GetPlayer()->GetTank())) {
+		Math::SphereCollider tankBox = Game::GetInstance().GetPlayer()->GetTank()->GetCollider();
+		if (cooldown_ <= 0.0f && Math::isCollidingSphereToAABB(tankBox, GetCollider())) {
 			Effect();
 			cooldown_ = maxCooldown_;
 		}

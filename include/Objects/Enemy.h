@@ -15,6 +15,7 @@
 #include "Control/scene_node.h"
 #include "Control/scene_graph.h"
 #include "Objects/Projectiles/Enemy_linear_projectile.h"
+#include "Control/mathematics.h"
 
 namespace game {
 
@@ -31,28 +32,23 @@ namespace game {
 		// Update geometry configuration
 		virtual void Update(void) override;
 
-		glm::vec3 GetAwarenessBox();
+		virtual Math::AABBCollider GetAwarenessBox();
 		bool isStunned();
-		bool isActive();
 		int GetCoolDown();
 		int GetStunCoolDown();
 
 		void SetStunned(bool stun);
-		void SetActive(bool act);
 		void SetCoolDown(int time);
 		void SetStunDown(int time);
-		void SetAwarnessBox(glm::vec3 box);
 		void decreaseStunCoolDown();
 		void decreaseCoolDown();
 
-		bool detectPlayer(SceneNode* tank);
+		bool detectPlayer(HoverTank* tank);
 		virtual void attack(SceneNode* tank, std::vector<Projectile*> *enemy_projectiles_);
 
 
 	private:
 		bool stunned; //tells if the enemy is stunned or not
-		bool active; //is true when player is nearby, and it is time to attack
-		glm::vec3 awarenessBox_;//a hit box if entered by the player alerts the enemy to attack
 		int coolDown; //time till next attack
 		int stun_coolDown; //cooldown for being stunned
 

@@ -10,7 +10,6 @@
 namespace game {
 
 	ShooterEnemy::ShooterEnemy(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : Enemy(name, geometry, material, texture) {
-		SetAwarnessBox(glm::vec3(20.0f, 20.0f, 20.0f));
 	}
 
 
@@ -30,7 +29,7 @@ namespace game {
 	}
 
 	void ShooterEnemy::attack( SceneNode* tank, std::vector<Projectile*> *enemy_projectiles_) {
-		if (!isActive()||GetCoolDown() > 0) {
+		if (GetCoolDown() > 0) {
 			return;
 		}
 		static int num = 0; // used to give unique names to each projectile
@@ -43,10 +42,9 @@ namespace game {
 		projectile->SetScale(glm::vec3(0.5));
 		projectile->SetLifespan(3.0f);
 
-		SetCoolDown(150);//set cool down for next shot
+		SetCoolDown(150.0f);//set cool down for next shot
 
 		enemy_projectiles_->push_back(projectile);//add it to our list of enemy projectiles
-
 	}
 
 }

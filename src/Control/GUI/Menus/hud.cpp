@@ -83,6 +83,8 @@ namespace game {
 
 		ImGui::Begin("HUD", (bool*)true, flags);
 
+		ImGui::PopStyleVar(2);
+
 		ImVec2 windowSize = ImVec2(windowWidth, windowHeight);
 		ImVec2 windowRatio = ImVec2((float)windowWidth / initialWindowWidth, (float)windowHeight / initialWindowHeight);
 		
@@ -93,7 +95,6 @@ namespace game {
 		RenderProjectileSelection(windowSize, windowRatio);
 
 		ImGui::End();
-		ImGui::PopStyleVar(2);
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -113,32 +114,15 @@ namespace game {
 
 		if (!infoBar_.active) return; // don't render if not active
 
-		float textX = windowSize.x / 2;
-		float textY = windowSize.y / 2;
+		float projSelectionHeight = windowSize.y * projSelection_.heightRatio;
+		float projSelectionY = windowSize.y - projSelectionHeight - 5;
 
+		ImVec2 textSize = ImGui::CalcTextSize(infoBar_.text.c_str());
+		float textX = windowSize.x / 2 - textSize.x / 2;
+		float textY = projSelectionY - textSize.y - 5.0f;
+		
 		ImGui::SetCursorPos(ImVec2(textX, textY));
 		ImGui::Text(infoBar_.text.c_str());
-
-		/*
-		ImGui::SetNextWindowBgAlpha(0.0f);
-		ImGuiWindowFlags flags = ImGuiWindowFlags_NoCollapse |
-			ImGuiWindowFlags_NoInputs |
-			ImGuiWindowFlags_NoMove |
-			ImGuiWindowFlags_NoResize |
-			ImGuiWindowFlags_NoScrollbar |
-			ImGuiWindowFlags_NoScrollWithMouse |
-			ImGuiWindowFlags_NoTitleBar |
-			ImGuiWindowFlags_NoBackground;
-		ImGui::SetNextWindowPos(ImVec2(textX, textY));
-		ImVec2 textSize = ImGui::CalcTextSize(infoBar_.text.c_str());
-		ImGui::SetNextWindowSize(ImVec2(std::max(60.0f, textSize.x * 1.5f), textSize.y * 4)); // make window fit text size
-		ImGuiStyle& style = ImGui::GetStyle();
-		style.Colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0, 0, 0, 0);
-		if(ImGui::BeginPopupModal("Tooltip", nullptr, flags)) {
-			
-			ImGui::EndPopup();
-		}
-		ImGui::OpenPopup("Tooltip", flags);*/
 	}
 
 	void HUD::RenderHealthBar(ImVec2 windowSize, ImVec2 windowRatio) {
