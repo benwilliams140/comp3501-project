@@ -9,6 +9,7 @@
 #include "Control/game.h"
 
 namespace game {
+	using namespace Math;
 
 	HoverTank::HoverTank(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : SceneNode(name, geometry, material, texture) {
     forward_ = glm::vec3(0, 0, 1); // consider taking this in as a parameter
@@ -18,11 +19,16 @@ namespace game {
 		maxVelocity_ = 20.0f;
 		speedMultiple_ = 1.0f; // used to change speed effects on the tanks (eg. going through mud)
 		SetCollisionBox(glm::vec3(2.5f, 2.5f, 2.5));
+
+		//colliderTest_ = Game::GetInstance().CreateInstance<SceneNode>("collider", "Sphere", "Simple", "uv6");
+		//colliderTest_->SetScale(glm::vec3(5.0f));
 	}
 
 	HoverTank::~HoverTank() {}
 
 	void HoverTank::Update(void) {
+		//colliderTest_->SetPosition(GetPosition());
+
 		// Update tank movement if game is not in freeroam
 		if (!Game::GetInstance().GetFreeroam()) {
 			if (!scanner_->IsScanning()) {
@@ -30,10 +36,10 @@ namespace game {
 				turretControl();
 			}
 			shootingControl();
+
+			// Check for terrain collision
+			terrainCollision();
 		}
-    
-		// Check for terrain collision
-		terrainCollision();
 	}
 
 	void HoverTank::shootingControl() {
@@ -124,6 +130,10 @@ namespace game {
 				velocity_.y = 0;
 			}
 		}
+	}
+
+	SphereCollider HoverTank::GetCollider(void) const {
+		return {GetPosition(), 5.0f};
 	}
 
 	glm::vec3 HoverTank::GetForward(void) {

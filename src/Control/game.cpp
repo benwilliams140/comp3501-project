@@ -125,6 +125,8 @@ void Game::SetupResources(void) {
     // Load geometry
     filename = std::string(MESH_DIRECTORY) + std::string("/cube.mesh");
     resman_.LoadResource(ResourceType::Mesh, "Cube", filename.c_str());
+    filename = std::string(MESH_DIRECTORY) + std::string("/sphere.mesh");
+    resman_.LoadResource(ResourceType::Mesh, "Sphere", filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Chassis.mesh");
     resman_.LoadResource(ResourceType::Mesh, HOVERTANK_BASE, filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Turret.mesh");
