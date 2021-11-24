@@ -6,8 +6,10 @@
 #include <iostream>
 #include <time.h>
 #include <control/game.h>
+#include "Control/mathematics.h"
 
 namespace game {
+	using namespace Math;
 
 	Scanner::Scanner(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : SceneNode(name, geometry, material, texture) {
 		// Initialize the scan cone effect
@@ -40,15 +42,19 @@ namespace game {
 				scanning_ = false;
 			}
 		} else {
-			// Start scanning
-			if (Input::getKeyDown(INPUT_KEY_C)) {
-				std::vector<Artifact*> artifacts = Game::GetInstance().GetArtifacts();
+			// Checks for any artifacts nearby
+			std::vector<Artifact*> artifacts = Game::GetInstance().GetArtifacts();
 				
-				for (auto itr = artifacts.begin(); itr != artifacts.end(); itr++) {
-					// Check if the artifact is less than 10 meters away from scanner
-					if (glm::distance(GetParent()->GetParent()->GetPosition(), (*itr)->GetPosition()) < 15.0f) {
-						// Check for cube vs. cube collision
-						if (true) { //(Math::collision(A, B)) { // TODO - check for collision
+			for (auto itr = artifacts.begin(); itr != artifacts.end(); itr++) {
+				// Check if the artifact is less than 10 meters away from scanner
+				if (glm::distance(GetParent()->GetParent()->GetPosition(), (*itr)->GetPosition()) < 10.0f) {
+					// Check for point vs. cube collision
+					if (isCollidingSphereToSphere({GetScanPoint(), 0.5F}, (*itr)->GetCollider())) {
+						// Activate button prompt
+						((HUD*)Game::GetInstance().GetMenu(MenuType::HUD))->ActivateTooltip("[C] Scan Object", 0.25f);
+						
+						// Start scanning
+						if (Input::getKeyDown(INPUT_KEY_C)) {
 							// Record artifact discovered
 							artifact_ = (*itr);
 							// Start scanning animation
@@ -62,8 +68,13 @@ namespace game {
 		}
 	}
 
-	bool Scanner::IsScanning() const {
+	bool Scanner::IsScanning(void) const {
 		return scanning_;
+	}
+
+	Point3 Scanner::GetScanPoint(void) const {
+		Vector4 P = GetWorldTransform() * glm::vec4(GetPosition() + glm::vec3(0.0f, -2.0f, 2.5f), 1.0f);
+		return Point3(P.x, P.y, P.z);
 	}
 
 } // namespace game

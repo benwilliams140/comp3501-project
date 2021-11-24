@@ -4,6 +4,7 @@
 namespace game {
 	MudPool::MudPool(std::string name, Resource* geometry, Resource* material, Resource* texture) : Hazard(name, geometry, material, texture)
 	{
+		effectiveness = 0.25f; // effectively a speed multiple
 	}
 
 	MudPool::~MudPool()
@@ -12,21 +13,18 @@ namespace game {
 
 	void MudPool::Update()
 	{
-		if (CollisionDetection(Game::GetInstance().GetPlayer()->GetTank())) {
+		Math::SphereCollider tankBox = Game::GetInstance().GetPlayer()->GetTank()->GetCollider();
+		if (Math::isCollidingSphereToSphere(tankBox, GetCollider())) {
 			Effect();
 		}
 		else {
-			Game::GetInstance().GetPlayer()->GetTank()->SetSpeedMultiple(1.0f);
+			// no longer apply effect
+			Game::GetInstance().GetPlayer()->GetTank()->SetSpeedEffectMultiple(1.0f);
 		}
-	}
-
-	bool MudPool::CollisionDetection(SceneNode* other)
-	{
-		return false;
 	}
 
 	void MudPool::Effect()
 	{
-		Game::GetInstance().GetPlayer()->GetTank()->SetSpeedMultiple(effectiveness / 4.0f);
+		Game::GetInstance().GetPlayer()->GetTank()->SetSpeedEffectMultiple(effectiveness);
 	}
 }

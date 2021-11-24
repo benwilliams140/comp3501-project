@@ -9,30 +9,34 @@
 #include "Control/game.h"
 
 namespace game {
+	using namespace Math;
 
 	HoverTank::HoverTank(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : SceneNode(name, geometry, material, texture) {
     forward_ = glm::vec3(0, 0, 1); // consider taking this in as a parameter
 		turret_ = nullptr;
 		velocity_ = glm::vec3(0);
 		acceleration_ = glm::vec3(0);
-		maxVelocity_ = 30.0f;
+		maxVelocity_ = 20.0f;
 		speedMultiple_ = 1.0f; // used to change speed effects on the tanks (eg. going through mud)
-		SetCollisionBox(glm::vec3(2.5f, 2.5f, 2.5));
+		speedEffectMultiple_ = 1.0f; // used for speed effects (eg. mud, boost)
 	}
 
 	HoverTank::~HoverTank() {}
 
 	void HoverTank::Update(void) {
+		//colliderTest_->SetPosition(GetPosition());
+
 		// Update tank movement if game is not in freeroam
 		if (!Game::GetInstance().GetFreeroam()) {
 			if (!scanner_->IsScanning()) {
 				motionControl();
+				turretControl();
 			}
 			shootingControl();
+
+			// Check for terrain collision
+			terrainCollision();
 		}
-    
-		// Check for terrain collision
-		terrainCollision();
 	}
 
 	void HoverTank::shootingControl() {
@@ -40,6 +44,10 @@ namespace game {
 		if (Input::getKey(INPUT_KEY_SPACE)) {
 			Projectile* proj = turret_->UseSelectedAbility(GetPosition(), GetForward());
 		}
+	}
+
+	void HoverTank::turretControl() {
+		// Rotate hovertank's turret
 		if(Input::getKey(INPUT_KEY_Q)) { // left
 			glm::quat rot = glm::angleAxis(((glm::pi<float>() * 60) / 180) * Time::GetDeltaTime(), GetUp());
 			turret_->Rotate(rot);
@@ -52,17 +60,22 @@ namespace game {
 
 	void HoverTank::motionControl() {
 		static float rot_factor = (glm::pi<float>() * 60) / 180;
-		static float speedIncrease = 2.0f;
+		static float speedIncrease = 1.0f;
 		static float gravity = 1.0f;
-		static float friction = 0.25f;
+		static float friction = 0.35f;
 
 		// Accelerate due to gravity
 		acceleration_.y -= gravity;
 
 		// Accelerate due to frition
 		if (velocity_.x != 0.0f || velocity_.z != 0) {
-			// Add friction force in the same direction as velocity
-			acceleration_ += glm::normalize(glm::vec3(velocity_.x, 0.0f, velocity_.z)) * -friction;
+			if (glm::length(glm::vec3(velocity_.x, 0.0f, velocity_.z)) < friction) {
+				// Stop motion in the x and z direction if velocity is smaller than the force of friction
+				velocity_ = glm::vec3(0.0f, velocity_.y, 0.0f);
+			} else {
+				// Add friction force in the same direction as velocity
+				acceleration_ += glm::normalize(glm::vec3(velocity_.x, 0.0f, velocity_.z)) * -friction;
+			}
 		}
 
 		// Accelerate forward/backward
@@ -89,7 +102,7 @@ namespace game {
 
 		velocity_ += acceleration_; // Increment velocity by acceleration
 		acceleration_ = glm::vec3(0); // Reset acceleration
-		Translate(velocity_ * speedMultiple_ * Time::GetDeltaTime()); // Translate by velocity
+		Translate(velocity_ * speedMultiple_ * speedEffectMultiple_ * Time::GetDeltaTime()); // Translate by velocity
 
 		// Rotate yaw
 		if (Input::getKey(INPUT_KEY_LEFT)) {
@@ -114,6 +127,10 @@ namespace game {
 				velocity_.y = 0;
 			}
 		}
+	}
+
+	SphereCollider HoverTank::GetCollider(void) const {
+		return {GetPosition(), 5.0f};
 	}
 
 	glm::vec3 HoverTank::GetForward(void) {
@@ -161,8 +178,13 @@ namespace game {
 		speedMultiple_ = multiple;
 	}
 
-	void HoverTank::IncreaseMaxSpeed(float increase)
+	void HoverTank::SetSpeedEffectMultiple(float multiple)
 	{
-		maxVelocity_ += increase;
+		speedEffectMultiple_ = multiple;
+	}
+
+	void HoverTank::IncreaseSpeedMultiple(float increase)
+	{
+		speedMultiple_ += increase;
 	}
 }

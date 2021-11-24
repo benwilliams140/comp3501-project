@@ -35,6 +35,7 @@ namespace game {
 		glm::vec3 GetVelocity();
 		float GetStrength();
 		HoverTankTurret* GetTurret();
+		Math::SphereCollider GetCollider(void) const;
 
 		// setters
 		void AddForce(glm::vec3 direction, float force);
@@ -42,26 +43,31 @@ namespace game {
 		void SetTurret(HoverTankTurret* turret);
 		void SetScanner(Scanner* scanner);
 		void SetSpeedMultiple(float multiple);
-		void IncreaseMaxSpeed(float increase);
+		void SetSpeedEffectMultiple(float multiple);
+		void IncreaseSpeedMultiple(float increase);
 
 		// Update geometry configuration
 		virtual void Update(void) override;
 
 	private:
 		void motionControl();
+		void turretControl();
 		void shootingControl();
 		void terrainCollision();
 
 		glm::vec3 velocity_;
 		glm::vec3 acceleration_;
 		float maxVelocity_;
-		float speedMultiple_;
+		float speedMultiple_; // for upgrades
+		float speedEffectMultiple_; // for mud hazard (and boost?)
 
 		float strength;
 		glm::vec3 forward_;
 
 		HoverTankTurret* turret_;
 		Scanner* scanner_;
+		//SceneNode* colliderTest_;
+
 	}; // class HoverTank
 
 }

@@ -27,7 +27,7 @@ namespace game {
 			int index = 0;
 			int cost = 2000;
 			float multiplier = 2.0f;
-			float increase = 10.0f;
+			float increase = 0.25f;
 		} speedUpgrade_;
 
 		struct HealthUpgrade {

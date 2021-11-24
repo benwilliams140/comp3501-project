@@ -131,21 +131,21 @@ namespace game {
 		if (ImGui::TreeNode("Speed")) {
 			if(speedUpgrade_.index != 0) ImGui::BeginDisabled();
 			if (ImGui::Button("+ Speed I", buttonSize) && points >= speedUpgrade_.cost) {
-				Game::GetInstance().GetPlayer()->GetTank()->IncreaseMaxSpeed(speedUpgrade_.increase);
+				Game::GetInstance().GetPlayer()->GetTank()->IncreaseSpeedMultiple(speedUpgrade_.increase);
 				HandleSpeedUpgradeButtonClick();
 			}
 			if (speedUpgrade_.index  != 0) ImGui::EndDisabled();
 			ImGui::SameLine();
 			if (speedUpgrade_.index  != 1) ImGui::BeginDisabled();
 			if (ImGui::Button("+ Speed II", buttonSize) && points >= speedUpgrade_.cost) {
-				Game::GetInstance().GetPlayer()->GetTank()->IncreaseMaxSpeed(speedUpgrade_.increase);
+				Game::GetInstance().GetPlayer()->GetTank()->IncreaseSpeedMultiple(speedUpgrade_.increase);
 				HandleSpeedUpgradeButtonClick();
 			}
 			if (speedUpgrade_.index  != 1) ImGui::EndDisabled();
 			ImGui::SameLine();
 			if (speedUpgrade_.index  != 2) ImGui::BeginDisabled();
 			if (ImGui::Button("- Mud Pool\nEffectiveness", buttonSize) && points >= speedUpgrade_.cost) {
-				Game::GetInstance().SetHazardEffectiveness<MudPool>(3.0f);  // speed multiple is effectiveness / 4.0f (in MudPool::Effect())
+				Game::GetInstance().SetHazardEffectiveness<MudPool>(0.7f); // treated as an inverse (eg. 0.5f will allow faster movement than 0.25f)
 				HandleSpeedUpgradeButtonClick();
 			}
 			if (speedUpgrade_.index  != 2) ImGui::EndDisabled();
@@ -201,7 +201,7 @@ namespace game {
 			ImGui::SameLine();
 			if (energyUpgrade_.index  != 2) ImGui::BeginDisabled();
 			if (ImGui::Button("- Geyser\nEffectiveness", buttonSize) && points >= energyUpgrade_.cost) {
-				Game::GetInstance().SetHazardEffectiveness<Geyser>(0.5f); // should half the initial velocity increase
+				Game::GetInstance().SetHazardEffectiveness<Geyser>(0.1f); // value in [0,1]
 				HandleEnergyUpgradeButtonClick();
 			}
 			if (energyUpgrade_.index  != 2) ImGui::EndDisabled();

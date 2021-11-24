@@ -125,6 +125,8 @@ void Game::SetupResources(void) {
     // Load geometry
     filename = std::string(MESH_DIRECTORY) + std::string("/cube.mesh");
     resman_.LoadResource(ResourceType::Mesh, "Cube", filename.c_str());
+    filename = std::string(MESH_DIRECTORY) + std::string("/sphere.mesh");
+    resman_.LoadResource(ResourceType::Mesh, "Sphere", filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Chassis.mesh");
     resman_.LoadResource(ResourceType::Mesh, HOVERTANK_BASE, filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Turret.mesh");
@@ -141,6 +143,8 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Mesh, HOVERTANK_MACHINE_GUN, filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("/environment") + std::string("/pool.mesh");
     resman_.LoadResource(ResourceType::Mesh, "Pool", filename.c_str());
+    filename = std::string(MESH_DIRECTORY) + std::string("/environment") + std::string("/rock1.mesh");
+    resman_.LoadResource(ResourceType::Mesh, "Rock1", filename.c_str());
 
     // Load shaders
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/simple_texture");
@@ -157,6 +161,12 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Texture, "uv6", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/hovertank_texture.png");
     resman_.LoadResource(ResourceType::Texture, "HovertankTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/environment") + std::string("/mud.png");
+    resman_.LoadResource(ResourceType::Texture, "MudTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/environment") + std::string("/acid.png");
+    resman_.LoadResource(ResourceType::Texture, "AcidTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/environment") + std::string("/geyser.png");
+    resman_.LoadResource(ResourceType::Texture, "GeyserTexture", filename.c_str());
 }
 
 void Game::SetupScene(void) {
@@ -206,7 +216,7 @@ void Game::SetupScene(void) {
     artifact1->SetPosition(glm::vec3(5.0f, -11.0f, 25.0f));
     artifacts_.push_back(artifact1);
 
-    EnvironmentObject* rocks1 = CreateInstance<EnvironmentObject>("Rocks 1", "Cube", "Instanced", "RockyTexture");
+    EnvironmentObject* rocks1 = CreateInstance<EnvironmentObject>("Rocks 1", "Rock1", "Instanced", "RockyTexture");
     rocks1->InitPositions(1337, 250);
     rocks1->SetInstanceGroupID(0);
     EnvironmentObject* rocks2 = CreateInstance<EnvironmentObject>("Rocks 2", "Cube", "Instanced", "uv6");
@@ -219,9 +229,20 @@ void Game::SetupScene(void) {
     rocks4->InitPositions(7516331, 250);
     rocks4->SetInstanceGroupID(3);
 
-    AcidPool* pool = CreateInstance<AcidPool>("AcidPool1", "Pool", "Simple", "RockyTexture");
-    pool->SetPosition(glm::vec3(5.0f, 0.0f, 25.0f));
-    pool->Scale(glm::vec3(20));
+    // should be using the CalculateTerrainHeightAt function to place the hazards (and make a function for it?)
+    // should also calculate collision box based on scale
+    // this is all temporary
+    AcidPool* acidPool = CreateInstance<AcidPool>("AcidPool1", "Pool", "Simple", "AcidTexture");
+    acidPool->SetPosition(glm::vec3(5.0f, -14.0f, 40.0f));
+    acidPool->Scale(glm::vec3(15));
+
+    MudPool* mudPool = CreateInstance<MudPool>("MudPool1", "Pool", "Simple", "MudTexture");
+    mudPool->SetPosition(glm::vec3(45.0f, -9.0f, 40.0f));
+    mudPool->Scale(glm::vec3(15));
+
+    Geyser* geyser = CreateInstance<Geyser>("Geyser1", "Pool", "Simple", "GeyserTexture");
+    geyser->SetPosition(glm::vec3(-35.0f, -20.0f, 40.0f));
+    geyser->Scale(glm::vec3(15));
 
     ShooterEnemy* enemy = CreateInstance<ShooterEnemy>("Enemy", "Cube", "Simple", "uv6");
     enemy->SetPosition(glm::vec3(10.0f, -5.0f, 25.0f));
@@ -238,6 +259,8 @@ void Game::SetupScene(void) {
 void Game::MainLoop(void){
     // Loop while the user did not close the window
     while (!glfwWindowShouldClose(window_)){
+        Time::Update(); // time should update every frame
+
         // Clear background
         glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -282,8 +305,6 @@ void Game::MainLoop(void){
         }
         // update and render game when running
         else if (state_ == State::RUNNING) {
-            Time::Update();
-
             // handle camera movement
             if (freeroam_) {
                 camera_->UpdateCameraFreeroam();
@@ -395,6 +416,11 @@ bool Game::GetFreeroam() const {
 
 std::vector<Artifact*>& Game::GetArtifacts() {
     return artifacts_;
+}
+
+Menu* Game::GetMenu(MenuType menu)
+{
+    return menus_[menu];
 }
 
 } // namespace game

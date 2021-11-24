@@ -268,6 +268,10 @@ namespace game {
 
         // Free data buffers
         delete[] vertices;
+        delete[] uvs;
+        delete[] normals;
+        delete[] tangents;
+        delete[] bitangents;
         delete[] indices;
 
         // Create resource

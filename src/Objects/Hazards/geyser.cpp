@@ -6,10 +6,12 @@ namespace game {
 	{
 		// generate a random number between 30 and 60 for the cooldown
 		maxCooldown_ = (float)rand() / (float)RAND_MAX * (60.0f - 30.0f) + 30.0f;
+		cooldown_ = 0.0f;
 		// boolean for whether the tank was launched in the air or not
 		launched_ = false; 
 		// start time of the effect
 		startTime_ = 0;
+		effectiveness = 1.0f;
 	}
 
 	Geyser::~Geyser() {}
@@ -21,23 +23,19 @@ namespace game {
 			// should start geyser rendering here (is it happening in a shader?)
 
 			// test if the tank is colliding
-			if (CollisionDetection(Game::GetInstance().GetPlayer()->GetTank())) {
+			Math::SphereCollider tankBox = Game::GetInstance().GetPlayer()->GetTank()->GetCollider();
+			if (Math::isCollidingSphereToSphere(tankBox, GetCollider())) {
 				Effect();
 			}
 		}
 		if (launched_) {
-			// Adds a constant force to the tank for 3 seconds
-			if ((Time::GetElapsedTime() - startTime_) <= 3.0f) {
-				Game::GetInstance().GetPlayer()->GetTank()->AddForce(effectiveness * glm::vec3(0.0f, 1.0f, 0.0f), 0.8f);
+			// Adds a constant force to the tank for 0.5 seconds
+			if ((Time::GetElapsedTime() - startTime_) <= 0.5f) {
+				Game::GetInstance().GetPlayer()->GetTank()->AddForce(effectiveness * glm::vec3(0.0f, 15.0f, 0.0f), 0.8f);
 			} else {
 				launched_ = false;
 			}
 		}
-	}
-
-	bool Geyser::CollisionDetection(SceneNode* other)
-	{
-		return false;
 	}
 
 	void Geyser::Effect()
