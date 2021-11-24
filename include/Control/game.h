@@ -125,6 +125,7 @@ namespace game {
             GLFWwindow* GetWindow();
             Player* GetPlayer();
             Terrain* GetTerrain();
+            Menu* GetMenu(MenuType menu);
             std::vector<Artifact*>& GetArtifacts();
             void SetState(State state);
 

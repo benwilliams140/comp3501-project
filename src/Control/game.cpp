@@ -417,4 +417,9 @@ std::vector<Artifact*>& Game::GetArtifacts() {
     return artifacts_;
 }
 
+Menu* Game::GetMenu(MenuType menu)
+{
+    return menus_[menu];
+}
+
 } // namespace game

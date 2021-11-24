@@ -82,6 +82,7 @@ namespace game {
 	
 	void Player::decreaseHealth(float damage) {
 		//have the player take damage and lose health
+		((HUD*)Game::GetInstance().GetMenu(MenuType::HUD))->StartInjuredEffect();
 		health = health - damage;
 		healthRegenCooldown_ = maxCooldown_;
 		if (health <= 0.0f) {

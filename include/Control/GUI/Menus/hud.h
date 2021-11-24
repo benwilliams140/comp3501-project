@@ -17,6 +17,8 @@ namespace game {
 		void ActivateTooltip(std::string text, float time);
 		void DeactivateTooltip();
 
+		void StartInjuredEffect();
+
 	private:
 		/*
 		Properties related to HUD elements
@@ -51,6 +53,13 @@ namespace game {
 			ImU32 selectedColor = IM_COL32(255, 255, 255, 255);
 		} projSelection_;
 
+		struct InjuredEffect {
+			ImTextureID effect = Menu::LoadImage("injured_screen_effect.png");
+			float maxTime = 0.5f;
+			float startTime = 0.0f;
+		} injuredEffect_;
+
+		void RenderInjuredEffect(ImVec2 windowSize);
 		void RenderInformationBar(ImVec2 windowSize, ImVec2 windowRatio);
 		void RenderHealthBar(ImVec2 windowSize, ImVec2 windowRatio);
 		void RenderEnergyBar(ImVec2 windowSize, ImVec2 windowRatio);
