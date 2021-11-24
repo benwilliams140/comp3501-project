@@ -24,8 +24,6 @@ namespace game {
 	HoverTank::~HoverTank() {}
 
 	void HoverTank::Update(void) {
-		//colliderTest_->SetPosition(GetPosition());
-
 		// Update tank movement if game is not in freeroam
 		if (!Game::GetInstance().GetFreeroam()) {
 			if (!scanner_->IsScanning()) {
@@ -130,7 +128,7 @@ namespace game {
 	}
 
 	SphereCollider HoverTank::GetCollider(void) const {
-		return {GetPosition(), 5.0f};
+		return {GetPosition(), 2.5f};
 	}
 
 	glm::vec3 HoverTank::GetForward(void) {

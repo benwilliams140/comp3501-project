@@ -219,15 +219,19 @@ void Game::SetupScene(void) {
     EnvironmentObject* rocks1 = CreateInstance<EnvironmentObject>("Rocks 1", "Rock1", "Instanced", "RockyTexture");
     rocks1->InitPositions(1337, 250);
     rocks1->SetInstanceGroupID(0);
+    rocks1->SetColliderRadius(2.0f);
     EnvironmentObject* rocks2 = CreateInstance<EnvironmentObject>("Rocks 2", "Cube", "Instanced", "uv6");
     rocks2->InitPositions(65156, 250);
     rocks2->SetInstanceGroupID(1);
+    rocks2->SetColliderRadius(2.0f);
     EnvironmentObject* rocks3 = CreateInstance<EnvironmentObject>("Rocks 3", "Cube", "Instanced", "HovertankTexture");
     rocks3->InitPositions(351351, 250);
     rocks3->SetInstanceGroupID(2);
+    rocks3->SetColliderRadius(2.0f);
     EnvironmentObject* rocks4 = CreateInstance<EnvironmentObject>("Plant", "Cube", "Instanced", "uv6");
     rocks4->InitPositions(7516331, 250);
     rocks4->SetInstanceGroupID(3);
+    rocks4->SetColliderRadius(2.0f);
 
     // should be using the CalculateTerrainHeightAt function to place the hazards (and make a function for it?)
     // should also calculate collision box based on scale
