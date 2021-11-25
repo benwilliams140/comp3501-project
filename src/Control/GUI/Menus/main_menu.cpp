@@ -4,7 +4,7 @@
 
 namespace game {
 	MainMenu::MainMenu() : Menu() {
-		
+
 	}
 
 	MainMenu::~MainMenu() {
@@ -30,30 +30,50 @@ namespace game {
 		// set window position for the following modals
 		ImGui::SetNextWindowPos(ImVec2(windowWidth / 2, windowHeight / 2));
 
-		ImGui::PushStyleColor(ImGuiCol_Button, BUTTON_COLOR);
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, BUTTON_HOVERED_COLOR);
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, BUTTON_ACTIVE_COLOR);
 		ImGui::PushStyleColor(ImGuiCol_Text, TEXT_COLOR);
 
 		ImVec2 buttonSize = ImVec2(windowWidth * button_.widthRatio, windowHeight * button_.heightRatio);
+		ImVec2 windowSize = ImVec2(windowWidth, windowHeight);
 
-		// start button definition
-		ImGui::SetCursorPos(ImVec2(windowWidth / 2 - buttonSize.x / 2, windowHeight / 2 - 3 * buttonSize.y / 2 - 5));
-		if (ImGui::Button("Start", buttonSize)) {
-			Game::GetInstance().SetState(State::RUNNING);
-		}
+		RenderBackground(windowSize);
+		RenderStartButton(windowSize, buttonSize);
+		RenderQuitButton(windowSize, buttonSize);
 
-		// quit button definition
-		ImGui::SetCursorPos(ImVec2(windowWidth / 2 - buttonSize.x / 2, windowHeight / 2 - buttonSize.y / 2 + 5));
-		if (ImGui::Button("Quit", buttonSize)) {
-			glfwSetWindowShouldClose(Game::GetInstance().GetWindow(), GL_TRUE);
-		}
-
-		ImGui::PopStyleColor(4);
+		ImGui::PopStyleColor(1);
 
 		ImGui::End();
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	}
+
+	void MainMenu::RenderStartButton(ImVec2 windowSize, ImVec2 buttonSize)
+	{
+		// start button definition
+		ImGui::SetCursorPos(ImVec2(windowSize.x / 2 - buttonSize.x / 2, windowSize.y / 2 - 3 * buttonSize.y / 2 - 5));
+		if (ImGui::ImageButton(button_.startImage, buttonSize, ImVec2(0, 0), ImVec2(1, 1), 0)) {
+			Game::GetInstance().SetState(State::RUNNING);
+		}
+		ImVec2 textSize = ImGui::CalcTextSize("Start");
+		ImGui::SetCursorPos(ImVec2(windowSize.x / 2 - textSize.x / 2, windowSize.y / 2 - buttonSize.y - textSize.y / 2 - 5));
+		ImGui::Text("Start");
+	}
+
+	void MainMenu::RenderQuitButton(ImVec2 windowSize, ImVec2 buttonSize)
+	{
+		// quit button definition
+		ImGui::SetCursorPos(ImVec2(windowSize.x / 2 - buttonSize.x / 2, windowSize.y / 2 - buttonSize.y / 2 + 5));
+		if (ImGui::ImageButton(button_.quitImage, buttonSize, ImVec2(0, 0), ImVec2(1, 1), 0)) {
+			glfwSetWindowShouldClose(Game::GetInstance().GetWindow(), GL_TRUE);
+		}
+		ImVec2 textSize = ImGui::CalcTextSize("Quit");
+		ImGui::SetCursorPos(ImVec2(windowSize.x / 2 - textSize.x / 2, windowSize.y / 2 - textSize.y / 2 + 5));
+		ImGui::Text("Quit");
+	}
+
+	void MainMenu::RenderBackground(ImVec2 windowSize)
+	{
+		ImGui::SetCursorPos(ImVec2(0, 0));
+		ImGui::Image(background_.image, windowSize);
 	}
 } // namespace game
