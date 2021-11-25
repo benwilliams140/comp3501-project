@@ -145,6 +145,12 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Mesh, "Pool", filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("/environment") + std::string("/rock1.mesh");
     resman_.LoadResource(ResourceType::Mesh, "Rock1", filename.c_str());
+    filename = std::string(MESH_DIRECTORY) + std::string("/environment") + std::string("/rock2.mesh");
+    resman_.LoadResource(ResourceType::Mesh, "Rock2", filename.c_str());
+    filename = std::string(MESH_DIRECTORY) + std::string("/environment") + std::string("/rock3.mesh");
+    resman_.LoadResource(ResourceType::Mesh, "Rock3", filename.c_str());
+    filename = std::string(MESH_DIRECTORY) + std::string("/environment") + std::string("/plant.mesh");
+    resman_.LoadResource(ResourceType::Mesh, "Plant", filename.c_str());
 
     // Load shaders
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/simple_texture");
@@ -167,6 +173,8 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Texture, "AcidTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/environment") + std::string("/geyser.png");
     resman_.LoadResource(ResourceType::Texture, "GeyserTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/environment") + std::string("/alien_plant.png");
+    resman_.LoadResource(ResourceType::Texture, "PlantTexture", filename.c_str());
 }
 
 void Game::SetupScene(void) {
@@ -219,19 +227,19 @@ void Game::SetupScene(void) {
     EnvironmentObject* rocks1 = CreateInstance<EnvironmentObject>("Rocks 1", "Rock1", "Instanced", "RockyTexture");
     rocks1->InitPositions(1337, 250);
     rocks1->SetInstanceGroupID(0);
-    rocks1->SetColliderRadius(2.0f);
-    EnvironmentObject* rocks2 = CreateInstance<EnvironmentObject>("Rocks 2", "Cube", "Instanced", "uv6");
+    rocks1->SetColliderRadius(1.5f);
+    EnvironmentObject* rocks2 = CreateInstance<EnvironmentObject>("Rocks 2", "Rock2", "Instanced", "RockyTexture");
     rocks2->InitPositions(65156, 250);
     rocks2->SetInstanceGroupID(1);
-    rocks2->SetColliderRadius(2.0f);
-    EnvironmentObject* rocks3 = CreateInstance<EnvironmentObject>("Rocks 3", "Cube", "Instanced", "HovertankTexture");
+    rocks2->SetColliderRadius(1.0f);
+    EnvironmentObject* rocks3 = CreateInstance<EnvironmentObject>("Rocks 3", "Rock3", "Instanced", "RockyTexture");
     rocks3->InitPositions(351351, 250);
     rocks3->SetInstanceGroupID(2);
     rocks3->SetColliderRadius(2.0f);
-    EnvironmentObject* rocks4 = CreateInstance<EnvironmentObject>("Plant", "Cube", "Instanced", "uv6");
+    EnvironmentObject* rocks4 = CreateInstance<EnvironmentObject>("Plant", "Plant", "Instanced", "PlantTexture");
     rocks4->InitPositions(7516331, 250);
     rocks4->SetInstanceGroupID(3);
-    rocks4->SetColliderRadius(2.0f);
+    rocks4->SetColliderRadius(1.0f);
 
     // should be using the CalculateTerrainHeightAt function to place the hazards (and make a function for it?)
     // should also calculate collision box based on scale
