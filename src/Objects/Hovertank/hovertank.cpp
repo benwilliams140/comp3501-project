@@ -59,7 +59,7 @@ namespace game {
 	void HoverTank::motionControl() {
 		static float rot_factor = (glm::pi<float>() * 60) / 180;
 		static float speedIncrease = 1.0f;
-		static float gravity = 1.0f;
+		static float gravity = 2.0f;
 		static float friction = 0.35f;
 
 		// Accelerate due to gravity
@@ -90,13 +90,15 @@ namespace game {
 		if (Input::getKey(INPUT_KEY_D)) {
 			acceleration_ += GetRight() * speedIncrease;
 		}
-		
-		// Clamp to max speed
-		float magnitude = sqrt(pow(velocity_.x, 2.0f) + pow(velocity_.y, 2.0f) + pow(velocity_.z, 2.0f));
+
+		// Clamp x and z velocity to max vehicle speed
+		float magnitude = sqrt(pow(velocity_.x, 2.0f) + pow(velocity_.z, 2.0f));
 		if (magnitude > maxVelocity_) {
-			velocity_ /= magnitude;
-			velocity_ *= maxVelocity_;
+			velocity_.x = (velocity_.x / magnitude) * maxVelocity_;
+			velocity_.z = (velocity_.z / magnitude) * maxVelocity_;
 		}
+		// Clamp y velocity to max gravity speed
+		velocity_.y = glm::clamp(velocity_.y, -75.0f, 50.0f);
 
 		velocity_ += acceleration_; // Increment velocity by acceleration
 		acceleration_ = glm::vec3(0); // Reset acceleration
