@@ -8,6 +8,8 @@
 #include <time.h>
 #include <control/game.h>
 #include <control/mathematics.h>
+#include "Objects/Hovertank/Abilities/ability.h"
+#include "Objects/Projectiles/projectile.h"
 
 #define MAX_INST_GROUPS 4
 #define MAX_POSITIONS 250
@@ -28,6 +30,7 @@ namespace game {
 
 	void EnvironmentObject::Update(void) {
 		HovertankCollision();
+		ProjectileCollision();
 	}
 
 	void EnvironmentObject::HovertankCollision() {
@@ -36,6 +39,35 @@ namespace game {
 				// TODO - move tank away from object and remove velocity in that direction
 			}
 		}
+	}
+
+	void EnvironmentObject::ProjectileCollision() {
+		std::vector<Ability*> abilities = tank_->GetTurret()->GetAbilities();
+		std::vector<Projectile*> projectiles;
+
+		//have it loop through all player projectiles with evironment objects
+		for (int i = 0; i < abilities.size(); i++) {
+			projectiles = abilities[i]->GetProjectiles();
+			for (int j = 0; j < projectiles.size(); j++) {
+				for (int k = 0; k < positionsSize_; k++) {
+					//if they collide seet projectile lifespan to 0 to be destroyed
+					if (Math::isCollidingSphereToSphere(projectiles[j]->GetCollider(), { positions_[k], colliderRadius_ })) {
+						projectiles[j]->SetLifespan(0.0f);
+					}
+				}
+			}
+		}
+		//have it loop through all enemy projectiles with evironment objects
+		projectiles = Game::GetInstance().GetEnemyProjectiles();
+		for (int n = 0; n < projectiles.size(); n++) {
+			for (int m = 0; m < positionsSize_; m++) {
+				//if they collide seet projectile lifespan to 0 to be destroyed
+				if (Math::isCollidingSphereToSphere(projectiles[n]->GetCollider(), { positions_[m], colliderRadius_ })) {
+					projectiles[n]->SetLifespan(0.0f);
+				}
+			}
+		}
+		
 	}
 
 	void EnvironmentObject::InitPositions(int seed, int amount) {

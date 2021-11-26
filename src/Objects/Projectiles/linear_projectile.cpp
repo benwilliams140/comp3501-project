@@ -14,6 +14,7 @@ namespace game {
 		//update postion
 		Translate(velocity_ * Time::GetDeltaTime());
 		lifespan_ -= Time::GetDeltaTime();
+		EnemyCollision();
 	}
 
 } // namespace game 

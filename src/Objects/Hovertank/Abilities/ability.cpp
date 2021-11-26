@@ -33,6 +33,10 @@ namespace game {
 		return projectilesToRemove;
 	}
 
+	std::vector<Projectile*> Ability::GetProjectiles() {
+		return projectiles_;
+	}
+
 	float Ability::GetCooldown() {
 		return cooldown_;
 	}

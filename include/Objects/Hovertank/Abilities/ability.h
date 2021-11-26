@@ -26,6 +26,7 @@ namespace game {
 		void UpdateCooldown(); // decreases cooldown by deltaTime
 		void StartCooldown(); // starts a max cooldown timer
 		std::vector<Projectile*> RemoveDeadProjectiles(); // removes any expired projectiles
+		std::vector<Projectile*> GetProjectiles();
 
 		// takes in the resources used to create a projectile, returns a Projectile in the outProj parameter
 		virtual Projectile* UseAbility(glm::vec3 position, glm::vec3 forward) = 0; // base ability should not be usable

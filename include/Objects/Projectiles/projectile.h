@@ -3,6 +3,7 @@
 #include <string>
 #include <stdexcept>
 #include <iostream>
+#include <vector>
 #include <time.h>
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -15,6 +16,8 @@
 
 #include "Control/scene_node.h"
 #include "Control/resource.h"
+#include "Control/mathematics.h"
+
 
 namespace game {
 	class Projectile : public SceneNode {
@@ -23,8 +26,10 @@ namespace game {
 		~Projectile();
 
 		// Get/set projectile properties
+		Math::SphereCollider GetCollider(void) const;
 		void SetVelocity(glm::vec3 vel); // must call this on creation
 		void SetLifespan(float lifespan); // must call this on creation
+		void EnemyCollision();
 		bool IsAlive();
 
 	protected:

@@ -129,7 +129,10 @@ namespace game {
             std::vector<Artifact*>& GetArtifacts();
             void SetState(State state);
 
+            std::vector<Projectile*> * GetReferenceToEnemyProjectiles();
             std::vector<Projectile*> GetEnemyProjectiles();
+            void AddEnemyProjectile(Projectile* proj);
+            std::vector<Enemy*> GetEnemies();
             bool GetFreeroam() const;
 
             // Delete these function to be sure they don't accidentlly create copies of the instance
