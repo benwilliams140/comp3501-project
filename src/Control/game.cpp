@@ -151,6 +151,8 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Mesh, "Rock3", filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("/environment") + std::string("/plant.mesh");
     resman_.LoadResource(ResourceType::Mesh, "Plant", filename.c_str());
+    filename = std::string(MESH_DIRECTORY) + std::string("") + std::string("/parachute.mesh");
+    resman_.LoadResource(ResourceType::Mesh, "Parachute", filename.c_str());
 
     // Load shaders
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/simple_texture");
@@ -259,6 +261,10 @@ void Game::SetupScene(void) {
     ShooterEnemy* enemy = CreateInstance<ShooterEnemy>("Enemy", "Cube", "Simple", "uv6");
     enemy->SetPosition(glm::vec3(10.0f, -5.0f, 25.0f));
     enemies_.push_back(enemy);
+
+    // Create Care Package
+    CarePackage* package = CreateInstance<CarePackage>("Package", "Cube", "Simple", "uv6");
+    package->SetPosition(glm::vec3(-30.0f, 35.0f, 75.0f));
 
     // Initialize certain scene nodes
     terrain_->Init();
@@ -381,6 +387,10 @@ Resource* Game::GetResource(std::string res) {
     if (!resource) {
         throw(GameException(std::string("Could not find resource \"") + res + std::string("\"")));
     }
+}
+
+void Game::RemoveInstance(SceneNode* entity) {
+    scene_.RemoveNode(entity);
 }
 
 std::vector<Projectile*> Game::RemoveDeadEnemyProjectiles() {

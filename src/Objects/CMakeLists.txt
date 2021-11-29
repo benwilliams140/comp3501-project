@@ -12,4 +12,5 @@ target_sources(${PROJ_NAME} PUBLIC
 	${CMAKE_CURRENT_SOURCE_DIR}/Tree.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/Enemy.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/ShooterEnemy.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/CarePackage.cpp
 )

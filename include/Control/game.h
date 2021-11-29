@@ -50,6 +50,7 @@
 #include "Objects/Hazards/acid_pool.h"
 #include "Objects/Hazards/mud_pool.h"
 #include "Objects/Hazards/geyser.h"
+#include "Objects/CarePackage.h"
 
 // object/resource names
 #define HOVERTANK_BASE "HovertankChassis"
@@ -111,6 +112,7 @@ namespace game {
                 }
                 return scene_.CreateNode<T>(entity_name, geom, mat, tex);
             }
+            void RemoveInstance(SceneNode* entity);
 
             template <typename T>
             void SetHazardEffectiveness(float effectiveness) {

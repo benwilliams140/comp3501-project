@@ -57,8 +57,13 @@ void SceneGraph::RemoveNode(std::string node_name) {
             delete node;
             return;
         }
-    }
-    
+    } 
+}
+
+void SceneGraph::RemoveNode(SceneNode* node) {
+    // finds and deletes the specified node
+    auto itr = std::find(node_.begin(), node_.end(), node);
+    if((*itr) == node) node_.erase(itr);
 }
 
 
