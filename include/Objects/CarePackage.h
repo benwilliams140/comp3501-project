@@ -11,6 +11,7 @@
 #include <glm/gtc/quaternion.hpp>
 
 #include "Control/scene_node.h"
+#include "Control/mathematics.h"
 
 namespace game {
 
@@ -27,6 +28,9 @@ namespace game {
 
 		// Update geometry configuration
 		virtual void Update(void) override;
+
+		// Collider
+		Math::SphereCollider GetCollider(void) const;
 
 	private:
 		SceneNode* parachute_;

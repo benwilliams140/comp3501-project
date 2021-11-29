@@ -9,17 +9,21 @@
 #include "Control/game.h"
 
 namespace game {
+	using namespace Math;
 
 	CarePackage::CarePackage(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : SceneNode(name, geometry, material, texture) {
-		//parachute_ = Game::GetInstance().CreateInstance<SceneNode>("Parachute", "Parachute", "Simple", "Parachute");
+		Game::GetInstance().AddCarePackage(this);
+		
 		parachute_ = Game::GetInstance().CreateInstance<SceneNode>("Parachute", "Parachute", "Simple", "uv6");
 		parachute_->SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
 		parachute_->SetParent(this);
 
 		state_ = PackageState::FALLING;
+
 	}
 
 	CarePackage::~CarePackage() {
+		Game::GetInstance().RemoveCarePackage(this);
 		Game::GetInstance().RemoveInstance(parachute_);
 	}
 
@@ -52,8 +56,11 @@ namespace game {
 					parachute_->SetActive(false);
 				}
 			}
-			// TODO - check for collision detection between tank scanner and this object
 			break;
 		}
+	}
+
+	SphereCollider CarePackage::GetCollider(void) const {
+		return {GetPosition(), 1.5f};
 	}
 }

@@ -177,6 +177,8 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Texture, "GeyserTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/environment") + std::string("/alien_plant.png");
     resman_.LoadResource(ResourceType::Texture, "PlantTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("") + std::string("/crate.png");
+    resman_.LoadResource(ResourceType::Texture, "Crate", filename.c_str());
 }
 
 void Game::SetupScene(void) {
@@ -263,7 +265,7 @@ void Game::SetupScene(void) {
     enemies_.push_back(enemy);
 
     // Create Care Package
-    CarePackage* package = CreateInstance<CarePackage>("Package", "Cube", "Simple", "uv6");
+    CarePackage* package = CreateInstance<CarePackage>("Package", "Cube", "Simple", "Crate");
     package->SetPosition(glm::vec3(-30.0f, 35.0f, 75.0f));
 
     // Initialize certain scene nodes
@@ -440,9 +442,22 @@ std::vector<Artifact*>& Game::GetArtifacts() {
     return artifacts_;
 }
 
+std::vector<CarePackage*>& Game::GetCarePackages() {
+    return carePackages_;
+}
+
 Menu* Game::GetMenu(MenuType menu)
 {
     return menus_[menu];
+}
+
+void Game::AddCarePackage(CarePackage* package) {
+    carePackages_.push_back(package);
+}
+
+void Game::RemoveCarePackage(CarePackage* package) {
+    auto itr = std::find(carePackages_.begin(), carePackages_.end(), package);
+    if((*itr) == package) carePackages_.erase(itr);
 }
 
 } // namespace game

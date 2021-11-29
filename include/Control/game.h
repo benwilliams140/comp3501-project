@@ -129,7 +129,11 @@ namespace game {
             Terrain* GetTerrain();
             Menu* GetMenu(MenuType menu);
             std::vector<Artifact*>& GetArtifacts();
+            std::vector<CarePackage*>& GetCarePackages();
             void SetState(State state);
+
+            void AddCarePackage(CarePackage* package);
+            void RemoveCarePackage(CarePackage *package);
 
             std::vector<Projectile*> GetEnemyProjectiles();
             bool GetFreeroam() const;
@@ -161,6 +165,7 @@ namespace game {
             Camera* camera_;
             Terrain* terrain_;
             std::vector<Artifact*> artifacts_;
+            std::vector<CarePackage*> carePackages_;
 
             // Player
             Player* player_;
