@@ -134,8 +134,11 @@ namespace game {
 
             void AddCarePackage(CarePackage* package);
             void RemoveCarePackage(CarePackage *package);
-
+      
+            std::vector<Projectile*> * GetReferenceToEnemyProjectiles();
             std::vector<Projectile*> GetEnemyProjectiles();
+            void AddEnemyProjectile(Projectile* proj);
+            std::vector<Enemy*> GetEnemies();
             bool GetFreeroam() const;
 
             // Delete these function to be sure they don't accidentlly create copies of the instance

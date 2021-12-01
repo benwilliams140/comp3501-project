@@ -17,7 +17,7 @@ namespace game {
 
 		// Update geometry configuration
 		virtual void Update() override;
-
+		void TankCollision();
 	private:
 		float attack_pow;
 	}; // class EnemyLinearProjectile

@@ -337,7 +337,6 @@ void Game::MainLoop(void){
                 ((HUD*)menus_[MenuType::HUD])->ActivateTooltip("Test", 1.0f);
             }
             
-
             // removes dead projectiles
             std::vector<Projectile*> projectilesToRemove = player_->GetTank()->GetTurret()->RemoveDeadProjectiles();
             for (auto it = projectilesToRemove.begin(); it != projectilesToRemove.end(); ++it) {
@@ -409,6 +408,10 @@ std::vector<Projectile*> Game::RemoveDeadEnemyProjectiles() {
     return projectilesToRemove;
 }
 
+void Game::AddEnemyProjectile(Projectile * proj) {
+    enemy_projectiles_.push_back(proj);
+}
+
 Camera* Game::GetCamera() {
     return camera_;
 }
@@ -430,8 +433,16 @@ void Game::SetState(State state) {
     state_ = state;
 }
 
+std::vector<Projectile*> *Game::GetReferenceToEnemyProjectiles() {
+    return &enemy_projectiles_;
+}
+
 std::vector<Projectile*> Game::GetEnemyProjectiles() {
     return enemy_projectiles_;
+}
+
+std::vector<Enemy*> Game::GetEnemies() {
+    return enemies_;
 }
 
 bool Game::GetFreeroam() const {
