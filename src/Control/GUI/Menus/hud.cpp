@@ -87,7 +87,7 @@ namespace game {
 
 		ImVec2 windowSize = ImVec2(windowWidth, windowHeight);
 		ImVec2 windowRatio = ImVec2((float)windowWidth / initialWindowWidth, (float)windowHeight / initialWindowHeight);
-		
+
 		RenderInjuredEffect(windowSize);
 		RenderInformationBar(windowSize, windowRatio);
 		RenderHealthBar(windowSize, windowRatio);
@@ -103,7 +103,7 @@ namespace game {
 	void HUD::RenderInjuredEffect(ImVec2 windowSize)
 	{
 		injuredEffect_.startTime -= Time::GetDeltaTime();
-		ImGui::PushStyleVar(ImGuiStyleVar_Alpha, injuredEffect_.startTime / injuredEffect_.maxTime);
+		ImGui::PushStyleVar(ImGuiStyleVar_Alpha, injuredEffect_.startTime / injuredEffect_.maxTime); // fade out
 		ImGui::Image(injuredEffect_.effect, windowSize);
 		ImGui::PopStyleVar(1);
 	}
@@ -120,7 +120,7 @@ namespace game {
 		ImVec2 textSize = ImGui::CalcTextSize(infoBar_.text.c_str());
 		float textX = windowSize.x / 2 - textSize.x / 2;
 		float textY = projSelectionY - textSize.y - 5.0f;
-		
+
 		ImGui::SetCursorPos(ImVec2(textX, textY));
 		ImGui::Text(infoBar_.text.c_str());
 	}
@@ -172,7 +172,7 @@ namespace game {
 
 		// can add a background image instead
 		ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(projSelectionX, projSelectionY), ImVec2(projSelectionX + projSelectionWidth, projSelectionY + projSelectionHeight), projSelection_.backgroundColor, 0.0f, 0);
-		
+
 		// render square for the abilities
 		std::vector<Ability*> abilities = turret->GetAbilities();
 
@@ -184,7 +184,7 @@ namespace game {
 		for (int i = 0; i < turret->GetMaxAbilities(); ++i) {
 			float abilityX = projSelectionX + abilityGapX + (abilityWidth + abilityGapX) * i;
 			float abilityY = projSelectionY + abilityGapY;
-			
+
 			// renders the image for each available ability
 			// renders the rectangle showing the cooldown on each ability
 			// note that not all abilities in the inventory are necessarily filled

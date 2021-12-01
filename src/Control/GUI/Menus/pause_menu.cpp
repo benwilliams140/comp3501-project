@@ -33,6 +33,26 @@ namespace game {
 		// set window position for the following modals
 		ImGui::SetNextWindowPos(ImVec2(windowWidth / 2, windowHeight / 2));
 
+		// setup colours for elements
+		ImGui::PushStyleColor(ImGuiCol_Text, TEXT_COLOR);
+		
+		ImVec2 buttonSize = ImVec2(windowWidth * button_.widthRatio, windowHeight * button_.heightRatio);
+		ImVec2 windowSize = ImVec2(windowWidth, windowHeight);
+
+		RenderResumeButton(windowSize, buttonSize);
+		RenderSettingsButton(windowSize, buttonSize);
+		RenderQuitButton(windowSize, buttonSize);
+
+		ImGui::PopStyleColor(1);
+		
+		ImGui::End();
+
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	}
+
+	void PauseMenu::RenderQuitButton(ImVec2 windowSize, ImVec2 buttonSize)
+	{
 		// quit comfirmation popup definition
 		if (ImGui::BeginPopupModal("Quit Confirmation", nullptr, 0)) {
 			ImGui::Text("Are you sure you want to quit?");
@@ -46,12 +66,24 @@ namespace game {
 			ImGui::EndPopup();
 		}
 
+		// quit button definition
+		ImGui::SetCursorPos(ImVec2(windowSize.x / 2 - buttonSize.x / 2, windowSize.y / 2 + buttonSize.y / 2 + 5));
+		if (ImGui::ImageButton(button_.quitImage, buttonSize, ImVec2(0, 0), ImVec2(1, 1), 0)) {
+			ImGui::OpenPopup("Quit Confirmation");
+		}
+		ImVec2 textSize = ImGui::CalcTextSize("Quit");
+		ImGui::SetCursorPos(ImVec2(windowSize.x / 2 - textSize.x / 2, windowSize.y / 2 + buttonSize.y - textSize.y / 2 + 5));
+		ImGui::Text("Quit");
+	}
+
+	void PauseMenu::RenderSettingsButton(ImVec2 windowSize, ImVec2 buttonSize)
+	{
 		// settings popup definition
 		if (ImGui::BeginPopupModal("Settings", nullptr, 0)) {
 			float fov = Game::GetInstance().GetCamera()->GetFOV();
 			if (ImGui::SliderFloat("FOV", &fov, 30.f, 90.f)) {
 				// currently saving settings on change...
-				Game::GetInstance().GetCamera()->SetFOV(fov, windowWidth, windowHeight);
+				Game::GetInstance().GetCamera()->SetFOV(fov, windowSize.x, windowSize.y);
 			}
 
 			if (ImGui::Button("OK")) {
@@ -66,37 +98,25 @@ namespace game {
 			ImGui::EndPopup();
 		}
 
-		// setup colours for elements
-		ImGui::PushStyleColor(ImGuiCol_Button, BUTTON_COLOR);
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, BUTTON_HOVERED_COLOR);
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, BUTTON_ACTIVE_COLOR);
-		ImGui::PushStyleColor(ImGuiCol_Text, TEXT_COLOR);
-		
-		ImVec2 buttonSize = ImVec2(windowWidth * button_.widthRatio, windowHeight * button_.heightRatio);
-
-		// resume button definition
-		ImGui::SetCursorPos(ImVec2(windowWidth / 2 - buttonSize.x / 2, windowHeight / 2 - 3 * buttonSize.y / 2- 15));
-		if (ImGui::Button("Resume", buttonSize)) {
-			Game::GetInstance().SetState(State::RUNNING);
-		}
-
 		// settings button definition
-		ImGui::SetCursorPos(ImVec2(windowWidth / 2 - buttonSize.x / 2, windowHeight / 2 - buttonSize.y / 2 - 5));
-		if (ImGui::Button("Settings", buttonSize)) {
+		ImGui::SetCursorPos(ImVec2(windowSize.x / 2 - buttonSize.x / 2, windowSize.y / 2 - buttonSize.y / 2 - 5));
+		if (ImGui::ImageButton(button_.settingsImage, buttonSize, ImVec2(0, 0), ImVec2(1, 1), 0)) {
 			ImGui::OpenPopup("Settings");
 		}
+		ImVec2 textSize = ImGui::CalcTextSize("Settings");
+		ImGui::SetCursorPos(ImVec2(windowSize.x / 2 - textSize.x / 2, windowSize.y / 2 - textSize.y / 2 - 5));
+		ImGui::Text("Settings");
+	}
 
-		// quit button definition
-		ImGui::SetCursorPos(ImVec2(windowWidth / 2 - buttonSize.x / 2, windowHeight / 2 + buttonSize.y / 2 + 5));
-		if (ImGui::Button("Exit to Menu", buttonSize)) {
-			ImGui::OpenPopup("Quit Confirmation");
+	void PauseMenu::RenderResumeButton(ImVec2 windowSize, ImVec2 buttonSize)
+	{
+		// resume button definition
+		ImGui::SetCursorPos(ImVec2(windowSize.x / 2 - buttonSize.x / 2, windowSize.y / 2 - 3 * buttonSize.y / 2 - 15));
+		if (ImGui::ImageButton(button_.resumeImage, buttonSize, ImVec2(0, 0), ImVec2(1, 1), 0)) {
+			Game::GetInstance().SetState(State::RUNNING);
 		}
-
-		ImGui::PopStyleColor(4);
-		
-		ImGui::End();
-
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		ImVec2 textSize = ImGui::CalcTextSize("Resume");
+		ImGui::SetCursorPos(ImVec2(windowSize.x / 2 - textSize.x / 2, windowSize.y / 2 - buttonSize.y - textSize.y / 2 - 15));
+		ImGui::Text("Resume");
 	}
 } // namespace game
