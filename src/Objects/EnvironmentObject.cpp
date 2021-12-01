@@ -36,7 +36,12 @@ namespace game {
 	void EnvironmentObject::HovertankCollision() {
 		for (int i = 0; i < positionsSize_; i++) {
 			if (Math::isCollidingSphereToSphere(tank_->GetCollider(), {positions_[i], colliderRadius_})) {
-				// TODO - move tank away from object and remove velocity in that direction
+				// Get direction vector from tank's position to objects positions (normalized).
+				Vector3 direction = glm::normalize(tank_->GetPosition() - positions_[i]);
+				// Get magnitude float from ((tank's collider radius + object's collider radius) - (distance between tank and object))
+				float magnitude = (tank_->GetCollider().radius + colliderRadius_) - glm::distance(tank_->GetPosition(), positions_[i]);
+				// Translate tank by direction vector times magnitude
+				tank_->Translate(direction * magnitude);
 			}
 		}
 	}

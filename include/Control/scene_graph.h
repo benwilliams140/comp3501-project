@@ -72,6 +72,7 @@ namespace game {
             // Find a scene node with a specific name
             SceneNode *GetNode(std::string node_name) const;
             void RemoveNode(std::string node_name);
+            void RemoveNode(SceneNode* node);
             // Get node const iterator
             std::vector<SceneNode *>::const_iterator begin() const;
             std::vector<SceneNode *>::const_iterator end() const;
