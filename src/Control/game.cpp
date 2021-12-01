@@ -161,6 +161,8 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Material, "Instanced", filename.c_str());
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/lit");
     resman_.LoadResource(ResourceType::Material, "Lighting", filename.c_str());
+    filename = std::string(MATERIAL_DIRECTORY) + std::string("/geyser_particle");
+    resman_.LoadResource(ResourceType::Material, "GeyserParticles", filename.c_str());
 
     // Load texture
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/rocky.png");
