@@ -23,8 +23,9 @@ namespace game {
 			decreaseStunCoolDown();
 		}
 		decreaseCoolDown();
+		
 		if (detectPlayer(Game::GetInstance().GetPlayer()->GetTank())) {
-			attack(Game::GetInstance().GetPlayer()->GetTank(), &Game::GetInstance().GetEnemyProjectiles());
+			attack(Game::GetInstance().GetPlayer()->GetTank(), Game::GetInstance().GetReferenceToEnemyProjectiles());
 		}
 	}
 
@@ -34,7 +35,7 @@ namespace game {
 		}
 		static int num = 0; // used to give unique names to each projectile
 
-		//create projectilw
+		//create projectile
 		EnemyLinearProjectile* projectile = Game::GetInstance().CreateInstance<EnemyLinearProjectile>("ShooterEnemyProjectile" + std::to_string(num++), "Cube", "Simple", "RockyTexture");
 		glm::vec3 vel = glm::normalize(tank->GetPosition() - GetPosition());//trajectory should be relative to player
 		projectile->SetPosition(GetPosition() + 2.0f*vel);// have it spawn infront of enemy not inside

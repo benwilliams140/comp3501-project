@@ -33,6 +33,7 @@ namespace game {
 		virtual void Update(void) override;
 
 		virtual Math::AABBCollider GetAwarenessBox();
+		virtual Math::AABBCollider GetCollisionBox();
 		bool isStunned();
 		int GetCoolDown();
 		int GetStunCoolDown();
@@ -48,7 +49,7 @@ namespace game {
 
 
 	private:
-		bool stunned; //tells if the enemy is stunned or not
+		bool stunned; //tells us if the enemy is stunned or not
 		int coolDown; //time till next attack
 		int stun_coolDown; //cooldown for being stunned
 

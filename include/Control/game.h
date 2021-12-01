@@ -50,6 +50,7 @@
 #include "Objects/Hazards/acid_pool.h"
 #include "Objects/Hazards/mud_pool.h"
 #include "Objects/Hazards/geyser.h"
+#include "Objects/CarePackage.h"
 
 // object/resource names
 #define HOVERTANK_BASE "HovertankChassis"
@@ -111,6 +112,7 @@ namespace game {
                 }
                 return scene_.CreateNode<T>(entity_name, geom, mat, tex);
             }
+            void RemoveInstance(SceneNode* entity);
 
             template <typename T>
             void SetHazardEffectiveness(float effectiveness) {
@@ -127,9 +129,16 @@ namespace game {
             Terrain* GetTerrain();
             Menu* GetMenu(MenuType menu);
             std::vector<Artifact*>& GetArtifacts();
+            std::vector<CarePackage*>& GetCarePackages();
             void SetState(State state);
 
+            void AddCarePackage(CarePackage* package);
+            void RemoveCarePackage(CarePackage *package);
+      
+            std::vector<Projectile*> * GetReferenceToEnemyProjectiles();
             std::vector<Projectile*> GetEnemyProjectiles();
+            void AddEnemyProjectile(Projectile* proj);
+            std::vector<Enemy*> GetEnemies();
             bool GetFreeroam() const;
 
             // Delete these function to be sure they don't accidentlly create copies of the instance
@@ -159,6 +168,7 @@ namespace game {
             Camera* camera_;
             Terrain* terrain_;
             std::vector<Artifact*> artifacts_;
+            std::vector<CarePackage*> carePackages_;
 
             // Player
             Player* player_;

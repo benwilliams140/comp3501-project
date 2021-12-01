@@ -29,6 +29,10 @@ namespace game {
 		return { GetPosition() - glm::vec3(20.0f), GetPosition() + glm::vec3(20.0f) };
 	}
 
+	Math::AABBCollider Enemy::GetCollisionBox() {
+		return { GetPosition() - glm::vec3(2.5f), GetPosition() + glm::vec3(2.5f) };
+	}
+
 	bool Enemy::isStunned() {
 		return stunned;
 	}
@@ -49,7 +53,7 @@ namespace game {
 		coolDown = time;
 	}
 	void Enemy::SetStunDown(int time) {
-		stunned = time;
+		stun_coolDown = time;
 	}
 
 	void Enemy::decreaseStunCoolDown() {//decrease stun cool down

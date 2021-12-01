@@ -65,6 +65,28 @@ namespace game {
 					}
 				}
 			}
+
+			// Checks for any care packages nearby
+			std::vector<CarePackage*> carePackages = Game::GetInstance().GetCarePackages();
+
+			for (auto itr = carePackages.begin(); itr != carePackages.end(); itr++) {
+				// Check if the care packages is less than 10 meters away from scanner
+				if (glm::distance(GetParent()->GetParent()->GetPosition(), (*itr)->GetPosition()) < 10.0f) {
+					// Check for point vs. cube collision
+					if (isCollidingSphereToSphere({GetScanPoint(), 0.5F}, (*itr)->GetCollider())) {
+						// Activate button prompt
+						((HUD*)Game::GetInstance().GetMenu(MenuType::HUD))->ActivateTooltip("[C] open care package", 0.25f);
+						
+						// Start scanning
+						if (Input::getKeyDown(INPUT_KEY_C)) {
+							// TODO - action of picking up care package
+
+							Game::GetInstance().RemoveCarePackage((*itr));
+							Game::GetInstance().RemoveInstance((*itr));
+						}
+					}
+				}
+			}
 		}
 	}
 

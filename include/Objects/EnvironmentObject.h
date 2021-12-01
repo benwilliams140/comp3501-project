@@ -12,6 +12,7 @@
 #include "Control/resource.h"
 #include "Control/scene_node.h"
 
+
 namespace game {
 
 	// Abstraction of an EnvironmentObject
@@ -27,6 +28,7 @@ namespace game {
 		// Update geometry configuration
 		virtual void Update(void) override;
 		void HovertankCollision();
+		void ProjectileCollision();
 
 		void InitPositions(int seed, int amount);
 

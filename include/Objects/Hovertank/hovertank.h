@@ -66,7 +66,6 @@ namespace game {
 
 		HoverTankTurret* turret_;
 		Scanner* scanner_;
-		//SceneNode* colliderTest_;
 
 	}; // class HoverTank
 

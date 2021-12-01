@@ -8,10 +8,7 @@
 #include <backends/imgui_impl_opengl3.h>
 #include <GLFW/glfw3.h>
 
-#define BUTTON_COLOR ImVec4(1, 1, 1, 1)
-#define BUTTON_HOVERED_COLOR ImVec4(0.95, 0.95, 0.95, 1)
-#define BUTTON_ACTIVE_COLOR ImVec4(0.4, 0.4, 1, 1)
-#define TEXT_COLOR ImVec4(0, 0, 0, 1)
+#define TEXT_COLOR ImVec4(1, 1, 1, 1)
 
 namespace game {
 	// add any new menu types here (maybe an inventory, artifact screen, shop, etc.)
