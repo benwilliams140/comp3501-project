@@ -13,6 +13,7 @@
 // Default extensions for different shader source files
 #define VERTEX_PROGRAM_EXTENSION "_vp.glsl"
 #define FRAGMENT_PROGRAM_EXTENSION "_fp.glsl"
+#define GEOMETRY_PROGRAM_EXTENSION "_gp.glsl"
 
 namespace game {
 
@@ -43,6 +44,8 @@ namespace game {
 
         // "Wall", a flat object
         void CreateQuad(std::string object_name);
+
+        void CreateParticle(std::string object_name);
 
     private:
         // List storing all resources

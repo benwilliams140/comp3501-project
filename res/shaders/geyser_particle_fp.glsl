@@ -1,21 +1,20 @@
 #version 330 core
 
 // Attributes passed from the vertex shader
-in vec3 position_interp;
-in vec3 normal_interp;
-in vec4 color_interp;
-in vec2 uv_interp;
-in vec3 light_pos;
+in vec4 frag_color;
+in vec2 tex_coord;
 
 // Uniform (global) buffer
-uniform sampler2D texture_map;
+uniform sampler2D tex_samp;
+
+uniform vec3 particle_color = vec3(1);
 
 void main() {
     // Retrieve texture value
-    //vec4 pixel = texture(texture_map, uv_interp);
+    vec4 pixel = texture(tex_samp, tex_coord);
 
-    vec4 pixel = vec4(1);
+    // adjust colour
+    pixel = vec4(pixel.r * particle_color.r, pixel.g * particle_color.g, pixel.b * particle_color.b, sqrt(sqrt(pixel.b)) * frag_color.a);
 
-    // Use texture in determining fragment colour
     gl_FragColor = pixel;
 }

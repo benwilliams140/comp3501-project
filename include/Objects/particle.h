@@ -10,7 +10,10 @@ public:
 
 	virtual void Update() override;
 
+	float GetVelocityMultiple();
+
 	void SetVelocityMultiple(float multiple);
+	void SetInstanceAmount(int amount); // set the instanceAmount value in scene_node
 
 private:
 	float velMultiple_;

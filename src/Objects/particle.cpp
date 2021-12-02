@@ -16,9 +16,19 @@ namespace game {
 	{
 	}
 
+	float Particle::GetVelocityMultiple()
+	{
+		return velMultiple_;
+	}
+
 	void Particle::SetVelocityMultiple(float multiple)
 	{
 		velMultiple_ = multiple;
+	}
+
+	void Particle::SetInstanceAmount(int amount)
+	{
+		instanceAmount_ = amount;
 	}
 
 	void Particle::InitShaderUniform(GLuint program)

@@ -164,7 +164,7 @@ namespace game {
 
         // Set geometry to draw
         vao_->bind();
-        ebo_->bind();
+        if (ebo_) ebo_->bind();
 
         // Set globals for camera
         camera->SetupShader(material_);
@@ -174,7 +174,12 @@ namespace game {
 
         // Draw geometry
         if (mode_ == GL_POINTS) {
-            glDrawArrays(mode_, 0, size_);
+            if (instanced_) {
+                glDrawArraysInstanced(mode_, 0, size_, instanceAmount_);
+            }
+            else {
+                glDrawArrays(mode_, 0, size_);
+            }
         }
         else {
             if(instanced_)

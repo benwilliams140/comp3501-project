@@ -1,6 +1,9 @@
-#version 330 core
+#version 400
 
-#define PI 3.14159265358
+const float PI = 3.1415926536;
+const float PI_OVER_TWO = 1.5707963268;
+const int MAX_INT = 2147483647;
+const int MIN_INT = -2147483647 - 1;
 
 // Vertex buffer
 layout (location = 0) in vec3 vertex;
@@ -11,16 +14,13 @@ layout (location = 3) in vec3 normal;
 // Uniform (global) buffer
 uniform mat4 world_mat;
 uniform mat4 view_mat;
-uniform mat4 projection_mat;
 uniform mat4 normal_mat;
 uniform float velocityMultiple;
 uniform float timer;
 
 // Attributes forwarded to the fragment shader
-out vec3 position_interp;
-out vec3 normal_interp;
-out vec4 color_interp;
-out vec2 uv_interp;
+out vec4 particle_color;
+out float particle_id;
 
 float maxSpray = 0.25;
 float accel = -20.0;
@@ -28,12 +28,20 @@ float initialVelocity = 75.0;
 float maxRadius = 20;
 vec3 downDir = vec3(0, -1, 0);
 
+float random(int ID);
+
 void main() {
+    particle_id = gl_InstanceID;
+
     // calculate the random numbers to generate a sphere
     // mess around with the numbers a bit to get different distributions
     float u = mod(gl_InstanceID * 514101481.0 + 1000041499.0, 123459617.0) / 123459617.0;
     float v = mod(gl_InstanceID * 487141639.0 + 479001599.0, 998728351.0) / 998728351.0;
     float w = mod(gl_InstanceID * 289339937.0 + 617667649.0, 234570337.0) / 234570337.0;
+
+    //float u = random(gl_InstanceID);
+    //float v = random(gl_InstanceID + 882367);
+    //float w = random(gl_InstanceID + 1435698031);
 
     float theta = 2.0 * u * PI;
     float phi = acos(2.0 * v - 1.0);
@@ -51,9 +59,9 @@ void main() {
     // calculate final position
     vec3 finalPos = vec3(vertex.x + normal.x * velocity.x * phase, vertex.y + velocity.y * phase, vertex.z + normal.z * velocity.z * phase);
 
-    gl_Position = projection_mat * view_mat * world_mat * vec4(finalPos, 1.0);
-    
-    position_interp = vec3(view_mat * world_mat * vec4(vertex, 1.0));
-    normal_interp = vec3(normal_mat * vec4(normal, 0.0));
-    uv_interp = uv;
+    gl_Position = view_mat * world_mat * vec4(finalPos, 1.0);
+}
+
+float random(int ID) {
+	return float((ID * 177211 + 15523111) % 722417) / 722417; 
 }

@@ -154,6 +154,8 @@ void Game::SetupResources(void) {
     filename = std::string(MESH_DIRECTORY) + std::string("") + std::string("/parachute.mesh");
     resman_.LoadResource(ResourceType::Mesh, "Parachute", filename.c_str());
 
+    resman_.CreateParticle("Particle");
+
     // Load shaders
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/simple_texture");
     resman_.LoadResource(ResourceType::Material, "Simple", filename.c_str());

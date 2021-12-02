@@ -106,11 +106,43 @@ namespace game {
             throw(std::ios_base::failure(std::string("Error compiling fragment shader: ") + std::string(buffer)));
         }
 
+        // Try to also load a geometry shader
+        filename = std::string(prefix) + std::string(GEOMETRY_PROGRAM_EXTENSION);
+        bool geometry_program = false;
+        std::string gp = "";
+        GLuint gs;
+        try {
+            gp = LoadTextFile(filename.c_str());
+            geometry_program = true;
+        }
+        catch (std::exception& e) {
+        }
+
+        if (geometry_program) {
+            // Create a shader from the geometry program source code
+            gs = glCreateShader(GL_GEOMETRY_SHADER);
+            const char* source_gp = gp.c_str();
+            glShaderSource(gs, 1, &source_gp, NULL);
+            glCompileShader(gs);
+
+            // Check if shader compiled successfully
+            GLint status;
+            glGetShaderiv(gs, GL_COMPILE_STATUS, &status);
+            if (status != GL_TRUE) {
+                char buffer[512];
+                glGetShaderInfoLog(gs, 512, NULL, buffer);
+                throw(std::ios_base::failure(std::string("Error compiling geometry shader: ") + std::string(buffer)));
+            }
+        }
+
         // Create a shader program linking both vertex and fragment shaders
         // together
         GLuint sp = glCreateProgram();
         glAttachShader(sp, vs);
         glAttachShader(sp, fs);
+        if (geometry_program) {
+            glAttachShader(sp, gs);
+        }
         glLinkProgram(sp);
 
         // Check if shaders were linked successfully
@@ -125,6 +157,9 @@ namespace game {
         // and linked
         glDeleteShader(vs);
         glDeleteShader(fs);
+        if (geometry_program) {
+            glDeleteShader(gs);
+        }
 
         // Add a resource for the shader program
         AddResource(ResourceType::Material, name, sp, 0);
@@ -509,6 +544,22 @@ namespace game {
 
         // Create resource
         AddResource(ResourceType::Mesh, object_name, vao, ebo, numInd);
+    }
+
+    //**************************************************************************************************//
+    //                                         Create Particle                                          //
+    //**************************************************************************************************//
+
+    void ResourceManager::CreateParticle(std::string object_name) {
+        // Data buffer
+        GLfloat particle[]{ 0.0f,  0.0f,  0.0f };
+
+        // Create OpenGL buffers and copy data
+        util::Vao* vao = new util::Vao();
+        vao->bind();
+        vao->loadFloatArrayInAttribList(0, particle, 3, 3);
+
+        AddResource(ResourceType::PointSet, object_name, vao, nullptr, 1);
     }
 
     //**************************************************************************************************//
