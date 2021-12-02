@@ -161,6 +161,8 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Material, "Instanced", filename.c_str());
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/lit");
     resman_.LoadResource(ResourceType::Material, "Lighting", filename.c_str());
+    filename = std::string(MATERIAL_DIRECTORY) + std::string("/terrain");
+    resman_.LoadResource(ResourceType::Material, "TerrainMaterial", filename.c_str());
 
     // Load texture
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/rocky.png");
@@ -186,7 +188,7 @@ void Game::SetupScene(void) {
     scene_.SetBackgroundColor(viewport_background_color_g);
 
     // Create Terrain Instance
-    Terrain* terrain = CreateInstance<Terrain>("Terrain Object", "Terrain", "Lighting", "uv6");
+    Terrain* terrain = CreateInstance<Terrain>("Terrain Object", "Terrain", "TerrainMaterial", "uv6");
     terrain->Translate(glm::vec3(-625.f, 0.0F, -625.0F));
     terrain_ = terrain;
 
