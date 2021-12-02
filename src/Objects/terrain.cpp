@@ -55,6 +55,44 @@ namespace game {
 		return GetPosition() + Vector3(x * scale.x, GetVertexHeightAt(x, z), z * scale.z);;
 	}
 
+	Normal Terrain::GetNormalAt(float x, float z) {
+		// Initial variables
+		Vector3 offset = GetPosition(); // translation of the terrain
+		Vector3 scale = geometry_->GetTerrainData()->scale; // scale of the terrain
+
+		// Reverse point at
+		int xIndex = (long)((x - offset.x) / scale.x); // (long) truncates
+		int zIndex = (long)((z - offset.z) / scale.z); // (long) truncates
+
+		// Find all 4 vertices on terrain
+		Normal p0 = GetVertexNormalAt(xIndex, zIndex);
+		Normal p1 = GetVertexNormalAt(xIndex + 1, zIndex);
+		Normal p2 = GetVertexNormalAt(xIndex + 1, zIndex + 1);
+		Normal p3 = GetVertexNormalAt(xIndex, zIndex + 1);
+
+		// Calculate interpolation factors
+		float interpFactorX = (x - p0.x) / scale.x;
+		float interpFactorZ = (z - p0.z) / scale.z;
+
+		// Calculate interpolation for each edge
+		Normal interpX1 = glm::mix(p0, p1, interpFactorX);
+		Normal interpX2 = glm::mix(p3, p2, interpFactorX);
+		Normal interpZ1 = glm::mix(p0, p3, interpFactorZ);
+		Normal interpZ2 = glm::mix(p1, p2, interpFactorZ);
+
+		// Average interpolations and return
+		Normal finalInterp = glm::normalize(interpX1 + interpX2 + interpZ1 + interpZ2);
+		return finalInterp;
+	}
+
+	Normal Terrain::GetVertexNormalAt(int x, int z) {
+		// Check for index out of bound
+		if (x >= geometry_->GetTerrainData()->width || x < 0 || z >= geometry_->GetTerrainData()->length || z < 0) 
+			return Vector3(0.0f);
+
+		return geometry_->GetTerrainData()->normalMatrix[(x * geometry_->GetTerrainData()->length) + z];
+	}
+
    /**
 	*   Checks if a ray collides with the terrain and return the hitPoint if it does
 	* 

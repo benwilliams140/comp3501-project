@@ -22,6 +22,7 @@ namespace game {
         // Approximation of the height of the terrain at a specified point
         // Use collision function to get a precise height instead
         float GetHeightAt(float x, float z);
+        Math::Normal GetNormalAt(float x, float z);
 
         float GetWidth(void) const;
         float GetLength(void) const;
@@ -32,6 +33,7 @@ namespace game {
 
         float GetVertexHeightAt(int x, int z);
         Math::Point3 GetPointAt(int x, int z);
+        Math::Normal GetVertexNormalAt(int x, int z);
         bool CanHit(Math::Point3 A, Math::Point3 B, Math::Point3 p0, Math::Point3 p1, Math::Point3 p2, float& t, Math::Point3& hitPoint);
     };
 }
