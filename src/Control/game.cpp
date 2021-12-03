@@ -165,10 +165,14 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Material, "TerrainMaterial", filename.c_str());
 
     // Load texture
-    filename = std::string(TEXTURE_DIRECTORY) + std::string("/rocky.png");
-    resman_.LoadResource(ResourceType::Texture, "RockyTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/uv6.png");
     resman_.LoadResource(ResourceType::Texture, "uv6", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/environment") + std::string("/rocky.png");
+    resman_.LoadResource(ResourceType::Texture, "RockyTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/environment") + std::string("/snow.png");
+    resman_.LoadResource(ResourceType::Texture, "SnowTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/environment") + std::string("/dirt.png");
+    resman_.LoadResource(ResourceType::Texture, "DirtTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/hovertank_texture.png");
     resman_.LoadResource(ResourceType::Texture, "HovertankTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/environment") + std::string("/mud.png");
@@ -190,6 +194,7 @@ void Game::SetupScene(void) {
     // Create Terrain Instance
     Terrain* terrain = CreateInstance<Terrain>("Terrain Object", "Terrain", "TerrainMaterial", "uv6");
     terrain->Translate(glm::vec3(-625.f, 0.0F, -625.0F));
+    terrain->SetTextures("SnowTexture", "RockyTexture", "RockyTexture", "DirtTexture");
     terrain_ = terrain;
 
     // create hovertank hierarchy

@@ -30,10 +30,9 @@ uniform vec3 light_position = vec3(-0.5, -0.5, 1.5);
 void main() {
     vec3 position = positions[groupID * MAX_POSITIONS + gl_InstanceID];
     gl_Position = projection_mat * view_mat * vec4(vertex + position, 1.0);
-    
-    position_interp = vec3(view_mat * world_mat * vec4(vertex, 1.0));
-    normal_interp = vec3(normal_mat * vec4(normal, 0.0));
-    uv_interp = uv;
 
-    light_pos = vec3(view_mat * vec4(light_position, 1.0));
+    position_interp = vec3(view_mat * world_mat * vec4(vertex, 1.0));
+    normal_interp = vec3(view_mat * world_mat * vec4(normal, 0.0)); 
+    color_interp = vec4(color, 1.0);
+    uv_interp = uv;
 }

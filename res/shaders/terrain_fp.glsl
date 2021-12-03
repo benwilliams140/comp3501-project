@@ -57,13 +57,13 @@ void main() {
     vec3 worleyColor = vec3(dist);
 
     // Calculate color from terrain height
-    float break1 = 0.2;
-    float break2 = 0.9;
+    float break1 = 0.1;
+    float break2 = 0.6;
     vec3 heightColor;
 
     float height = world_position_interp.y;
     float heightFactor = 0 + ((1 - 0) / (terrain_bounds.y - terrain_bounds.x)) * (height - terrain_bounds.x);
-    vec2 uv_coords = uv_interp * 10.0f;
+    vec2 uv_coords = uv_interp * 100.0f;
 
     vec3 terrain_colors[] = vec3[4] (
         texture(terrain_texture_4, uv_coords).xyz,

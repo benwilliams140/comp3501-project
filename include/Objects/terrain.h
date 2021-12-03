@@ -8,7 +8,7 @@ namespace game {
     class Terrain : public SceneNode {
     public:
         // Create terrain from given resources
-        Terrain(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture);
+        Terrain(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture = NULL);
 
         // Destructor
         ~Terrain();
@@ -27,7 +27,11 @@ namespace game {
         float GetWidth(void) const;
         float GetLength(void) const;
 
+        void SetTextures(const std::string tex1, const std::string tex2, const std::string tex3, const std::string tex4);
+
     private:
+        std::vector<Resource*> textures_;
+
         virtual void InitShaderUniform(GLuint program);
         virtual void UpdateShaderUniform(GLuint program);
 

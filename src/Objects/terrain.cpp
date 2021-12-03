@@ -7,7 +7,7 @@ using namespace Math;
 
 
 namespace game {
-	Terrain::Terrain(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : SceneNode(name, geometry, material, texture) {}
+	Terrain::Terrain(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : SceneNode(name, geometry, material) {}
 	Terrain::~Terrain() {}
 
 	void Terrain::Update(void) {}
@@ -159,7 +159,25 @@ namespace game {
 		glUniform2f(terrain_bounds_var, terrainData->minHeight + this->GetPosition().y, terrainData->maxHeight + GetPosition().y);
 	}
 
-	void Terrain::UpdateShaderUniform(GLuint program) {}
+	void Terrain::UpdateShaderUniform(GLuint program) {
+		for (int i = 0; i < 4; i++) {
+			// Texture
+			GLuint texture = textures_[i]->GetResource();
+			if (texture) {
+				GLint tex = glGetUniformLocation(program, std::string("terrain_texture_" + std::to_string(i + 1)).c_str());
+				glUniform1i(tex, i + 1); // Assign the first texture to the map
+				glActiveTexture(GL_TEXTURE0 + i + 1);
+				glBindTexture(GL_TEXTURE_2D, texture); // First texture we bind
+				// Define texture interpolation
+				glGenerateMipmap(GL_TEXTURE_2D);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			}
+		}
+	}
 
 	float Terrain::GetWidth(void) const {
 		return ((float)geometry_->GetTerrainData()->width) * geometry_->GetTerrainData()->scale.x;
@@ -167,6 +185,13 @@ namespace game {
 
 	float Terrain::GetLength(void) const {
 		return ((float)geometry_->GetTerrainData()->length) * geometry_->GetTerrainData()->scale.z;
+	}
+
+	void Terrain::SetTextures(const std::string tex1, const std::string tex2, const std::string tex3, const std::string tex4) {
+		textures_.push_back(Game::GetInstance().GetResource(tex1));
+		textures_.push_back(Game::GetInstance().GetResource(tex2));
+		textures_.push_back(Game::GetInstance().GetResource(tex3));
+		textures_.push_back(Game::GetInstance().GetResource(tex4));
 	}
 
 } // namespace game
