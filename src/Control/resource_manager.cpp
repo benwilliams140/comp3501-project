@@ -401,10 +401,10 @@ namespace game {
 
         // Calculate all the normals
         if (hasLeftVertex && hasUpVertex) {    N1 = glm::normalize(glm::cross(upDir, leftDir));        normal += N1; }
-        if (hasUpVertex && hasRightVertex) {   N2 = glm::normalize(glm::cross(upleftDir, upDir));      normal += N2; }
+        if (hasUpVertex && hasRightVertex) {   N2 = glm::normalize(glm::cross(upDir, upleftDir));      normal += N2; }
         if (hasUpVertex && hasRightVertex) {   N3 = glm::normalize(glm::cross(rightDir, upleftDir));   normal += N3; }
         if (hasRightVertex && hasDownVertex) { N4 = glm::normalize(glm::cross(downDir, rightDir));     normal += N4; }
-        if (hasDownVertex && hasLeftVertex) {  N5 = glm::normalize(glm::cross(downrightDir, downDir)); normal += N5; }
+        if (hasDownVertex && hasLeftVertex) {  N5 = glm::normalize(glm::cross(downDir, downrightDir)); normal += N5; }
         if (hasDownVertex && hasLeftVertex) {  N6 = glm::normalize(glm::cross(leftDir, downrightDir)); normal += N6; }
 
         // Normalize and return normal

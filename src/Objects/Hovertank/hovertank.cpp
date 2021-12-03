@@ -3,6 +3,7 @@
 #define GLM_FORCE_RADIANS
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/vector_angle.hpp>
 #include <iostream>
 #include <time.h>
 
@@ -32,8 +33,44 @@ namespace game {
 			}
 			shootingControl();
 
-			// Check for terrain collision
+			// Check for collision
+			objectCollision();
 			terrainCollision();
+
+			/*
+			// Update tank's orientation
+			Vector3 terrainNormal = glm::normalize(Game::GetInstance().GetTerrain()->GetNormalAt(GetPosition().x, GetPosition().y));
+			//Vector3 tankUp = Vector3(0, 1, 0);
+			Vector3 tankUp = glm::normalize(GetUp());
+
+			glm::quat q;
+			if (glm::dot(terrainNormal, tankUp) > 0.9999) {
+				
+			}else if (glm::dot(terrainNormal, tankUp) < -0.9999) {
+				q = glm::angleAxis(glm::radians(180.0f), Vector3(0, 0, 1));
+			}else {
+				Vector3 a = glm::cross(terrainNormal, tankUp);
+				q.x = a.x; q.y = a.y; q.z = a.z;
+				q.w = sqrt((terrainNormal.length() * terrainNormal.length()) * (tankUp.length() * tankUp.length())) + glm::dot(terrainNormal, tankUp);
+			}
+			Rotate(q);
+
+
+			float tmp = glm::dot(terrainNormal, tankUp);
+			if (tmp != 0) {
+				float theta = glm::acos(tmp / (terrainNormal.length() * tankUp.length()));
+				//float theta = glm::angle(terrainNormal, tankUp);
+
+				std::string test = "Angle: " + std::to_string(theta) +
+					", Terrain: [" + std::to_string(terrainNormal.x) + ", " + std::to_string(terrainNormal.y) + ", " + std::to_string(terrainNormal.z) +
+					"], Tank: [" + std::to_string(tankUp.x) + ", " + std::to_string(tankUp.y) + ", " + std::to_string(tankUp.z) + "].";
+
+				((HUD*)Game::GetInstance().GetMenu(MenuType::HUD))->ActivateTooltip(test, 0.25f);
+
+				glm::quat rotMatrix = glm::angleAxis(theta, glm::cross(terrainNormal, tankUp));
+				Rotate(rotMatrix);
+			}
+			*/
 		}
 	}
 
@@ -112,6 +149,32 @@ namespace game {
 		if (Input::getKey(INPUT_KEY_RIGHT)) {
 			glm::quat rotation = glm::angleAxis(-rot_factor * Time::GetDeltaTime(), GetUp());
 			Rotate(rotation);
+		}
+	}
+
+	void HoverTank::objectCollision() {
+		std::vector<Artifact*> artifacts = Game::GetInstance().GetArtifacts();
+		std::vector<CarePackage*> carePackages = Game::GetInstance().GetCarePackages();
+
+		for (int i = 0; i < artifacts.size(); i++) {
+			if (Math::isCollidingSphereToSphere(GetCollider(), artifacts[i]->GetCollider())) {
+				// Get direction vector from tank's position to objects positions (normalized).
+				Vector3 direction = glm::normalize(GetPosition() - artifacts[i]->GetPosition());
+				// Get magnitude float from ((tank's collider radius + object's collider radius) - (distance between tank and object))
+				float magnitude = (GetCollider().radius + artifacts[i]->GetCollider().radius) - glm::distance(GetPosition(), artifacts[i]->GetPosition());
+				// Translate tank by direction vector times magnitude
+				Translate(direction * magnitude);
+			}
+		}
+		for (int i = 0; i < carePackages.size(); i++) {
+			if (Math::isCollidingSphereToSphere(GetCollider(), carePackages[i]->GetCollider())) {
+				// Get direction vector from tank's position to objects positions (normalized).
+				Vector3 direction = glm::normalize(GetPosition() - carePackages[i]->GetPosition());
+				// Get magnitude float from ((tank's collider radius + object's collider radius) - (distance between tank and object))
+				float magnitude = (GetCollider().radius + carePackages[i]->GetCollider().radius) - glm::distance(GetPosition(), carePackages[i]->GetPosition());
+				// Translate tank by direction vector times magnitude
+				Translate(direction * magnitude);
+			}
 		}
 	}
 
