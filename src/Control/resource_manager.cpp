@@ -388,42 +388,83 @@ namespace game {
         return heightMatrix[(x * length) + z];
     }
 
-    Vector3 GetTerrainVertexNormalAt(int x, int z, unsigned int width, unsigned int length, glm::vec3 scale, float* heightMatrix) {
+    glm::vec3 GetTerrainPointAt(int x, int z, unsigned int width, unsigned int length, glm::vec3 scale, float* heightMatrix) {
+		return glm::vec3(x * scale.x, GetTerrainVertexHeightAt(x, z, width, length, heightMatrix), z * scale.z);;
+	}
+
+    glm::vec3 CalculateTerrainNormalAt(int x, int z, unsigned int width, unsigned int length, glm::vec3 scale, float* heightMatrix) {
         if (x >= width || x < 0 || z >= length || z < 0)
             throw(std::runtime_error(std::string("Terrain: index out of bound [") + std::to_string(x) + ", " + std::to_string(z) + "]."));
 
         // Calculates normals by summing the normals of the 6 adjancent triangles
-        float xOffset = scale.x / (width - 1);
-        float zOffset = scale.z / (length - 1);
-
         bool hasLeftVertex = (x - 1 >= 0);
         bool hasRightVertex = (x + 1 < width);
         bool hasUpVertex = (z - 1 >= 0);
         bool hasDownVertex = (z + 1 < length);
 
-        glm::vec3 up, down, left, right, upleft, downright;
+        glm::vec3 center, up, down, left, right, upleft, downright;
+        glm::vec3 upDir, downDir, leftDir, rightDir, upleftDir, downrightDir;
         glm::vec3 N1, N2, N3, N4, N5, N6;
         glm::vec3 normal(0.0f);
 
         // Find the vertex position of each adjancent triangles
-        if (hasUpVertex)    up = glm::vec3(x, GetTerrainVertexHeightAt(x, z - 1, width, length, heightMatrix), z + zOffset);
-        if (hasDownVertex)  down = glm::vec3(x, GetTerrainVertexHeightAt(x, z + 1, width, length, heightMatrix), z - zOffset);
-        if (hasLeftVertex)  left = glm::vec3(x - xOffset, GetTerrainVertexHeightAt(x - 1, z, width, length, heightMatrix), z);
-        if (hasRightVertex) right = glm::vec3(x + xOffset, GetTerrainVertexHeightAt(x + 1, z, width, length, heightMatrix), z);
-        if (hasUpVertex && hasLeftVertex)  upleft = glm::vec3(x - xOffset, GetTerrainVertexHeightAt(x - 1, z - 1, width, length, heightMatrix), z + zOffset);
-        if (hasDownVertex && hasRightVertex) downright = glm::vec3(x + xOffset, GetTerrainVertexHeightAt(x + 1, z + 1, width, length, heightMatrix), z - zOffset);
+        center = GetTerrainPointAt(x, z, width, length, scale, heightMatrix);
+        if (hasUpVertex) {
+            up = GetTerrainPointAt(x, z - 1, width, length, scale, heightMatrix);
+            upDir = glm::normalize(up - center);
+        }
+        if (hasDownVertex) {
+            down = GetTerrainPointAt(x, z + 1, width, length, scale, heightMatrix);
+            downDir = glm::normalize(down - center);
+        }
+        if (hasLeftVertex) {
+            left = GetTerrainPointAt(x - 1, z, width, length, scale, heightMatrix);
+            leftDir = glm::normalize(left - center);
+        }
+        if (hasRightVertex) {
+            right = GetTerrainPointAt(x + 1, z, width, length, scale, heightMatrix);
+            rightDir = glm::normalize(right - center);
+        }
+        if (hasUpVertex && hasLeftVertex) {
+            upleft = GetTerrainPointAt(x - 1, z - 1, width, length, scale, heightMatrix);
+            upleftDir = glm::normalize(upleft - center);
+        }
+        if (hasDownVertex && hasRightVertex) {
+            downright = GetTerrainPointAt(x + 1, z + 1, width, length, scale, heightMatrix);
+            downrightDir = glm::normalize(downright - center);
+        }
 
-        // Calculate the normal of each adjacent triangle and sum them up
-        if (hasLeftVertex && hasUpVertex)    N1 = glm::cross(left, up);        normal += N1;
-        if (hasUpVertex && hasRightVertex) N2 = glm::cross(up, upleft);      normal += N2;
-        if (hasUpVertex && hasRightVertex) N3 = glm::cross(upleft, right);   normal += N3;
-        if (hasRightVertex && hasDownVertex)  N4 = glm::cross(right, down);     normal += N4;
-        if (hasDownVertex && hasLeftVertex)  N5 = glm::cross(down, downright); normal += N5;
-        if (hasDownVertex && hasLeftVertex)  N6 = glm::cross(downright, left); normal += N6;
+        // Calculate all the normals
+        if (hasLeftVertex && hasUpVertex) {    N1 = glm::normalize(glm::cross(upDir, leftDir));        normal += N1; }
+        if (hasUpVertex && hasRightVertex) {   N2 = glm::normalize(glm::cross(upDir, upleftDir));      normal += N2; }
+        if (hasUpVertex && hasRightVertex) {   N3 = glm::normalize(glm::cross(rightDir, upleftDir));   normal += N3; }
+        if (hasRightVertex && hasDownVertex) { N4 = glm::normalize(glm::cross(downDir, rightDir));     normal += N4; }
+        if (hasDownVertex && hasLeftVertex) {  N5 = glm::normalize(glm::cross(downDir, downrightDir)); normal += N5; }
+        if (hasDownVertex && hasLeftVertex) {  N6 = glm::normalize(glm::cross(leftDir, downrightDir)); normal += N6; }
 
         // Normalize and return normal
         normal = glm::normalize(normal);
-        return Vector3{ normal.x, normal.y, normal.z };
+        return normal;
+    }
+
+    void CalculateTerrainNormal(unsigned int width, unsigned int length, glm::vec3 scale, float* heightMatrix, glm::vec3** normalMatrix) {
+        // Allocate memory for normalMatrix
+        (*normalMatrix) = new glm::vec3[width * length];
+        
+        // Loops through all vertices and calculates the terrain normal
+        for (int x = 0; x < width; x++) {
+            for (int z = 0; z < length; z++) {
+                (*normalMatrix)[(x * length) + z] = CalculateTerrainNormalAt(x, z, width, length, scale, heightMatrix);
+            }
+        }
+    }
+
+    Vector3 GetTerrainVertexNormalAt(int x, int z, unsigned int width, unsigned int length, glm::vec3* normalMatrix) {
+        if (x >= width || x < 0 || z >= length || z < 0)
+            throw(std::runtime_error(std::string("Terrain: index out of bound [") + std::to_string(x) + ", " + std::to_string(z) + "]."));
+
+        // Return the normal at specific vertex coordinate
+        return {normalMatrix[(x * length) + z].x, normalMatrix[(x * length) + z].y, normalMatrix[(x * length) + z].z};
     }
 
     Vector2 GetTerrainVertexUVcoordAt(int x, int z, unsigned int width, unsigned int length) {
@@ -439,10 +480,12 @@ namespace game {
         int width, length;
         float minHeight, maxHeight;
         float* heightMatrix = nullptr;
+        glm::vec3* normalMatrix = nullptr;
         CalculateTerrainHeight(filename, &width, &length, &heightMatrix, &minHeight, &maxHeight);
+        CalculateTerrainNormal(width, length, scale, heightMatrix, &normalMatrix);
 
         // Generate the terrain
-        GenerateTerrain(object_name, width, length, scale, heightMatrix, minHeight, maxHeight);
+        GenerateTerrain(object_name, width, length, scale, heightMatrix, normalMatrix, minHeight, maxHeight);
     }
 
     // Creates a terrain from perlin noise function
@@ -451,13 +494,15 @@ namespace game {
         int width = 500, length = 500;
         float minHeight, maxHeight;
         float* heightMatrix = nullptr;
+        glm::vec3* normalMatrix = nullptr;
         CalculateTerrainHeight(width, length, &heightMatrix, &minHeight, &maxHeight);
+        CalculateTerrainNormal(width, length, scale, heightMatrix, &normalMatrix);
 
         // Generate the terrain
-        GenerateTerrain(object_name, width, length, scale, heightMatrix, minHeight, maxHeight);
+        GenerateTerrain(object_name, width, length, scale, heightMatrix, normalMatrix, minHeight, maxHeight);
     }
 
-    void ResourceManager::GenerateTerrain(std::string object_name, int width, int length, glm::vec3 scale, float* heightMatrix, float minHeight, float maxHeight) {
+    void ResourceManager::GenerateTerrain(std::string object_name, int width, int length, glm::vec3 scale, float* heightMatrix, glm::vec3* normalMatrix, float minHeight, float maxHeight) {
         // Output data
         int vertexCount = width * length;
         Vector3* vertices = new Vector3[vertexCount];
@@ -469,7 +514,7 @@ namespace game {
         for (int x = 0; x < width; x++) {
             for (int z = 0; z < length; z++) {
                 vertices[vIndex] = { x * scale.x, GetTerrainVertexHeightAt(x, z, width, length, heightMatrix) * scale.y, z * scale.z };
-                normals[vIndex] = GetTerrainVertexNormalAt(x, z, width, length, scale, heightMatrix);
+                normals[vIndex] = GetTerrainVertexNormalAt(x, z, width, length, normalMatrix);
                 uvs[vIndex] = GetTerrainVertexUVcoordAt(x, z, width, length);
                 vIndex++;
             }
@@ -509,7 +554,7 @@ namespace game {
         delete[] indices;
 
         // Create TerrainData
-        TerrainData* terrainData = new TerrainData{ width, length, scale, heightMatrix, minHeight, maxHeight, nullptr };
+        TerrainData* terrainData = new TerrainData{ width, length, scale, heightMatrix, minHeight, maxHeight, normalMatrix };
 
         // Create resource
         AddResource(ResourceType::Terrain, object_name, vao, ebo, indCount, terrainData);
