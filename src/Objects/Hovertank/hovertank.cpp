@@ -36,41 +36,6 @@ namespace game {
 			// Check for collision
 			objectCollision();
 			terrainCollision();
-
-			/*
-			// Update tank's orientation
-			Vector3 terrainNormal = glm::normalize(Game::GetInstance().GetTerrain()->GetNormalAt(GetPosition().x, GetPosition().y));
-			//Vector3 tankUp = Vector3(0, 1, 0);
-			Vector3 tankUp = glm::normalize(GetUp());
-
-			glm::quat q;
-			if (glm::dot(terrainNormal, tankUp) > 0.9999) {
-				
-			}else if (glm::dot(terrainNormal, tankUp) < -0.9999) {
-				q = glm::angleAxis(glm::radians(180.0f), Vector3(0, 0, 1));
-			}else {
-				Vector3 a = glm::cross(terrainNormal, tankUp);
-				q.x = a.x; q.y = a.y; q.z = a.z;
-				q.w = sqrt((terrainNormal.length() * terrainNormal.length()) * (tankUp.length() * tankUp.length())) + glm::dot(terrainNormal, tankUp);
-			}
-			Rotate(q);
-
-
-			float tmp = glm::dot(terrainNormal, tankUp);
-			if (tmp != 0) {
-				float theta = glm::acos(tmp / (terrainNormal.length() * tankUp.length()));
-				//float theta = glm::angle(terrainNormal, tankUp);
-
-				std::string test = "Angle: " + std::to_string(theta) +
-					", Terrain: [" + std::to_string(terrainNormal.x) + ", " + std::to_string(terrainNormal.y) + ", " + std::to_string(terrainNormal.z) +
-					"], Tank: [" + std::to_string(tankUp.x) + ", " + std::to_string(tankUp.y) + ", " + std::to_string(tankUp.z) + "].";
-
-				((HUD*)Game::GetInstance().GetMenu(MenuType::HUD))->ActivateTooltip(test, 0.25f);
-
-				glm::quat rotMatrix = glm::angleAxis(theta, glm::cross(terrainNormal, tankUp));
-				Rotate(rotMatrix);
-			}
-			*/
 		}
 	}
 
