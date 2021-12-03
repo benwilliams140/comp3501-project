@@ -53,6 +53,7 @@ namespace game {
 
         active_ = true;
         instanced_ = false;
+        blending_ = false;
         instanceAmount_ = 1;
     }
 
@@ -161,10 +162,23 @@ namespace game {
     void SceneNode::Draw(Camera* camera) {
         // Select proper material (shader program)
         glUseProgram(material_);
+        
+        // Select particle blending or not
+        // work in progress
+        if (blending_) {
+            // Enable blending
+            glEnable(GL_BLEND);
+            glBlendEquation(GL_FUNC_ADD);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            //glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE);
+        }
+        else {
+            glDisable(GL_BLEND);
+        }
 
         // Set geometry to draw
         vao_->bind();
-        ebo_->bind();
+        if (ebo_) ebo_->bind();
 
         // Set globals for camera
         camera->SetupShader(material_);
@@ -174,7 +188,12 @@ namespace game {
 
         // Draw geometry
         if (mode_ == GL_POINTS) {
-            glDrawArrays(mode_, 0, size_);
+            if (instanced_) {
+                glDrawArraysInstanced(mode_, 0, size_, instanceAmount_);
+            }
+            else {
+                glDrawArrays(mode_, 0, size_);
+            }
         }
         else {
             if(instanced_)

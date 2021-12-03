@@ -23,8 +23,7 @@
 
 namespace game {
 	// Abstraction of an MachineGun
-	// the ability class doesn't implement SceneNode, just provides Ability functionality
-	class MachineGun : public Ability, public SceneNode {
+	class MachineGun : public Ability {
 
 	public:
 		// Create MachineGun from given resources

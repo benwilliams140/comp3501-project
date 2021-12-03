@@ -5,7 +5,9 @@
 namespace game {
 
 	MachineGun::MachineGun(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) 
-		: Ability(0.25f, Menu::LoadImage("linear.png")), SceneNode(name, geometry, material, texture) {
+		: Ability(name, geometry, material, texture) {
+		SetMaxCooldown(0.25f);
+		SetHUDTexture(Menu::LoadImage("linear.png"));
 	}
 
 

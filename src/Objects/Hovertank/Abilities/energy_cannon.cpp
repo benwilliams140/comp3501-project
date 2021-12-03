@@ -4,8 +4,9 @@
 
 namespace game {
 	EnergyCannon::EnergyCannon(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) 
-		: Ability(5.0f, Menu::LoadImage("parabolic.png")), SceneNode(name, geometry, material, texture) {
-
+		: Ability(name, geometry, material, texture) {
+		SetMaxCooldown(2.5f);
+		SetHUDTexture(Menu::LoadImage("parabolic.png"));
 	}
 
 	EnergyCannon::~EnergyCannon() {

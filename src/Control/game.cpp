@@ -116,6 +116,7 @@ void Game::SetupResources(void) {
 
     // Create geometry of the objects
     resman_.CreateQuad("FlatSurface");
+    resman_.CreateParticle("Particle");
 
     // Load/Create terrain
     resman_.CreateTerrain("Terrain", glm::vec3(2.5f, 1.0f, 2.5f));
@@ -161,6 +162,8 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Material, "Instanced", filename.c_str());
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/lit");
     resman_.LoadResource(ResourceType::Material, "Lighting", filename.c_str());
+    filename = std::string(MATERIAL_DIRECTORY) + std::string("/geyser_particle");
+    resman_.LoadResource(ResourceType::Material, "GeyserParticles", filename.c_str());
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/terrain");
     resman_.LoadResource(ResourceType::Material, "TerrainMaterial", filename.c_str());
 
@@ -185,6 +188,8 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Texture, "PlantTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("") + std::string("/crate.png");
     resman_.LoadResource(ResourceType::Texture, "Crate", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("") + std::string("/particle.png");
+    resman_.LoadResource(ResourceType::Texture, "ParticleTexture", filename.c_str());
 }
 
 void Game::SetupScene(void) {
@@ -270,10 +275,6 @@ void Game::SetupScene(void) {
     ShooterEnemy* enemy = CreateInstance<ShooterEnemy>("Enemy", "Cube", "Simple", "uv6");
     enemy->SetPosition(glm::vec3(10.0f, -5.0f, 25.0f));
     enemies_.push_back(enemy);
-
-    // Create Care Package
-    CarePackage* package = CreateInstance<CarePackage>("Package", "Cube", "Simple", "Crate");
-    package->SetPosition(glm::vec3(-30.0f, 35.0f, 75.0f));
 
     // Initialize certain scene nodes
     terrain_->Init();
