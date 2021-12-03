@@ -1,10 +1,10 @@
 #include "Objects/Hovertank/Abilities/ability.h"
 
 namespace game {
-	Ability::Ability(float maxCooldown, ImTextureID hudTexture) {
-		cooldown_ = 0.0f;
-		maxCooldown_ = maxCooldown;
-		hudTexture_ = hudTexture;
+	Ability::Ability(std::string name, const Resource* geom, const Resource* mat, const Resource* tex) : SceneNode(name, geom, mat, tex)
+	{
+		maxCooldown_ = cooldown_ = 0.0f;
+		hudTexture_ = NULL;
 	}
 
 	Ability::~Ability() {
@@ -47,5 +47,15 @@ namespace game {
 	ImTextureID Ability::GetHUDTexture()
 	{
 		return hudTexture_;
+	}
+
+	void Ability::SetMaxCooldown(float maxCooldown)
+	{
+		maxCooldown_ = maxCooldown;
+	}
+
+	void Ability::SetHUDTexture(ImTextureID hudTexture)
+	{
+		hudTexture_ = hudTexture;
 	}
 }; // namespace game

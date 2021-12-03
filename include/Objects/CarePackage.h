@@ -11,6 +11,7 @@
 #include <glm/gtc/quaternion.hpp>
 
 #include "Control/scene_node.h"
+#include "Objects/Hovertank/Abilities/ability.h"
 #include "Control/mathematics.h"
 
 namespace game {
@@ -28,6 +29,9 @@ namespace game {
 
 		// Update geometry configuration
 		virtual void Update(void) override;
+		void Open();
+
+		void SetStoredAbility(Ability* ability);
 
 		// Collider
 		Math::SphereCollider GetCollider(void) const;
@@ -35,6 +39,8 @@ namespace game {
 	private:
 		SceneNode* parachute_;
 		PackageState state_;
+
+		Ability* storedAbility_;
 
 		float landingTime_;
 

@@ -16,7 +16,7 @@ namespace game {
 		launchTime_ = 0;
 		effectiveness = 1.0f;
 
-		particle_ = Game::GetInstance().CreateInstance<Particle>("GeyserInstancedParticle" + id++, "Particle", "GeyserParticles");
+		particle_ = Game::GetInstance().CreateInstance<Particle>("GeyserInstancedParticle" + id++, "Particle", "GeyserParticles", "ParticleTexture");
 		particle_->SetScale(glm::vec3(0.2f));
 		particle_->SetVelocityMultiple(0.05f); // starting movement speed
 		// default is 250 - seems to look fine

@@ -14,7 +14,12 @@ void main() {
     vec4 pixel = texture(tex_samp, tex_coord);
 
     // adjust colour
-    pixel = vec4(pixel.r * particle_color.r, pixel.g * particle_color.g, pixel.b * particle_color.b, sqrt(sqrt(pixel.b)) * frag_color.a);
+    pixel = vec4(pixel.r * particle_color.r, pixel.g * particle_color.g, pixel.b * particle_color.b, sqrt(pixel.r));
 
-    gl_FragColor = pixel;
+    /*if(pixel.a <= 0.1) {
+        discard;
+    }*/
+
+    //gl_FragColor = pixel;
+    gl_FragColor = vec4(particle_color, frag_color.a);
 }

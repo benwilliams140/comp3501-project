@@ -71,7 +71,7 @@ namespace game {
 
     protected:
         const Resource* geometry_; // Reference to the geometry
-        bool instanced_;
+        bool instanced_, blending_;
         GLsizei instanceAmount_;
 
     private:
