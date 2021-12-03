@@ -13,6 +13,7 @@
 // Default extensions for different shader source files
 #define VERTEX_PROGRAM_EXTENSION "_vp.glsl"
 #define FRAGMENT_PROGRAM_EXTENSION "_fp.glsl"
+#define GEOMETRY_PROGRAM_EXTENSION "_gp.glsl"
 
 namespace game {
 
@@ -44,6 +45,8 @@ namespace game {
         // "Wall", a flat object
         void CreateQuad(std::string object_name);
 
+        void CreateParticle(std::string object_name);
+
     private:
         // List storing all resources
         std::vector<Resource*> resource_;
@@ -61,7 +64,7 @@ namespace game {
         void LoadTerrain(const std::string name, const char* filename, glm::vec3 scale);
 
         // Generates the terrain from input data
-        void GenerateTerrain(std::string object_name, int width, int length, glm::vec3 scale, float* heightMatrix, float minHeight, float maxHeight);
+        void GenerateTerrain(std::string object_name, int width, int length, glm::vec3 scale, float* heightMatrix, glm::vec3* normalMatrix, float minHeight, float maxHeight);
 
     }; // class ResourceManager
 

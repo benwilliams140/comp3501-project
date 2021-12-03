@@ -140,6 +140,7 @@ namespace game {
             void AddEnemyProjectile(Projectile* proj);
             std::vector<Enemy*> GetEnemies();
             bool GetFreeroam() const;
+            Resource* GetResource(std::string res); // get the resource listed
 
             // Delete these function to be sure they don't accidentlly create copies of the instance
             Game(Game const&) = delete;
@@ -189,8 +190,6 @@ namespace game {
             // Methods to handle events
             static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
             static void ResizeCallback(GLFWwindow* window, int width, int height);
-
-            Resource* GetResource(std::string res); // get the resource listed
     }; // class Game
 } // namespace game
 

@@ -3,6 +3,7 @@
 #define GLM_FORCE_RADIANS
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/vector_angle.hpp>
 #include <iostream>
 #include <time.h>
 
@@ -32,7 +33,8 @@ namespace game {
 			}
 			shootingControl();
 
-			// Check for terrain collision
+			// Check for collision
+			objectCollision();
 			terrainCollision();
 		}
 	}
@@ -112,6 +114,32 @@ namespace game {
 		if (Input::getKey(INPUT_KEY_RIGHT)) {
 			glm::quat rotation = glm::angleAxis(-rot_factor * Time::GetDeltaTime(), GetUp());
 			Rotate(rotation);
+		}
+	}
+
+	void HoverTank::objectCollision() {
+		std::vector<Artifact*> artifacts = Game::GetInstance().GetArtifacts();
+		std::vector<CarePackage*> carePackages = Game::GetInstance().GetCarePackages();
+
+		for (int i = 0; i < artifacts.size(); i++) {
+			if (Math::isCollidingSphereToSphere(GetCollider(), artifacts[i]->GetCollider())) {
+				// Get direction vector from tank's position to objects positions (normalized).
+				Vector3 direction = glm::normalize(GetPosition() - artifacts[i]->GetPosition());
+				// Get magnitude float from ((tank's collider radius + object's collider radius) - (distance between tank and object))
+				float magnitude = (GetCollider().radius + artifacts[i]->GetCollider().radius) - glm::distance(GetPosition(), artifacts[i]->GetPosition());
+				// Translate tank by direction vector times magnitude
+				Translate(direction * magnitude);
+			}
+		}
+		for (int i = 0; i < carePackages.size(); i++) {
+			if (Math::isCollidingSphereToSphere(GetCollider(), carePackages[i]->GetCollider())) {
+				// Get direction vector from tank's position to objects positions (normalized).
+				Vector3 direction = glm::normalize(GetPosition() - carePackages[i]->GetPosition());
+				// Get magnitude float from ((tank's collider radius + object's collider radius) - (distance between tank and object))
+				float magnitude = (GetCollider().radius + carePackages[i]->GetCollider().radius) - glm::distance(GetPosition(), carePackages[i]->GetPosition());
+				// Translate tank by direction vector times magnitude
+				Translate(direction * magnitude);
+			}
 		}
 	}
 

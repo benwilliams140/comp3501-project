@@ -53,6 +53,7 @@ namespace game {
 		void motionControl();
 		void turretControl();
 		void shootingControl();
+		void objectCollision();
 		void terrainCollision();
 
 		glm::vec3 velocity_;

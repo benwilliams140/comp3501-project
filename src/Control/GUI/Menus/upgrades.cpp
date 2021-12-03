@@ -75,8 +75,12 @@ namespace game {
 				machine_gun->Translate(glm::vec3(0.0f, 0.2555f, 0.0f));
 				machine_gun->Scale(glm::vec3(0.75));
 				machine_gun->SetParent(tank->GetTurret());
-				machine_gun->SetActive(true);
-				tank->GetTurret()->AddAbility(machine_gun);
+				machine_gun->SetActive(false);
+
+				// Create Care Package
+				CarePackage* package = Game::GetInstance().CreateInstance<CarePackage>("Package", "Cube", "Simple", "Crate");
+				package->SetPosition(glm::vec3(-30.0f, 35.0f, 75.0f));
+				package->SetStoredAbility(machine_gun);
 				
 				ImGui::BeginDisabled();
 			}
@@ -92,8 +96,12 @@ namespace game {
 				energy_cannon->Translate(glm::vec3(0.0f, 0.2555f, 0.0f));
 				energy_cannon->Scale(glm::vec3(0.75));
 				energy_cannon->SetParent(tank->GetTurret());
-				energy_cannon->SetActive(true);
-				tank->GetTurret()->AddAbility(energy_cannon);
+				energy_cannon->SetActive(false);
+
+				// Create Care Package
+				CarePackage* package = Game::GetInstance().CreateInstance<CarePackage>("Package", "Cube", "Simple", "Crate");
+				package->SetPosition(glm::vec3(-30.0f, 35.0f, 75.0f));
+				package->SetStoredAbility(energy_cannon);
 				
 				ImGui::BeginDisabled();
 			}

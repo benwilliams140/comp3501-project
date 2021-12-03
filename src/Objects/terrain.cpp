@@ -7,7 +7,7 @@ using namespace Math;
 
 
 namespace game {
-	Terrain::Terrain(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : SceneNode(name, geometry, material, texture) {}
+	Terrain::Terrain(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : SceneNode(name, geometry, material) {}
 	Terrain::~Terrain() {}
 
 	void Terrain::Update(void) {}
@@ -53,6 +53,44 @@ namespace game {
 	Point3 Terrain::GetPointAt(int x, int z) {
 		Vector3 scale = geometry_->GetTerrainData()->scale;
 		return GetPosition() + Vector3(x * scale.x, GetVertexHeightAt(x, z), z * scale.z);;
+	}
+
+	Normal Terrain::GetNormalAt(float x, float z) {
+		// Initial variables
+		Vector3 offset = GetPosition(); // translation of the terrain
+		Vector3 scale = geometry_->GetTerrainData()->scale; // scale of the terrain
+
+		// Reverse point at
+		int xIndex = (long)((x - offset.x) / scale.x); // (long) truncates
+		int zIndex = (long)((z - offset.z) / scale.z); // (long) truncates
+
+		// Find all 4 vertices on terrain
+		Normal p0 = GetVertexNormalAt(xIndex, zIndex);
+		Normal p1 = GetVertexNormalAt(xIndex + 1, zIndex);
+		Normal p2 = GetVertexNormalAt(xIndex + 1, zIndex + 1);
+		Normal p3 = GetVertexNormalAt(xIndex, zIndex + 1);
+
+		// Calculate interpolation factors
+		float interpFactorX = (x - p0.x) / scale.x;
+		float interpFactorZ = (z - p0.z) / scale.z;
+
+		// Calculate interpolation for each edge
+		Normal interpX1 = glm::mix(p0, p1, interpFactorX);
+		Normal interpX2 = glm::mix(p3, p2, interpFactorX);
+		Normal interpZ1 = glm::mix(p0, p3, interpFactorZ);
+		Normal interpZ2 = glm::mix(p1, p2, interpFactorZ);
+
+		// Average interpolations and return
+		Normal finalInterp = glm::normalize(interpX1 + interpX2 + interpZ1 + interpZ2);
+		return finalInterp;
+	}
+
+	Normal Terrain::GetVertexNormalAt(int x, int z) {
+		// Check for index out of bound
+		if (x >= geometry_->GetTerrainData()->width || x < 0 || z >= geometry_->GetTerrainData()->length || z < 0) 
+			return Vector3(0.0f);
+
+		return geometry_->GetTerrainData()->normalMatrix[(x * geometry_->GetTerrainData()->length) + z];
 	}
 
    /**
@@ -121,7 +159,25 @@ namespace game {
 		glUniform2f(terrain_bounds_var, terrainData->minHeight + this->GetPosition().y, terrainData->maxHeight + GetPosition().y);
 	}
 
-	void Terrain::UpdateShaderUniform(GLuint program) {}
+	void Terrain::UpdateShaderUniform(GLuint program) {
+		for (int i = 0; i < 4; i++) {
+			// Texture
+			GLuint texture = textures_[i]->GetResource();
+			if (texture) {
+				GLint tex = glGetUniformLocation(program, std::string("terrain_texture_" + std::to_string(i + 1)).c_str());
+				glUniform1i(tex, i + 1); // Assign the first texture to the map
+				glActiveTexture(GL_TEXTURE0 + i + 1);
+				glBindTexture(GL_TEXTURE_2D, texture); // First texture we bind
+				// Define texture interpolation
+				glGenerateMipmap(GL_TEXTURE_2D);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			}
+		}
+	}
 
 	float Terrain::GetWidth(void) const {
 		return ((float)geometry_->GetTerrainData()->width) * geometry_->GetTerrainData()->scale.x;
@@ -129,6 +185,13 @@ namespace game {
 
 	float Terrain::GetLength(void) const {
 		return ((float)geometry_->GetTerrainData()->length) * geometry_->GetTerrainData()->scale.z;
+	}
+
+	void Terrain::SetTextures(const std::string tex1, const std::string tex2, const std::string tex3, const std::string tex4) {
+		textures_.push_back(Game::GetInstance().GetResource(tex1));
+		textures_.push_back(Game::GetInstance().GetResource(tex2));
+		textures_.push_back(Game::GetInstance().GetResource(tex3));
+		textures_.push_back(Game::GetInstance().GetResource(tex4));
 	}
 
 } // namespace game

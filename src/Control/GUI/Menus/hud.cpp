@@ -14,12 +14,14 @@ namespace game {
 	void HUD::HandleInput() {
 		HoverTankTurret* turret = Game::GetInstance().GetPlayer()->GetTank()->GetTurret();
 
-		glm::vec2 scroll = Input::getMouseScroll();
-		if (scroll.y < 0) { // select next ability when the mouse is scrolled down
-			turret->SelectNextAbility();
-		}
-		else if (scroll.y > 0) { // select previous ability when the mouse is scrolled up
-			turret->SelectPreviousAbility();
+		if (turret->GetAbilities().size() > 0) {
+			glm::vec2 scroll = Input::getMouseScroll();
+			if (scroll.y < 0) { // select next ability when the mouse is scrolled down
+				turret->SelectNextAbility();
+			}
+			else if (scroll.y > 0) { // select previous ability when the mouse is scrolled up
+				turret->SelectPreviousAbility();
+			}
 		}
 
 		// might be a better way of doing this with a new function in the input class

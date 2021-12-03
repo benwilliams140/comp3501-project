@@ -60,6 +60,17 @@ namespace game {
 		}
 	}
 
+	void CarePackage::Open()
+	{
+		storedAbility_->SetActive(true);
+		Game::GetInstance().GetPlayer()->GetTank()->GetTurret()->AddAbility(storedAbility_);
+	}
+
+	void CarePackage::SetStoredAbility(Ability* ability)
+	{
+		storedAbility_ = ability;
+	}
+
 	SphereCollider CarePackage::GetCollider(void) const {
 		return {GetPosition(), 1.5f};
 	}

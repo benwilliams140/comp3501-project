@@ -18,9 +18,9 @@
 
 namespace game {
 	// helper class to add projectile ability to other classes (eg. MachineGun, EnergyCannon)
-	class Ability {
+	class Ability : public SceneNode {
 	public:
-		Ability(float maxCooldown, ImTextureID hudTexture);
+		Ability(std::string name, const Resource* geom, const Resource* mat, const Resource* tex = nullptr);
 		~Ability();
 
 		void UpdateCooldown(); // decreases cooldown by deltaTime
@@ -35,6 +35,10 @@ namespace game {
 		float GetCooldown();
 		float GetMaxCooldown();
 		ImTextureID GetHUDTexture();
+
+		// setters
+		void SetMaxCooldown(float maxCooldown);
+		void SetHUDTexture(ImTextureID hudTexture);
 
 	protected:
 		float cooldown_, maxCooldown_;
