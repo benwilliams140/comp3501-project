@@ -41,8 +41,8 @@ namespace game {
 		void SetColliderRadius(float radius);
 
 	private:
-		virtual void InitShaderUniform(GLuint program);
-		virtual void UpdateShaderUniform(GLuint program);
+		virtual void InitShaderUniform(GLuint program) override;
+		virtual void UpdateShaderUniform(GLuint program) override;
 
 		glm::vec3* positions_;
 		size_t positionsSize_;

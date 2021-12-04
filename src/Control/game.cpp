@@ -116,6 +116,7 @@ void Game::SetupResources(void) {
 
     // Create geometry of the objects
     resman_.CreateQuad("FlatSurface");
+    resman_.CreateParticle("Particle");
 
     // Load/Create terrain
     resman_.CreateTerrain("Terrain", glm::vec3(2.5f, 1.0f, 2.5f));
@@ -161,12 +162,20 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Material, "Instanced", filename.c_str());
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/lit");
     resman_.LoadResource(ResourceType::Material, "Lighting", filename.c_str());
+    filename = std::string(MATERIAL_DIRECTORY) + std::string("/geyser_particle");
+    resman_.LoadResource(ResourceType::Material, "GeyserParticles", filename.c_str());
+    filename = std::string(MATERIAL_DIRECTORY) + std::string("/terrain");
+    resman_.LoadResource(ResourceType::Material, "TerrainMaterial", filename.c_str());
 
     // Load texture
-    filename = std::string(TEXTURE_DIRECTORY) + std::string("/rocky.png");
-    resman_.LoadResource(ResourceType::Texture, "RockyTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/uv6.png");
     resman_.LoadResource(ResourceType::Texture, "uv6", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/environment") + std::string("/rocky.png");
+    resman_.LoadResource(ResourceType::Texture, "RockyTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/environment") + std::string("/snow.png");
+    resman_.LoadResource(ResourceType::Texture, "SnowTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/environment") + std::string("/dirt.png");
+    resman_.LoadResource(ResourceType::Texture, "DirtTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/hovertank_texture.png");
     resman_.LoadResource(ResourceType::Texture, "HovertankTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/environment") + std::string("/mud.png");
@@ -179,6 +188,8 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Texture, "PlantTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("") + std::string("/crate.png");
     resman_.LoadResource(ResourceType::Texture, "Crate", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("") + std::string("/particle.png");
+    resman_.LoadResource(ResourceType::Texture, "ParticleTexture", filename.c_str());
 }
 
 void Game::SetupScene(void) {
@@ -186,8 +197,9 @@ void Game::SetupScene(void) {
     scene_.SetBackgroundColor(viewport_background_color_g);
 
     // Create Terrain Instance
-    Terrain* terrain = CreateInstance<Terrain>("Terrain Object", "Terrain", "Lighting", "uv6");
+    Terrain* terrain = CreateInstance<Terrain>("Terrain Object", "Terrain", "TerrainMaterial", "uv6");
     terrain->Translate(glm::vec3(-625.f, 0.0F, -625.0F));
+    terrain->SetTextures("SnowTexture", "RockyTexture", "RockyTexture", "DirtTexture");
     terrain_ = terrain;
 
     // create hovertank hierarchy
@@ -267,11 +279,7 @@ void Game::SetupScene(void) {
     ChaserEnemy* enemyChase = CreateInstance<ChaserEnemy>("Enemy2", "Cube", "Simple", "uv6");
     enemyChase->SetPosition(glm::vec3(15.0f, -5.0f, 25.0f));
     enemies_.push_back(enemyChase);
-
-    // Create Care Package
-    CarePackage* package = CreateInstance<CarePackage>("Package", "Cube", "Simple", "Crate");
-    package->SetPosition(glm::vec3(-30.0f, 35.0f, 75.0f));
-
+  
     // Initialize certain scene nodes
     terrain_->Init();
     rocks1->Init();

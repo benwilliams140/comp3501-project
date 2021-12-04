@@ -16,8 +16,7 @@
 #include "Objects/Projectiles/parabolic_projectile.h"
 
 namespace game {
-	// the ability class doesn't implement SceneNode, just provides Ability functionality
-	class EnergyCannon : public Ability, public SceneNode {
+	class EnergyCannon : public Ability {
 	public:
 		EnergyCannon(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture = nullptr);
 		~EnergyCannon();
