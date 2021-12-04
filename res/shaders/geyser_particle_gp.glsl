@@ -12,7 +12,7 @@ in float particle_id[];
 uniform mat4 projection_mat;
 
 // Simulation parameters (constants)
-uniform float particle_size = 0.1;
+uniform float particle_size = 0.25;
 
 // Attributes passed to the fragment shader
 out vec4 frag_color;

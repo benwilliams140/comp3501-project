@@ -1,17 +1,15 @@
-#include "Control/GUI/Menus/main_menu.h"
+#include "Control/GUI/Menus/game_over.h"
 #include "Control/game.h"
 
-
 namespace game {
-	MainMenu::MainMenu() : Menu() {
+	GameOver::GameOver() : Menu() {
+	}
+
+	GameOver::~GameOver() {
 
 	}
 
-	MainMenu::~MainMenu() {
-
-	}
-
-	void MainMenu::Render() {
+	void GameOver::Render() {
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
@@ -27,7 +25,7 @@ namespace game {
 			ImGuiWindowFlags_NoScrollbar |
 			ImGuiWindowFlags_NoScrollWithMouse;
 
-		ImGui::Begin("Main Menu", (bool*)true, flags);
+		ImGui::Begin("Game Over", (bool*)true, flags);
 
 		// set window position for the following modals
 		ImGui::SetNextWindowPos(ImVec2(windowWidth / 2, windowHeight / 2));
@@ -38,7 +36,6 @@ namespace game {
 		ImVec2 windowSize = ImVec2(windowWidth, windowHeight);
 
 		RenderBackground(windowSize);
-		RenderStartButton(windowSize, buttonSize);
 		RenderQuitButton(windowSize, buttonSize);
 
 		ImGui::PopStyleColor(1);
@@ -49,19 +46,7 @@ namespace game {
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	}
 
-	void MainMenu::RenderStartButton(ImVec2 windowSize, ImVec2 buttonSize)
-	{
-		// start button definition
-		ImGui::SetCursorPos(ImVec2(windowSize.x / 2 - buttonSize.x / 2, windowSize.y / 2 - 3 * buttonSize.y / 2 - 5));
-		if (ImGui::ImageButton(button_.startImage, buttonSize, ImVec2(0, 0), ImVec2(1, 1), 0)) {
-			Game::GetInstance().SetState(State::RUNNING);
-		}
-		ImVec2 textSize = ImGui::CalcTextSize("Start");
-		ImGui::SetCursorPos(ImVec2(windowSize.x / 2 - textSize.x / 2, windowSize.y / 2 - buttonSize.y - textSize.y / 2 - 5));
-		ImGui::Text("Start");
-	}
-
-	void MainMenu::RenderQuitButton(ImVec2 windowSize, ImVec2 buttonSize)
+	void GameOver::RenderQuitButton(ImVec2 windowSize, ImVec2 buttonSize)
 	{
 		// quit button definition
 		ImGui::SetCursorPos(ImVec2(windowSize.x / 2 - buttonSize.x / 2, windowSize.y / 2 - buttonSize.y / 2 + 5));
@@ -73,9 +58,9 @@ namespace game {
 		ImGui::Text("Quit");
 	}
 
-	void MainMenu::RenderBackground(ImVec2 windowSize)
+	void GameOver::RenderBackground(ImVec2 windowSize)
 	{
 		ImGui::SetCursorPos(ImVec2(0, 0));
 		ImGui::Image(background_.image, windowSize);
 	}
-} // namespace game
+}

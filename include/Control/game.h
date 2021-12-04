@@ -23,6 +23,7 @@
 #include "Control/GUI/Menus/pause_menu.h"
 #include "Control/GUI/Menus/hud.h"
 #include "Control/GUI/Menus/upgrades.h"
+#include "Control/GUI/Menus/game_over.h"
 #include "Control/path_config.h"
 #include "Control/time.h"
 

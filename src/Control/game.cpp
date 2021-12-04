@@ -81,6 +81,7 @@ void Game::InitMenus() {
     menus_[MenuType::PAUSE] = new PauseMenu();
     menus_[MenuType::HUD] = new HUD();
     menus_[MenuType::UPGRADES] = new Upgrades();
+    menus_[MenuType::GAME_OVER] = new GameOver();
 }
 
 void Game::InitView(void){
@@ -334,6 +335,9 @@ void Game::MainLoop(void){
         else if (state_ == State::UPGRADES) {
             scene_.Draw(camera_);
             menus_[MenuType::UPGRADES]->Render();
+        }
+        else if (state_ == State::GAME_OVER) {
+            menus_[MenuType::GAME_OVER]->Render();
         }
         // update and render game when running
         else if (state_ == State::RUNNING) {
