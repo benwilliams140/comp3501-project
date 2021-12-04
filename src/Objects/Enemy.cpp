@@ -1,5 +1,6 @@
 #include "Objects/Enemy.h"
 #include "Control/game.h"
+#include "Control/time.h"
 #include <stdexcept>
 #define GLM_FORCE_RADIANS
 #include <glm/gtc/type_ptr.hpp>
@@ -30,7 +31,47 @@ namespace game {
 	}
 
 	Math::AABBCollider Enemy::GetCollisionBox() {
-		return { GetPosition() - glm::vec3(2.5f), GetPosition() + glm::vec3(2.5f) };
+		return { GetPosition() - glm::vec3(1.5f), GetPosition() + glm::vec3(1.5f) };
+	}
+
+	void Enemy::HovertankCollision() {
+		//check if the enemy will collide with the tank if so, handle its movement
+		if (Math::isCollidingSphereToAABB(Game::GetInstance().GetPlayer()->GetTank()->GetCollider(), GetCollisionBox())) {
+			HoverTank* tank = Game::GetInstance().GetPlayer()->GetTank();
+			glm::vec3 direction = glm::normalize(GetPosition() - tank->GetPosition());
+			float magnitude = (tank->GetCollider().radius + 1.5f) - glm::distance(GetPosition() , tank->GetPosition() );
+			Translate((direction) *magnitude);
+		}
+	}
+
+	void Enemy::EnemyCollision() {
+		std::vector<Enemy*> Enemies = Game::GetInstance().GetEnemies();
+
+		//loop through all the other enemies, and check for collisions
+		for (int n = 0; n < Enemies.size(); n++) {
+			//make sure we don't do a collision check with itself
+			if (Enemies[n]->GetName() != GetName()) {
+				if (Math::isCollidingAABBToAABB(Enemies[n]->GetCollisionBox(), GetCollisionBox())) {
+					glm::vec3 direction = glm::normalize(GetPosition() - Enemies[n]->GetPosition());
+					float magnitude = (1.5f + 1.5f) - glm::distance(GetPosition(), Enemies[n]->GetPosition());
+					Translate((direction)*magnitude);
+				}
+			}
+		}
+	}
+
+	void Enemy::TerrainCollision() {
+		Terrain* terrain = Game::GetInstance().GetTerrain();
+		glm::vec3 position = GetPosition();
+
+		glm::vec3 hitpoint; // return value for terrain collision
+		if (terrain->Collision(position, 1, hitpoint)) {
+			hitpoint.y += 2.0f; // add height of tank to hitpoint
+			if (position.y <= hitpoint.y) {
+				Translate(glm::vec3(0, hitpoint.y - position.y, 0));
+				
+			}
+		}
 	}
 
 	bool Enemy::isStunned() {
@@ -41,8 +82,16 @@ namespace game {
 		return coolDown;
 	}
 
+	float Enemy::GetSpeed() {
+		return speed;
+	}
+
 	int Enemy::GetStunCoolDown() {
 		return stun_coolDown;
+	}
+
+	void Enemy::SetSpeed(float newSpeed) {
+		speed = newSpeed;
 	}
 
 	void Enemy::SetStunned(bool stun) {

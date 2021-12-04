@@ -46,6 +46,7 @@
 #include "Objects/Projectiles/parabolic_projectile.h"
 #include "Objects/Enemy.h"
 #include "Objects/ShooterEnemy.h"
+#include "Objects/ChaserEnemy.h"
 #include "Objects/Hazards/hazard.h"
 #include "Objects/Hazards/acid_pool.h"
 #include "Objects/Hazards/mud_pool.h"

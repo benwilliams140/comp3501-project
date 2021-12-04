@@ -259,10 +259,14 @@ void Game::SetupScene(void) {
     Geyser* geyser = CreateInstance<Geyser>("Geyser1", "Pool", "Simple", "GeyserTexture");
     geyser->SetPosition(glm::vec3(-35.0f, -20.0f, 40.0f));
     geyser->Scale(glm::vec3(15));
-
-    ShooterEnemy* enemy = CreateInstance<ShooterEnemy>("Enemy", "Cube", "Simple", "uv6");
+    
+    ShooterEnemy* enemy = CreateInstance<ShooterEnemy>("Enemy1", "Cube", "Simple", "uv6");
     enemy->SetPosition(glm::vec3(10.0f, -5.0f, 25.0f));
     enemies_.push_back(enemy);
+
+    ChaserEnemy* enemyChase = CreateInstance<ChaserEnemy>("Enemy2", "Cube", "Simple", "uv6");
+    enemyChase->SetPosition(glm::vec3(15.0f, -5.0f, 25.0f));
+    enemies_.push_back(enemyChase);
 
     // Create Care Package
     CarePackage* package = CreateInstance<CarePackage>("Package", "Cube", "Simple", "Crate");

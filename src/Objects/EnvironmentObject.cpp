@@ -10,6 +10,7 @@
 #include <control/mathematics.h>
 #include "Objects/Hovertank/Abilities/ability.h"
 #include "Objects/Projectiles/projectile.h"
+#include "Objects/Enemy.h"
 
 #define MAX_INST_GROUPS 4
 #define MAX_POSITIONS 250
@@ -31,6 +32,7 @@ namespace game {
 	void EnvironmentObject::Update(void) {
 		HovertankCollision();
 		ProjectileCollision();
+		EnemyCollision();
 	}
 
 	void EnvironmentObject::HovertankCollision() {
@@ -66,13 +68,26 @@ namespace game {
 		projectiles = Game::GetInstance().GetEnemyProjectiles();
 		for (int n = 0; n < projectiles.size(); n++) {
 			for (int m = 0; m < positionsSize_; m++) {
-				//if they collide seet projectile lifespan to 0 to be destroyed
+				//if they collide set projectile lifespan to 0 to be destroyed
 				if (Math::isCollidingSphereToSphere(projectiles[n]->GetCollider(), { positions_[m], colliderRadius_ })) {
 					projectiles[n]->SetLifespan(0.0f);
 				}
 			}
 		}
 		
+	}
+
+	void EnvironmentObject::EnemyCollision() {
+		std::vector<Enemy*> Enemies = Game::GetInstance().GetEnemies();
+		for (int n = 0; n < Enemies.size(); n++) {
+			for (int m = 0; m < positionsSize_; m++) {
+				//if an enemy collides with an environment objects handle their movement
+				if (Math::isCollidingSphereToAABB({ positions_[m], colliderRadius_ },Enemies[n]->GetCollisionBox() )) {
+					Vector3 direction = glm::normalize(Enemies[n]->GetPosition() - positions_[m]);
+					Enemies[n]->Translate(direction);
+				}
+			}
+		}
 	}
 
 	void EnvironmentObject::InitPositions(int seed, int amount) {
