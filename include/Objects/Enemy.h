@@ -34,10 +34,15 @@ namespace game {
 
 		virtual Math::AABBCollider GetAwarenessBox();
 		virtual Math::AABBCollider GetCollisionBox();
+		virtual void HovertankCollision();
+		void TerrainCollision();
+		void EnemyCollision();
 		bool isStunned();
 		int GetCoolDown();
 		int GetStunCoolDown();
+		float GetSpeed();
 
+		void SetSpeed(float newSpeed);
 		void SetStunned(bool stun);
 		void SetCoolDown(int time);
 		void SetStunDown(int time);
@@ -52,6 +57,7 @@ namespace game {
 		bool stunned; //tells us if the enemy is stunned or not
 		int coolDown; //time till next attack
 		int stun_coolDown; //cooldown for being stunned
+		float speed;
 
 	}; // class Enemy
 

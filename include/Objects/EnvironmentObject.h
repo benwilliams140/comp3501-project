@@ -29,6 +29,7 @@ namespace game {
 		virtual void Update(void) override;
 		void HovertankCollision();
 		void ProjectileCollision();
+		void EnemyCollision();
 
 		void InitPositions(int seed, int amount);
 
