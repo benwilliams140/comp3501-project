@@ -32,7 +32,7 @@ namespace game {
 		// set window position for the following modals
 		ImGui::SetNextWindowPos(ImVec2(windowWidth / 2, windowHeight / 2));
 
-		ImGui::PushStyleColor(ImGuiCol_Text, TEXT_COLOR);
+		ImGui::PushStyleColor(ImGuiCol_Text, button_.textColor);
 
 		ImVec2 buttonSize = ImVec2(windowWidth * button_.widthRatio, windowHeight * button_.heightRatio);
 		ImVec2 windowSize = ImVec2(windowWidth, windowHeight);
@@ -52,24 +52,24 @@ namespace game {
 	void MainMenu::RenderStartButton(ImVec2 windowSize, ImVec2 buttonSize)
 	{
 		// start button definition
-		ImGui::SetCursorPos(ImVec2(windowSize.x / 2 - buttonSize.x / 2, windowSize.y / 2 - 3 * buttonSize.y / 2 - 5));
+		ImGui::SetCursorPos(ImVec2(windowSize.x / 2 - buttonSize.x / 2, windowSize.y / 2 - buttonSize.y / 2 - 5));
 		if (ImGui::ImageButton(button_.startImage, buttonSize, ImVec2(0, 0), ImVec2(1, 1), 0)) {
 			Game::GetInstance().SetState(State::RUNNING);
 		}
 		ImVec2 textSize = ImGui::CalcTextSize("Start");
-		ImGui::SetCursorPos(ImVec2(windowSize.x / 2 - textSize.x / 2, windowSize.y / 2 - buttonSize.y - textSize.y / 2 - 5));
+		ImGui::SetCursorPos(ImVec2(windowSize.x / 2 - textSize.x / 2, windowSize.y / 2 - textSize.y / 2 - 5));
 		ImGui::Text("Start");
 	}
 
 	void MainMenu::RenderQuitButton(ImVec2 windowSize, ImVec2 buttonSize)
 	{
 		// quit button definition
-		ImGui::SetCursorPos(ImVec2(windowSize.x / 2 - buttonSize.x / 2, windowSize.y / 2 - buttonSize.y / 2 + 5));
+		ImGui::SetCursorPos(ImVec2(windowSize.x / 2 - buttonSize.x / 2, windowSize.y / 2 + buttonSize.y / 2 + 5));
 		if (ImGui::ImageButton(button_.quitImage, buttonSize, ImVec2(0, 0), ImVec2(1, 1), 0)) {
 			glfwSetWindowShouldClose(Game::GetInstance().GetWindow(), GL_TRUE);
 		}
 		ImVec2 textSize = ImGui::CalcTextSize("Quit");
-		ImGui::SetCursorPos(ImVec2(windowSize.x / 2 - textSize.x / 2, windowSize.y / 2 - textSize.y / 2 + 5));
+		ImGui::SetCursorPos(ImVec2(windowSize.x / 2 - textSize.x / 2, windowSize.y / 2 + buttonSize.y - textSize.y / 2 + 5));
 		ImGui::Text("Quit");
 	}
 

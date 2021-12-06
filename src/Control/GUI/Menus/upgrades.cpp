@@ -33,11 +33,17 @@ namespace game {
 		ImVec2 buttonSize = ImVec2(windowWidth * button_.widthRatio, windowHeight * button_.heightRatio);
 		ImVec2 windowSize = ImVec2(windowWidth, windowHeight);
 
+		ImGui::PushStyleColor(ImGuiCol_Text, pointsLabel_.textColor);
 		RenderPoints(points, windowSize);
+		ImGui::PopStyleColor(1);
+		ImGui::PushStyleColor(ImGuiCol_Text, button_.textColor);
+		ImGui::PushFont(button_.font);
 		RenderWeaponUpgrades(points, buttonSize);
 		RenderSpeedUpgrades(points, buttonSize);
 		RenderHealthUpgrades(points, buttonSize);
 		RenderEnergyUpgrades(points, buttonSize);
+		ImGui::PopFont();
+		ImGui::PopStyleColor(1);
 
 		ImGui::End();
 
@@ -52,11 +58,9 @@ namespace game {
 		float pointsY = 5.0f;
 
 		ImGui::SetCursorPos(ImVec2(pointsX, pointsY));
-		ImGui::SetWindowFontScale(3.0f); // super old API that isn't great, but it works
-										// should probably create separate ImFont objects  with different 
-										// fonts and sizes but that's for another time
+		ImGui::PushFont(pointsLabel_.font);
 		ImGui::Text(std::to_string(points).c_str());
-		ImGui::SetWindowFontScale(1.0f);
+		ImGui::PopFont();
 	}
 
 	void Upgrades::RenderWeaponUpgrades(int points, ImVec2 buttonSize)

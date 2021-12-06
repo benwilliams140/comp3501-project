@@ -20,11 +20,18 @@ namespace game {
 			//		with ImageButton, there could've been an update though)
 			ImTextureID quitImage = Menu::LoadImage("button.png");
 			ImTextureID startImage = Menu::LoadImage("button.png");
+			ImVec4 textColor = ImVec4(1, 1, 1, 1);
 		} button_;
 
 		const struct Background {
 			ImTextureID image = Menu::LoadImage("title_screen.png");
 		} background_;
+
+		const struct TitleBar {
+			std::string title = "Title";
+			ImFont* font = Menu::LoadFont("Freedom.ttf", 24.0f);
+			ImVec4 textColor = ImVec4(1, 1, 1, 1);
+		} titleBar_;
 
 		void RenderStartButton(ImVec2 windowSize, ImVec2 buttonSize);
 		void RenderQuitButton(ImVec2 windowSize, ImVec2 buttonSize);

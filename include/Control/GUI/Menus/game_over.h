@@ -15,6 +15,7 @@ private:
 		float widthRatio = 0.15f;
 		float heightRatio = 0.075f;
 		ImTextureID quitImage = Menu::LoadImage("button.png");
+		ImVec4 textColor = ImVec4(1, 1, 1, 1);
 	} button_;
 
 	const struct Background {

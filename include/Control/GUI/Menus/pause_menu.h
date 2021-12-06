@@ -18,6 +18,8 @@ namespace game {
 			ImTextureID quitImage = Menu::LoadImage("button.png");
 			ImTextureID resumeImage = Menu::LoadImage("button.png");
 			ImTextureID settingsImage = Menu::LoadImage("button.png");
+			ImFont* font = Menu::LoadFont("Freedom.ttf", 14.0f);
+			ImVec4 textColor = ImVec4(1, 1, 1, 1);
 		} button_;
 
 		void RenderQuitButton(ImVec2 windowSize, ImVec2 buttonSize);

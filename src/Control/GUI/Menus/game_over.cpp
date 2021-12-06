@@ -30,7 +30,7 @@ namespace game {
 		// set window position for the following modals
 		ImGui::SetNextWindowPos(ImVec2(windowWidth / 2, windowHeight / 2));
 
-		ImGui::PushStyleColor(ImGuiCol_Text, TEXT_COLOR);
+		ImGui::PushStyleColor(ImGuiCol_Text, button_.textColor);
 
 		ImVec2 buttonSize = ImVec2(windowWidth * button_.widthRatio, windowHeight * button_.heightRatio);
 		ImVec2 windowSize = ImVec2(windowWidth, windowHeight);
