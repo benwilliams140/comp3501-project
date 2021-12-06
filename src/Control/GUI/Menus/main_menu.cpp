@@ -32,15 +32,21 @@ namespace game {
 		// set window position for the following modals
 		ImGui::SetNextWindowPos(ImVec2(windowWidth / 2, windowHeight / 2));
 
-		ImGui::PushStyleColor(ImGuiCol_Text, button_.textColor);
 
 		ImVec2 buttonSize = ImVec2(windowWidth * button_.widthRatio, windowHeight * button_.heightRatio);
 		ImVec2 windowSize = ImVec2(windowWidth, windowHeight);
 
 		RenderBackground(windowSize);
+
+		ImGui::PushStyleColor(ImGuiCol_Text, titleBar_.textColor);
+		RenderTitle(windowSize);
+		ImGui::PopStyleColor(1);
+		
+		ImGui::PushStyleColor(ImGuiCol_Text, button_.textColor);
+		ImGui::PushFont(button_.font);
 		RenderStartButton(windowSize, buttonSize);
 		RenderQuitButton(windowSize, buttonSize);
-
+		ImGui::PopFont();
 		ImGui::PopStyleColor(1);
 
 		ImGui::End();
@@ -77,5 +83,14 @@ namespace game {
 	{
 		ImGui::SetCursorPos(ImVec2(0, 0));
 		ImGui::Image(background_.image, windowSize);
+	}
+
+	void MainMenu::RenderTitle(ImVec2 windowSize)
+	{	
+		ImVec2 textSize = ImGui::CalcTextSize(titleBar_.title.c_str());
+		ImGui::SetCursorPos(ImVec2(windowSize.x / 2 - 5 * textSize.x / 3, 5));
+		ImGui::PushFont(titleBar_.font);
+		ImGui::Text(titleBar_.title.c_str());
+		ImGui::PopFont();
 	}
 } // namespace game
