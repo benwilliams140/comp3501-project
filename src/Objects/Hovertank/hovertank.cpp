@@ -81,12 +81,15 @@ namespace game {
 		if (Input::getKey(INPUT_KEY_S)) {
 			acceleration_ -= GetForward() * speedIncrease;
 		}
-		// Accelerate left/right
+
+		// Rotate left/right
 		if (Input::getKey(INPUT_KEY_A)) {
-			acceleration_ -= GetRight() * speedIncrease;
+			glm::quat rotation = glm::angleAxis(rot_factor * Time::GetDeltaTime(), GetUp());
+			Rotate(rotation);
 		}
 		if (Input::getKey(INPUT_KEY_D)) {
-			acceleration_ += GetRight() * speedIncrease;
+			glm::quat rotation = glm::angleAxis(-rot_factor * Time::GetDeltaTime(), GetUp());
+			Rotate(rotation);
 		}
 
 		// Clamp x and z velocity to max vehicle speed
@@ -101,16 +104,6 @@ namespace game {
 		velocity_ += acceleration_; // Increment velocity by acceleration
 		acceleration_ = glm::vec3(0); // Reset acceleration
 		Translate(velocity_ * speedMultiple_ * speedEffectMultiple_ * Time::GetDeltaTime()); // Translate by velocity
-
-		// Rotate yaw
-		if (Input::getKey(INPUT_KEY_Q)) {
-			glm::quat rotation = glm::angleAxis(rot_factor * Time::GetDeltaTime(), GetUp());
-			Rotate(rotation);
-		}
-		if (Input::getKey(INPUT_KEY_E)) {
-			glm::quat rotation = glm::angleAxis(-rot_factor * Time::GetDeltaTime(), GetUp());
-			Rotate(rotation);
-		}
 	}
 
 	void HoverTank::objectCollision() {
