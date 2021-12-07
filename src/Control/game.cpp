@@ -104,6 +104,7 @@ void Game::InitView(void){
 void Game::InitEventHandlers(void){
     // Set event callbacks
     Input::setup(window_);
+    Input::setMouseHorizontalSensitivity(10.0f);
     //glfwSetKeyCallback(window_, KeyCallback);
     glfwSetFramebufferSizeCallback(window_, ResizeCallback);
 
@@ -300,18 +301,18 @@ void Game::MainLoop(void){
         // Press 'Escape' key to pause/unpause game
         if (Input::getKeyDown(INPUT_KEY_ESCAPE)) {
             switch (state_) {
-            case State::PAUSED: state_ = State::RUNNING; break;
-            case State::RUNNING: state_ = State::PAUSED; break;
-            case State::UPGRADES: state_ = State::PAUSED; break; // switch to pause menu
+            case State::PAUSED:   SetState(State::RUNNING); break;
+            case State::RUNNING:  SetState(State::PAUSED); break;
+            case State::UPGRADES: SetState(State::PAUSED); break;
             default: break;
             }
         }
         // Press 'U' key to open/close the upgrades screen
         if (Input::getKeyDown(INPUT_KEY_U)) {
             switch (state_) {
-            case State::PAUSED: state_ = State::UPGRADES; break; // switch to upgrades screen
-            case State::RUNNING: state_ = State::UPGRADES; break;
-            case State::UPGRADES: state_ = State::RUNNING; break;
+            case State::PAUSED:   SetState(State::UPGRADES); break;
+            case State::RUNNING:  SetState(State::UPGRADES); break;
+            case State::UPGRADES: SetState(State::RUNNING); break;
             }
         }
 
@@ -391,7 +392,6 @@ void Game::ResizeCallback(GLFWwindow* window, int width, int height){
 }
 
 Game::~Game(){
-    
     glfwTerminate();
 }
 
@@ -442,6 +442,12 @@ Player* Game::GetPlayer() {
 }
 
 void Game::SetState(State state) {
+    if (state == State::RUNNING) {
+        glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED); 
+    }  else {
+        glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_NORMAL); 
+    }
+
     state_ = state;
 }
 

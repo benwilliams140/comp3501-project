@@ -41,19 +41,15 @@ namespace game {
 
 	void HoverTank::shootingControl() {
 		// shoot currently selected projectile
-		if (Input::getKey(INPUT_KEY_SPACE)) {
+		if (Input::getMouseButton(INPUT_MOUSE_BUTTON_1)) {
 			Projectile* proj = turret_->UseSelectedAbility(GetPosition(), GetForward());
 		}
 	}
 
 	void HoverTank::turretControl() {
-		// Rotate hovertank's turret
-		if(Input::getKey(INPUT_KEY_Q)) { // left
-			glm::quat rot = glm::angleAxis(((glm::pi<float>() * 60) / 180) * Time::GetDeltaTime(), GetUp());
-			turret_->Rotate(rot);
-		}
-		if (Input::getKey(INPUT_KEY_E)) { // right
-			glm::quat rot = glm::angleAxis(-((glm::pi<float>() * 60) / 180) * Time::GetDeltaTime(), GetUp());
+		float rotAngle = -Input::getAxisMouse(INPUT_AXIS_HORIZONTAL);
+		if(rotAngle != 0) {
+			glm::quat rot = glm::angleAxis(((glm::pi<float>() * rotAngle) / 180) * Time::GetDeltaTime(), GetUp());
 			turret_->Rotate(rot);
 		}
 	}
@@ -107,11 +103,11 @@ namespace game {
 		Translate(velocity_ * speedMultiple_ * speedEffectMultiple_ * Time::GetDeltaTime()); // Translate by velocity
 
 		// Rotate yaw
-		if (Input::getKey(INPUT_KEY_LEFT)) {
+		if (Input::getKey(INPUT_KEY_Q)) {
 			glm::quat rotation = glm::angleAxis(rot_factor * Time::GetDeltaTime(), GetUp());
 			Rotate(rotation);
 		}
-		if (Input::getKey(INPUT_KEY_RIGHT)) {
+		if (Input::getKey(INPUT_KEY_E)) {
 			glm::quat rotation = glm::angleAxis(-rot_factor * Time::GetDeltaTime(), GetUp());
 			Rotate(rotation);
 		}
