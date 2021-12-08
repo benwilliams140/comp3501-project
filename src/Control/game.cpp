@@ -82,6 +82,7 @@ void Game::InitMenus() {
     menus_[MenuType::HUD] = new HUD();
     menus_[MenuType::UPGRADES] = new Upgrades();
     menus_[MenuType::GAME_OVER] = new GameOver();
+    menus_[MenuType::TEXT_WINDOW] = new TextWindow();
 }
 
 void Game::InitView(void){
@@ -347,11 +348,6 @@ void Game::MainLoop(void){
             } else {
                 camera_->UpdateCameraToTarget((HoverTank*)scene_.GetNode(HOVERTANK_BASE));
             }
-
-            // for tooltip testing
-            if (Input::getKeyDown(INPUT_KEY_T)) {
-                ((HUD*)menus_[MenuType::HUD])->ActivateTooltip("Test", 1.0f);
-            }
             
             // removes dead projectiles
             std::vector<Projectile*> projectilesToRemove = player_->GetTank()->GetTurret()->RemoveDeadProjectiles();
@@ -365,12 +361,12 @@ void Game::MainLoop(void){
                 scene_.RemoveNode((*it)->GetName());
             }
 
-            player_->Update(); // player has it's own update method
-            scene_.Update();
+            // only update is the text window isn't showing
+            if(((TextWindow*) menus_[MenuType::TEXT_WINDOW])->GetState() == TextState::NOTHING) {
+                player_->Update(); // player has it's own update method
+                scene_.Update();
+            }
             scene_.Draw(camera_);
-            
-
-            
             
             // render the HUD overtop of the game and handle its input
             menus_[MenuType::HUD]->Render();

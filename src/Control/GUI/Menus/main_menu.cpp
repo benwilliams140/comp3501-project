@@ -61,6 +61,9 @@ namespace game {
 		ImGui::SetCursorPos(ImVec2(windowSize.x / 2 - buttonSize.x / 2, windowSize.y / 2 - buttonSize.y / 2 - 5));
 		if (ImGui::ImageButton(button_.startImage, buttonSize, ImVec2(0, 0), ImVec2(1, 1), 0)) {
 			Game::GetInstance().SetState(State::RUNNING);
+			// the most recently added state is shown first
+			((TextWindow*) Game::GetInstance().GetMenu(MenuType::TEXT_WINDOW))->AddState(TextState::CONTROLS);
+			((TextWindow*)Game::GetInstance().GetMenu(MenuType::TEXT_WINDOW))->AddState(TextState::WELCOME);
 		}
 		ImVec2 textSize = ImGui::CalcTextSize("Start");
 		ImGui::SetCursorPos(ImVec2(windowSize.x / 2 - textSize.x / 2, windowSize.y / 2 - textSize.y / 2 - 5));

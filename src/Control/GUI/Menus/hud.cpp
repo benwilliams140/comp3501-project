@@ -98,6 +98,9 @@ namespace game {
 
 		ImGui::End();
 
+		// render the TextWindow on top of everything
+		Game::GetInstance().GetMenu(MenuType::TEXT_WINDOW)->Render();
+
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	}

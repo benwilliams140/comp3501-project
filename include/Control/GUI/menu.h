@@ -15,7 +15,8 @@ namespace game {
 		PAUSE,
 		HUD,
 		UPGRADES,
-		GAME_OVER
+		GAME_OVER,
+		TEXT_WINDOW
 	};
 
 	class Menu {

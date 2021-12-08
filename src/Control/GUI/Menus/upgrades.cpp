@@ -36,6 +36,7 @@ namespace game {
 		ImGui::PushStyleColor(ImGuiCol_Text, pointsLabel_.textColor);
 		RenderPoints(points, windowSize);
 		ImGui::PopStyleColor(1);
+
 		ImGui::PushStyleColor(ImGuiCol_Text, button_.textColor);
 		ImGui::PushFont(button_.font);
 		RenderWeaponUpgrades(points, buttonSize);
@@ -46,6 +47,9 @@ namespace game {
 		ImGui::PopStyleColor(1);
 
 		ImGui::End();
+
+		// render the TextWindow on top of everything
+		Game::GetInstance().GetMenu(MenuType::TEXT_WINDOW)->Render();
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

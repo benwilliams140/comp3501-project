@@ -24,6 +24,7 @@
 #include "Control/GUI/Menus/hud.h"
 #include "Control/GUI/Menus/upgrades.h"
 #include "Control/GUI/Menus/game_over.h"
+#include "Control/GUI/Menus/text_window.h";
 #include "Control/path_config.h"
 #include "Control/time.h"
 
@@ -132,6 +133,7 @@ namespace game {
             Menu* GetMenu(MenuType menu);
             std::vector<Artifact*>& GetArtifacts();
             std::vector<CarePackage*>& GetCarePackages();
+
             void SetState(State state);
 
             void AddCarePackage(CarePackage* package);
