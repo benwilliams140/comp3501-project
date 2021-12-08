@@ -286,9 +286,10 @@ void Game::SetupScene(void) {
     eb->SetScale(glm::vec3(20.0f, 20.0f, 20.0f));
     eb->SetPosition(GetPlayer()->GetTank()->GetPosition());*/
 
+    /*
     Artifact* artifact = CreateInstance<Artifact>("Enemy1", "Sphere", "Simple", "uv6");
     artifact->SetPosition(glm::vec3(15.0f, -10.0f, 25.0f));
-    artifacts_.push_back(artifact);
+    artifacts_.push_back(artifact);*/
   
     // Initialize certain scene nodes
     terrain_->Init();
