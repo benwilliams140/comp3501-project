@@ -21,6 +21,8 @@ namespace game {
 	{
 		if (stateQueue_.front() == TextState::NOTHING) return; // don't render anything
 
+		glfwSetInputMode(Game::GetInstance().GetWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
 		int windowWidth, windowHeight;
 		glfwGetWindowSize(Game::GetInstance().GetWindow(), &windowWidth, &windowHeight);
 		ImVec2 windowSize = ImVec2(windowWidth / 2.0f, 2.0f * windowHeight / 3.0f);
@@ -45,6 +47,7 @@ namespace game {
 		ImGui::SetCursorPos(ImVec2(windowSize.x - 50, windowSize.y - 25));
 		if (ImGui::Button("Next")) {
 			stateQueue_.erase(stateQueue_.begin());
+			glfwSetInputMode(Game::GetInstance().GetWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		}
 
 		ImGui::End();
