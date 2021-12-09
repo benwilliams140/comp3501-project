@@ -225,9 +225,9 @@ namespace game {
         glUniformMatrix4fv(world_mat, 1, GL_FALSE, glm::value_ptr(transf));
 
         // Normal matrix
-        glm::mat4 normal_matrix = glm::transpose(glm::inverse(transf));
+        glm::mat3 normal_matrix = glm::mat3(glm::transpose(glm::inverse(transf)));
         GLint normal_mat = glGetUniformLocation(program, "normal_mat");
-        glUniformMatrix4fv(normal_mat, 1, GL_FALSE, glm::value_ptr(normal_matrix));
+        glUniformMatrix3fv(normal_mat, 1, GL_FALSE, glm::value_ptr(normal_matrix));
 
         // Texture
         if (texture_) {

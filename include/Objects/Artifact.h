@@ -40,6 +40,8 @@ namespace game {
 
 		// Collider
 		Math::SphereCollider GetCollider(void) const;
+		void EnemyCollision();
+		void HovertankCollision();
 
 	private:
 

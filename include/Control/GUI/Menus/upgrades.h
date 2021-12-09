@@ -21,6 +21,8 @@ namespace game {
 			int machineGunCost = 2500;
 			bool energyCannon = false;
 			int energyCannonCost = 5000;
+			bool energyBlast = false;
+			int energyBlastCost = 10000;
 		} weaponUpgrade_;
 
 		struct SpeedUpgrade {
@@ -47,11 +49,15 @@ namespace game {
 		const struct Button {
 			float widthRatio = 0.15f;
 			float heightRatio = 0.075f;
+			ImVec4 textColor = ImVec4(1, 1, 1, 1);
+			ImFont* font = Menu::LoadFont("Freedom.ttf", 14.0f);
 		} button_;
 
 		const struct PointsLabel {
 			float widthRatio = 0.15f;
 			float heightRatio = 0.075f;
+			ImVec4 textColor = ImVec4(1, 1, 1, 1);
+			ImFont* font = Menu::LoadFont("FabulaValhalla.ttf", 22.0f);
 		} pointsLabel_;
 
 		void RenderPoints(int points, ImVec2 windowSize);

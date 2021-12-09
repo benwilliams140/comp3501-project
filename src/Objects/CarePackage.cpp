@@ -14,7 +14,7 @@ namespace game {
 	CarePackage::CarePackage(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : SceneNode(name, geometry, material, texture) {
 		Game::GetInstance().AddCarePackage(this);
 		
-		parachute_ = Game::GetInstance().CreateInstance<SceneNode>("Parachute", "Parachute", "Simple", "uv6");
+		parachute_ = Game::GetInstance().CreateInstance<SceneNode>("Parachute", "Parachute", "Lighting", "ParachuteTexture");
 		parachute_->SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
 		parachute_->SetParent(this);
 

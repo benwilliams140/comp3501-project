@@ -34,4 +34,10 @@ namespace game {
 
 		return (void*) (intptr_t) textureID;
 	}
+
+	ImFont* Menu::LoadFont(std::string filename, float size)
+	{
+		std::string filepath = FONT_DIRECTORY + std::string("/") + filename;
+		return ImGui::GetIO().Fonts->AddFontFromFileTTF(filepath.c_str(), size);
+	}
 } // namespace game

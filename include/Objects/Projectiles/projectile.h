@@ -26,10 +26,11 @@ namespace game {
 		~Projectile();
 
 		// Get/set projectile properties
-		Math::SphereCollider GetCollider(void) const;
+		virtual Math::SphereCollider GetCollider(void) const;
 		void SetVelocity(glm::vec3 vel); // must call this on creation
 		void SetLifespan(float lifespan); // must call this on creation
-		void EnemyCollision();
+		virtual void EnemyCollision();
+		void ArtifactCollision();
 		bool IsAlive();
 
 	protected:

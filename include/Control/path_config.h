@@ -3,3 +3,4 @@
 #define MESH_DIRECTORY "../../../res/meshes"
 #define MATERIAL_DIRECTORY "../../../res/shaders"
 #define TEXTURE_DIRECTORY "../../../res/textures"
+#define FONT_DIRECTORY "../../../res/fonts"
