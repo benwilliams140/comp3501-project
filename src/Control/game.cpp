@@ -81,6 +81,8 @@ void Game::InitMenus() {
     menus_[MenuType::PAUSE] = new PauseMenu();
     menus_[MenuType::HUD] = new HUD();
     menus_[MenuType::UPGRADES] = new Upgrades();
+    menus_[MenuType::GAME_OVER] = new GameOver();
+    menus_[MenuType::TEXT_WINDOW] = new TextWindow();
 }
 
 void Game::InitView(void){
@@ -167,6 +169,8 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Material, "GeyserParticles", filename.c_str());
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/terrain");
     resman_.LoadResource(ResourceType::Material, "TerrainMaterial", filename.c_str());
+    filename = std::string(MATERIAL_DIRECTORY) + std::string("/energy_blast_shader");
+    resman_.LoadResource(ResourceType::Material, "eb_shader", filename.c_str());
 
     // Load texture
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/uv6.png");
@@ -282,6 +286,15 @@ void Game::SetupScene(void) {
     ChaserEnemy* enemyChase = CreateInstance<ChaserEnemy>("Enemy2", "Cube", "Simple", "uv6");
     enemyChase->SetPosition(glm::vec3(15.0f, -5.0f, 25.0f));
     enemies_.push_back(enemyChase);
+    /*
+    EnergyBlast* eb = CreateInstance<EnergyBlast>("Boom", "Sphere", "eb_shader", "uv6");
+    eb->SetScale(glm::vec3(20.0f, 20.0f, 20.0f));
+    eb->SetPosition(GetPlayer()->GetTank()->GetPosition());*/
+
+    /*
+    Artifact* artifact = CreateInstance<Artifact>("Enemy1", "Sphere", "Simple", "uv6");
+    artifact->SetPosition(glm::vec3(15.0f, -10.0f, 25.0f));
+    artifacts_.push_back(artifact);*/
   
     // Initialize certain scene nodes
     terrain_->Init();
@@ -338,6 +351,9 @@ void Game::MainLoop(void){
             scene_.Draw(camera_);
             menus_[MenuType::UPGRADES]->Render();
         }
+        else if (state_ == State::GAME_OVER) {
+            menus_[MenuType::GAME_OVER]->Render();
+        }
         // update and render game when running
         else if (state_ == State::RUNNING) {
             // handle camera movement
@@ -345,11 +361,6 @@ void Game::MainLoop(void){
                 camera_->UpdateCameraFreeroam();
             } else {
                 camera_->UpdateCameraToTarget((HoverTank*)scene_.GetNode(HOVERTANK_BASE));
-            }
-
-            // for tooltip testing
-            if (Input::getKeyDown(INPUT_KEY_T)) {
-                ((HUD*)menus_[MenuType::HUD])->ActivateTooltip("Test", 1.0f);
             }
             
             // removes dead projectiles
@@ -364,12 +375,12 @@ void Game::MainLoop(void){
                 scene_.RemoveNode((*it)->GetName());
             }
 
-            player_->Update(); // player has it's own update method
-            scene_.Update();
+            // only update is the text window isn't showing
+            if(((TextWindow*) menus_[MenuType::TEXT_WINDOW])->GetState() == TextState::NOTHING) {
+                player_->Update(); // player has it's own update method
+                scene_.Update();
+            }
             scene_.Draw(camera_);
-            
-
-            
             
             // render the HUD overtop of the game and handle its input
             menus_[MenuType::HUD]->Render();

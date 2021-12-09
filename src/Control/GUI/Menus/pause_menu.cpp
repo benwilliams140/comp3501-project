@@ -34,14 +34,16 @@ namespace game {
 		ImGui::SetNextWindowPos(ImVec2(windowWidth / 2, windowHeight / 2));
 
 		// setup colours for elements
-		ImGui::PushStyleColor(ImGuiCol_Text, TEXT_COLOR);
+		ImGui::PushStyleColor(ImGuiCol_Text, button_.textColor);
 		
 		ImVec2 buttonSize = ImVec2(windowWidth * button_.widthRatio, windowHeight * button_.heightRatio);
 		ImVec2 windowSize = ImVec2(windowWidth, windowHeight);
 
+		ImGui::PushFont(button_.font);
 		RenderResumeButton(windowSize, buttonSize);
 		RenderSettingsButton(windowSize, buttonSize);
 		RenderQuitButton(windowSize, buttonSize);
+		ImGui::PopFont();
 
 		ImGui::PopStyleColor(1);
 		
@@ -54,6 +56,7 @@ namespace game {
 	void PauseMenu::RenderQuitButton(ImVec2 windowSize, ImVec2 buttonSize)
 	{
 		// quit comfirmation popup definition
+		ImGui::SetNextWindowSize(ImVec2(300, 75));
 		if (ImGui::BeginPopupModal("Quit Confirmation", nullptr, 0)) {
 			ImGui::Text("Are you sure you want to quit?");
 			if (ImGui::Button("OK")) {
@@ -79,6 +82,7 @@ namespace game {
 	void PauseMenu::RenderSettingsButton(ImVec2 windowSize, ImVec2 buttonSize)
 	{
 		// settings popup definition
+		ImGui::SetNextWindowSize(ImVec2(250, 75));
 		if (ImGui::BeginPopupModal("Settings", nullptr, 0)) {
 			float fov = Game::GetInstance().GetCamera()->GetFOV();
 			float sensitiv = 5.0f * Input::getMouseHorizontalSensitivity();

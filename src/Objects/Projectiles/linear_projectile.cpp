@@ -15,6 +15,7 @@ namespace game {
 		Translate(velocity_ * Time::GetDeltaTime());
 		lifespan_ -= Time::GetDeltaTime();
 		EnemyCollision();
+		ArtifactCollision();
 	}
 
 } // namespace game 

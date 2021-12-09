@@ -25,6 +25,7 @@ namespace game {
 		//update velocity so it will have a parabolic trajectory
 		velocity_ -= glm::vec3(0, gravity_, 0) * Time::GetDeltaTime();
 		EnemyCollision();
+		ArtifactCollision();
 	}
 
 } // namespace game 

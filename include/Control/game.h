@@ -23,6 +23,8 @@
 #include "Control/GUI/Menus/pause_menu.h"
 #include "Control/GUI/Menus/hud.h"
 #include "Control/GUI/Menus/upgrades.h"
+#include "Control/GUI/Menus/game_over.h"
+#include "Control/GUI/Menus/text_window.h";
 #include "Control/path_config.h"
 #include "Control/time.h"
 
@@ -43,6 +45,7 @@
 #include "Objects/Tree.h"
 #include "Objects/Projectiles/Enemy_linear_projectile.h"
 #include "Objects/Projectiles/linear_projectile.h"
+#include "Objects/Projectiles/EnergyBlast.h"
 #include "Objects/Projectiles/parabolic_projectile.h"
 #include "Objects/Enemy.h"
 #include "Objects/ShooterEnemy.h"
@@ -131,6 +134,7 @@ namespace game {
             Menu* GetMenu(MenuType menu);
             std::vector<Artifact*>& GetArtifacts();
             std::vector<CarePackage*>& GetCarePackages();
+
             void SetState(State state);
 
             void AddCarePackage(CarePackage* package);

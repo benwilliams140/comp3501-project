@@ -1,5 +1,6 @@
 #include "Control/GUI/Menus/upgrades.h"
 #include "Control/game.h"
+#include "Objects/Hovertank/Abilities/EnergyEmitter.h""
 
 namespace game {
 	Upgrades::Upgrades()
@@ -33,13 +34,23 @@ namespace game {
 		ImVec2 buttonSize = ImVec2(windowWidth * button_.widthRatio, windowHeight * button_.heightRatio);
 		ImVec2 windowSize = ImVec2(windowWidth, windowHeight);
 
+		ImGui::PushStyleColor(ImGuiCol_Text, pointsLabel_.textColor);
 		RenderPoints(points, windowSize);
+		ImGui::PopStyleColor(1);
+
+		ImGui::PushStyleColor(ImGuiCol_Text, button_.textColor);
+		ImGui::PushFont(button_.font);
 		RenderWeaponUpgrades(points, buttonSize);
 		RenderSpeedUpgrades(points, buttonSize);
 		RenderHealthUpgrades(points, buttonSize);
 		RenderEnergyUpgrades(points, buttonSize);
+		ImGui::PopFont();
+		ImGui::PopStyleColor(1);
 
 		ImGui::End();
+
+		// render the TextWindow on top of everything
+		Game::GetInstance().GetMenu(MenuType::TEXT_WINDOW)->Render();
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -52,11 +63,9 @@ namespace game {
 		float pointsY = 5.0f;
 
 		ImGui::SetCursorPos(ImVec2(pointsX, pointsY));
-		ImGui::SetWindowFontScale(3.0f); // super old API that isn't great, but it works
-										// should probably create separate ImFont objects  with different 
-										// fonts and sizes but that's for another time
+		ImGui::PushFont(pointsLabel_.font);
 		ImGui::Text(std::to_string(points).c_str());
-		ImGui::SetWindowFontScale(1.0f);
+		ImGui::PopFont();
 	}
 
 	void Upgrades::RenderWeaponUpgrades(int points, ImVec2 buttonSize)
@@ -78,7 +87,7 @@ namespace game {
 				machine_gun->SetActive(false);
 
 				// Create Care Package
-				CarePackage* package = Game::GetInstance().CreateInstance<CarePackage>("Package", "Cube", "Lighting", "CrateTexture");
+				CarePackage* package = Game::GetInstance().CreateInstance<CarePackage>("PackageMG", "Cube", "Lighting", "CrateTexture");
 				package->SetPosition(glm::vec3(-30.0f, 35.0f, 75.0f));
 				package->SetStoredAbility(machine_gun);
 				
@@ -91,7 +100,7 @@ namespace game {
 				weaponUpgrade_.energyCannon = true;
 				Game::GetInstance().GetPlayer()->AddMoney(-weaponUpgrade_.energyCannonCost);
 				
-				EnergyCannon* energy_cannon = Game::GetInstance().CreateInstance<EnergyCannon>("MachineGun", HOVERTANK_MACHINE_GUN, hovertankMaterial, "uv6");
+				EnergyCannon* energy_cannon = Game::GetInstance().CreateInstance<EnergyCannon>("EnergyCannon", HOVERTANK_MACHINE_GUN, hovertankMaterial, "uv6");
 				energy_cannon->Rotate(glm::angleAxis(glm::radians(180.0f), tank->GetForward()));
 				energy_cannon->Translate(glm::vec3(0.0f, 0.2555f, 0.0f));
 				energy_cannon->Scale(glm::vec3(0.75));
@@ -99,13 +108,34 @@ namespace game {
 				energy_cannon->SetActive(false);
 
 				// Create Care Package
-				CarePackage* package = Game::GetInstance().CreateInstance<CarePackage>("Package", "Cube", "Lighting", "CrateTexture");
+				CarePackage* package = Game::GetInstance().CreateInstance<CarePackage>("PackageEC", "Cube", "Lighting", "CrateTexture");
 				package->SetPosition(glm::vec3(-30.0f, 35.0f, 75.0f));
 				package->SetStoredAbility(energy_cannon);
 				
 				ImGui::BeginDisabled();
 			}
 			if (weaponUpgrade_.energyCannon) ImGui::EndDisabled();
+			ImGui::SameLine();
+			if (weaponUpgrade_.energyBlast) ImGui::BeginDisabled();
+			if (ImGui::Button("Energy Blast", buttonSize) && points >= weaponUpgrade_.energyBlastCost) {
+				weaponUpgrade_.energyBlast = true;
+				Game::GetInstance().GetPlayer()->AddMoney(-weaponUpgrade_.energyBlastCost);
+
+				EnergyEmitter* energy_blast = Game::GetInstance().CreateInstance<EnergyEmitter>("EnergyBlast", HOVERTANK_MACHINE_GUN, hovertankMaterial, "uv6");
+				energy_blast->Rotate(glm::angleAxis(glm::radians(180.0f), tank->GetForward()));
+				energy_blast->Translate(glm::vec3(0.0f, 0.2555f, 0.0f));
+				energy_blast->Scale(glm::vec3(0.75));
+				energy_blast->SetParent(tank->GetTurret());
+				energy_blast->SetActive(false);
+
+				// Create Care Package
+				CarePackage* package = Game::GetInstance().CreateInstance<CarePackage>("PackageEB", "Cube", "Lighting", "CrateTexture");
+				package->SetPosition(glm::vec3(-30.0f, 35.0f, 75.0f));
+				package->SetStoredAbility(energy_blast);
+
+				ImGui::BeginDisabled();
+			}
+			if (weaponUpgrade_.energyBlast) ImGui::EndDisabled();
 			ImGui::TreePop();
 		}
 	}

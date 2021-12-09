@@ -8,15 +8,15 @@
 #include <backends/imgui_impl_opengl3.h>
 #include <GLFW/glfw3.h>
 
-#define TEXT_COLOR ImVec4(1, 1, 1, 1)
-
 namespace game {
 	// add any new menu types here (maybe an inventory, artifact screen, shop, etc.)
 	enum class MenuType {
 		MAIN,
 		PAUSE,
 		HUD,
-		UPGRADES
+		UPGRADES,
+		GAME_OVER,
+		TEXT_WINDOW
 	};
 
 	class Menu {
@@ -32,6 +32,7 @@ namespace game {
 
 		// loads an image using SOIL for use in one of the GUIs
 		static ImTextureID LoadImage(std::string filename);
+		static ImFont* LoadFont(std::string filename, float size);
 
 	protected:
 		int initialWindowWidth, initialWindowHeight;
