@@ -26,7 +26,6 @@ namespace game {
 		Game::GetInstance().RemoveCarePackage(this);
 		Game::GetInstance().RemoveInstance(this);
 		Game::GetInstance().RemoveInstance(parachute_);
-		Game::GetInstance().RemoveInstance(this);
 	}
 
 	void CarePackage::Update(void) {

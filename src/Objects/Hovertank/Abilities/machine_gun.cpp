@@ -25,7 +25,7 @@ namespace game {
 		if (cooldown_ > 0) return nullptr; // need to wait
 
 		static int num = 0; // used to give unique names to each projectile
-		LinearProjectile* proj = Game::GetInstance().CreateInstance<LinearProjectile>("MachineGunProjectile" + std::to_string(num++), "Cube", "Simple", "RockyTexture");
+		LinearProjectile* proj = Game::GetInstance().CreateInstance<LinearProjectile>("MachineGunProjectile" + std::to_string(num++), "Cube", "Simple", "ProjectileTexture");
 		proj->SetPosition(position);
 		proj->SetScale(glm::vec3(0.5));
 		proj->SetVelocity(forward * 50.0f);

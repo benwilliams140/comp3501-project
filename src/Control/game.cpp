@@ -199,6 +199,10 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Texture, "ParticleTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/projectiles") + std::string("/energy_blast.png");
     resman_.LoadResource(ResourceType::Texture, "EnergyBlastTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/projectiles") + std::string("/projectile.png");
+    resman_.LoadResource(ResourceType::Texture, "ProjectileTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/projectiles") + std::string("/energy_projectile.png");
+    resman_.LoadResource(ResourceType::Texture, "EnergyProjectile", filename.c_str());
 }
 
 void Game::SetupScene(void) {
