@@ -21,6 +21,8 @@ namespace game {
 			int machineGunCost = 2500;
 			bool energyCannon = false;
 			int energyCannonCost = 5000;
+			bool energyBlast = false;
+			int energyBlastCost = 10000;
 		} weaponUpgrade_;
 
 		struct SpeedUpgrade {

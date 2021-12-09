@@ -1,5 +1,6 @@
 #include "Control/GUI/Menus/upgrades.h"
 #include "Control/game.h"
+#include "Objects/Hovertank/Abilities/EnergyEmitter.h""
 
 namespace game {
 	Upgrades::Upgrades()
@@ -86,7 +87,7 @@ namespace game {
 				machine_gun->SetActive(false);
 
 				// Create Care Package
-				CarePackage* package = Game::GetInstance().CreateInstance<CarePackage>("Package", "Cube", "Simple", "Crate");
+				CarePackage* package = Game::GetInstance().CreateInstance<CarePackage>("PackageMG", "Cube", "Simple", "Crate");
 				package->SetPosition(glm::vec3(-30.0f, 35.0f, 75.0f));
 				package->SetStoredAbility(machine_gun);
 				
@@ -99,7 +100,7 @@ namespace game {
 				weaponUpgrade_.energyCannon = true;
 				Game::GetInstance().GetPlayer()->AddMoney(-weaponUpgrade_.energyCannonCost);
 				
-				EnergyCannon* energy_cannon = Game::GetInstance().CreateInstance<EnergyCannon>("MachineGun", HOVERTANK_MACHINE_GUN, hovertankMaterial, "uv6");
+				EnergyCannon* energy_cannon = Game::GetInstance().CreateInstance<EnergyCannon>("EnergyCannon", HOVERTANK_MACHINE_GUN, hovertankMaterial, "uv6");
 				energy_cannon->Rotate(glm::angleAxis(glm::radians(180.0f), tank->GetForward()));
 				energy_cannon->Translate(glm::vec3(0.0f, 0.2555f, 0.0f));
 				energy_cannon->Scale(glm::vec3(0.75));
@@ -107,13 +108,34 @@ namespace game {
 				energy_cannon->SetActive(false);
 
 				// Create Care Package
-				CarePackage* package = Game::GetInstance().CreateInstance<CarePackage>("Package", "Cube", "Simple", "Crate");
+				CarePackage* package = Game::GetInstance().CreateInstance<CarePackage>("PackageEC", "Cube", "Simple", "Crate");
 				package->SetPosition(glm::vec3(-30.0f, 35.0f, 75.0f));
 				package->SetStoredAbility(energy_cannon);
 				
 				ImGui::BeginDisabled();
 			}
 			if (weaponUpgrade_.energyCannon) ImGui::EndDisabled();
+			ImGui::SameLine();
+			if (weaponUpgrade_.energyBlast) ImGui::BeginDisabled();
+			if (ImGui::Button("Energy Blast", buttonSize) && points >= weaponUpgrade_.energyBlastCost) {
+				weaponUpgrade_.energyBlast = true;
+				Game::GetInstance().GetPlayer()->AddMoney(-weaponUpgrade_.energyBlastCost);
+
+				EnergyEmitter* energy_blast = Game::GetInstance().CreateInstance<EnergyEmitter>("EnergyBlast", HOVERTANK_MACHINE_GUN, hovertankMaterial, "uv6");
+				energy_blast->Rotate(glm::angleAxis(glm::radians(180.0f), tank->GetForward()));
+				energy_blast->Translate(glm::vec3(0.0f, 0.2555f, 0.0f));
+				energy_blast->Scale(glm::vec3(0.75));
+				energy_blast->SetParent(tank->GetTurret());
+				energy_blast->SetActive(false);
+
+				// Create Care Package
+				CarePackage* package = Game::GetInstance().CreateInstance<CarePackage>("PackageEB", "Cube", "Simple", "Crate");
+				package->SetPosition(glm::vec3(-30.0f, 35.0f, 75.0f));
+				package->SetStoredAbility(energy_blast);
+
+				ImGui::BeginDisabled();
+			}
+			if (weaponUpgrade_.energyBlast) ImGui::EndDisabled();
 			ImGui::TreePop();
 		}
 	}
