@@ -168,6 +168,8 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Material, "GeyserParticles", filename.c_str());
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/terrain");
     resman_.LoadResource(ResourceType::Material, "TerrainMaterial", filename.c_str());
+    filename = std::string(MATERIAL_DIRECTORY) + std::string("/energy_blast_shader");
+    resman_.LoadResource(ResourceType::Material, "eb_shader", filename.c_str());
 
     // Load texture
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/uv6.png");
@@ -281,6 +283,15 @@ void Game::SetupScene(void) {
     ChaserEnemy* enemyChase = CreateInstance<ChaserEnemy>("Enemy2", "Cube", "Simple", "uv6");
     enemyChase->SetPosition(glm::vec3(15.0f, -5.0f, 25.0f));
     enemies_.push_back(enemyChase);
+    /*
+    EnergyBlast* eb = CreateInstance<EnergyBlast>("Boom", "Sphere", "eb_shader", "uv6");
+    eb->SetScale(glm::vec3(20.0f, 20.0f, 20.0f));
+    eb->SetPosition(GetPlayer()->GetTank()->GetPosition());*/
+
+    /*
+    Artifact* artifact = CreateInstance<Artifact>("Enemy1", "Sphere", "Simple", "uv6");
+    artifact->SetPosition(glm::vec3(15.0f, -10.0f, 25.0f));
+    artifacts_.push_back(artifact);*/
   
     // Initialize certain scene nodes
     terrain_->Init();

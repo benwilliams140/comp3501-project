@@ -45,6 +45,7 @@
 #include "Objects/Tree.h"
 #include "Objects/Projectiles/Enemy_linear_projectile.h"
 #include "Objects/Projectiles/linear_projectile.h"
+#include "Objects/Projectiles/EnergyBlast.h"
 #include "Objects/Projectiles/parabolic_projectile.h"
 #include "Objects/Enemy.h"
 #include "Objects/ShooterEnemy.h"
