@@ -127,7 +127,9 @@ namespace game {
 		float textY = projSelectionY - textSize.y - 5.0f;
 
 		ImGui::SetCursorPos(ImVec2(textX, textY));
+		ImGui::PushFont(infoBar_.font);
 		ImGui::Text(infoBar_.text.c_str());
+		ImGui::PopFont();
 	}
 
 	void HUD::RenderHealthBar(ImVec2 windowSize, ImVec2 windowRatio) {

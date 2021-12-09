@@ -28,6 +28,7 @@ namespace game {
 			bool active = false;
 			std::string text = "";
 			float lifespan = 0.0f;
+			ImFont* font = Menu::LoadFont("FabulaValhalla.ttf", 14.0f);
 		} infoBar_;
 
 		const struct HealthBar {

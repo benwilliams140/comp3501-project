@@ -25,6 +25,9 @@ namespace game {
 	HoverTank::~HoverTank() {}
 
 	void HoverTank::Update(void) {
+		std::string posString = std::to_string(GetPosition().x) + ", " + std::to_string(GetPosition().y) + ", " + std::to_string(GetPosition().z);
+		((HUD*)Game::GetInstance().GetMenu(MenuType::HUD))->ActivateTooltip(posString, 0.25f);
+
 		// Update tank movement if game is not in freeroam
 		if (!Game::GetInstance().GetFreeroam()) {
 			if (!scanner_->IsScanning()) {

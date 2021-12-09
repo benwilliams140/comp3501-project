@@ -203,7 +203,13 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Texture, "ProjectileTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/projectiles") + std::string("/energy_projectile.png");
     resman_.LoadResource(ResourceType::Texture, "EnergyProjectile", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/enemy.png");
+    resman_.LoadResource(ResourceType::Texture, "EnemyTexture", filename.c_str());
 }
+
+void SetupArtifacts();
+void SetupEnemies();
+void SetupHazards();
 
 void Game::SetupScene(void) {
     // Set background color for the scene
@@ -247,11 +253,6 @@ void Game::SetupScene(void) {
     hovertank_scanner->Translate(glm::vec3(0.0f, 0.345, 1.0375f));
     hovertank_scanner->SetParent(hovertank_turret);
     hovertank_base->SetScanner(hovertank_scanner);
-
-    // Create Artifacts
-    Artifact* artifact1 = CreateInstance<Artifact>("Artifact 1", "Cube", "Simple", "uv6");
-    artifact1->SetPosition(glm::vec3(5.0f, -11.0f, 25.0f));
-    artifacts_.push_back(artifact1);
 
     EnvironmentObject* rocks1 = CreateInstance<EnvironmentObject>("Rocks 1", "Rock1", "Instanced", "RockyTexture");
     rocks1->InitPositions(1337, 250);
@@ -507,5 +508,26 @@ void Game::RemoveCarePackage(CarePackage* package) {
     auto itr = std::find(carePackages_.begin(), carePackages_.end(), package);
     if((*itr) == package) carePackages_.erase(itr);
 }
+
+void CreateArtifact(glm::vec3 pos, std::string name, float points) {
+    static int artifactID = 0;
+    Artifact* artifact = Game::GetInstance().CreateInstance<Artifact>("Artifact" + std::to_string(artifactID), "Cube", "Simple", "uv6");
+    artifact->SetPosition(pos);
+    artifact->Setup(name, points, artifactID++);
+    Game::GetInstance().GetArtifacts().push_back(artifact);
+}
+
+void SetupArtifacts() {
+   //CreateArtifact(glm::vec3())
+}
+
+void SetupEnemies() {
+
+}
+
+void SetupHazards() {
+
+}
+
 
 } // namespace game
