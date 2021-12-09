@@ -16,7 +16,8 @@ namespace game {
 	Point2 Input::mouseScrollDelta;
 
 	float Input::keyboardAxisSensitivity;
-	float Input::mouseAxisSensitivity;
+	float Input::mouseHorizontalSensitivity;
+	float Input::mouseVerticalSensitivity;
 
 	bool Input::getKey(string keyName) {
 		auto itr = keys.find(keyName);
@@ -54,21 +55,35 @@ namespace game {
 	Point2 Input::getMouseDownPosition() { return Input::mouseDownPosition; }
 	Point2 Input::getMouseScroll() { return Input::mouseScrollDelta; }
 
-	void Input::setKey(std::string keyName, bool current, bool pressed, bool released) {
+	float Input::getAxisMouse(string axisName, string buttonName) {
+		float axis = 0;
+		float keyDeltaTime = keyboardAxisSensitivity/* * Time::getDT()*/;
 
+		if (axisName == INPUT_AXIS_HORIZONTAL) {
+			float mouseDeltaTime = mouseHorizontalSensitivity/* * Time::getDT()*/;
+			if(buttonName == INPUT_KEY_NULL) axis += -mousePositionDelta.x * mouseDeltaTime;
+			else if (getMouseButton(buttonName)) axis += -mousePositionDelta.x * mouseDeltaTime;
+		}
+		else if (axisName == INPUT_AXIS_VERTICAL) {
+			float mouseDeltaTime = mouseVerticalSensitivity/* * Time::getDT()*/;
+			if(buttonName == INPUT_KEY_NULL) axis += -mousePositionDelta.y * mouseDeltaTime;
+			else if (getMouseButton(buttonName)) axis += -mousePositionDelta.y * mouseDeltaTime;
+		}
+		return axis;
 	}
 
 	float Input::getAxis(string axisName) {
 		float axis = 0;
 		float keyDeltaTime = keyboardAxisSensitivity/* * Time::getDT()*/;
-		float mouseDeltaTime = mouseAxisSensitivity/* * Time::getDT()*/;
 
 		if (axisName == INPUT_AXIS_HORIZONTAL) {
+			float mouseDeltaTime = mouseHorizontalSensitivity/* * Time::getDT()*/;
 			if (getMouseButton(INPUT_MOUSE_BUTTON_LEFT)) axis += -mousePositionDelta.x * mouseDeltaTime;
 			if (getKey(INPUT_KEY_LEFT)) axis -= keyDeltaTime;
 			if (getKey(INPUT_KEY_RIGHT)) axis += keyDeltaTime;
 		}
 		else if (axisName == INPUT_AXIS_VERTICAL) {
+			float mouseDeltaTime = mouseVerticalSensitivity/* * Time::getDT()*/;
 			if (getMouseButton(INPUT_MOUSE_BUTTON_LEFT)) axis += -mousePositionDelta.y * mouseDeltaTime;
 			if (getKey(INPUT_KEY_UP)) axis += keyDeltaTime;
 			if (getKey(INPUT_KEY_DOWN)) axis -= keyDeltaTime;
@@ -88,7 +103,8 @@ namespace game {
 		
 		// Set input sensitivity variables
 		keyboardAxisSensitivity = 60.0f;
-		mouseAxisSensitivity = 0.2f;
+		mouseHorizontalSensitivity = 0.2f;
+		mouseVerticalSensitivity = 0.2f;
 
 		// Set input key array
 		keys[INPUT_KEY_0] = {false, false, false};
@@ -166,6 +182,7 @@ namespace game {
 			itr->second.pressed = false; itr->second.released = false;
 		}
 		Input::mouseScrollDelta = Point2(0, 0);
+		Input::mousePositionDelta = Point2(0, 0);
 	}
 
 #define keyPress(keyName) if(!keys[keyName].current) keys[keyName].pressed = true; keys[keyName].current = true
@@ -337,5 +354,21 @@ namespace game {
 
 	void Input::mouseScrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
 		Input::mouseScrollDelta = Point2(xoffset, yoffset);
+	}
+
+	float Input::getMouseHorizontalSensitivity(void) {
+		return mouseHorizontalSensitivity;
+	}
+
+	void Input::setMouseHorizontalSensitivity(float sensitivity) {
+		mouseHorizontalSensitivity = sensitivity;
+	}
+
+	float Input::getMouseVerticalSensitivity(void) {
+		return mouseVerticalSensitivity;
+	}
+
+	void Input::setMouseVerticalSensitivity(float sensitivity) {
+		mouseVerticalSensitivity = sensitivity;
 	}
 }

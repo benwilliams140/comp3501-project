@@ -31,8 +31,12 @@ namespace game {
 		static Point2 getMouseDownPosition(); // Mouse position relative to window when the last left button down occured
 		static Point2 getMouseScroll(); // Mouse scroll delta
 		static float getAxis(std::string axis); // Horizontal or Vertical
+		static float getAxisMouse(std::string axis, std::string buttonName = ""); // Horizontal or Vertical
 
-		static void setKey(std::string keyName, bool current, bool pressed, bool released);
+		static float getMouseHorizontalSensitivity(void);
+		static void setMouseHorizontalSensitivity(float sensitivity = 0.2f);
+		static float getMouseVerticalSensitivity(void);
+		static void setMouseVerticalSensitivity(float sensitivity = 0.2f);
 
 	private:
 		struct Button { bool current = false, pressed = false, released = false; };
@@ -46,12 +50,15 @@ namespace game {
 		static Point2 mouseScrollDelta;
 
 		static float keyboardAxisSensitivity;
-		static float mouseAxisSensitivity;
+		static float mouseVerticalSensitivity;
+		static float mouseHorizontalSensitivity;
+		//static float mouseAxisSensitivity;
 
 	};
 }
 
 // Input Key Definitions
+#define INPUT_KEY_NULL ""
 #define INPUT_KEY_0 "0"
 #define INPUT_KEY_1 "1"
 #define INPUT_KEY_2 "2"

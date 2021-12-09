@@ -87,7 +87,7 @@ namespace game {
 				machine_gun->SetActive(false);
 
 				// Create Care Package
-				CarePackage* package = Game::GetInstance().CreateInstance<CarePackage>("PackageMG", "Cube", "Simple", "Crate");
+				CarePackage* package = Game::GetInstance().CreateInstance<CarePackage>("PackageMG", "Cube", "Lighting", "CrateTexture");
 				package->SetPosition(glm::vec3(-30.0f, 35.0f, 75.0f));
 				package->SetStoredAbility(machine_gun);
 				
@@ -108,7 +108,7 @@ namespace game {
 				energy_cannon->SetActive(false);
 
 				// Create Care Package
-				CarePackage* package = Game::GetInstance().CreateInstance<CarePackage>("PackageEC", "Cube", "Simple", "Crate");
+				CarePackage* package = Game::GetInstance().CreateInstance<CarePackage>("PackageEC", "Cube", "Lighting", "CrateTexture");
 				package->SetPosition(glm::vec3(-30.0f, 35.0f, 75.0f));
 				package->SetStoredAbility(energy_cannon);
 				
@@ -129,7 +129,7 @@ namespace game {
 				energy_blast->SetActive(false);
 
 				// Create Care Package
-				CarePackage* package = Game::GetInstance().CreateInstance<CarePackage>("PackageEB", "Cube", "Simple", "Crate");
+				CarePackage* package = Game::GetInstance().CreateInstance<CarePackage>("PackageEB", "Cube", "Lighting", "CrateTexture");
 				package->SetPosition(glm::vec3(-30.0f, 35.0f, 75.0f));
 				package->SetStoredAbility(energy_blast);
 

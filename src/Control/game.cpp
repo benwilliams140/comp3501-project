@@ -106,6 +106,7 @@ void Game::InitView(void){
 void Game::InitEventHandlers(void){
     // Set event callbacks
     Input::setup(window_);
+    Input::setMouseHorizontalSensitivity(10.0f);
     //glfwSetKeyCallback(window_, KeyCallback);
     glfwSetFramebufferSizeCallback(window_, ResizeCallback);
 
@@ -130,11 +131,11 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Mesh, "Cube", filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("/sphere.mesh");
     resman_.LoadResource(ResourceType::Mesh, "Sphere", filename.c_str());
-    filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Chassis.mesh");
+    filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Chassis2.mesh");
     resman_.LoadResource(ResourceType::Mesh, HOVERTANK_BASE, filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Turret.mesh");
     resman_.LoadResource(ResourceType::Mesh, HOVERTANK_TURRET, filename.c_str());
-    filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Track_Rear.mesh");
+    filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Track_Rear2.mesh");
     resman_.LoadResource(ResourceType::Mesh, HOVERTANK_TRACK_REAR, filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Track_Front.mesh");
     resman_.LoadResource(ResourceType::Mesh, HOVERTANK_TRACK_FRONT, filename.c_str());
@@ -191,7 +192,9 @@ void Game::SetupResources(void) {
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/environment") + std::string("/alien_plant.png");
     resman_.LoadResource(ResourceType::Texture, "PlantTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("") + std::string("/crate.png");
-    resman_.LoadResource(ResourceType::Texture, "Crate", filename.c_str());
+    resman_.LoadResource(ResourceType::Texture, "CrateTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("") + std::string("/parachute.png");
+    resman_.LoadResource(ResourceType::Texture, "ParachuteTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("") + std::string("/particle.png");
     resman_.LoadResource(ResourceType::Texture, "ParticleTexture", filename.c_str());
 }
@@ -210,13 +213,13 @@ void Game::SetupScene(void) {
     // to convert blender coordinates to opengl coordinates: (x, y, z) -> (x, z, -y)
     // if scaling: multiply all translation values by the scale factor
     // if a new model is loaded, will probably need to update these translations
-    std::string hovertankMaterial = "Simple";
+    std::string hovertankMaterial = "Lighting";
     HoverTank* hovertank_base = CreateInstance<HoverTank>(HOVERTANK_BASE, HOVERTANK_BASE, hovertankMaterial, "HovertankTexture");
     player_ = new Player(100.f, 100.f, hovertank_base);
     player_->AddMoney(100000); // for demo purposes
   
     HoverTankTurret* hovertank_turret = CreateInstance<HoverTankTurret>(HOVERTANK_TURRET, HOVERTANK_TURRET, hovertankMaterial, "HovertankTexture");
-    hovertank_turret->Translate(glm::vec3(0.f, 1.055f, -0.4f));
+    hovertank_turret->Translate(glm::vec3(0.f, 1.055f, -0.9f));
     hovertank_turret->SetParent(hovertank_base);
     hovertank_turret->SetForward(hovertank_base->GetForward());
     hovertank_base->SetTurret(hovertank_turret);
@@ -229,7 +232,7 @@ void Game::SetupScene(void) {
         hovertank_tracks.at(i)->SetParent(hovertank_base);
         float dx = -1.4f + 2.8f * ((i + 1) % 2); // left tracks (i=0,2) should translate (x) by 1.4, right (i=1,3) by -1.4
         float dy = -0.3f; // all tracks should translate (y) by -.3
-        float dz = -1.0f + 3.0f * (floor(i / 2)); // back tracks (i=0,1) should translate (z) by -1, front (i=2,3) by 3
+        float dz = -1.5f +3.0f * (floor(i / 2)); // back tracks (i=0,1) should translate (z) by -1, front (i=2,3) by 3
         hovertank_tracks.at(i)->Translate(glm::vec3(dx, dy, dz));
     }
     
@@ -264,15 +267,15 @@ void Game::SetupScene(void) {
     // should be using the CalculateTerrainHeightAt function to place the hazards (and make a function for it?)
     // should also calculate collision box based on scale
     // this is all temporary
-    AcidPool* acidPool = CreateInstance<AcidPool>("AcidPool1", "Pool", "Simple", "AcidTexture");
+    AcidPool* acidPool = CreateInstance<AcidPool>("AcidPool1", "Pool", "Lighting", "AcidTexture");
     acidPool->SetPosition(glm::vec3(5.0f, -14.0f, 40.0f));
     acidPool->Scale(glm::vec3(15));
 
-    MudPool* mudPool = CreateInstance<MudPool>("MudPool1", "Pool", "Simple", "MudTexture");
+    MudPool* mudPool = CreateInstance<MudPool>("MudPool1", "Pool", "Lighting", "MudTexture");
     mudPool->SetPosition(glm::vec3(45.0f, -9.0f, 40.0f));
     mudPool->Scale(glm::vec3(15));
 
-    Geyser* geyser = CreateInstance<Geyser>("Geyser1", "Pool", "Simple", "GeyserTexture");
+    Geyser* geyser = CreateInstance<Geyser>("Geyser1", "Pool", "Lighting", "GeyserTexture");
     geyser->SetPosition(glm::vec3(-35.0f, -20.0f, 40.0f));
     geyser->Scale(glm::vec3(15));
     
@@ -313,18 +316,18 @@ void Game::MainLoop(void){
         // Press 'Escape' key to pause/unpause game
         if (Input::getKeyDown(INPUT_KEY_ESCAPE)) {
             switch (state_) {
-            case State::PAUSED: state_ = State::RUNNING; break;
-            case State::RUNNING: state_ = State::PAUSED; break;
-            case State::UPGRADES: state_ = State::PAUSED; break; // switch to pause menu
+            case State::PAUSED:   SetState(State::RUNNING); break;
+            case State::RUNNING:  SetState(State::PAUSED); break;
+            case State::UPGRADES: SetState(State::PAUSED); break;
             default: break;
             }
         }
         // Press 'U' key to open/close the upgrades screen
         if (Input::getKeyDown(INPUT_KEY_U)) {
             switch (state_) {
-            case State::PAUSED: state_ = State::UPGRADES; break; // switch to upgrades screen
-            case State::RUNNING: state_ = State::UPGRADES; break;
-            case State::UPGRADES: state_ = State::RUNNING; break;
+            case State::PAUSED:   SetState(State::UPGRADES); break;
+            case State::RUNNING:  SetState(State::UPGRADES); break;
+            case State::UPGRADES: SetState(State::RUNNING); break;
             }
         }
 
@@ -402,7 +405,6 @@ void Game::ResizeCallback(GLFWwindow* window, int width, int height){
 }
 
 Game::~Game(){
-    
     glfwTerminate();
 }
 
@@ -453,6 +455,12 @@ Player* Game::GetPlayer() {
 }
 
 void Game::SetState(State state) {
+    if (state == State::RUNNING) {
+        glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED); 
+    }  else {
+        glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_NORMAL); 
+    }
+
     state_ = state;
 }
 

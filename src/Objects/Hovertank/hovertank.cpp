@@ -41,19 +41,15 @@ namespace game {
 
 	void HoverTank::shootingControl() {
 		// shoot currently selected projectile
-		if (Input::getKey(INPUT_KEY_SPACE)) {
+		if (Input::getMouseButton(INPUT_MOUSE_BUTTON_1)) {
 			Projectile* proj = turret_->UseSelectedAbility(GetPosition(), GetForward());
 		}
 	}
 
 	void HoverTank::turretControl() {
-		// Rotate hovertank's turret
-		if(Input::getKey(INPUT_KEY_Q)) { // left
-			glm::quat rot = glm::angleAxis(((glm::pi<float>() * 60) / 180) * Time::GetDeltaTime(), GetUp());
-			turret_->Rotate(rot);
-		}
-		if (Input::getKey(INPUT_KEY_E)) { // right
-			glm::quat rot = glm::angleAxis(-((glm::pi<float>() * 60) / 180) * Time::GetDeltaTime(), GetUp());
+		float rotAngle = -Input::getAxisMouse(INPUT_AXIS_HORIZONTAL);
+		if(rotAngle != 0) {
+			glm::quat rot = glm::angleAxis(((glm::pi<float>() * rotAngle) / 180) * Time::GetDeltaTime(), GetUp());
 			turret_->Rotate(rot);
 		}
 	}
@@ -85,12 +81,15 @@ namespace game {
 		if (Input::getKey(INPUT_KEY_S)) {
 			acceleration_ -= GetForward() * speedIncrease;
 		}
-		// Accelerate left/right
+
+		// Rotate left/right
 		if (Input::getKey(INPUT_KEY_A)) {
-			acceleration_ -= GetRight() * speedIncrease;
+			glm::quat rotation = glm::angleAxis(rot_factor * Time::GetDeltaTime(), GetUp());
+			Rotate(rotation);
 		}
 		if (Input::getKey(INPUT_KEY_D)) {
-			acceleration_ += GetRight() * speedIncrease;
+			glm::quat rotation = glm::angleAxis(-rot_factor * Time::GetDeltaTime(), GetUp());
+			Rotate(rotation);
 		}
 
 		// Clamp x and z velocity to max vehicle speed
@@ -105,16 +104,6 @@ namespace game {
 		velocity_ += acceleration_; // Increment velocity by acceleration
 		acceleration_ = glm::vec3(0); // Reset acceleration
 		Translate(velocity_ * speedMultiple_ * speedEffectMultiple_ * Time::GetDeltaTime()); // Translate by velocity
-
-		// Rotate yaw
-		if (Input::getKey(INPUT_KEY_LEFT)) {
-			glm::quat rotation = glm::angleAxis(rot_factor * Time::GetDeltaTime(), GetUp());
-			Rotate(rotation);
-		}
-		if (Input::getKey(INPUT_KEY_RIGHT)) {
-			glm::quat rotation = glm::angleAxis(-rot_factor * Time::GetDeltaTime(), GetUp());
-			Rotate(rotation);
-		}
 	}
 
 	void HoverTank::objectCollision() {

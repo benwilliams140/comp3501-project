@@ -85,9 +85,14 @@ namespace game {
 		ImGui::SetNextWindowSize(ImVec2(250, 75));
 		if (ImGui::BeginPopupModal("Settings", nullptr, 0)) {
 			float fov = Game::GetInstance().GetCamera()->GetFOV();
+			float sensitiv = 5.0f * Input::getMouseHorizontalSensitivity();
 			if (ImGui::SliderFloat("FOV", &fov, 30.f, 90.f)) {
 				// currently saving settings on change...
 				Game::GetInstance().GetCamera()->SetFOV(fov, windowSize.x, windowSize.y);
+			}
+			if (ImGui::SliderFloat("Sensitivity", &sensitiv, 1.0f, 100.0f)) {
+				// currently saving settings on change...
+				Input::setMouseHorizontalSensitivity(sensitiv/5);
 			}
 
 			if (ImGui::Button("OK")) {
