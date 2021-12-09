@@ -26,7 +26,7 @@ out vec2 uv_interp;
 out vec3 light_pos;
 
 // Material attributes (constants)
-uniform vec3 light_dir = vec3(-0.2f, -1.0f, -0.3f);
+uniform vec3 light_dir;
 
 void main() {
     vec3 position = positions[groupID * MAX_POSITIONS + gl_InstanceID];
