@@ -131,11 +131,11 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Mesh, "Cube", filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("/sphere.mesh");
     resman_.LoadResource(ResourceType::Mesh, "Sphere", filename.c_str());
-    filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Chassis2.mesh");
+    filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Chassis.mesh");
     resman_.LoadResource(ResourceType::Mesh, HOVERTANK_BASE, filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Turret.mesh");
     resman_.LoadResource(ResourceType::Mesh, HOVERTANK_TURRET, filename.c_str());
-    filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Track_Rear2.mesh");
+    filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Track_Rear.mesh");
     resman_.LoadResource(ResourceType::Mesh, HOVERTANK_TRACK_REAR, filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Track_Front.mesh");
     resman_.LoadResource(ResourceType::Mesh, HOVERTANK_TRACK_FRONT, filename.c_str());

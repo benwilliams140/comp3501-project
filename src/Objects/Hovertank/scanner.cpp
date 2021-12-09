@@ -79,9 +79,9 @@ namespace game {
 						
 						// Start scanning
 						if (Input::getKeyDown(INPUT_KEY_C)) {
-							// TODO - action of picking up care package
+							// Action of picking up care package
 							(*itr)->Open();
-							delete* itr;
+							delete *itr;
 						}
 					}
 				}

@@ -20,7 +20,7 @@ out vec2 uv_interp;
 flat out vec3 light_direction;
 
 // Material attributes (constants)
-uniform vec3 light_dir = vec3(-0.2f, -1.0f, -0.3f);
+uniform vec3 light_dir;
 
 void main() {
     gl_Position = projection_mat * view_mat * world_mat * vec4(vertex, 1.0);

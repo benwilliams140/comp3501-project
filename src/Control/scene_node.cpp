@@ -229,6 +229,11 @@ namespace game {
         GLint normal_mat = glGetUniformLocation(program, "normal_mat");
         glUniformMatrix3fv(normal_mat, 1, GL_FALSE, glm::value_ptr(normal_matrix));
 
+        // Sunlight direction
+        glm::vec3 light_dir = glm::vec3(-0.2f, -1.0f, -0.3f);
+        GLint light_var = glGetUniformLocation(program, "light_dir");
+        glUniform3f(light_var, light_dir.x, light_dir.y, light_dir.z);
+
         // Texture
         if (texture_) {
             GLint tex = glGetUniformLocation(program, "texture_map");
