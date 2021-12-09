@@ -215,7 +215,7 @@ void Game::SetupScene(void) {
     player_->AddMoney(100000); // for demo purposes
   
     HoverTankTurret* hovertank_turret = CreateInstance<HoverTankTurret>(HOVERTANK_TURRET, HOVERTANK_TURRET, hovertankMaterial, "HovertankTexture");
-    hovertank_turret->Translate(glm::vec3(0.f, 1.055f, -0.4f));
+    hovertank_turret->Translate(glm::vec3(0.f, 1.055f, -0.9f));
     hovertank_turret->SetParent(hovertank_base);
     hovertank_turret->SetForward(hovertank_base->GetForward());
     hovertank_base->SetTurret(hovertank_turret);
