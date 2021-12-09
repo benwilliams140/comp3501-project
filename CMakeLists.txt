@@ -8,7 +8,7 @@ project(${PROJ_NAME} C CXX)
 include_directories(include)
 
 # Add executable based on the source files
-add_executable(${PROJ_NAME} src/main.cpp "include/Objects/Hovertank/Abilities/EnergyEmitter.h" "src/Objects/Hovertank/Abilities/EnergyEmitter.cpp")
+add_executable(${PROJ_NAME} src/main.cpp)
 
 
 # Add src and lib subdirectories
