@@ -275,21 +275,6 @@ void Game::SetupScene(void) {
     SetupArtifacts();
     SetupHazards();
     SetupEnemies();
-
-    // should be using the CalculateTerrainHeightAt function to place the hazards (and make a function for it?)
-    // should also calculate collision box based on scale
-    // this is all temporary
-    AcidPool* acidPool = CreateInstance<AcidPool>("AcidPool1", "Pool", "Lighting", "AcidTexture");
-    acidPool->SetPosition(glm::vec3(5.0f, -14.0f, 40.0f));
-    acidPool->Scale(glm::vec3(15));
-
-    MudPool* mudPool = CreateInstance<MudPool>("MudPool1", "Pool", "Lighting", "MudTexture");
-    mudPool->SetPosition(glm::vec3(45.0f, -9.0f, 40.0f));
-    mudPool->Scale(glm::vec3(15));
-
-    Geyser* geyser = CreateInstance<Geyser>("Geyser1", "Pool", "Lighting", "GeyserTexture");
-    geyser->SetPosition(glm::vec3(-35.0f, -20.0f, 40.0f));
-    geyser->Scale(glm::vec3(15));
     
     ShooterEnemy* enemy = CreateInstance<ShooterEnemy>("Enemy1", "Cube", "Simple", "uv6");
     enemy->SetPosition(glm::vec3(10.0f, -5.0f, 25.0f));
@@ -298,15 +283,6 @@ void Game::SetupScene(void) {
     ChaserEnemy* enemyChase = CreateInstance<ChaserEnemy>("Enemy2", "Cube", "Simple", "uv6");
     enemyChase->SetPosition(glm::vec3(15.0f, -5.0f, 25.0f));
     enemies_.push_back(enemyChase);
-    /*
-    EnergyBlast* eb = CreateInstance<EnergyBlast>("Boom", "Sphere", "eb_shader", "uv6");
-    eb->SetScale(glm::vec3(20.0f, 20.0f, 20.0f));
-    eb->SetPosition(GetPlayer()->GetTank()->GetPosition());*/
-
-    /*
-    Artifact* artifact = CreateInstance<Artifact>("Enemy1", "Sphere", "Simple", "uv6");
-    artifact->SetPosition(glm::vec3(15.0f, -10.0f, 25.0f));
-    artifacts_.push_back(artifact);*/
   
     // Initialize certain scene nodes
     terrain_->Init();
@@ -543,14 +519,48 @@ void SetupArtifacts() {
     artifact = CreateArtifact(glm::vec2(460.0f, 62.0f), "Artifact14", 10000);
     artifact = CreateArtifact(glm::vec2(320.0f, -76.0f), "Artifact15", 10000);
     artifact = CreateArtifact(glm::vec2(204.0f, -7.0f), "Artifact16", 10000);
+    artifact = CreateArtifact(glm::vec2(234.0f, -263.0f), "Artifact17", 10000);
 }
 
 void SetupEnemies() {
 
 }
 
-void SetupHazards() {
+template <typename T>
+Hazard* CreateHazard(glm::vec2 pos, std::string texture) {
+    static int hazardID = 0;
+    T* hazard = Game::GetInstance().CreateInstance<T>("Hazard" + std::to_string(hazardID++), "Pool", "Lighting", texture);
+    hazard->SetPosition(glm::vec3(pos.x, Game::GetInstance().GetTerrain()->GetHeightAt(pos.x, pos.y) - 3.0f, pos.y));
+    hazard->SetScale(glm::vec3(15.0f));
+    return hazard;
+}
 
+void SetupHazards() {
+    // mud pools
+    Hazard* hazard = CreateHazard<MudPool>(glm::vec2(-200.0f, -128.0f), "MudTexture");
+    hazard = CreateHazard<MudPool>(glm::vec2(-302.0f, -26.0f), "MudTexture");
+    hazard = CreateHazard<MudPool>(glm::vec2(-260.0f, 169.0f), "MudTexture");
+    hazard = CreateHazard<MudPool>(glm::vec2(142.0f, 186.0f), "MudTexture");
+    hazard = CreateHazard<MudPool>(glm::vec2(248.0f, 71.0f), "MudTexture");
+    hazard = CreateHazard<MudPool>(glm::vec2(440.0f, 44.0f), "MudTexture");
+    hazard = CreateHazard<MudPool>(glm::vec2(333.0f, -33.0f), "MudTexture");
+    hazard = CreateHazard<MudPool>(glm::vec2(260.0f, -239.0f), "MudTexture");
+
+    // acid pools
+    hazard = CreateHazard<AcidPool>(glm::vec2(-235.0f, 1.5f), "AcidTexture");
+    hazard = CreateHazard<AcidPool>(glm::vec2(-160.0f, 231.0f), "AcidTexture");
+    hazard = CreateHazard<AcidPool>(glm::vec2(-2.5f, 117.0f), "AcidTexture");
+    hazard = CreateHazard<AcidPool>(glm::vec2(91.0f, 227.0f), "AcidTexture");
+    hazard = CreateHazard<AcidPool>(glm::vec2(364.0f, 76.0f), "AcidTexture");
+    hazard = CreateHazard<AcidPool>(glm::vec2(240.0f, -219.0f), "AcidTexture");
+    hazard = CreateHazard<AcidPool>(glm::vec2(337.0f, -75.0f), "AcidTexture");
+
+    // geysers
+    hazard = CreateHazard<Geyser>(glm::vec2(-275.0f, 67.0f), "GeyserTexture");
+    hazard = CreateHazard<Geyser>(glm::vec2(-191.0f, 108.0f), "GeyserTexture");
+    hazard = CreateHazard<Geyser>(glm::vec2(2.0f, 69.0f), "GeyserTexture");
+    hazard = CreateHazard<Geyser>(glm::vec2(247.0f, 125.0f), "GeyserTexture");
+    hazard = CreateHazard<Geyser>(glm::vec2(218.0f, -70.0f), "GeyserTexture");
 }
 
 

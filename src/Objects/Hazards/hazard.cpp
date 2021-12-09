@@ -17,6 +17,6 @@ void Hazard::SetEffectiveness(float effectiveness)
 
 Math::SphereCollider Hazard::GetCollider()
 {
-	return { GetPosition() - glm::vec3(0.0f, GetScale().y * 0.75f, 0.0f), GetScale().y };
+	return { GetPosition() - glm::vec3(0.0f, GetScale().y * 0.65f, 0.0f), GetScale().y };
 }
 } // namespace game
