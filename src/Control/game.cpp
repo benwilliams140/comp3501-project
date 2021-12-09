@@ -227,6 +227,7 @@ void Game::SetupScene(void) {
     // if a new model is loaded, will probably need to update these translations
     std::string hovertankMaterial = "Lighting";
     HoverTank* hovertank_base = CreateInstance<HoverTank>(HOVERTANK_BASE, HOVERTANK_BASE, hovertankMaterial, "HovertankTexture");
+    hovertank_base->SetPosition(glm::vec3(-216.0f, -41.0f, -181.0f));
     player_ = new Player(100.f, 100.f, hovertank_base);
     player_->AddMoney(100000); // for demo purposes
   
@@ -270,6 +271,10 @@ void Game::SetupScene(void) {
     rocks4->InitPositions(7516331, 250);
     rocks4->SetInstanceGroupID(3);
     rocks4->SetColliderRadius(1.0f);
+
+    SetupArtifacts();
+    SetupHazards();
+    SetupEnemies();
 
     // should be using the CalculateTerrainHeightAt function to place the hazards (and make a function for it?)
     // should also calculate collision box based on scale
@@ -509,16 +514,35 @@ void Game::RemoveCarePackage(CarePackage* package) {
     if((*itr) == package) carePackages_.erase(itr);
 }
 
-void CreateArtifact(glm::vec3 pos, std::string name, float points) {
+Artifact* CreateArtifact(glm::vec2 pos, std::string name, float points) {
     static int artifactID = 0;
     Artifact* artifact = Game::GetInstance().CreateInstance<Artifact>("Artifact" + std::to_string(artifactID), "Cube", "Simple", "uv6");
-    artifact->SetPosition(pos);
+    artifact->SetPosition(glm::vec3(pos.x, Game::GetInstance().GetTerrain()->GetHeightAt(pos.x, pos.y), pos.y));
     artifact->Setup(name, points, artifactID++);
     Game::GetInstance().GetArtifacts().push_back(artifact);
+    return artifact;
 }
 
 void SetupArtifacts() {
-   //CreateArtifact(glm::vec3())
+    // easy artifacts
+    Artifact* artifact = CreateArtifact(glm::vec2(-245.0f, -132.0f), "Artifact1", 1500);
+    artifact = CreateArtifact(glm::vec2(-172.0f, -130.0f), "Artifact2", 2500);
+    artifact = CreateArtifact(glm::vec2(-163.0f, -40.0f), "Artifact3", 3500);
+    artifact = CreateArtifact(glm::vec2(-228.0f, 25.0f), "Artifact4", 4500);
+    artifact = CreateArtifact(glm::vec2(-360.0f, 4.0f), "Artifact5", 5500);
+    artifact = CreateArtifact(glm::vec2(-308.0f, 100.0f), "Artifact6", 6500);
+    artifact = CreateArtifact(glm::vec2(-245.0f, 180.0f), "Artifact7", 7500);
+    artifact = CreateArtifact(glm::vec2(52.0f, 82.0f), "Artifact8", 8750);
+    artifact = CreateArtifact(glm::vec2(-14.0f, 120.0f), "Artifact9", 9750);
+    artifact = CreateArtifact(glm::vec2(-137.0f, 67.0f), "Artifact10", 10000);
+    artifact = CreateArtifact(glm::vec2(-143.0f, 277.0f), "Artifact11", 10000);
+
+    // hard artifacts
+    artifact = CreateArtifact(glm::vec2(99.0f, 248.0f), "Artifact12", 10000);
+    artifact = CreateArtifact(glm::vec2(253.0f, 50.0f), "Artifact13", 10000);
+    artifact = CreateArtifact(glm::vec2(460.0f, 62.0f), "Artifact14", 10000);
+    artifact = CreateArtifact(glm::vec2(320.0f, -76.0f), "Artifact15", 10000);
+    artifact = CreateArtifact(glm::vec2(204.0f, -7.0f), "Artifact16", 10000);
 }
 
 void SetupEnemies() {
