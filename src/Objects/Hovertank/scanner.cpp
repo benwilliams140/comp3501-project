@@ -79,10 +79,9 @@ namespace game {
 						
 						// Start scanning
 						if (Input::getKeyDown(INPUT_KEY_C)) {
-							// TODO - action of picking up care package
+							// Action of picking up care package
 							(*itr)->Open();
-							Game::GetInstance().RemoveCarePackage((*itr));
-							Game::GetInstance().RemoveInstance((*itr));
+							delete *itr;
 						}
 					}
 				}
