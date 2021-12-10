@@ -7,6 +7,8 @@ namespace game {
 
 	EnergyBlast::EnergyBlast(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : Projectile(name, geometry, material, texture) {
 		blending_ = true;
+		startTime = Time::GetDeltaTime();
+		breakable_ = false;
 	}
 
 
@@ -14,7 +16,7 @@ namespace game {
 	}
 
 	Math::SphereCollider EnergyBlast::GetCollider(void) const {
-		return { GetPosition(), 10.0f };
+		return { GetPosition(), GetScale().x/2.0f };
 	}
 
 	void EnergyBlast::EnemyCollision() {
@@ -32,6 +34,9 @@ namespace game {
 	void EnergyBlast::Update() {
 		//update postion
 		SetPosition(Game::GetInstance().GetPlayer()->GetTank()->GetPosition());
+		//glm::vec3 tmpval = GetScale() + glm::vec3(1.0f);
+		glm::vec3 tmpval = GetScale() + glm::vec3(Time::GetDeltaTime()*3.0f);
+		SetScale(tmpval);
 		lifespan_ -= Time::GetDeltaTime();
 		EnemyCollision();
 	}

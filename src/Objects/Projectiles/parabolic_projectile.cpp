@@ -10,7 +10,7 @@
 namespace game {
 
 	ParabolicProjectile::ParabolicProjectile(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : Projectile(name, geometry, material, texture) {
-		
+		breakable_ = true;
 	}
 
 

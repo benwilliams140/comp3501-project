@@ -24,6 +24,10 @@ namespace game {
 		return lifespan_ > 0;
 	}
 
+	bool Projectile::isBreakable() {
+		return breakable_;
+	}
+
 	Math::SphereCollider Projectile::GetCollider(void) const {
 		return { GetPosition(), 2.5f };
 	}
