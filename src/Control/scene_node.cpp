@@ -54,7 +54,7 @@ namespace game {
 
         active_ = true;
         instanced_ = false;
-        blending_ = false;
+        alphaBlend_ = false;
         instanceAmount_ = 1;
     }
 
@@ -88,12 +88,20 @@ namespace game {
         angm_ = angm;
     }
 
-    bool SceneNode::GetActive(void) const{
+    bool SceneNode::GetActive(void) const {
         return active_;
     }
 
     void SceneNode::SetActive(bool active) {
         active_ = active;
+    }
+
+    bool SceneNode::IsAlphaBlended(void) const {
+        return alphaBlend_;
+    }
+
+    void SceneNode::SetAlphaBlended(bool alphaBlend) {
+        alphaBlend_ = alphaBlend;
     }
 
     void SceneNode::SetPosition(glm::vec3 position) {
@@ -110,6 +118,10 @@ namespace game {
 
     void SceneNode::SetParent(SceneNode* parent) {
         parent_ = parent;
+    }
+
+    void SceneNode::SetTexOffset(glm::mat4 offset) {
+        texOffset_ = offset;
     }
 
     void SceneNode::Translate(glm::vec3 trans) {
@@ -166,7 +178,7 @@ namespace game {
         
         // Select particle blending or not
         // work in progress
-        if (blending_) {
+        if (alphaBlend_) {
             // Enable blending
             glEnable(GL_BLEND);
             glBlendEquation(GL_FUNC_ADD);

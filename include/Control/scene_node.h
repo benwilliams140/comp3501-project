@@ -35,6 +35,7 @@ namespace game {
         SceneNode* GetParent(void) const;
         glm::quat GetAngM(void) const;
         bool GetActive(void) const;
+        bool IsAlphaBlended(void) const;
 
         // Set node attributes
         void SetPosition(glm::vec3 position);
@@ -43,6 +44,8 @@ namespace game {
         void SetParent(SceneNode* parent);
         void SetAngM(glm::quat angm);
         void SetActive(bool active);
+        void SetAlphaBlended(bool alphaBlend);
+        void SetTexOffset(glm::mat4 offset);
 
         // Perform transformations on node
         void Translate(glm::vec3 trans);
@@ -71,7 +74,7 @@ namespace game {
 
     protected:
         const Resource* geometry_; // Reference to the geometry
-        bool instanced_, blending_;
+        bool instanced_;
         GLsizei instanceAmount_;
         glm::mat4 texOffset_; // Transformation matrix for the uv coordinates
 
@@ -89,6 +92,7 @@ namespace game {
         glm::quat angm_; // angular momentum
         SceneNode* parent_; // Parent node
         bool active_; // Whether or not the object should be updated and drawn
+        bool alphaBlend_;
 
         // Set matrices that transform the node in a shader program
         void SetupShader(GLuint program);

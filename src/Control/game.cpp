@@ -207,6 +207,8 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Texture, "EnergyProjectile", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/enemy.png");
     resman_.LoadResource(ResourceType::Texture, "AlienTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/scanning.png");
+    resman_.LoadResource(ResourceType::Texture, "ScanningTexture", filename.c_str());
 }
 
 void SetupArtifacts();
