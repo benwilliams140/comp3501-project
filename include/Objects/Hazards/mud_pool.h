@@ -11,6 +11,8 @@ public:
 	virtual void Update() override;
 
 private:
+	static float effectCooldown_;
+
 	virtual void Effect() override;
 };
 } // namespace game

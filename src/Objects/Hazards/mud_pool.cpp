@@ -2,6 +2,8 @@
 #include "Control/game.h"
 
 namespace game {
+	float MudPool::effectCooldown_;
+
 	MudPool::MudPool(std::string name, Resource* geometry, Resource* material, Resource* texture) : Hazard(name, geometry, material, texture)
 	{
 		effectiveness = 0.25f; // effectively a speed multiple
@@ -17,14 +19,17 @@ namespace game {
 		if (Math::isCollidingSphereToSphere(tankBox, GetCollider())) {
 			Effect();
 		}
-		else {
-			// no longer apply effect
+
+		if (MudPool::effectCooldown_ <= 0.0f) {
 			Game::GetInstance().GetPlayer()->GetTank()->SetSpeedEffectMultiple(1.0f);
 		}
+
+		MudPool::effectCooldown_ -= Time::GetDeltaTime();
 	}
 
 	void MudPool::Effect()
 	{
+		MudPool::effectCooldown_ = 1.0f;
 		Game::GetInstance().GetPlayer()->GetTank()->SetSpeedEffectMultiple(effectiveness);
 	}
 }
