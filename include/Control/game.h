@@ -141,7 +141,7 @@ namespace game {
             std::vector<Projectile*> * GetReferenceToEnemyProjectiles();
             std::vector<Projectile*> GetEnemyProjectiles();
             void AddEnemyProjectile(Projectile* proj);
-            std::vector<Enemy*> GetEnemies();
+            std::vector<Enemy*>& GetEnemies();
             bool GetFreeroam() const;
             Resource* GetResource(std::string res); // get the resource listed
 

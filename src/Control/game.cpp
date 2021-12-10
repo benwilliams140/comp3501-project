@@ -203,8 +203,10 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Texture, "ProjectileTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/projectiles") + std::string("/energy_projectile.png");
     resman_.LoadResource(ResourceType::Texture, "EnergyProjectile", filename.c_str());
-    filename = std::string(TEXTURE_DIRECTORY) + std::string("/enemy.png");
-    resman_.LoadResource(ResourceType::Texture, "AlienTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/chaser_enemy.png");
+    resman_.LoadResource(ResourceType::Texture, "ChaserEnemyTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/shooter_enemy.png");
+    resman_.LoadResource(ResourceType::Texture, "ShooterEnemyTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/scanning.png");
     resman_.LoadResource(ResourceType::Texture, "ScanningTexture", filename.c_str());
 }
@@ -277,14 +279,6 @@ void Game::SetupScene(void) {
     SetupArtifacts();
     SetupHazards();
     SetupEnemies();
-    
-    ShooterEnemy* enemy = CreateInstance<ShooterEnemy>("Enemy1", "Alien", "Lighting", "AlienTexture");
-    enemy->SetPosition(glm::vec3(10.0f, -5.0f, 25.0f));
-    enemies_.push_back(enemy);
-
-    ChaserEnemy* enemyChase = CreateInstance<ChaserEnemy>("Enemy2", "Alien", "Lighting", "AlienTexture");
-    enemyChase->SetPosition(glm::vec3(15.0f, -5.0f, 25.0f));
-    enemies_.push_back(enemyChase);
   
     // Initialize certain scene nodes
     terrain_->Init();
@@ -462,7 +456,7 @@ std::vector<Projectile*> Game::GetEnemyProjectiles() {
     return enemy_projectiles_;
 }
 
-std::vector<Enemy*> Game::GetEnemies() {
+std::vector<Enemy*>& Game::GetEnemies() {
     return enemies_;
 }
 
@@ -524,8 +518,69 @@ void SetupArtifacts() {
     artifact = CreateArtifact(glm::vec2(234.0f, -263.0f), "Artifact17", 10000);
 }
 
-void SetupEnemies() {
+template <typename T>
+Enemy* CreateEnemies(glm::vec2 pos, std::string texture) {
+    static int enemyID = 0;
+    T* enemy = Game::GetInstance().CreateInstance<T>("Enemy" + std::to_string(enemyID++), "Alien", "Lighting", texture);
+    enemy->SetPosition(glm::vec3(pos.x, Game::GetInstance().GetTerrain()->GetHeightAt(pos.x, pos.y) + 1.0f, pos.y));
+    Game::GetInstance().GetEnemies().push_back(enemy);
+    return enemy;
+}
 
+void SetupEnemies() {
+    // Shooter enemies
+    Enemy* enemy = CreateEnemies<ShooterEnemy>(glm::vec2(-235.0f, 52.0f), "ShooterEnemyTexture");
+    enemy = CreateEnemies<ShooterEnemy>(glm::vec2(-335.0f, 294.0f), "ShooterEnemyTexture");
+    enemy = CreateEnemies<ShooterEnemy>(glm::vec2(-366.0f, 287.0f), "ShooterEnemyTexture");
+    enemy = CreateEnemies<ShooterEnemy>(glm::vec2(-413.0f, 230.0f), "ShooterEnemyTexture");
+    enemy = CreateEnemies<ShooterEnemy>(glm::vec2(-197.0f, 484.0f), "ShooterEnemyTexture");
+    enemy = CreateEnemies<ShooterEnemy>(glm::vec2(193.0f, 538.0f),  "ShooterEnemyTexture");
+    enemy = CreateEnemies<ShooterEnemy>(glm::vec2(270.0f, 78.0f),   "ShooterEnemyTexture");
+    enemy = CreateEnemies<ShooterEnemy>(glm::vec2(234.0f, 31.0f),   "ShooterEnemyTexture");
+    enemy = CreateEnemies<ShooterEnemy>(glm::vec2(478.0f, 80.0f),   "ShooterEnemyTexture");
+    enemy = CreateEnemies<ShooterEnemy>(glm::vec2(477.0f, 61.0f),   "ShooterEnemyTexture");
+    enemy = CreateEnemies<ShooterEnemy>(glm::vec2(468.0f, 41.0f),   "ShooterEnemyTexture");
+    enemy = CreateEnemies<ShooterEnemy>(glm::vec2(301.0f, -76.0f),  "ShooterEnemyTexture");
+    enemy = CreateEnemies<ShooterEnemy>(glm::vec2(313.0f, -90.0f),  "ShooterEnemyTexture");
+    enemy = CreateEnemies<ShooterEnemy>(glm::vec2(313.0f, -59.0f),  "ShooterEnemyTexture");
+    enemy = CreateEnemies<ShooterEnemy>(glm::vec2(338.0f, -52.0f),  "ShooterEnemyTexture");
+    enemy = CreateEnemies<ShooterEnemy>(glm::vec2(192.0f, -2.0f),   "ShooterEnemyTexture");
+    enemy = CreateEnemies<ShooterEnemy>(glm::vec2(209.0f, 7.0f),    "ShooterEnemyTexture");
+    enemy = CreateEnemies<ShooterEnemy>(glm::vec2(230.0f, -14.0f),  "ShooterEnemyTexture");
+    enemy = CreateEnemies<ShooterEnemy>(glm::vec2(182.0f, -12.0f),  "ShooterEnemyTexture");
+    enemy = CreateEnemies<ShooterEnemy>(glm::vec2(232.0f, -258.0f), "ShooterEnemyTexture");
+    enemy = CreateEnemies<ShooterEnemy>(glm::vec2(-240.0f, 264.0f), "ShooterEnemyTexture");
+    enemy = CreateEnemies<ShooterEnemy>(glm::vec2(-314.0f, 78.0f),  "ShooterEnemyTexture");
+    enemy = CreateEnemies<ShooterEnemy>(glm::vec2(-206.0f, -41.0f), "ShooterEnemyTexture");
+    enemy = CreateEnemies<ShooterEnemy>(glm::vec2(-16.0f, 84.0f),   "ShooterEnemyTexture");
+    enemy = CreateEnemies<ShooterEnemy>(glm::vec2(-124.0f, 26.0f),  "ShooterEnemyTexture");
+    enemy = CreateEnemies<ShooterEnemy>(glm::vec2(-127.0f, 77.0f),  "ShooterEnemyTexture");
+
+    // Chaser enemies
+    enemy = CreateEnemies<ChaserEnemy>(glm::vec2(-249.0f, 192.0f), "ChaserEnemyTexture");
+    enemy = CreateEnemies<ChaserEnemy>(glm::vec2(-470.0f, 393.0f), "ChaserEnemyTexture");
+    enemy = CreateEnemies<ChaserEnemy>(glm::vec2(-403.0f, 486.0f), "ChaserEnemyTexture");
+    enemy = CreateEnemies<ChaserEnemy>(glm::vec2(3.0f, 536.0f),    "ChaserEnemyTexture");
+    enemy = CreateEnemies<ChaserEnemy>(glm::vec2(341.0f, 548.0f),  "ChaserEnemyTexture");
+    enemy = CreateEnemies<ChaserEnemy>(glm::vec2(382.0f, 467.0f),  "ChaserEnemyTexture");
+    enemy = CreateEnemies<ChaserEnemy>(glm::vec2(299.0f, 430.0f),  "ChaserEnemyTexture");
+    enemy = CreateEnemies<ChaserEnemy>(glm::vec2(197.0f, 408.0f),  "ChaserEnemyTexture");
+    enemy = CreateEnemies<ChaserEnemy>(glm::vec2(112.0f, 248.0f),  "ChaserEnemyTexture");
+    enemy = CreateEnemies<ChaserEnemy>(glm::vec2(86.0f, 250.0f),   "ChaserEnemyTexture");
+    enemy = CreateEnemies<ChaserEnemy>(glm::vec2(75.0f, 261.0f),   "ChaserEnemyTexture");
+    enemy = CreateEnemies<ChaserEnemy>(glm::vec2(275.0f, 34.0f),   "ChaserEnemyTexture");
+    enemy = CreateEnemies<ChaserEnemy>(glm::vec2(222.0f, 57.0f),   "ChaserEnemyTexture");
+    enemy = CreateEnemies<ChaserEnemy>(glm::vec2(447.0f, 65.0f),   "ChaserEnemyTexture");
+    enemy = CreateEnemies<ChaserEnemy>(glm::vec2(451.0f, 84.0f),   "ChaserEnemyTexture");
+    enemy = CreateEnemies<ChaserEnemy>(glm::vec2(246.0f, -255.0f), "ChaserEnemyTexture");
+    enemy = CreateEnemies<ChaserEnemy>(glm::vec2(245.0f, -276.0f), "ChaserEnemyTexture");
+    enemy = CreateEnemies<ChaserEnemy>(glm::vec2(234.0f, -284.0f), "ChaserEnemyTexture");
+    enemy = CreateEnemies<ChaserEnemy>(glm::vec2(216.0f, -273.0f), "ChaserEnemyTexture");
+    enemy = CreateEnemies<ChaserEnemy>(glm::vec2(212.0f, -249.0f), "ChaserEnemyTexture");
+    enemy = CreateEnemies<ChaserEnemy>(glm::vec2(-360.0f, 20.0f),  "ChaserEnemyTexture");
+    enemy = CreateEnemies<ChaserEnemy>(glm::vec2(-233.0f, 186.0f), "ChaserEnemyTexture");
+    enemy = CreateEnemies<ChaserEnemy>(glm::vec2(-164.0f, 278.0f), "ChaserEnemyTexture");
+    enemy = CreateEnemies<ChaserEnemy>(glm::vec2(-146.0f, 57.0f),  "ChaserEnemyTexture");
 }
 
 template <typename T>
