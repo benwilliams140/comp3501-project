@@ -41,8 +41,6 @@
 #include "Objects/Player.h"
 #include "Objects/EnergySource.h"
 #include "Objects/EnvironmentObject.h"
-#include "Objects/Rock.h"
-#include "Objects/Tree.h"
 #include "Objects/Projectiles/Enemy_linear_projectile.h"
 #include "Objects/Projectiles/linear_projectile.h"
 #include "Objects/Projectiles/EnergyBlast.h"

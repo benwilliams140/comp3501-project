@@ -6,11 +6,10 @@
 namespace game {
 
 	EnergyBlast::EnergyBlast(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : Projectile(name, geometry, material, texture) {
-		blending_ = true;
-		startTime = Time::GetDeltaTime();
+		SetAlphaBlended(true);
+    startTime = Time::GetDeltaTime();
 		breakable_ = false;
 	}
-
 
 	EnergyBlast::~EnergyBlast() {
 	}

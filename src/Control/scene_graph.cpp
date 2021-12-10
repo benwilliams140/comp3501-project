@@ -1,6 +1,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <fstream>
+#include <iterator>
 #define GLM_FORCE_RADIANS
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -34,7 +35,6 @@ glm::vec3 SceneGraph::GetBackgroundColor(void) const {
 void SceneGraph::AddNode(SceneNode *node){
     node_.push_back(node);
 }
-
 
 SceneNode *SceneGraph::GetNode(std::string node_name) const {
 
@@ -80,9 +80,43 @@ std::vector<SceneNode *>::const_iterator SceneGraph::end() const {
 
 
 void SceneGraph::Draw(Camera *camera) {
+    struct BlendNode { 
+        SceneNode* node; 
+        float distance; 
+    };
+    std::vector<BlendNode> blendNodes;
+    
     // Draw all scene nodes
     for (int i = 0; i < node_.size(); i++){
-        if(node_[i]->GetActive()) node_[i]->Draw(camera);
+        if (node_[i]->GetActive()) {
+            if (node_[i]->IsAlphaBlended()) {
+                // Find distance between node and camera
+                float distance = glm::distance(node_[i]->GetPosition(), camera->GetPosition());
+                
+                if (blendNodes.size() == 0) {
+                    // Add node to the begining of vector if it is empty
+                    blendNodes.push_back({node_[i], distance});
+                } else {
+                    // Add node to blendNodes in the correct location sorted by distance to camera
+                    for (auto itr = blendNodes.begin(); itr != blendNodes.end(); itr++) {
+                        // Compare distances and insert if the next distance is larger
+                        if (distance < (*itr).distance) {
+                            blendNodes.insert(itr, {node_[i], distance}); 
+                            break;
+                        } else if (std::next(itr) == blendNodes.end()) {
+                            blendNodes.push_back({node_[i], distance}); 
+                            break;
+                        }
+                    }
+                }
+            } else {
+                // Draw non-blended nodes per usual
+                node_[i]->Draw(camera);
+            }
+        }
+    }
+    for (auto itr = blendNodes.rbegin(); itr != blendNodes.rend(); itr++) {
+        (*itr).node->Draw(camera);
     }
 }
 

@@ -13,9 +13,10 @@ namespace game {
 
 	Scanner::Scanner(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : SceneNode(name, geometry, material, texture) {
 		// Initialize the scan cone effect
-		scanCone_ = Game::GetInstance().CreateInstance<SceneNode>("Scan Cone", HOVERTANK_SCANNER_CONE, "Simple", "uv6");
+		scanCone_ = Game::GetInstance().CreateInstance<SceneNode>("Scan Cone", HOVERTANK_SCANNER_CONE, "Simple", "ScanningTexture");
 		scanCone_->SetParent(this);
 		scanCone_->SetActive(false);
+		scanCone_->SetAlphaBlended(true);
 		
 		artifact_ = nullptr;
 		scanning_ = false;
@@ -28,6 +29,8 @@ namespace game {
 			static float scanMaxTime = 2.0f;
 			float scanDeltaTime = Time::GetElapsedTime() - scanStartTime_;
 			float rot_factor = 20.0f * Time::GetDeltaTime();
+
+			scanCone_->SetTexOffset(glm::translate(glm::mat4(1.0), glm::vec3(0.0f, scanDeltaTime * 0.25, 0.0f)));
 
 			// Update scanning animation
 			if (scanDeltaTime < (scanMaxTime/2.0f)) {

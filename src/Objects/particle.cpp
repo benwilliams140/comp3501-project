@@ -4,9 +4,9 @@ namespace game {
 	Particle::Particle(std::string name, Resource* geom, Resource* mat, Resource* tex) : SceneNode(name, geom, mat, tex)
 	{
 		instanced_ = true;
-		blending_ = true;
 		instanceAmount_ = 250;
 		velMultiple_ = 1.0f;
+		SetAlphaBlended(true);
 	}
 
 	Particle::~Particle()
