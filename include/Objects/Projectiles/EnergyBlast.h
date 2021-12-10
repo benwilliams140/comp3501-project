@@ -19,6 +19,9 @@ namespace game {
 		virtual void EnemyCollision() override;
 		// Update geometry configuration
 		virtual void Update() override;
+
+	private:
+		float startTime;
 	}; // class Projectile
 
 } // namespace game
