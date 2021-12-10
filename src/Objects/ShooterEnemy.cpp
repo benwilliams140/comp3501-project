@@ -19,6 +19,7 @@ namespace game {
 
 
 	void ShooterEnemy::Update(void) {
+		Enemy::Update();
 
 		if (isStunned()) {
 			decreaseStunCoolDown();

@@ -26,5 +26,5 @@ void main() {
 	spec = pow(spec,132);
 
     // Use texture in determining fragment colour
-    gl_FragColor = pixel*(diffuse+spec+0.4);
+    gl_FragColor = pixel*(diffuse+spec+0.5);
 }

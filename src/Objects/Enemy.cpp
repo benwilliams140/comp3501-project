@@ -22,16 +22,15 @@ namespace game {
 
 
 	void Enemy::Update(void) {
-
-		return;
+		texOffset_ = glm::translate(glm::mat4(1.0), glm::vec3(0.0f, Time::GetElapsedTime() * 0.25f, 0.0f));
 	}
 
 	Math::AABBCollider Enemy::GetAwarenessBox() {
-		return { GetPosition() - glm::vec3(20.0f), GetPosition() + glm::vec3(20.0f) };
+		return { GetPosition() - glm::vec3(30.0f), GetPosition() + glm::vec3(30.0f) };
 	}
 
 	Math::AABBCollider Enemy::GetCollisionBox() {
-		return { GetPosition() - glm::vec3(1.5f), GetPosition() + glm::vec3(1.5f) };
+		return { GetPosition() - glm::vec3(1.0f), GetPosition() + glm::vec3(1.0f) };
 	}
 
 	void Enemy::HovertankCollision() {

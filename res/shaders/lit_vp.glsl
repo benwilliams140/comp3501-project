@@ -11,6 +11,7 @@ uniform mat4 world_mat;
 uniform mat4 view_mat;
 uniform mat4 projection_mat;
 uniform mat3 normal_mat;
+uniform mat4 uv_mat;
 
 // Attributes forwarded to the fragment shader
 out vec3 position_interp;
@@ -29,5 +30,5 @@ void main() {
     normal_interp = vec3(view_mat * vec4(normal_mat * normal, 0.0));
     light_direction = normalize(vec3(view_mat * vec4(-light_dir, 0.0)));
     color_interp = vec4(color, 1.0);
-    uv_interp = uv;
+    uv_interp = vec4(uv_mat * vec4(uv, 0.0, 1.0)).xy;
 }
