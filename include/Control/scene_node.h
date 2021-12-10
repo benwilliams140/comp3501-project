@@ -73,6 +73,7 @@ namespace game {
         const Resource* geometry_; // Reference to the geometry
         bool instanced_, blending_;
         GLsizei instanceAmount_;
+        glm::mat4 texOffset_; // Transformation matrix for the uv coordinates
 
     private:
         std::string name_; // Name of the scene node

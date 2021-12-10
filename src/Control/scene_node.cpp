@@ -50,6 +50,7 @@ namespace game {
         // Other attributes
         scale_ = glm::vec3(1.0, 1.0, 1.0);
         parent_ = nullptr;
+        texOffset_ = glm::mat4(1.0);
 
         active_ = true;
         instanced_ = false;
@@ -228,6 +229,10 @@ namespace game {
         glm::mat3 normal_matrix = glm::mat3(glm::transpose(glm::inverse(transf)));
         GLint normal_mat = glGetUniformLocation(program, "normal_mat");
         glUniformMatrix3fv(normal_mat, 1, GL_FALSE, glm::value_ptr(normal_matrix));
+
+        // UV transformation matrix
+        GLint uv_mat = glGetUniformLocation(program, "uv_mat");
+        glUniformMatrix4fv(uv_mat, 1, GL_FALSE, glm::value_ptr(texOffset_));
 
         // Sunlight direction
         glm::vec3 light_dir = glm::vec3(-0.2f, -1.0f, -0.3f);

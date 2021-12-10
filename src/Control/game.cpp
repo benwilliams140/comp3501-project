@@ -157,6 +157,8 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Mesh, "Plant", filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("") + std::string("/parachute.mesh");
     resman_.LoadResource(ResourceType::Mesh, "Parachute", filename.c_str());
+    filename = std::string(MESH_DIRECTORY) + std::string("") + std::string("/enemy.mesh");
+    resman_.LoadResource(ResourceType::Mesh, "Alien", filename.c_str());
 
     // Load shaders
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/simple_texture");
@@ -204,7 +206,7 @@ void Game::SetupResources(void) {
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/projectiles") + std::string("/energy_projectile.png");
     resman_.LoadResource(ResourceType::Texture, "EnergyProjectile", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/enemy.png");
-    resman_.LoadResource(ResourceType::Texture, "EnemyTexture", filename.c_str());
+    resman_.LoadResource(ResourceType::Texture, "AlienTexture", filename.c_str());
 }
 
 void SetupArtifacts();
@@ -276,11 +278,11 @@ void Game::SetupScene(void) {
     SetupHazards();
     SetupEnemies();
     
-    ShooterEnemy* enemy = CreateInstance<ShooterEnemy>("Enemy1", "Cube", "Simple", "uv6");
+    ShooterEnemy* enemy = CreateInstance<ShooterEnemy>("Enemy1", "Alien", "Lighting", "AlienTexture");
     enemy->SetPosition(glm::vec3(10.0f, -5.0f, 25.0f));
     enemies_.push_back(enemy);
 
-    ChaserEnemy* enemyChase = CreateInstance<ChaserEnemy>("Enemy2", "Cube", "Simple", "uv6");
+    ChaserEnemy* enemyChase = CreateInstance<ChaserEnemy>("Enemy2", "Alien", "Lighting", "AlienTexture");
     enemyChase->SetPosition(glm::vec3(15.0f, -5.0f, 25.0f));
     enemies_.push_back(enemyChase);
   

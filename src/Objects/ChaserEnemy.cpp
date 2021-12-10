@@ -20,6 +20,7 @@ namespace game {
 
 
 	void ChaserEnemy::Update(void) {
+		Enemy::Update();
 
 		if (isStunned()) {
 			decreaseStunCoolDown();
