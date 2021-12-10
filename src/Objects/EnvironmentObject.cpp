@@ -58,7 +58,7 @@ namespace game {
 			for (int j = 0; j < projectiles.size(); j++) {
 				for (int k = 0; k < positionsSize_; k++) {
 					//if they collide seet projectile lifespan to 0 to be destroyed
-					if (Math::isCollidingSphereToSphere(projectiles[j]->GetCollider(), { positions_[k], colliderRadius_ })) {
+					if (Math::isCollidingSphereToSphere(projectiles[j]->GetCollider(), { positions_[k], colliderRadius_ }) && projectiles[j]->isBreakable()) {
 						projectiles[j]->SetLifespan(0.0f);
 					}
 				}

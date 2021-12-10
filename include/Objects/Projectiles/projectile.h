@@ -32,10 +32,12 @@ namespace game {
 		virtual void EnemyCollision();
 		void ArtifactCollision();
 		bool IsAlive();
+		bool isBreakable();
 
 	protected:
 		// projectile properties, accessable by classes that extend this
 		glm::vec3 velocity_;
 		float lifespan_;
+		bool breakable_;//will it break in collision
 	}; // class Projectile
 }; // namespace game

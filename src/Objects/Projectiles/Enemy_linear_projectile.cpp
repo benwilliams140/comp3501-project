@@ -4,6 +4,7 @@ namespace game {
 
 	EnemyLinearProjectile::EnemyLinearProjectile(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : Projectile(name, geometry, material, texture) {
 		attack_pow = 10.0f;
+		breakable_ = true;
 	}
 
 
