@@ -30,10 +30,13 @@ namespace game {
 		if (detectPlayer(Game::GetInstance().GetPlayer()->GetTank())) {
 			attack(Game::GetInstance().GetPlayer()->GetTank(), Game::GetInstance().GetReferenceToEnemyProjectiles());
 
-			//have the enemy go towards the enemy
-			glm::vec3 direction =  glm::normalize(Game::GetInstance().GetPlayer()->GetTank()->GetPosition() - GetPosition());
-			direction *= GetSpeed() * Time::GetDeltaTime();
-			Translate(direction);
+			float distance = glm::distance(Game::GetInstance().GetPlayer()->GetTank()->GetPosition(), GetPosition());
+			if (distance > 10.0f) {
+				//have the enemy go towards the enemy
+				glm::vec3 direction = glm::normalize(Game::GetInstance().GetPlayer()->GetTank()->GetPosition() - GetPosition());
+				direction *= GetSpeed() * Time::GetDeltaTime();
+				Translate(direction);
+			}
 		}
 		Translate(glm::vec3(0.0f, -5.0, 0.0f) * Time::GetDeltaTime());
 

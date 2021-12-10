@@ -28,7 +28,7 @@ namespace game {
 		// Get/set attributes specific to Artifacts
 		void Setup(const std::string artName, float val, int artifactId);
 
-		bool isFound();
+		bool IsFound();
 		float Discover();
 
 		std::string GetArtifactName();

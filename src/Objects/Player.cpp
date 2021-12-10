@@ -136,6 +136,7 @@ namespace game {
 
 	void Player::DiscoveredArtifact(Artifact* newArtifact) {
 		//add a discovered artifact
+		AddMoney(newArtifact->Discover());
 		artifacts.push_back(newArtifact);
 	}
 

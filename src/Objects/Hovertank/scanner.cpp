@@ -49,21 +49,23 @@ namespace game {
 			std::vector<Artifact*> artifacts = Game::GetInstance().GetArtifacts();
 				
 			for (auto itr = artifacts.begin(); itr != artifacts.end(); itr++) {
-				// Check if the artifact is less than 10 meters away from scanner
-				if (glm::distance(GetParent()->GetParent()->GetPosition(), (*itr)->GetPosition()) < 10.0f) {
-					// Check for point vs. cube collision
-					if (isCollidingSphereToSphere({GetScanPoint(), 0.5F}, (*itr)->GetCollider())) {
-						// Activate button prompt
-						((HUD*)Game::GetInstance().GetMenu(MenuType::HUD))->ActivateTooltip("[C] Scan Object", 0.25f);
-						
-						// Start scanning
-						if (Input::getKeyDown(INPUT_KEY_C)) {
-							// Record artifact discovered
-							artifact_ = (*itr);
-							// Start scanning animation
-							scanning_ = true;
-							scanStartTime_ = Time::GetElapsedTime();
-							scanCone_->SetActive(true);
+				if (!(*itr)->IsFound()) {
+					// Check if the artifact is less than 10 meters away from scanner
+					if (glm::distance(GetParent()->GetParent()->GetPosition(), (*itr)->GetPosition()) < 10.0f) {
+						// Check for point vs. cube collision
+						if (isCollidingSphereToSphere({GetScanPoint(), 0.5F}, (*itr)->GetCollider())) {
+							// Activate button prompt
+							((HUD*)Game::GetInstance().GetMenu(MenuType::HUD))->ActivateTooltip("[C] Scan Object", 0.25f);
+
+							// Start scanning
+							if (Input::getKeyDown(INPUT_KEY_C)) {
+								// Record artifact discovered
+								artifact_ = (*itr);
+								// Start scanning animation
+								scanning_ = true;
+								scanStartTime_ = Time::GetElapsedTime();
+								scanCone_->SetActive(true);
+							}
 						}
 					}
 				}

@@ -171,8 +171,6 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Material, "GeyserParticles", filename.c_str());
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/terrain");
     resman_.LoadResource(ResourceType::Material, "TerrainMaterial", filename.c_str());
-    filename = std::string(MATERIAL_DIRECTORY) + std::string("/energy_blast_shader");
-    resman_.LoadResource(ResourceType::Material, "eb_shader", filename.c_str());
 
     // Load texture
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/uv6.png");

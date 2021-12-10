@@ -52,7 +52,7 @@ namespace game {
 		HovertankCollision();
 	}
 
-	bool Artifact::isFound() {
+	bool Artifact::IsFound() {
 		return found;
 	}
 

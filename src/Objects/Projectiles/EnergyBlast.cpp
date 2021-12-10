@@ -7,7 +7,7 @@ namespace game {
 
 	EnergyBlast::EnergyBlast(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : Projectile(name, geometry, material, texture) {
 		SetAlphaBlended(true);
-    startTime = Time::GetDeltaTime();
+		startTime = Time::GetDeltaTime();
 		breakable_ = false;
 	}
 
@@ -31,10 +31,16 @@ namespace game {
 	}
 
 	void EnergyBlast::Update() {
+		static float maxSize = 22.5f;
+		static float growthSpeed = 10.0f;
+
 		//update postion
 		SetPosition(Game::GetInstance().GetPlayer()->GetTank()->GetPosition());
-		//glm::vec3 tmpval = GetScale() + glm::vec3(1.0f);
-		glm::vec3 tmpval = GetScale() + glm::vec3(Time::GetDeltaTime()*3.0f);
+		
+		glm::vec3 tmpval = GetScale() + glm::vec3(Time::GetDeltaTime()*growthSpeed);
+		if (tmpval.x > maxSize) 
+			tmpval = glm::vec3(maxSize);
+
 		SetScale(tmpval);
 		lifespan_ -= Time::GetDeltaTime();
 		EnemyCollision();

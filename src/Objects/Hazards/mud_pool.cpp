@@ -6,6 +6,7 @@ namespace game {
 
 	MudPool::MudPool(std::string name, Resource* geometry, Resource* material, Resource* texture) : Hazard(name, geometry, material, texture)
 	{
+		texOffset_ = glm::scale(glm::mat4(1.0f), glm::vec3(5.0f));
 		effectiveness = 0.25f; // effectively a speed multiple
 	}
 
