@@ -315,7 +315,7 @@ void Game::MainLoop(void){
 
         // toggle freeroam if 'F' key clicked
         // developer feature - should probably be removed before submission
-        if (Input::getKeyDown(INPUT_KEY_F)) {
+        if (Input::getKeyDown(INPUT_KEY_F1)) {
             freeroam_ = !freeroam_;
         }
 
