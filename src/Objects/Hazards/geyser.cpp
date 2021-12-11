@@ -5,8 +5,8 @@ namespace game {
 	Geyser::Geyser(std::string name, Resource* geometry, Resource* material, Resource* texture) : Hazard(name, geometry, material, texture)
 	{
 		static int id = 0;
-		// generate a random number between 30 and 60 for the cooldown
-		cooldown_ = maxCooldown_ = (float)rand() / (float)RAND_MAX * (60.0f - 30.0f) + 30.0f;
+		// generate a random number between 5 and 15 for the cooldown
+		cooldown_ = maxCooldown_ = (float)rand() / (float)RAND_MAX * (15.0f - 5.0f) + 5.0f;
 		// random number between 2 and 6 for how long the effect lasts
 		maxEffectLength_ = (float)rand() / (float)RAND_MAX * (6.0f - 2.0f) + 2.0f;
 		effectLength_ = 0.0f; // will reset to maxEffectLength_ when enabled
@@ -28,7 +28,6 @@ namespace game {
 	void Geyser::Update()
 	{
 		particle_->SetPosition(GetPosition() + glm::vec3(0.0f, 3.5f, 0.0f));
-		cooldown_ -= Time::GetDeltaTime();
 		effectLength_ -= Time::GetDeltaTime();
 
 		if (cooldown_ <= 0.0f) {
@@ -48,6 +47,9 @@ namespace game {
 			}
 		}
 		else {
+			// only decrease cooldown when effect isn't happening
+			cooldown_ -= Time::GetDeltaTime();
+
 			// decrease multiple until it is 0.05f
 			float multiple = std::max(0.05f, particle_->GetVelocityMultiple() - 1.5f * Time::GetDeltaTime());
 			particle_->SetVelocityMultiple(multiple);
