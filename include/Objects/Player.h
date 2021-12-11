@@ -39,6 +39,7 @@ namespace game {
 		bool isAlive();
 		HoverTank* GetTank();
 		float GetMoney();
+		int GetNumArtifacts();
 
 		void SetHealth(float newHealth);
 		void SetMaxHealth(float newHealth);

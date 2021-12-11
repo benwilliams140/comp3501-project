@@ -12,6 +12,7 @@
 #include "Control/resource.h"
 #include "Control/scene_node.h"
 #include "Control/mathematics.h"
+#include "Objects/particle.h"
 
 namespace game {
 
@@ -49,6 +50,8 @@ namespace game {
 		bool found;
 		std::string artifactName; //think it would be fun to give each artifact fun, interesting unique names, of course we don't have to do this
 		float value;
+
+		Particle* particle_;
 
 	}; // class Artifact
 

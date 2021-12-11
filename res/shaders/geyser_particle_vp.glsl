@@ -18,7 +18,7 @@ uniform mat4 normal_mat;
 uniform float velocityMultiple;
 uniform float timer;
 
-// Attributes forwarded to the fragment shader
+// Attributes forwarded to the geometry shader
 out vec4 particle_color;
 out float particle_id;
 
@@ -28,8 +28,6 @@ float initialVelocity = 75.0;
 float maxRadius = 20;
 vec3 downDir = vec3(0, -1, 0);
 
-float random(int ID);
-
 void main() {
     particle_id = gl_InstanceID;
 
@@ -38,10 +36,6 @@ void main() {
     float u = mod(gl_InstanceID * 514101481.0 + 1000041499.0, 123459617.0) / 123459617.0;
     float v = mod(gl_InstanceID * 487141639.0 + 479001599.0, 998728351.0) / 998728351.0;
     float w = mod(gl_InstanceID * 289339937.0 + 617667649.0, 234570337.0) / 234570337.0;
-
-    //float u = random(gl_InstanceID);
-    //float v = random(gl_InstanceID + 882367);
-    //float w = random(gl_InstanceID + 1435698031);
 
     float theta = 2.0 * u * PI;
     float phi = acos(2.0 * v - 1.0);
@@ -60,8 +54,4 @@ void main() {
     vec3 finalPos = vec3(vertex.x + normal.x * velocity.x * phase, vertex.y + velocity.y * phase, vertex.z + normal.z * velocity.z * phase);
 
     gl_Position = view_mat * world_mat * vec4(finalPos, 1.0);
-}
-
-float random(int ID) {
-	return float((ID * 177211 + 15523111) % 722417) / 722417; 
 }

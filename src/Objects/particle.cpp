@@ -1,4 +1,5 @@
 #include "Objects/particle.h"
+#include "Control/game.h"
 
 namespace game {
 	Particle::Particle(std::string name, Resource* geom, Resource* mat, Resource* tex) : SceneNode(name, geom, mat, tex)
@@ -11,6 +12,7 @@ namespace game {
 
 	Particle::~Particle()
 	{
+		Game::GetInstance().RemoveInstance(this);
 	}
 
 	void Particle::Update()

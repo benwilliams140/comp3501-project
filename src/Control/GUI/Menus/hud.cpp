@@ -92,6 +92,7 @@ namespace game {
 
 		RenderInjuredEffect(windowSize);
 		RenderInformationBar(windowSize, windowRatio);
+		RenderArtifactBar();
 		RenderHealthBar(windowSize, windowRatio);
 		RenderEnergyBar(windowSize, windowRatio);
 		RenderProjectileSelection(windowSize, windowRatio);
@@ -149,6 +150,17 @@ namespace game {
 		// render the health bar
 		ImGui::GetWindowDrawList()->AddImage(healthBar_.backgroundImage, ImVec2(healthBarBaseX, healthBarBaseY), ImVec2(healthBarBaseX + healthBarBaseWidth, healthBarBaseY + healthBarBaseHeight));
 		ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(healthBarX, healthBarY), ImVec2(healthBarX + healthBarWidth, healthBarY + healthBarHeight), healthBar_.foregroundColor, 0.0f, 0);
+	}
+
+	void HUD::RenderArtifactBar()
+	{
+		artifactBar_.text = "Artifacts Found: " + std::to_string(Game::GetInstance().GetPlayer()->GetNumArtifacts())
+			+ " / " + std::to_string(Game::GetInstance().GetArtifacts().size());
+
+		ImGui::SetCursorPos(ImVec2(5, 5));
+		ImGui::PushFont(artifactBar_.font);
+		ImGui::Text(artifactBar_.text.c_str());
+		ImGui::PopFont();
 	}
 
 	void HUD::RenderEnergyBar(ImVec2 windowSize, ImVec2 windowRatio) {

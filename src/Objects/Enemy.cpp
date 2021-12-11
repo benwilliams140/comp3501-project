@@ -115,7 +115,7 @@ namespace game {
 	}
 	void Enemy::decreaseCoolDown() {//decrease attack cooldown
 		if (coolDown > 0) {
-			coolDown = stun_coolDown = std::max(coolDown - Time::GetDeltaTime(), 0.0f);
+			coolDown = std::max(coolDown - Time::GetDeltaTime(), 0.0f);
 
 		}
 	}

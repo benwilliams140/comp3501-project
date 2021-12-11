@@ -56,7 +56,7 @@ namespace game {
 			//only attack if cooldown for attack is done
 			if (GetCoolDown() <= 0) {
 				Game::GetInstance().GetPlayer()->decreaseHealth(meleeDamage);
-				SetCoolDown(150.0f);//set cool down for next attack
+				SetCoolDown(30.0f);//set cool down for next attack
 			}
 		}
 	}

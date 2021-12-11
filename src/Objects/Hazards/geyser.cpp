@@ -19,8 +19,7 @@ namespace game {
 		particle_ = Game::GetInstance().CreateInstance<Particle>("GeyserInstancedParticle" + id++, "Particle", "GeyserParticles", "ParticleTexture");
 		particle_->SetScale(glm::vec3(0.2f));
 		particle_->SetVelocityMultiple(0.05f); // starting movement speed
-		// default is 250 - seems to look fine
-		//particle_->SetInstanceAmount(2000);
+		particle_->SetActive(false);
 	}
 
 	Geyser::~Geyser() {}
@@ -28,6 +27,7 @@ namespace game {
 	void Geyser::Update()
 	{
 		particle_->SetPosition(GetPosition() + glm::vec3(0.0f, 3.5f, 0.0f));
+		particle_->SetActive(true);
 		effectLength_ -= Time::GetDeltaTime();
 
 		if (cooldown_ <= 0.0f) {

@@ -61,7 +61,7 @@ namespace game {
 		projectile->SetScale(glm::vec3(0.5));
 		projectile->SetLifespan(3.0f);
 
-		SetCoolDown(150.0f);//set cool down for next shot
+		SetCoolDown(60.0f);//set cool down for next shot
 
 		enemy_projectiles_->push_back(projectile);//add it to our list of enemy projectiles
 	}

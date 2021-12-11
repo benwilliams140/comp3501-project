@@ -169,6 +169,8 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Material, "Lighting", filename.c_str());
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/geyser_particle");
     resman_.LoadResource(ResourceType::Material, "GeyserParticles", filename.c_str());
+    filename = std::string(MATERIAL_DIRECTORY) + std::string("/artifact_particle");
+    resman_.LoadResource(ResourceType::Material, "ArtifactParticles", filename.c_str());
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/terrain");
     resman_.LoadResource(ResourceType::Material, "TerrainMaterial", filename.c_str());
 
@@ -233,7 +235,6 @@ void Game::SetupScene(void) {
     HoverTank* hovertank_base = CreateInstance<HoverTank>(HOVERTANK_BASE, HOVERTANK_BASE, hovertankMaterial, "HovertankTexture");
     hovertank_base->SetPosition(glm::vec3(-216.0f, -41.0f, -181.0f));
     player_ = new Player(100.f, 100.f, hovertank_base);
-    player_->AddMoney(100000); // for demo purposes
   
     HoverTankTurret* hovertank_turret = CreateInstance<HoverTankTurret>(HOVERTANK_TURRET, HOVERTANK_TURRET, hovertankMaterial, "HovertankTexture");
     hovertank_turret->Translate(glm::vec3(0.f, 1.055f, -0.9f));

@@ -28,8 +28,13 @@ namespace game {
 			bool active = false;
 			std::string text = "";
 			float lifespan = 0.0f;
-			ImFont* font = Menu::LoadFont("FabulaValhalla.ttf", 14.0f);
+			ImFont* font = Menu::LoadFont("FabulaValhalla.ttf", 16.0f);
 		} infoBar_;
+
+		struct ArtifactBar {
+			std::string text;
+			ImFont* font = Menu::LoadFont("FabulaValhalla.ttf", 18.0f);
+		} artifactBar_;
 
 		const struct HealthBar {
 			float widthRatio = 0.2f;
@@ -62,6 +67,7 @@ namespace game {
 
 		void RenderInjuredEffect(ImVec2 windowSize);
 		void RenderInformationBar(ImVec2 windowSize, ImVec2 windowRatio);
+		void RenderArtifactBar();
 		void RenderHealthBar(ImVec2 windowSize, ImVec2 windowRatio);
 		void RenderEnergyBar(ImVec2 windowSize, ImVec2 windowRatio);
 		void RenderProjectileSelection(ImVec2 windowSize, ImVec2 windowRatio);

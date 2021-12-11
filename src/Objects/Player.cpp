@@ -54,6 +54,11 @@ namespace game {
 		return money;
 	}
 
+	int Player::GetNumArtifacts()
+	{
+		return artifacts.size();
+	}
+
 	HoverTank* Player::GetTank() {
 		return tank;
 	}
