@@ -23,10 +23,10 @@ namespace game {
 		if (cooldown_ > 0) return nullptr; // need to wait
 
 		static int num = 0; // used to give unique names to each projectile
-		ParabolicProjectile* proj = Game::GetInstance().CreateInstance<ParabolicProjectile>("EnergyCannonProjectile" + std::to_string(num++), "Cube", "Simple", "EnergyProjectile");
+		ParabolicProjectile* proj = Game::GetInstance().CreateInstance<ParabolicProjectile>("EnergyCannonProjectile" + std::to_string(num++), "RubberBullet", "Simple", "RubberTexture");
 		// set properties for this new projectile
 		proj->SetPosition(position);
-		proj->SetScale(glm::vec3(0.5));
+		proj->SetScale(glm::vec3(1.25f));
 		proj->SetVelocity(forward * 25.0f + glm::vec3(0.0f, 1.5f, 0.0f) * 10.0f); // make it slightly angled
 		proj->SetLifespan(5.0f);
 		projectiles_.push_back(proj);
