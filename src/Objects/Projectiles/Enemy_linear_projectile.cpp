@@ -14,6 +14,7 @@ namespace game {
 	void EnemyLinearProjectile::Update() {
 		//update postion
 		Translate(velocity_ * Time::GetDeltaTime());
+		texOffset_ = glm::translate(glm::mat4(1.0), glm::vec3(0.0f, Time::GetElapsedTime() * 0.25f, 0.0f));
 		lifespan_ -= Time::GetDeltaTime();
 		TankCollision();
 		ArtifactCollision();

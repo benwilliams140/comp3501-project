@@ -159,6 +159,8 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Mesh, "Alien", filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("") + std::string("/rubber_bullet.mesh");
     resman_.LoadResource(ResourceType::Mesh, "RubberBullet", filename.c_str());
+    filename = std::string(MESH_DIRECTORY) + std::string("") + std::string("/spike_ball.mesh");
+    resman_.LoadResource(ResourceType::Mesh, "SpikeBall", filename.c_str());
 
     // Load shaders
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/simple_texture");
@@ -201,6 +203,8 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Texture, "EnergyBlastTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/projectiles") + std::string("/rubber.png");
     resman_.LoadResource(ResourceType::Texture, "RubberTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/projectiles") + std::string("/electric.png");
+    resman_.LoadResource(ResourceType::Texture, "ElectricTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/chaser_enemy.png");
     resman_.LoadResource(ResourceType::Texture, "ChaserEnemyTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/shooter_enemy.png");
