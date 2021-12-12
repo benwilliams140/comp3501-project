@@ -63,7 +63,7 @@
 │       ├── ebo.h
 │       └── vao.h
 ├── res
-│   ...
+│   └── ...
 ├── src
 │   ├── Control
 │   │   ├── GUI
@@ -137,6 +137,69 @@
 ##### Assets / Credits
 
 - **Fonts:**
+
+  | **Asset Name**     | **Author**              | **Link**                                           |
+    | ------------------ | ----------------------- | -------------------------------------------------- |
+    | Freedom.ttf        | HXDes                   | https://www.fontspace.com/freedom-font-f14832      |
+    | FabulaValhalla.ttf | Adam Alexander T. Croke | https://www.1001freefonts.com/fabula-valhalla.font |
+
+- **Meshes:**
+
+  | **Asset Name**                     | Author         |
+  | ---------------------------------- | -------------- |
+  | plant.mesh                         | Pablo Rascazzi |
+  | pool.mesh                          | Ben Williams   |
+  | rock1.mesh, rock2.mesh, rock3.mesh | Pablo Rascazzi |
+  | hovertank_Chassis.mesh             | Pablo Rascazzi |
+  | hovertank_Scanner.mesh             | Pablo Rascazzi |
+  | hovertank_Scanner_Cone.mesh        | Pablo Rascazzi |
+  | hovertank_Track_Front.mesh         | Pablo Rascazzi |
+  | hovertank_Track_Rear.mesh          | Pablo Rascazzi |
+  | hovertank_Turret.mesh              | Pablo Rascazzi |
+  | hovertank_Machine_Gun.mesh         | Pablo Rascazzi |
+  | artifact.mesh                      | Pablo Rascazzi |
+  | enemy.mesh                         | Pablo Rascazzi |
+  | parachute.mesh                     | Pablo Rascazzi |
+  | rubber_bullet.mesh                 | Pablo Rascazzi |
+  | spike_ball.mesh                    | Pablo Rascazzi |
+
+- **Textures:**
+
+  | **Asset Name**        | **Author** | Link |
+  | --------------------- | ---------- | ---- |
+  | acid.png              |            |      |
+  | alien_plant.png       |            |      |
+  | dirt.png              |            |      |
+  | geyser.png            |            |      |
+  | mud.png               |            |      |
+  | rocky.png             |            |      |
+  | snow.png              |            |      |
+  | electric.png          |            |      |
+  | energy_blast.png      |            |      |
+  | rubber.png            |            |      |
+  | chaser_enemy.png      |            |      |
+  | crate.png             |            |      |
+  | hovertank_texture.png |            |      |
+  | parachute.png         |            |      |
+  | scanning.png          |            |      |
+  | shooter_enemy.png     |            |      |
+  | sparkle_particle.png  |            |      |
+  | water_particle.png    |            |      |
+
+  | **Asset Name**            | **Author**   |
+  | ------------------------- | ------------ |
+  | button.png                | Navin Haider |
+  | energy_bar_background.png | Navin Haider |
+  | energy_blast.png          | Navin Haider |
+  | game_over.png             | Navin Haider |
+  | health_bar_background.png | Navin Haider |
+  | injured_screen_effect.png | Ben Williams |
+  | linear.png                | Navin Haider |
+  | mission_accomplished.png  | Navin Haider |
+  | parabolic.png             | Navin Haider |
+  | title_screen.png          | Navin Haider |
+
+  
 
 #### Fulfillment of Requirements
 
