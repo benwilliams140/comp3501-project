@@ -2,7 +2,7 @@
 
 #### Project Structure
 
-The headers and source files are split up into the `include` and `src` directories; these are then further split into `Control`, `Objects`, and `Renderer`. The CMake structure is recursive in nature.
+The headers and source files are split up into the `include` and `src` directories; these are then further split into `Control`, `Objects`, and `Renderer`. The CMake structure is recursive in nature - each of the `src` subfolders have their own `CMakeLists.txt` file containing each of the .cpp files and adding any additional subfolders. All of the resources are in the `res` directory.
 
 ##### Class Tree
 
@@ -254,19 +254,50 @@ The headers and source files are split up into the `include` and `src` directori
 
 0. Hovertank navigating alien planet.
 
+-
+
 1. A thought-out setting with a variety of objects, including scenery and interactable objects both friendly and unfriendly. Give the player a role in the setting and a reason to take on the game's tasks.
+
+- the world is populated with a variety of rocks, plants, and hazards that can be collided with
+- each of the hazards has a different effect on the player; the geyser shoots them up into the air, mud slows them down, and acid damages them
+- two types of aliens inhabit the world, one that shoots projectiles and one that deals melee damage
 
 2. Tasks for the player to do.
 
+- the player must find all artifacts while actively evading aliens and hazards
+
 3. At least three distinct devices the player can use.
+
+- scanner: used to open care packages and scan artifacts
+- machine gun/energy cannon: different types of projectiles that stun the enemy they hit, one that is affected by gravity and one that isn't
+energy blast: a shield like blast that stuns enemies in it's radius
 
 4. Some kind of upgrade path fostering a sense of progression.
 
+- whenever the player scans an artifact, they are awarded a set number of points, which can then be used to purchase upgrades
+- the player is able to upgrade their health, speed, and energy (each has two levels), along with the effectiveness of each of the hazards (although they may not want to get some of the upgrades)
+- the player can also purchase different abilities: the machine gun, energy cannon, and energy blast; these arrive in care packages that the player must find and pick up
+
 5. Visual feedback about the player's status and actions.
+
+- there is a HUD showing the player their health, energy level, weapon inventory, and number of artifacts collected
+- an effect appears on the screen whenever the player is injured
+- geyser rise and fall whenever the geyser is active/inactive
+- artifact particles disappear after it has been collected
+- a scanning effect appears whenever the player scans an artifact
 
 6. Challenges that reward planning as well as reflexes.
 
+- the player must collect a variety of artifacts, each one in a harder location than the previous (if following the natural path)
+- many enemies populate the world, protecting the artifacts
+- there are also hazards in which the player must avoid; the acid hazard deals damage to the player, while the mud slows them down (allowing enemies to catch-up)
+
 ##### Beyond the Minimum
+
+- the terrain has quite advanced collision, allowing us to have gravity that affects the hovertank
+  - this is accomplished using ray casting?
+- in-depth GUI using ImGui
+  - has many different menus, widgets
 
 #### Postmortem
 
