@@ -2,6 +2,8 @@
 
 #### Project Structure
 
+The headers and source files are split up into the `include` and `src` directories; these are then further split into `Control`, `Objects`, and `Renderer`. The CMake structure is recursive in nature.
+
 ##### Class Tree
 
 .
@@ -202,6 +204,50 @@
   
 
 #### Fulfillment of Requirements
+
+##### Game Description
+
+##### Technical Requirements
+
+0. Written in C++ using OpenGL to render; readable code with no serious bugs, suitable class hierarchy, good documentation.
+
+- 
+
+1. Large textured heightfield terrain with collision detection and shadows. 
+
+- 
+
+2. Game environment populated by textured, illuminated objects.
+
+3. At least one use of a screen-space special effect.
+
+4. At least two distinct particle systems.
+
+5. At least two hierarchical objects with independently moving parts.
+
+6. Player-centric camera with player controls linked to current orientation.
+
+7. Gravity affecting at least some objects (ballistic motion).
+
+8. Multiple stages to game.
+
+##### Gameplay Requirements
+
+0. Hovertank navigating alien planet.
+
+1. A thought-out setting with a variety of objects, including scenery and interactable objects both friendly and unfriendly. Give the player a role in the setting and a reason to take on the game's tasks.
+
+2. Tasks for the player to do.
+
+3. At least three distinct devices the player can use.
+
+4. Some kind of upgrade path fostering a sense of progression.
+
+5. Visual feedback about the player's status and actions.
+
+6. Challenges that reward planning as well as reflexes.
+
+##### Beyond the Minimum
 
 #### Postmortem
 
