@@ -63,78 +63,7 @@
 │       ├── ebo.h
 │       └── vao.h
 ├── res
-│   ├── fonts
-│   │   ├── FabulaValhalla.ttf
-│   │   └── Freedom.ttf
-│   ├── meshes
-│   │   ├── environment
-│   │   │   ├── plant.mesh
-│   │   │   ├── pool.mesh
-│   │   │   ├── rock1.mesh
-│   │   │   ├── rock2.mesh
-│   │   │   └── rock3.mesh
-│   │   ├── hovertank
-│   │   │   ├── hovertank_Chassis.mesh
-│   │   │   ├── hovertank_Machine_Gun.mesh
-│   │   │   ├── hovertank_Scanner_Cone.mesh
-│   │   │   ├── hovertank_Scanner.mesh
-│   │   │   ├── hovertank_Track_Front.mesh
-│   │   │   ├── hovertank_Track_Rear.mesh
-│   │   │   └── hovertank_Turret.mesh
-│   │   ├── cube.mesh
-│   │   ├── enemy.mesh
-│   │   ├── parachute.mesh
-│   │   ├── rubber_bullet.mesh
-│   │   ├── sphere.mesh
-│   │   └── spike_ball.mesh
-│   ├── shaders
-│   │   ├── artifact_particle_fp.glsl
-│   │   ├── artifact_particle_gp.glsl
-│   │   ├── artifact_particle_vp.glsl
-│   │   ├── geyser_particle_fp.glsl
-│   │   ├── geyser_particle_gp.glsl
-│   │   ├── geyser_particle_vp.glsl
-│   │   ├── instancing_fp.glsl
-│   │   ├── instancing_vp.glsl
-│   │   ├── lit_fp.glsl
-│   │   ├── lit_vp.glsl
-│   │   ├── simple_texture_fp.glsl
-│   │   ├── simple_texture_vp.glsl
-│   │   ├── terrain_fp.glsl
-│   │   └── terrain_vp.glsl
-│   └── textures
-│       ├── environment
-│       │   ├── acid.png
-│       │   ├── alien_plant.png
-│       │   ├── dirt.png
-│       │   ├── geyser.png
-│       │   ├── mud.png
-│       │   ├── rocky.png
-│       │   └── snow.png
-│       ├── gui
-│       │   ├── button.png
-│       │   ├── energy_bar_background.png
-│       │   ├── energy_blast.png
-│       │   ├── game_over.png
-│       │   ├── health_bar_background.png
-│       │   ├── injured_screen_effect.png
-│       │   ├── linear.png
-│       │   ├── mission_accomplished.png
-│       │   ├── parabolic.png
-│       │   └── title_screen.png
-│       ├── projectiles
-│       │   ├── electric.png
-│       │   ├── energy_blast.png
-│       │   └── rubber.png
-│       ├── chaser_enemy.png
-│       ├── crate.png
-│       ├── hovertank_texture.png
-│       ├── parachute.png
-│       ├── scanning.png
-│       ├── shooter_enemy.png
-│       ├── sparkle_particle.png
-│       ├── uv6.png
-│       └── water_particle.png
+│   ...
 ├── src
 │   ├── Control
 │   │   ├── GUI
@@ -201,10 +130,7 @@
 │   │   └── vao.cpp
 │   ├── CMakeLists.txt
 │   └── main.cpp
-├── .gitignore
-├── .gitmodules
 ├── CMakeLists.txt
-├── CMakeSettings.json
 ├── project_report.md
 └── README.md
 
