@@ -54,7 +54,7 @@ namespace game {
 		static int num = 0; // used to give unique names to each projectile
 
 		//create projectile
-		EnemyLinearProjectile* projectile = Game::GetInstance().CreateInstance<EnemyLinearProjectile>("ShooterEnemyProjectile" + std::to_string(num++), "Cube", "Simple", "RockyTexture");
+		EnemyLinearProjectile* projectile = Game::GetInstance().CreateInstance<EnemyLinearProjectile>("ShooterEnemyProjectile" + std::to_string(num++), "SpikeBall", "Simple", "ElectricTexture");
 		glm::vec3 vel = glm::normalize(tank->GetPosition() - GetPosition());//trajectory should be relative to player
 		projectile->SetPosition(GetPosition() + 2.0f*vel);// have it spawn infront of enemy not inside
 		projectile->SetVelocity(vel*(10.0f + GetSpeed()));

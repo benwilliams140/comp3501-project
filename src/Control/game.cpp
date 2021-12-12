@@ -123,8 +123,6 @@ void Game::SetupResources(void) {
 
     // Load/Create terrain
     resman_.CreateTerrain("Terrain", glm::vec3(2.5f, 1.0f, 2.5f));
-    //filename = std::string(TEXTURE_DIRECTORY) + std::string("/terrain_height_map.png");
-    //resman_.LoadResource(ResourceType::Terrain, "Terrain", filename.c_str(), glm::vec3(5.0f, 1.0f, 5.0f));
 
     // Load geometry
     filename = std::string(MESH_DIRECTORY) + std::string("/cube.mesh");
@@ -159,6 +157,10 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Mesh, "Parachute", filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("") + std::string("/enemy.mesh");
     resman_.LoadResource(ResourceType::Mesh, "Alien", filename.c_str());
+    filename = std::string(MESH_DIRECTORY) + std::string("") + std::string("/rubber_bullet.mesh");
+    resman_.LoadResource(ResourceType::Mesh, "RubberBullet", filename.c_str());
+    filename = std::string(MESH_DIRECTORY) + std::string("") + std::string("/spike_ball.mesh");
+    resman_.LoadResource(ResourceType::Mesh, "SpikeBall", filename.c_str());
 
     // Load shaders
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/simple_texture");
@@ -199,10 +201,10 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Texture, "ParticleTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/projectiles") + std::string("/energy_blast.png");
     resman_.LoadResource(ResourceType::Texture, "EnergyBlastTexture", filename.c_str());
-    filename = std::string(TEXTURE_DIRECTORY) + std::string("/projectiles") + std::string("/projectile.png");
-    resman_.LoadResource(ResourceType::Texture, "ProjectileTexture", filename.c_str());
-    filename = std::string(TEXTURE_DIRECTORY) + std::string("/projectiles") + std::string("/energy_projectile.png");
-    resman_.LoadResource(ResourceType::Texture, "EnergyProjectile", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/projectiles") + std::string("/rubber.png");
+    resman_.LoadResource(ResourceType::Texture, "RubberTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/projectiles") + std::string("/electric.png");
+    resman_.LoadResource(ResourceType::Texture, "ElectricTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/chaser_enemy.png");
     resman_.LoadResource(ResourceType::Texture, "ChaserEnemyTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/shooter_enemy.png");
@@ -317,7 +319,7 @@ void Game::MainLoop(void){
 
         // toggle freeroam if 'F' key clicked
         // developer feature - should probably be removed before submission
-        if (Input::getKeyDown(INPUT_KEY_F)) {
+        if (Input::getKeyDown(INPUT_KEY_F1)) {
             freeroam_ = !freeroam_;
         }
 
