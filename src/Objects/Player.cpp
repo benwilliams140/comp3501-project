@@ -143,6 +143,9 @@ namespace game {
 		//add a discovered artifact
 		AddMoney(newArtifact->Discover());
 		artifacts.push_back(newArtifact);
+		if (artifacts.size() >= Game::GetInstance().GetArtifacts().size()) {
+			Game::GetInstance().SetState(State::YOU_WIN);
+		}
 	}
 
 	Artifact* Player::GetArtifact(int id) {

@@ -12,7 +12,7 @@ in float particle_id[];
 uniform mat4 projection_mat;
 
 // Simulation parameters (constants)
-uniform float particle_size = 0.25;
+uniform float particle_size = 0.5;
 
 // Attributes passed to the fragment shader
 out vec4 frag_color;
@@ -33,10 +33,11 @@ void main() {
     v[3] = vec4(position.x + 0.5*particle_size, position.y + 0.5*particle_size, position.z, 1.0);
 
 	// Create the new geometry: a quad with four vertices from the vector v
-    int fid = int(floor(particle_id[0] * 4.0)); // 0-3 used to pick sector from flame 2x2 drawing
+    int fid = int(particle_id[0]) % 4;
+    //int fid = int(floor(particle_id[0] * 4.0)); // 0-3 used to pick sector from flame 2x2 drawing
     for (int i = 0; i < 4; i++){
         gl_Position = projection_mat * v[i];
-        tex_coord = vec2(floor(i / 2)*0.5 + 0.5, (i % 2)*0.5 + 0.5);
+        tex_coord = vec2(floor(i / 2) * 0.5 + floor(fid / 2) * 0.5, (i % 2) * 0.5 + (fid % 2) * 0.5);
         frag_color = particle_color[0];
         EmitVertex();
     }

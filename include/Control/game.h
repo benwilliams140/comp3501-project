@@ -24,6 +24,7 @@
 #include "Control/GUI/Menus/hud.h"
 #include "Control/GUI/Menus/upgrades.h"
 #include "Control/GUI/Menus/game_over.h"
+#include "Control/GUI/Menus/you_win.h"
 #include "Control/GUI/Menus/text_window.h";
 #include "Control/path_config.h"
 #include "Control/time.h"
@@ -81,7 +82,8 @@ namespace game {
         RUNNING,
         STOPPED,
         UPGRADES,
-        GAME_OVER
+        GAME_OVER,
+        YOU_WIN
     };
 
     // Game application

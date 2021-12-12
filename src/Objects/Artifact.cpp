@@ -17,10 +17,11 @@ namespace game {
 		value = 0;
 
 		static int particleID = 0;
-		particle_ = Game::GetInstance().CreateInstance<Particle>("ArtifactInstancedParticle" + particleID++, "Particle", "ArtifactParticles", "ParticleTexture");
-		particle_->SetScale(glm::vec3(0.2f));
+		particle_ = Game::GetInstance().CreateInstance<Particle>("ArtifactInstancedParticle" + particleID++, "Particle", "ArtifactParticles", "ArtifactParticleTexture");
+		particle_->SetScale(glm::vec3(0.2f)); // change this to get the right shape (eg. for taller artifacts, scale the y value more)
 		particle_->SetVelocityMultiple(1.0f); // starting movement speed
 		particle_->SetActive(false);
+		particle_->SetInstanceAmount(30);
 	}
 
 

@@ -82,6 +82,7 @@ void Game::InitMenus() {
     menus_[MenuType::HUD] = new HUD();
     menus_[MenuType::UPGRADES] = new Upgrades();
     menus_[MenuType::GAME_OVER] = new GameOver();
+    menus_[MenuType::YOU_WIN] = new YouWin();
     menus_[MenuType::TEXT_WINDOW] = new TextWindow();
 }
 
@@ -197,8 +198,10 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Texture, "CrateTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("") + std::string("/parachute.png");
     resman_.LoadResource(ResourceType::Texture, "ParachuteTexture", filename.c_str());
-    filename = std::string(TEXTURE_DIRECTORY) + std::string("") + std::string("/particle.png");
-    resman_.LoadResource(ResourceType::Texture, "ParticleTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("") + std::string("/water_particle.png");
+    resman_.LoadResource(ResourceType::Texture, "GeyserParticleTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("") + std::string("/sparkle_particle.png");
+    resman_.LoadResource(ResourceType::Texture, "ArtifactParticleTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/projectiles") + std::string("/energy_blast.png");
     resman_.LoadResource(ResourceType::Texture, "EnergyBlastTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/projectiles") + std::string("/projectile.png");
@@ -339,6 +342,9 @@ void Game::MainLoop(void){
         else if (state_ == State::GAME_OVER) {
             menus_[MenuType::GAME_OVER]->Render();
         }
+        else if (state_ == State::YOU_WIN) {
+            menus_[MenuType::YOU_WIN]->Render();
+        }
         // update and render game when running
         else if (state_ == State::RUNNING) {
             // handle camera movement
@@ -360,7 +366,7 @@ void Game::MainLoop(void){
                 scene_.RemoveNode((*it)->GetName());
             }
 
-            // only update is the text window isn't showing
+            // only update if the text window isn't showing
             if(((TextWindow*) menus_[MenuType::TEXT_WINDOW])->GetState() == TextState::NOTHING) {
                 player_->Update(); // player has it's own update method
                 scene_.Update();

@@ -16,6 +16,7 @@ namespace game {
 		HUD,
 		UPGRADES,
 		GAME_OVER,
+		YOU_WIN,
 		TEXT_WINDOW
 	};
 

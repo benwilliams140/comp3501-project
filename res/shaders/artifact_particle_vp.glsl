@@ -22,40 +22,36 @@ uniform float timer;
 out vec4 particle_color;
 out float particle_id;
 
-const float maxRadius = 10.0; // control the radius of the orbits
-const float minRadius = 5.0;
-const int particlesPerOrbit = 10;
+const float maxSpray = 0.25;
+const float trad = 0.125;
 
 void main() {
     particle_id = gl_InstanceID;
 
-    int orbitIndex = gl_InstanceID % particlesPerOrbit;
-    int globalIndex = int(floor(float(gl_InstanceID) / particlesPerOrbit));
+    float phase = (gl_InstanceID % 10) / 10.0;
 
     // calculate the random numbers to generate a sphere
-    // mess around with the numbers a bit to get different distributions
-    float radius = max(minRadius, maxRadius * mod(globalIndex * 140992091.0 + 940989061.0, 3451237613.0) / 3451237613.0);
     float u = mod(gl_InstanceID * 514101481.0 + 1000041499.0, 123459617.0) / 123459617.0;
     float v = mod(gl_InstanceID * 487141639.0 + 479001599.0, 998728351.0) / 998728351.0;
     float w = mod(gl_InstanceID * 289339937.0 + 617667649.0, 234570337.0) / 234570337.0;
 
+    // calculate angles and radius
     float theta = 2.0 * u * PI;
     float phi = acos(2.0 * v - 1.0);
+    float spray = maxSpray * pow(w, float(1.0 / 3.0));
 
-    // update angles to "orbit" around center
-    float deltaTheta = mod(globalIndex * 514101481.0 + 1000041499.0, 123459617.0) / 123459617.0;
-    float deltaPhi = max(1.0, 3.0 * mod(globalIndex * 140992091.0 + 940989061.0, 3451237613.0) / 3451237613.0);
+    // calculate normal direction (ie. outward) and particle position
+    vec3 normal = vec3(spray * cos(theta) * sin(phi), spray * sin(theta) * sin(phi), spray*cos(phi));
+    vec3 position = trad * normal;
 
-    //theta += deltaTheta * timer;
-    //theta -= 0.01 * deltaTheta * orbitIndex * PI / 180.0; 
+    // use time to move particles
+    float multiple = mod(4 * timer * phase, 3.0) + 1.0;
 
-    phi += deltaPhi * timer;
-    phi -= 0.01 * deltaPhi * orbitIndex * PI / 180.0; // creates the trail of particles
+    // calculate final position
+    vec3 finalPos = vertex + multiple * 75 * position;
+    gl_Position = view_mat * world_mat * vec4(finalPos, 1.0);
 
-    // calculate the position
-    vec3 position = vec3(radius * cos(theta) * sin(phi), radius * sin(phi) * sin(theta), radius * cos(phi));
-
-    particle_color = vec4(0, 0, 0, 1.0 - 1.0 / (orbitIndex + 1));
-
-    gl_Position = view_mat * world_mat * vec4(position, 1.0);
+    // set alpha based on distance to center
+    float dist = length(finalPos - vertex);
+    particle_color = vec4(0, 0, 0, 1.0);
 }
