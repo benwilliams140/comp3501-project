@@ -5,4 +5,5 @@ target_sources(${PROJ_NAME} PUBLIC
 	${CMAKE_CURRENT_SOURCE_DIR}/upgrades.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game_over.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/text_window.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/you_win.cpp
 )

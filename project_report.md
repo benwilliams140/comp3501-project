@@ -167,26 +167,26 @@ The headers and source files are split up into the `include` and `src` directori
 
 - **Textures:**
 
-  | **Asset Name**        | **Author** | Link |
-  | --------------------- | ---------- | ---- |
-  | acid.png              |            |      |
-  | alien_plant.png       |            |      |
-  | dirt.png              |            |      |
-  | geyser.png            |            |      |
-  | mud.png               |            |      |
-  | rocky.png             |            |      |
-  | snow.png              |            |      |
-  | electric.png          |            |      |
-  | energy_blast.png      |            |      |
-  | rubber.png            |            |      |
-  | chaser_enemy.png      |            |      |
-  | crate.png             |            |      |
-  | hovertank_texture.png |            |      |
-  | parachute.png         |            |      |
-  | scanning.png          |            |      |
-  | shooter_enemy.png     |            |      |
-  | sparkle_particle.png  |            |      |
-  | water_particle.png    |            |      |
+  | **Asset Name**        | **Author**                                                   | Link                                                         |
+  | --------------------- | :----------------------------------------------------------- | ------------------------------------------------------------ |
+  | acid.png              | Horus                                                        | https://www.filterforge.com/filters/2152.html                |
+  | alien_plant.png       | Frostguard                                                   | https://www.filterforge.com/filters/8489.html                |
+  | dirt.png              | Sneath                                                       | https://www.filterforge.com/filters/11775.html               |
+  | geyser.png            | Jakob Owens                                                  | https://unsplash.com/photos/nKFPNayRbFE                      |
+  | mud.png               | G.A.G                                                        | https://www.filterforge.com/filters/6278.html                |
+  | rocky.png             | David Mould (Texture Demo)                                   |                                                              |
+  | snow.png              | Ghost IV                                                     | https://www.filterforge.com/filters/992.html                 |
+  | electric.png          | Rian                                                         | https://www.filterforge.com/filters/4740.html                |
+  | energy_blast.png      | Francisco Jacobo                                             | https://www.filterforge.com/filters/14211.html               |
+  | rubber.png            | ScreenscapeS<br />Edited by: Pablo Rascazzi                  | https://www.filterforge.com/filters/13303.html               |
+  | chaser_enemy.png      | Bobbiethejean                                                | https://www.filterforge.com/filters/9039.html                |
+  | crate.png             | Mike Blackney                                                | https://www.filterforge.com/filters/750.html                 |
+  | hovertank_texture.png | Katsukagi<br />Georges "TRaK" Grondin<br />Fupi<br />Edited by: Pablo Rascazzi | https://3dtextures.me/2019/04/30/metal-plate-012/<br />https://3dtextures.me/2019/06/11/metal-plate-020/<br />https://opengameart.org/content/wall-cover-3<br />https://opengameart.org/content/old-ventilation-cover-dark<br />https://opengameart.org/content/metal-panel-dark-brown-alt<br />https://opengameart.org/content/wall-cover-4<br />https://opengameart.org/content/warning-stripes-trim-trim-medium-border-light<br />https://opengameart.org/content/shiny-window-pane |
+  | parachute.png         | minglepingle (Cloth)<br />Novaesky (Steel Cable)<br />Edited by: Pablo Rascazzi | https://www.filterforge.com/filters/12704.html<br />https://www.filterforge.com/filters/15744.html |
+  | scanning.png          | capnsparrow<br />Edited by: Pablo Rascazzi                   | https://www.filterforge.com/filters/4106.html                |
+  | shooter_enemy.png     | Bobbiethejean                                                | https://www.filterforge.com/filters/9039.html                |
+  | sparkle_particle.png  | Ben Williams                                                 |                                                              |
+  | water_particle.png    | David Mould (Fire Demo)                                      |                                                              |
 
   | **Asset Name**            | **Author**   |
   | ------------------------- | ------------ |
