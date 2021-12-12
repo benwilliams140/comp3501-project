@@ -22,36 +22,36 @@ uniform float timer;
 out vec4 particle_color;
 out float particle_id;
 
-float maxSpray = 0.25;
-float accel = -20.0;
-float initialVelocity = 75.0;
-float maxRadius = 20;
-vec3 downDir = vec3(0, -1, 0);
+const float maxSpray = 0.25;
+const float trad = 0.125;
 
 void main() {
     particle_id = gl_InstanceID;
 
+    float phase = (gl_InstanceID % 10) / 10.0;
+
     // calculate the random numbers to generate a sphere
-    // mess around with the numbers a bit to get different distributions
     float u = mod(gl_InstanceID * 514101481.0 + 1000041499.0, 123459617.0) / 123459617.0;
     float v = mod(gl_InstanceID * 487141639.0 + 479001599.0, 998728351.0) / 998728351.0;
     float w = mod(gl_InstanceID * 289339937.0 + 617667649.0, 234570337.0) / 234570337.0;
 
+    // calculate angles and radius
     float theta = 2.0 * u * PI;
     float phi = acos(2.0 * v - 1.0);
-    float radius = maxRadius * w;
+    float spray = maxSpray * pow(w, float(1.0 / 3.0));
 
     // calculate normal direction (ie. outward) and particle position
-    vec3 normal = normalize(vec3(cos(theta), initialVelocity * w, sin(theta)));
-    vec3 position = 0.1 * normal;
+    vec3 normal = vec3(spray * cos(theta) * sin(phi), spray * sin(theta) * sin(phi), spray*cos(phi));
+    vec3 position = trad * normal;
 
-    float phase = mod((timer + gl_InstanceID / 50.0), 2.0);
-    vec3 velocity = vec3(initialVelocity * phase, initialVelocity + accel * phase, initialVelocity * phase);
-    velocity *= velocityMultiple;
-    //float velocity = initialVelocity + accel * phase;
+    // use time to move particles
+    float multiple = mod(4 * timer * phase, 3.0) + 1.0;
 
     // calculate final position
-    vec3 finalPos = vec3(vertex.x + normal.x * velocity.x * phase, vertex.y + velocity.y * phase, vertex.z + normal.z * velocity.z * phase);
-
+    vec3 finalPos = vertex + multiple * 75 * position;
     gl_Position = view_mat * world_mat * vec4(finalPos, 1.0);
+
+    // set alpha based on distance to center
+    float dist = length(finalPos - vertex);
+    particle_color = vec4(0, 0, 0, 1.0);
 }

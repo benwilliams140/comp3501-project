@@ -82,6 +82,7 @@ void Game::InitMenus() {
     menus_[MenuType::HUD] = new HUD();
     menus_[MenuType::UPGRADES] = new Upgrades();
     menus_[MenuType::GAME_OVER] = new GameOver();
+    menus_[MenuType::YOU_WIN] = new YouWin();
     menus_[MenuType::TEXT_WINDOW] = new TextWindow();
 }
 
@@ -171,6 +172,8 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Material, "Lighting", filename.c_str());
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/geyser_particle");
     resman_.LoadResource(ResourceType::Material, "GeyserParticles", filename.c_str());
+    filename = std::string(MATERIAL_DIRECTORY) + std::string("/artifact_particle");
+    resman_.LoadResource(ResourceType::Material, "ArtifactParticles", filename.c_str());
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/terrain");
     resman_.LoadResource(ResourceType::Material, "TerrainMaterial", filename.c_str());
 
@@ -197,8 +200,10 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Texture, "CrateTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("") + std::string("/parachute.png");
     resman_.LoadResource(ResourceType::Texture, "ParachuteTexture", filename.c_str());
-    filename = std::string(TEXTURE_DIRECTORY) + std::string("") + std::string("/particle.png");
-    resman_.LoadResource(ResourceType::Texture, "ParticleTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("") + std::string("/water_particle.png");
+    resman_.LoadResource(ResourceType::Texture, "GeyserParticleTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("") + std::string("/sparkle_particle.png");
+    resman_.LoadResource(ResourceType::Texture, "ArtifactParticleTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/projectiles") + std::string("/energy_blast.png");
     resman_.LoadResource(ResourceType::Texture, "EnergyBlastTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/projectiles") + std::string("/rubber.png");
@@ -235,7 +240,6 @@ void Game::SetupScene(void) {
     HoverTank* hovertank_base = CreateInstance<HoverTank>(HOVERTANK_BASE, HOVERTANK_BASE, hovertankMaterial, "HovertankTexture");
     hovertank_base->SetPosition(glm::vec3(-216.0f, -41.0f, -181.0f));
     player_ = new Player(100.f, 100.f, hovertank_base);
-    player_->AddMoney(100000); // for demo purposes
   
     HoverTankTurret* hovertank_turret = CreateInstance<HoverTankTurret>(HOVERTANK_TURRET, HOVERTANK_TURRET, hovertankMaterial, "HovertankTexture");
     hovertank_turret->Translate(glm::vec3(0.f, 1.055f, -0.9f));
@@ -340,6 +344,9 @@ void Game::MainLoop(void){
         else if (state_ == State::GAME_OVER) {
             menus_[MenuType::GAME_OVER]->Render();
         }
+        else if (state_ == State::YOU_WIN) {
+            menus_[MenuType::YOU_WIN]->Render();
+        }
         // update and render game when running
         else if (state_ == State::RUNNING) {
             // handle camera movement
@@ -361,7 +368,7 @@ void Game::MainLoop(void){
                 scene_.RemoveNode((*it)->GetName());
             }
 
-            // only update is the text window isn't showing
+            // only update if the text window isn't showing
             if(((TextWindow*) menus_[MenuType::TEXT_WINDOW])->GetState() == TextState::NOTHING) {
                 player_->Update(); // player has it's own update method
                 scene_.Update();

@@ -13,6 +13,15 @@ namespace game {
 
 	Artifact::Artifact(const std::string name, const Resource* geometry, const Resource* material, const Resource* texture) : SceneNode(name, geometry, material, texture) {
 		found = false;
+		id = -1;
+		value = 0;
+
+		static int particleID = 0;
+		particle_ = Game::GetInstance().CreateInstance<Particle>("ArtifactInstancedParticle" + particleID++, "Particle", "ArtifactParticles", "ArtifactParticleTexture");
+		particle_->SetScale(glm::vec3(0.2f)); // change this to get the right shape (eg. for taller artifacts, scale the y value more)
+		particle_->SetVelocityMultiple(1.0f); // starting movement speed
+		particle_->SetActive(false);
+		particle_->SetInstanceAmount(30);
 	}
 
 
@@ -41,12 +50,17 @@ namespace game {
 		//when discovering, and scanning the object return the value to be added to your score
 		if (!found) {
 			found = true;
+			delete particle_;
 			return value;
 		}
 		return 0;
 	}
 
 	void Artifact::Update(void) {
+		if (particle_) {
+			particle_->SetPosition(GetPosition());
+			particle_->SetActive(true);
+		}
 
 		EnemyCollision();
 		HovertankCollision();

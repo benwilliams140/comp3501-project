@@ -8,9 +8,10 @@ in vec2 tex_coord;
 uniform sampler2D tex_samp;
 
 // Simulation parameters (constants)
-uniform vec3 object_color = vec3(0.0, 0.67, 1.0);
+uniform vec3 object_color = vec3(1);
 
 void main() {
+
     // Get pixel from texture
     vec4 outval = texture(tex_samp, tex_coord);
     // Adjust specified object color according to the grayscale texture value

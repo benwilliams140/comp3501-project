@@ -41,7 +41,7 @@ namespace game {
 				//and set the enemy to the stunned state
 				lifespan_ = 0.0f;
 				enemies[i]->SetStunned(true);
-				enemies[i]->SetStunDown(500);
+				enemies[i]->SetStunDown(100.0f);
 			}
 		}
 	}

@@ -25,7 +25,7 @@ namespace game {
 			if (Math::isCollidingSphereToAABB(GetCollider(), enemies[i]->GetCollisionBox())) {
 				//if they collided then set the enemy to the stunned state
 				enemies[i]->SetStunned(true);
-				enemies[i]->SetStunDown(500);
+				enemies[i]->SetStunDown(500.0f);
 			}
 		}
 	}
