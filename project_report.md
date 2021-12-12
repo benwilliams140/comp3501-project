@@ -219,17 +219,36 @@ The headers and source files are split up into the `include` and `src` directori
 
 2. Game environment populated by textured, illuminated objects.
 
+- all objects in the world are illuminated using Blinn-Phong and directional lighting
+- the world is populated by three variations of instanced rocks along with a plant
+- there are also three types of hazards throughout the world
+
 3. At least one use of a screen-space special effect.
+
+- 
 
 4. At least two distinct particle systems.
 
+- both of our particle systems use instanced points that are then expanded to squares in the geometry shader
+- each geyser has a particle system that simulates water being shot up into the air
+- each artifact has a "sparkling" effect before it's been scanned
+
 5. At least two hierarchical objects with independently moving parts.
+
+- the hovertank is a hierarchical object that has a base, four separate "tracks", a scanner, turret base, and different attachments that go on the base
+- the care package has a parachute that rotates individually from the crate
 
 6. Player-centric camera with player controls linked to current orientation.
 
+- our games camera is third-person, following the direction of the tank's turret
+
 7. Gravity affecting at least some objects (ballistic motion).
 
+- gravity affects several objects in our game: the hovertank, care package, parabolic projectile (shot from the energy cannon), and all enemies
+
 8. Multiple stages to game.
+
+- the game has main and pause menus, along with an upgrade screen (that pauses the game), and mission accomplished/game over screens
 
 ##### Gameplay Requirements
 
