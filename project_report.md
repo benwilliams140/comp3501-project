@@ -242,10 +242,6 @@ The headers and source files are split up into the `include` and `src` directori
 
 - our games camera is third-person, following the direction of the tank's turret
 
-7. Gravity affecting at least some objects (ballistic motion).
-
-- gravity affects several objects in our game: the hovertank, care package, parabolic projectile (shot from the energy cannon), and all enemies
-
 8. Multiple stages to game.
 
 - the game has main and pause menus, along with an upgrade screen (that pauses the game), and mission accomplished/game over screens
@@ -294,10 +290,11 @@ energy blast: a shield like blast that stuns enemies in it's radius
 
 ##### Beyond the Minimum
 
-- the terrain has quite advanced collision, allowing us to have gravity that affects the hovertank
-  - this is accomplished using ray casting?
+- the terrain has quite advanced collision accomplished using ray-plane intersection
 - in-depth GUI using ImGui
   - has many different menus, widgets
+- gravity affects several objects in our game: the hovertank, care package, parabolic projectile (shot from the energy cannon), and all enemies
+
 
 #### Postmortem
 
