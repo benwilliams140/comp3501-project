@@ -71,7 +71,7 @@ namespace game {
 
 		std::string text = "\
 Hello fellow archaeologist,\n\n\
-You've been tasked with finding and scanning all the ancient artifacts on planet L113.\n\n\
+You've been tasked by Mould Incorporated with finding and scanning all the ancient artifacts on planet L113.\n\n\
 Beware of the native alien lifeforms as they are protecting these artifacts and will attack when approached. \
 Your employer specifically stated not to kill any of these alien lifeforms, so you must only defend yourself with non-lethal weapons.\n\n\
 For every artifacts scanned, your employer will pay you with credits which you can use to buy upgrades for your hovertank. \
