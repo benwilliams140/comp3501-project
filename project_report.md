@@ -207,6 +207,16 @@ The headers and source files are split up into the `include` and `src` directori
 
 ##### Game Description
 
+The setting of the game takes place on an alien planet, where you are an archeologist tasked with finding artifacts hidden across the world. Within the game itself we brief  the player of their mission in a text box at the beginning of the game. The text is actually the paragraph right below which you can look at for reference.
+
+"Hello fellow archaeologist,
+You've been tasked by Mould Incorporated with finding and scanning all the ancient artifacts on planet L113.
+Beware of the native alien lifeforms as they are protecting these artifacts and will attack when approached. 
+Your employer specifically stated not to kill any of these alien lifeforms, so you must only defend yourself with non-lethal weapons.
+For every artifacts scanned, your employer will pay you with credits which you can use to buy upgrades for your hovertank. 
+These upgrades will be air dropped to you, so watch the sky for falling care-packages.
+Good luck!"
+
 ##### Technical Requirements
 
 0. Written in C++ using OpenGL to render; readable code with no serious bugs, suitable class hierarchy, good documentation.
@@ -252,7 +262,6 @@ The headers and source files are split up into the `include` and `src` directori
    - Our game's camera is in third-person with the tank as its target. 
    - The camera rotates around the tank on the y-axis using the mouse movement.
    
-
 8. Multiple stages to game.
    - The game has a main and a pause menu, along with an upgrade screen (that pauses the game), and mission accomplished/game over screens.
 
@@ -322,9 +331,18 @@ energy blast: a shield like blast that stuns enemies in it's radius
    - The work was spread out evenly. Meetings were held each week to assign work, and everyone always got their work done on time. Would often help one another with work when running into problems. Communication of the group was clear and concise. 
 4. Advice to future students
    - Hold weekly meetings for group, and keep track of each others progress.
+   
    - Have a clear, detailed schedule.
+   
    - Have an easy fast way to communicate with others. (we used discord)
+   
    - Highly recommended to use git hub to share code if possible, VS has built in functions to work with git (at least the latest versions do)
+5.  If we had more time
+   - Shadows, and normal mapping
+   - focus more on optimizing game performance
+   - add more enemy types
+   - energy resourse object
+   - sound effects
 
 
 
