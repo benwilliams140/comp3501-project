@@ -207,6 +207,8 @@ The headers and source files are split up into the `include` and `src` directori
 
 ##### Game Description
 
+
+
 ##### Technical Requirements
 
 0. Written in C++ using OpenGL to render; readable code with no serious bugs, suitable class hierarchy, good documentation.
@@ -219,7 +221,7 @@ The headers and source files are split up into the `include` and `src` directori
 
 2. Game environment populated by textured, illuminated objects.
 
-   - All objects in the world are textured.
+   - All objects in the world are textured, some objects have moving textures.
    - All objects in the world are illuminated using Blinn-Phong lighting and a directional lighting.
 
    - The world is populated by three variations of instanced rocks along with a plant.
@@ -252,7 +254,6 @@ The headers and source files are split up into the `include` and `src` directori
    - Our game's camera is in third-person with the tank as its target. 
    - The camera rotates around the tank on the y-axis using the mouse movement.
    
-
 8. Multiple stages to game.
    - The game has a main and a pause menu, along with an upgrade screen (that pauses the game), and mission accomplished/game over screens.
 
@@ -260,44 +261,59 @@ The headers and source files are split up into the `include` and `src` directori
 ##### Gameplay Requirements
 
 0. Hovertank navigating alien planet.
-
--
+   - The game is set on an alien planet and has a hovertank as the main player.
 
 1. A thought-out setting with a variety of objects, including scenery and interactable objects both friendly and unfriendly. Give the player a role in the setting and a reason to take on the game's tasks.
 
-- the world is populated with a variety of rocks, plants, and hazards that can be collided with
-- each of the hazards has a different effect on the player; the geyser shoots them up into the air, mud slows them down, and acid damages them
-- two types of aliens inhabit the world, one that shoots projectiles and one that deals melee damage
+   - The world is populated with a variety of rocks, plants, and environmental hazards that can be collided with.
+
+   - Each of the environmental hazards has a different effect on the player; the geyser shoots them up into the air, mud pool slows them down, and acid pool slowly damages them.
+   - There world has interactable objects such as artifacts, which needs to be found and scanned, and care packages which fall from the sky when you buy a weapon upgrade for your tank.
+
+   - Two types of aliens inhabit the world, one that shoots projectiles and one that chases the player and deals melee damage.
+   - The player has a reason to be on the planet, he is an archaeologist that was contracted to find all the artifacts on an alien planet.
+
 
 2. Tasks for the player to do.
+   - The player must find and scan all artifacts the artifacts while actively evading aliens and hazards.
 
-- the player must find all artifacts while actively evading aliens and hazards
 
 3. At least three distinct devices the player can use.
 
-- scanner: used to open care packages and scan artifacts
-- machine gun/energy cannon: different types of projectiles that stun the enemy they hit, one that is affected by gravity and one that isn't
-energy blast: a shield like blast that stuns enemies in it's radius
+   - The scanner: used to scan artifacts and open care packages.
+
+   - The machine gun/energy cannon: different types of projectiles that stun the enemy when hit, one that is affected by gravity and one that isn't.
+   - Energy blast: a shield like blast that stuns enemies in it's radius.
+
 
 4. Some kind of upgrade path fostering a sense of progression.
 
-- whenever the player scans an artifact, they are awarded a set number of points, which can then be used to purchase upgrades
-- the player is able to upgrade their health, speed, and energy (each has two levels), along with the effectiveness of each of the hazards (although they may not want to get some of the upgrades)
-- the player can also purchase different abilities: the machine gun, energy cannon, and energy blast; these arrive in care packages that the player must find and pick up
+   - When the player scans an artifact, they are awarded a set number of points, which can then be used to purchase upgrades in the upgrade menu.
+
+   - The player is able to upgrade their health, speed, and energy (each has two levels), along with the effectiveness of each of the hazards (The player can choose which upgrade path to start with).
+
+   - The player can also purchase different abilities: the machine gun, energy cannon, and energy blast; these arrive in care packages that the player must find and pick up.
+
 
 5. Visual feedback about the player's status and actions.
 
-- there is a HUD showing the player their health, energy level, weapon inventory, and number of artifacts collected
-- an effect appears on the screen whenever the player is injured
-- geyser rise and fall whenever the geyser is active/inactive
-- artifact particles disappear after it has been collected
-- a scanning effect appears whenever the player scans an artifact
+   - There is a HUD showing the player's health, energy level, weapon inventory, and number of artifacts collected.
+
+   - There are on-screen effects which appear when the player is injured.
+   - Artifacts have sparkling particles when they have not been scanned yet.
+   - When scanning, a scanning animation happens which lets the player know that he is scanning.
+
+   - Geysers have a particle system that rise and fall which informs the player when the geyser's effect is activated or deactivated.
+
 
 6. Challenges that reward planning as well as reflexes.
 
-- the player must collect a variety of artifacts, each one in a harder location than the previous (if following the natural path)
-- many enemies populate the world, protecting the artifacts
-- there are also hazards in which the player must avoid; the acid hazard deals damage to the player, while the mud slows them down (allowing enemies to catch-up)
+   - The player must collect a variety of artifacts, each one is in a harder location than the previous (if the player is following the natural path).
+
+   - The artifacts are protected by many aliens, so the player has to defend himself and plan paths to the next artifacts.
+
+   - There are environmental hazards which the player must avoid; the acid hazard deals damage to the player, while the mud slows them down (allowing enemies to catch-up).
+
 
 ##### Beyond the Minimum
 
