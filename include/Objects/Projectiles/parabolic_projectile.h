@@ -18,7 +18,7 @@ namespace game {
 		// Update geometry configuration
 		virtual void Update() override;
 	private:
-		const float gravity_ = 9.81f;
+		const float gravity_ = 15.81f;
 	}; // class ParabolicProjectile
 
 } // namespace game

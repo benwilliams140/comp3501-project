@@ -27,7 +27,7 @@ namespace game {
 		// set properties for this new projectile
 		proj->SetPosition(position);
 		proj->SetScale(glm::vec3(1.25f));
-		proj->SetVelocity(forward * 25.0f + glm::vec3(0.0f, 1.5f, 0.0f) * 10.0f); // make it slightly angled
+		proj->SetVelocity(forward * 25.0f + glm::vec3(0.0f, 1.5f, 0.0f) * 5.0f); // make it slightly angled
 		proj->SetLifespan(5.0f);
 		projectiles_.push_back(proj);
 
