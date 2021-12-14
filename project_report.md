@@ -251,7 +251,7 @@ The headers and source files are split up into the `include` and `src` directori
 6. Player-centric camera with player controls linked to current orientation.
    - Our game's camera is in third-person with the tank as its target. 
    - The camera rotates around the tank on the y-axis using the mouse movement.
-
+   
 
 8. Multiple stages to game.
    - The game has a main and a pause menu, along with an upgrade screen (that pauses the game), and mission accomplished/game over screens.
@@ -305,7 +305,26 @@ energy blast: a shield like blast that stuns enemies in it's radius
 - in-depth GUI using ImGui
   - has many different menus, widgets
 - gravity affects several objects in our game: the hovertank, care package, parabolic projectile (shot from the energy cannon), and all enemies
-
+- creating enemies with simple AI
 
 #### Postmortem
+
+1. Successes
+   - Creating a game mechanic, and having it work properly. (collisions, projectiles, gravity, cameras movement, upgrade system etc.)
+   - create well designed meshes and assets for the game
+   - creating a wide variety of interactable/dynamic objects in the world (artifacts, enemies, care package, tank, hazards)
+2. Hardships
+   - Calculating the terrain normals correctly, and have them be as accurate as possible
+   - Working with other's premade code. Difficult to understand their intentions
+   - trying to work on project with time constraints, had to cut a few good ideas to save on time
+   - trying to also make sure game performance is adequate 
+3. Contributions
+   - The work was spread out evenly. Meetings were held each week to assign work, and everyone always got their work done on time. Would often help one another with work when running into problems. Communication of the group was clear and concise. 
+4. Advice to future students
+   - Hold weekly meetings for group, and keep track of each others progress.
+   - Have a clear, detailed schedule.
+   - Have an easy fast way to communicate with others. (we used discord)
+   - Highly recommended to use git hub to share code if possible, VS has built in functions to work with git (at least the latest versions do)
+
+
 
