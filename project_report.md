@@ -210,41 +210,52 @@ The headers and source files are split up into the `include` and `src` directori
 ##### Technical Requirements
 
 0. Written in C++ using OpenGL to render; readable code with no serious bugs, suitable class hierarchy, good documentation.
+   - We wrote the project in C++ using OpenGL.
 
-- 
+1. Large textured heightfield terrain with collision detection. 
+   - We generated a terrain heightfield using three layers of Perlin noise.
+   - The terrain has two types of collision detection, one which does checks for collision between a line and a triangle, and another that interpolates the height of all 4 corners of a  terrain quad.
 
-1. Large textured heightfield terrain with collision detection and shadows. 
-
-- 
 
 2. Game environment populated by textured, illuminated objects.
 
-- all objects in the world are illuminated using Blinn-Phong and directional lighting
-- the world is populated by three variations of instanced rocks along with a plant
-- there are also three types of hazards throughout the world
+   - All objects in the world are textured.
+   - All objects in the world are illuminated using Blinn-Phong lighting and a directional lighting.
+
+   - The world is populated by three variations of instanced rocks along with a plant.
+
+   - There are three types of environmental hazards throughout the world, a mud pool, an acid pool, and a geyser.
+
 
 3. At least one use of a screen-space special effect.
+   - When the player is hit, the screen flashes red on the corners.
+   - ...
 
-- 
 
 4. At least two distinct particle systems.
 
-- both of our particle systems use instanced points that are then expanded to squares in the geometry shader
-- each geyser has a particle system that simulates water being shot up into the air
-- each artifact has a "sparkling" effect before it's been scanned
+   - All of our particle systems use a single point which is instanced and is then expanded to quads in the geometry shader.
+
+   - Each geyser has a particle system that simulates water being shot up into the air.
+
+   - Each artifact has a "sparkling" effect before it has been scanned, this informs the player that it needs to be scanned.
+
 
 5. At least two hierarchical objects with independently moving parts.
 
-- the hovertank is a hierarchical object that has a base, four separate "tracks", a scanner, turret base, and different attachments that go on the base
-- the care package has a parachute that rotates individually from the crate
+   - The hovertank is a hierarchical object that has a base as the root, and a turret and four hover tracks as children of the base. The the tank's turret has a scanner and 2 guns as children.
+
+   - The care package has a parachute as a child which rotates individually from the crate.
+
 
 6. Player-centric camera with player controls linked to current orientation.
+   - Our game's camera is in third-person with the tank as its target. 
+   - The camera rotates around the tank on the y-axis using the mouse movement.
 
-- our games camera is third-person, following the direction of the tank's turret
 
 8. Multiple stages to game.
+   - The game has a main and a pause menu, along with an upgrade screen (that pauses the game), and mission accomplished/game over screens.
 
-- the game has main and pause menus, along with an upgrade screen (that pauses the game), and mission accomplished/game over screens
 
 ##### Gameplay Requirements
 
