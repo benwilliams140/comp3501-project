@@ -1,4 +1,10 @@
-### COMP3501A - Final Project Report
+## COMP3501A - Final Project Report
+
+#### Group Members
+
+Navin Haider | 101081934
+Pablo Rascazzi | 101110139
+Ben Williams | 101105663
 
 #### Git Repository
 
@@ -228,7 +234,7 @@ Good luck!"
 ##### Technical Requirements
 
 0. Written in C++ using OpenGL to render; readable code with no serious bugs, suitable class hierarchy, good documentation.
-   - We wrote the project in C++ using OpenGL.
+   - We wrote the project in C++ using OpenGL with documentation throughout.
 
 1. Large textured heightfield terrain with collision detection. 
    - We generated a terrain heightfield using three layers of Perlin noise.
