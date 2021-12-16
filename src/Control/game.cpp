@@ -178,6 +178,8 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Material, "ArtifactParticles", filename.c_str());
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/terrain");
     resman_.LoadResource(ResourceType::Material, "TerrainMaterial", filename.c_str());
+    filename = std::string(MATERIAL_DIRECTORY) + std::string("/screen_space_effect");
+    resman_.LoadResource(ResourceType::Material, "ScreenSpaceEffect", filename.c_str());
 
     // Load texture
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/uv6.png");
@@ -218,6 +220,9 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Texture, "ShooterEnemyTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/scanning.png");
     resman_.LoadResource(ResourceType::Texture, "ScanningTexture", filename.c_str());
+
+    // Setup drawing to texture
+    scene_.SetupDrawToTexture();
 }
 
 void SetupHovertank();
@@ -267,6 +272,13 @@ void Game::SetupScene(void) {
     SetupEnemies();
 }
 
+void Game::DrawScene(std::string effect) {
+    // Draw the scene to a texture
+    scene_.DrawToTexture(camera_);
+    // Process the texture with a screen-space effect and display the texture
+    scene_.DisplayTexture(resman_.GetResource(effect)->GetResource());
+}
+
 void Game::MainLoop(void){
     // Loop while the user did not close the window
     while (!glfwWindowShouldClose(window_)){
@@ -306,12 +318,12 @@ void Game::MainLoop(void){
         }
         // render pause menu and frozen game state in the background when paused
         else if (state_ == State::PAUSED) {
-            scene_.Draw(camera_);
+            DrawScene("ScreenSpaceEffect");
             menus_[MenuType::PAUSE]->Render();
         }
         // render upgrades screen and frozen game state in the background
         else if (state_ == State::UPGRADES) {
-            scene_.Draw(camera_);
+            DrawScene("ScreenSpaceEffect");
             menus_[MenuType::UPGRADES]->Render();
         }
         else if (state_ == State::GAME_OVER) {
@@ -346,13 +358,12 @@ void Game::MainLoop(void){
                 player_->Update(); // player has it's own update method
                 scene_.Update();
             }
-            scene_.Draw(camera_);
+            DrawScene("ScreenSpaceEffect");
             
             // render the HUD overtop of the game and handle its input
             menus_[MenuType::HUD]->Render();
             menus_[MenuType::HUD]->HandleInput();
         }
-
         // Push buffer drawn in the background onto the display
         glfwSwapBuffers(window_);
         Input::update();
@@ -482,7 +493,7 @@ void SetupHovertank() {
     HoverTank* hovertank_base = Game::GetInstance().CreateInstance<HoverTank>(HOVERTANK_BASE, HOVERTANK_BASE, hovertankMaterial, hovertankTexture);
     hovertank_base->SetPosition(glm::vec3(-216.0f, -41.0f, -181.0f));
     Game::GetInstance().SetPlayer(new Player(100.f, 100.f, hovertank_base));
-  
+
     HoverTankTurret* hovertank_turret = Game::GetInstance().CreateInstance<HoverTankTurret>(HOVERTANK_TURRET, HOVERTANK_TURRET, hovertankMaterial, hovertankTexture);
     hovertank_turret->Translate(glm::vec3(0.f, 1.055f, -0.9f));
     hovertank_turret->SetParent(hovertank_base);
