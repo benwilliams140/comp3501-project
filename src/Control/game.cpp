@@ -7,9 +7,9 @@ namespace game {
 
 // Main window settings
 const std::string window_title_g = "Game";
-const unsigned int window_width_g = 1280;
-const unsigned int window_height_g = 720;
-const bool window_full_screen_g = false;
+const unsigned int window_width_g = 1920;
+const unsigned int window_height_g = 1080;
+const bool window_full_screen_g = true;
 
 // Viewport and camera settings
 glm::vec3 camera_position_g(0.5, 0.5, 10.0);
@@ -51,6 +51,8 @@ void Game::InitWindow(void){
     } else {
         window_ = glfwCreateWindow(window_width_g, window_height_g, window_title_g.c_str(), NULL, NULL);
     }
+    windowWidth_ = window_width_g;
+    windowHeight_ = window_height_g;
     if (!window_){
         glfwTerminate();
         throw(GameException(std::string("Could not create window")));
@@ -284,6 +286,7 @@ void Game::DrawScene(std::string effect) {
     scene_.DrawToTexture(camera_);
     // Process the texture with a screen-space effect and display the texture
     scene_.DisplayTexture(resman_.GetResource(effect)->GetResource());
+    //scene_.SaveTexture("test.ppm");
 }
 
 void Game::MainLoop(void){
@@ -386,6 +389,8 @@ void Game::ResizeCallback(GLFWwindow* window, int width, int height){
     void* ptr = glfwGetWindowUserPointer(window);
     Game *game = (Game *) ptr;
     game->camera_->SetProjection(width, height);
+    game->windowWidth_ = width;
+    game->windowHeight_ = height;
 }
 
 Game::~Game(){
@@ -428,6 +433,14 @@ Camera* Game::GetCamera() {
 GLFWwindow* Game::GetWindow()
 {
     return window_;
+}
+
+GLint Game::GetWindowWidth() {
+    return windowWidth_;
+}
+
+GLint Game::GetWindowHeight() {
+    return windowHeight_;
 }
 
 Terrain* Game::GetTerrain() {

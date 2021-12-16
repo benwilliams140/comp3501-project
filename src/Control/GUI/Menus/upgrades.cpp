@@ -83,7 +83,7 @@ namespace game {
 
 				// Create Care Package
 				CarePackage* package = Game::GetInstance().CreateInstance<CarePackage>("PackageMG", "Cube", "Lighting", "CrateTexture");
-				package->SetPosition(glm::vec3(-30.0f, 35.0f, 75.0f));
+				package->SetPosition(glm::vec3(-339.0f, 35.0f, 73.0f));
 				package->SetStoredAbility((Ability*)(tank->GetMachineGun()));
 				
 				ImGui::BeginDisabled();
@@ -97,7 +97,7 @@ namespace game {
 
 				// Create Care Package
 				CarePackage* package = Game::GetInstance().CreateInstance<CarePackage>("PackageEC", "Cube", "Lighting", "CrateTexture");
-				package->SetPosition(glm::vec3(-30.0f, 35.0f, 75.0f));
+				package->SetPosition(glm::vec3(-123.0f, 35.0f, 194.0f));
 				package->SetStoredAbility((Ability*)(tank->GetEnergyCannon()));
 				
 				ImGui::BeginDisabled();
@@ -111,7 +111,7 @@ namespace game {
 
 				// Create Care Package
 				CarePackage* package = Game::GetInstance().CreateInstance<CarePackage>("PackageEB", "Cube", "Lighting", "CrateTexture");
-				package->SetPosition(glm::vec3(-30.0f, 35.0f, 75.0f));
+				package->SetPosition(glm::vec3(261.0f, 35.0f, 151.0f));
 				package->SetStoredAbility((Ability*)(tank->GetEnergyEmitter()));
 
 				ImGui::BeginDisabled();

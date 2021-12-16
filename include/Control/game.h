@@ -131,6 +131,8 @@ namespace game {
             // Getters/Setters
             Camera* GetCamera();
             GLFWwindow* GetWindow();
+            GLint GetWindowWidth();
+            GLint GetWindowHeight();
             Player* GetPlayer();
             Terrain* GetTerrain();
             Menu* GetMenu(MenuType menu);
@@ -163,6 +165,7 @@ namespace game {
 
             // GLFW window
             GLFWwindow* window_;
+            GLint windowWidth_, windowHeight_;
 
             // Menus/GUI components
             std::unordered_map<MenuType, Menu*> menus_;

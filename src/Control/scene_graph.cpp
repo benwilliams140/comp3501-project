@@ -143,8 +143,8 @@ void SceneGraph::SetupDrawToTexture(void){
     glBindTexture(GL_TEXTURE_2D, texture_);
 
     // Set up an image for the texture
-    int windowWidth, windowHeight;
-	glfwGetWindowSize(Game::GetInstance().GetWindow(), &windowWidth, &windowHeight);
+    GLint windowWidth = Game::GetInstance().GetWindowWidth();
+    GLint windowHeight = Game::GetInstance().GetWindowHeight();
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, windowWidth, windowHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -194,8 +194,8 @@ void SceneGraph::DrawToTexture(Camera *camera){
     // Enable frame buffer
     glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer_);
     
-    int windowWidth, windowHeight;
-	glfwGetWindowSize(Game::GetInstance().GetWindow(), &windowWidth, &windowHeight);
+    GLint windowWidth = Game::GetInstance().GetWindowWidth();
+    GLint windowHeight = Game::GetInstance().GetWindowHeight();
     glViewport(0, 0, windowWidth, windowHeight); 
 
     // Clear background
@@ -242,8 +242,6 @@ void SceneGraph::DisplayTexture(GLuint program){
     float current_time = glfwGetTime();
     glUniform1f(timer_var, current_time);
 
-
-
     // Bind scene texture
     GLint tex1 = glGetUniformLocation(program, "texture_map");
     glUniform1i(tex1, 0);
@@ -256,11 +254,17 @@ void SceneGraph::DisplayTexture(GLuint program){
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, bloodTexture_);
 
-    GLint start_time_var = glGetUniformLocation(program, "start_time");
-    glUniform1f(start_time_var, Game::GetInstance().GetPlayer()->GetInjuredStartTime());
+    GLint stun_start_time_var = glGetUniformLocation(program, "stun_start_time");
+    glUniform1f(stun_start_time_var, Game::GetInstance().GetPlayer()->GetStunnedStartTime());
 
-    GLint max_time_var = glGetUniformLocation(program, "max_time");
-    glUniform1f(max_time_var, Game::GetInstance().GetPlayer()->GetInjuredMaxTime());
+    GLint stun_max_time_var = glGetUniformLocation(program, "stun_max_time");
+    glUniform1f(stun_max_time_var, Game::GetInstance().GetPlayer()->GetStunnedMaxTime());
+
+    GLint blood_start_time_var = glGetUniformLocation(program, "blood_start_time");
+    glUniform1f(blood_start_time_var, Game::GetInstance().GetPlayer()->GetInjuredStartTime());
+
+    GLint blood_max_time_var = glGetUniformLocation(program, "blood_max_time");
+    glUniform1f(blood_max_time_var, Game::GetInstance().GetPlayer()->GetInjuredMaxTime());
 
     // Draw geometry
     glDrawArrays(GL_TRIANGLES, 0, 6); // Quad: 6 coordinates
@@ -271,8 +275,8 @@ void SceneGraph::DisplayTexture(GLuint program){
 
 
 void SceneGraph::SaveTexture(char *filename){
-    int windowWidth, windowHeight;
-	glfwGetWindowSize(Game::GetInstance().GetWindow(), &windowWidth, &windowHeight);
+    GLint windowWidth = Game::GetInstance().GetWindowWidth();
+    GLint windowHeight = Game::GetInstance().GetWindowHeight();
     unsigned char* data = new unsigned char[windowWidth*windowHeight*4];
 
     // Retrieve image data from texture
@@ -296,7 +300,7 @@ void SceneGraph::SaveTexture(char *filename){
     for (int i = 0; i < windowWidth; i++){
         for (int j = 0; j < windowHeight; j++){
             for (int k = 0; k < 3; k++){
-                int dt = data[i*windowWidth*4 + j*4 + k];
+                int dt = data[i*windowHeight*4 + j*4 + k];
                 f << dt << " ";
             }
         }

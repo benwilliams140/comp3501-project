@@ -19,17 +19,25 @@ namespace game {
 		money = 0;
 		healthRegenCooldown_ = 0.0f;
 		energyRegenCooldown_ = 0.0f;
+		injuredStartTime_ = 0.0f;
+		stunnedStartTime_ = 0.0f;
 	}
-
 
 	Player::~Player() {}
 
 	void Player::Update()
 	{
-		if (startTime_ > 0) {
-			startTime_ -= Time::GetDeltaTime();
+		// Decrease injured time
+		if (injuredStartTime_ > 0) {
+			injuredStartTime_ -= Time::GetDeltaTime();
 		} else {
-			startTime_ = 0;
+			injuredStartTime_ = 0;
+		}
+		// Decrease stunned time
+		if (stunnedStartTime_ > 0) {
+			stunnedStartTime_ -= Time::GetDeltaTime();
+		} else {
+			stunnedStartTime_ = 0;
 		}
 
 		energyRegenCooldown_ -= Time::GetDeltaTime();
@@ -70,11 +78,19 @@ namespace game {
 	}
 
 	float Player::GetInjuredStartTime() {
-		return startTime_;
+		return injuredStartTime_;
 	}
 
 	float Player::GetInjuredMaxTime() {
-		return maxTime_;
+		return injuredMaxTime_;
+	}
+
+	float Player::GetStunnedStartTime() {
+		return stunnedStartTime_;
+	}
+
+	float Player::GetStunnedMaxTime() {
+		return stunnedMaxTime_;
 	}
 
 	//setters
@@ -98,10 +114,13 @@ namespace game {
 		return health > 0;
 	}
 
+	void Player::Stun() {
+		stunnedStartTime_ = stunnedMaxTime_;
+	}
 	
 	void Player::decreaseHealth(float damage) {
 		//have the player take damage and lose health
-		startTime_ = maxTime_;
+		injuredStartTime_ = injuredMaxTime_;
 		health = health - damage;
 		healthRegenCooldown_ = maxCooldown_;
 		if (health <= 0.0f) {

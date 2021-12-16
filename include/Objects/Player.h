@@ -42,6 +42,8 @@ namespace game {
 		int GetNumArtifacts();
 		float GetInjuredStartTime();
 		float GetInjuredMaxTime();
+		float GetStunnedStartTime();
+		float GetStunnedMaxTime();
 
 		void SetHealth(float newHealth);
 		void SetMaxHealth(float newHealth);
@@ -51,6 +53,7 @@ namespace game {
 		void energyLost(float lostEnergy);
 		void AddMoney(float money);
 		bool purchase(float payment);
+		void Stun();
 
 		void DiscoveredArtifact(Artifact *newArtifact);
 		Artifact* GetArtifact(int id);
@@ -69,8 +72,10 @@ namespace game {
 		const float maxCooldown_ = 3.0f;
 		float energyRegenCooldown_, healthRegenCooldown_;
 
-		float maxTime_ = 0.5f;
-		float startTime_ = 0.0f;
+		float injuredMaxTime_ = 0.5f;
+		float injuredStartTime_ = 0.0f;
+		float stunnedMaxTime_ = 1.0f;
+		float stunnedStartTime_ = 0.0f;
 		
 	}; // class Player
 
