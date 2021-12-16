@@ -2,6 +2,7 @@
 .tree {
     line-height: 15px;
     font-size: 12px;
+    column-count: 3;
 }
 
 .demoCode {
