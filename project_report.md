@@ -267,144 +267,132 @@ Good luck!"
 ##### Technical Requirements
 
 0. Written in C++ using OpenGL to render; readable code with no serious bugs, suitable class hierarchy, good documentation.
-   - We wrote the project in C++ using OpenGL with documentation throughout.
+  - We wrote the project in C++ using OpenGL with documentation throughout.
 
-1. Large textured heightfield terrain with collision detection. 
-   - We generated a terrain heightfield using three layers of Perlin noise.
-   - The terrain has two types of collision detection, one which does checks for collision between a line and a triangle, and another that interpolates the height of all 4 corners of a  terrain quad.
+1. Large textured heightfield terrain with collision detection.
+
+  - We generated a terrain heightfield using three layers of Perlin noise.
+  - The terrain has two types of collision detection, one which does checks for collision between a line and a triangle, and another that interpolates the height of all 4 corners of a  terrain quad.
 
 
 2. Game environment populated by textured, illuminated objects.
 
-   - All objects in the world are textured, some objects have moving textures.
-   - All objects in the world are illuminated using Blinn-Phong lighting and a directional lighting.
-
-   - The world is populated by three variations of instanced rocks along with a plant.
-
-   - There are three types of environmental hazards throughout the world, a mud pool, an acid pool, and a geyser.
+  - All objects in the world are textured, some objects have moving textures.
+  - All objects in the world are illuminated using Blinn-Phong lighting and a directional lighting.
+  - The world is populated by three variations of instanced rocks along with a plant.
+  - There are three types of environmental hazards throughout the world, a mud pool, an acid pool, and a geyser.
 
 
 3. At least one use of a screen-space special effect.
-   - When the player is hit, the screen flashes red on the corners.
-   - ...
+
+  - When the player is injured, the screen flashes red on the corners.
+  - There is a chance for the player to be stunned when hit with an enemy projectile - this adds a multi-layered screen shaking effect that reduces over time.
 
 
 4. At least two distinct particle systems.
 
-   - All of our particle systems use a single point which is instanced and is then expanded to quads in the geometry shader.
-
-   - Each geyser has a particle system that simulates water being shot up into the air.
-
-   - Each artifact has a "sparkling" effect before it has been scanned, this informs the player that it needs to be scanned.
-
+  - All of our particle systems use a single point which is instanced and then expanded to quads in the geometry shader.
+  - Each geyser has a particle system that simulates water being shot up into the air.
+  - Each artifact has a "sparkling" effect before it has been scanned, this informs the player that it needs to be scanned.
 
 5. At least two hierarchical objects with independently moving parts.
 
-   - The hovertank is a hierarchical object that has a base as the root, and a turret and four hover tracks as children of the base. The the tank's turret has a scanner and 2 guns as children.
-
-   - The care package has a parachute as a child which rotates individually from the crate.
+  - The hovertank is a hierarchical object that has a base as the root, and a turret and four hover tracks as children of the base. The the tank's turret has a scanner and 2 guns as children.
+  - The care package has a parachute as a child which rotates individually from the crate.
 
 
 6. Player-centric camera with player controls linked to current orientation.
-   - Our game's camera is in third-person with the tank as its target. 
-   - The camera rotates around the tank on the y-axis using the mouse movement.
+   
+  - Our game's camera is in third-person with the tank as its target. 
+  - The camera rotates around the tank on the y-axis using the mouse movement.
    
 8. Multiple stages to game.
-   - The game has a main and a pause menu, along with an upgrade screen (that pauses the game), and mission accomplished/game over screens.
+
+  - The game has a main and a pause menu, along with an upgrade screen (that pauses the game), and mission accomplished/game over screens.
 
 
 ##### Gameplay Requirements
 
 0. Hovertank navigating alien planet.
-   - The game is set on an alien planet and has a hovertank as the main player.
+   
+  - The game is set on an alien planet and has a hovertank as the main player.
 
 1. A thought-out setting with a variety of objects, including scenery and interactable objects both friendly and unfriendly. Give the player a role in the setting and a reason to take on the game's tasks.
 
-   - The world is populated with a variety of rocks, plants, and environmental hazards that can be collided with.
-
-   - Each of the environmental hazards has a different effect on the player; the geyser shoots them up into the air, mud pool slows them down, and acid pool slowly damages them.
-   - There world has interactable objects such as artifacts, which needs to be found and scanned, and care packages which fall from the sky when you buy a weapon upgrade for your tank.
-
-   - Two types of aliens inhabit the world, one that shoots projectiles and one that chases the player and deals melee damage.
-   - The player has a reason to be on the planet, he is an archaeologist that was contracted to find all the artifacts on an alien planet.
-
+  - The world is populated with a variety of rocks, plants, and environmental hazards that can be collided with.
+  - Each of the environmental hazards has a different effect on the player; the geyser shoots them up into the air, mud pool slows them down, and acid pool slowly damages them.
+  - There world has interactable objects such as artifacts, which needs to be found and scanned, and care packages which fall from the sky when you buy a weapon upgrade for your tank.
+  - Two types of aliens inhabit the world, one that shoots projectiles and one that chases the player and deals melee damage.
+  - The player has a reason to be on the planet, he is an archaeologist that was contracted to find all the artifacts on an alien planet.
 
 2. Tasks for the player to do.
-   - The player must find and scan all artifacts the artifacts while actively evading aliens and hazards.
 
+  - The player must find and scan all artifacts the artifacts while actively evading aliens and hazards.
 
 3. At least three distinct devices the player can use.
 
-   - The scanner: used to scan artifacts and open care packages.
-
-   - The machine gun/energy cannon: different types of projectiles that stun the enemy when hit, one that is affected by gravity and one that isn't.
-   - Energy blast: a shield like blast that stuns enemies in it's radius.
-
+  - The scanner: used to scan artifacts and open care packages.
+  - The machine gun/energy cannon: different types of projectiles that stun the enemy when hit, one that is affected by gravity and one that isn't.
+  - Energy blast: a shield like blast that stuns enemies in it's radius.
 
 4. Some kind of upgrade path fostering a sense of progression.
 
-   - When the player scans an artifact, they are awarded a set number of points, which can then be used to purchase upgrades in the upgrade menu.
-
-   - The player is able to upgrade their health, speed, and energy (each has two levels), along with the effectiveness of each of the hazards (The player can choose which upgrade path to start with).
-
-   - The player can also purchase different abilities: the machine gun, energy cannon, and energy blast; these arrive in care packages that the player must find and pick up.
-
+  - When the player scans an artifact, they are awarded a set number of points, which can then be used to purchase upgrades in the upgrade menu.
+  - The player is able to upgrade their health, speed, and energy (each has two levels), along with the effectiveness of each of the hazards (The player can choose which upgrade path to start with).
+  - The player can also purchase different abilities: the machine gun, energy cannon, and energy blast; these arrive in care packages that the player must find and pick up.
 
 5. Visual feedback about the player's status and actions.
 
-   - There is a HUD showing the player's health, energy level, weapon inventory, and number of artifacts collected.
-
-   - There are on-screen effects which appear when the player is injured.
-   - Artifacts have sparkling particles when they have not been scanned yet.
-   - When scanning, a scanning animation happens which lets the player know that he is scanning.
-
-   - Geysers have a particle system that rise and fall which informs the player when the geyser's effect is activated or deactivated.
-
+  - There is a HUD showing the player's health, energy level, weapon inventory, and number of artifacts collected.
+  - There are on-screen effects which appear when the player is injured.
+  - Artifacts have sparkling particles when they have not been scanned yet.
+  - When scanning, a scanning animation happens which lets the player know that he is scanning.
+  - Geysers have a particle system that rise and fall which informs the player when the geyser's effect is activated or deactivated.
 
 6. Challenges that reward planning as well as reflexes.
 
-   - The player must collect a variety of artifacts, each one is in a harder location than the previous (if the player is following the natural path).
-
-   - The artifacts are protected by many aliens, so the player has to defend himself and plan paths to the next artifacts.
-
-   - There are environmental hazards which the player must avoid; the acid hazard deals damage to the player, while the mud slows them down (allowing enemies to catch-up).
-
+  - The player must collect a variety of artifacts, each one is in a harder location than the previous (if the player is following the natural path).
+  - The artifacts are protected by many aliens, so the player has to defend himself and plan paths to the next artifacts.
+  - There are environmental hazards which the player must avoid; the acid hazard deals damage to the player, while the mud slows them down (allowing enemies to catch-up).
 
 ##### Beyond the Minimum
 
-- the terrain has quite advanced collision accomplished using ray-plane intersection
-- in-depth GUI using ImGui
+  - the terrain has quite advanced collision accomplished using ray-plane intersection
+  - in-depth GUI using ImGui
   - has many different menus, widgets
-- gravity affects several objects in our game: the hovertank, care package, parabolic projectile (shot from the energy cannon), and all enemies
-- creating enemies with simple AI
+  - gravity affects several objects in our game: the hovertank, care package, parabolic projectile (shot from the energy cannon), and all enemies
+  - creating enemies with simple AI
 
 #### Postmortem
 
 1. Successes
-   - Creating a game mechanic, and having it work properly. (collisions, projectiles, gravity, cameras movement, upgrade system etc.)
-   - create well designed meshes and assets for the game
-   - creating a wide variety of interactable/dynamic objects in the world (artifacts, enemies, care package, tank, hazards)
+
+  - Creating a game mechanic, and having it work properly. (collisions, projectiles, gravity, cameras movement, upgrade system etc.)
+  - create well designed meshes and assets for the game
+  - creating a wide variety of interactable/dynamic objects in the world (artifacts, enemies, care package, tank, hazards)
+
 2. Hardships
-   - Calculating the terrain normals correctly, and have them be as accurate as possible
-   - Working with other's premade code. Difficult to understand their intentions
-   - trying to work on project with time constraints, had to cut a few good ideas to save on time
-   - trying to also make sure game performance is adequate 
+
+  - Calculating the terrain normals correctly, and have them be as accurate as possible
+  - Working with other's premade code. Difficult to understand their intentions
+  - trying to work on project with time constraints, had to cut a few good ideas to save on time
+  - trying to also make sure game performance is adequate 
+
 3. Contributions
-   - The work was spread out evenly. Meetings were held each week to assign work, and everyone always got their work done on time. Would often help one another with work when running into problems. Communication of the group was clear and concise. 
+
+  - The work was spread out evenly. Meetings were held each week to assign work, and everyone always got their work done on time. Would often help one another with work when running into problems. Communication of the group was clear and concise. 
+
 4. Advice to future students
-   - Hold weekly meetings for group, and keep track of each others progress.
-   
-   - Have a clear, detailed schedule.
-   
-   - Have an easy fast way to communicate with others. (we used discord)
-   
-   - Highly recommended to use git hub to share code if possible, VS has built in functions to work with git (at least the latest versions do)
+
+  - Hold weekly meetings for group, and keep track of each others progress.   
+  - Have a clear, detailed schedule.
+  - Have an easy fast way to communicate with others. (we used discord)   
+  - Highly recommended to use git hub to share code if possible, VS has built in functions to work with git (at least the latest versions do)
+
 5.  If we had more time
-   - Shadows, and normal mapping
-   - focus more on optimizing game performance
-   - add more enemy types
-   - energy resourse object
-   - sound effects
 
-
-
+  - Shadows, and normal mapping
+  - focus more on optimizing game performance
+  - add more enemy types
+  - energy resourse object
+  - sound effects
