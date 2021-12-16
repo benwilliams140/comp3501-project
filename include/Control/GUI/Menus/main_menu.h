@@ -29,7 +29,7 @@ namespace game {
 		} background_;
 
 		const struct TitleBar {
-			std::string title = "Title";
+			std::string title = "Planet Explorer";
 			ImFont* font = Menu::LoadFont("Freedom.ttf", 54.0f);
 			ImVec4 textColor = ImVec4(1, 1, 1, 1);
 		} titleBar_;
