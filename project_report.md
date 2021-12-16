@@ -1,5 +1,13 @@
 ### COMP3501A - Final Project Report
 
+#### Git Repository
+
+https://github.com/benwilliams140/comp3501-project
+
+##### Clone Instructions
+
+Found in the repository README.md file.
+
 #### Project Structure
 
 The headers and source files are split up into the `include` and `src` directories; these are then further split into `Control`, `Objects`, and `Renderer`. The CMake structure is recursive in nature - each of the `src` subfolders have their own `CMakeLists.txt` file containing each of the .cpp files and adding any additional subfolders. All of the resources are in the `res` directory.
