@@ -15,7 +15,11 @@
 #include "Objects/Hovertank/hovertank_turret.h"
 #include "Objects/Hovertank/scanner.h"
 
+
 namespace game {
+	class MachineGun;
+	class EnergyCannon;
+	class EnergyEmitter;
 
 	// Abstraction of an HoverTank
 	class HoverTank : public SceneNode {
@@ -35,8 +39,9 @@ namespace game {
 		glm::vec3 GetVelocity();
 		float GetStrength();
 		HoverTankTurret* GetTurret();
-		SceneNode* GetMachineGun();
-		SceneNode* GetEnergyCannon();
+		MachineGun* GetMachineGun();
+		EnergyCannon* GetEnergyCannon();
+		EnergyEmitter* GetEnergyEmitter();
 		Math::SphereCollider GetCollider(void) const;
 
 		// setters
@@ -44,8 +49,9 @@ namespace game {
 		void SetStrength(float newStrength);
 		void SetTurret(HoverTankTurret* turret);
 		void SetScanner(Scanner* scanner);
-		void SetMachineGun(SceneNode* machineGun);
-		void SetEnergyCannon(SceneNode* energyCannon);
+		void SetMachineGun(MachineGun* machineGun);
+		void SetEnergyCannon(EnergyCannon* energyCannon);
+		void SetEnergyEmitter(EnergyEmitter* energyEmitter);
 		void SetSpeedMultiple(float multiple);
 		void SetSpeedEffectMultiple(float multiple);
 		void IncreaseSpeedMultiple(float increase);
@@ -71,8 +77,9 @@ namespace game {
 
 		HoverTankTurret* turret_;
 		Scanner* scanner_;
-		SceneNode* machineGun_;
-		SceneNode* energyCannon_;
+		MachineGun* machineGun_;
+		EnergyCannon* energyCannon_;
+		EnergyEmitter* energyEmitter_;
 
 	}; // class HoverTank
 

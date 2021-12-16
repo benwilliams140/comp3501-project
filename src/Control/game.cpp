@@ -513,18 +513,25 @@ void SetupHovertank() {
     hovertank_gun_stand->SetActive(false);
 
     // Create Hovertank guns
-    SceneNode* hovertank_small_gun = Game::GetInstance().CreateInstance<SceneNode>("Machine Gun", HOVERTANK_MACHINE_GUN, hovertankMaterial, hovertankTexture);
+    MachineGun* hovertank_small_gun = Game::GetInstance().CreateInstance<MachineGun>("Machine Gun", HOVERTANK_MACHINE_GUN, hovertankMaterial, hovertankTexture);
     hovertank_small_gun->Translate(glm::vec3(0.325f, 0.895f, -0.35f));
     hovertank_small_gun->SetParent(hovertank_gun_stand);
     hovertank_small_gun->SetActive(false);
     hovertank_base->SetMachineGun(hovertank_small_gun);
-    SceneNode* hovertank_big_gun = Game::GetInstance().CreateInstance<SceneNode>("Energy Cannon", HOVERTANK_MACHINE_GUN, hovertankMaterial, hovertankTexture);
+
+    EnergyCannon* hovertank_big_gun = Game::GetInstance().CreateInstance<EnergyCannon>("Energy Cannon", HOVERTANK_MACHINE_GUN, hovertankMaterial, hovertankTexture);
     hovertank_big_gun->Translate(glm::vec3(-0.325f, 0.9f, -0.35f));
     hovertank_big_gun->Scale(glm::vec3(1.5f, 1.5f, 1.0f));
     hovertank_big_gun->Rotate(glm::angleAxis(glm::radians(-15.0f), glm::vec3(1.0f, 0.0f, 0.0f)));
     hovertank_big_gun->SetParent(hovertank_gun_stand);
     hovertank_big_gun->SetActive(false);
     hovertank_base->SetEnergyCannon(hovertank_big_gun);
+
+    EnergyEmitter* energy_blast = Game::GetInstance().CreateInstance<EnergyEmitter>("EnergyBlast", "Cube", hovertankMaterial, "uv6");
+	energy_blast->Scale(glm::vec3(0.01));
+	energy_blast->SetParent(hovertank_gun_stand);
+	energy_blast->SetActive(false);
+    hovertank_base->SetEnergyEmitter(energy_blast);
 }
 
 Artifact* CreateArtifact(glm::vec2 pos, std::string name, float points) {

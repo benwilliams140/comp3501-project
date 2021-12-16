@@ -36,6 +36,7 @@
 #include "Objects/Hovertank/hovertank_turret.h"
 #include "Objects/Hovertank/Abilities/machine_gun.h"
 #include "Objects/Hovertank/Abilities/energy_cannon.h"
+#include "Objects/Hovertank/Abilities/EnergyEmitter.h"
 #include "Objects/Hovertank/scanner.h"
 #include "Objects/terrain.h"
 #include "Objects/Artifact.h"

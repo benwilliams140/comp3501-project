@@ -8,6 +8,9 @@
 #include <time.h>
 
 #include "Control/game.h"
+#include "Objects/Hovertank/Abilities/machine_gun.h"
+#include "Objects/Hovertank/Abilities/energy_cannon.h"
+#include "Objects/Hovertank/Abilities/EnergyEmitter.h"
 
 namespace game {
 	using namespace Math;
@@ -177,12 +180,16 @@ namespace game {
 		return turret_;
 	}
 
-	SceneNode* HoverTank::GetMachineGun() {
+	MachineGun* HoverTank::GetMachineGun() {
 		return machineGun_;
 	}
 
-	SceneNode* HoverTank::GetEnergyCannon() {
+	EnergyCannon* HoverTank::GetEnergyCannon() {
 		return energyCannon_;
+	}
+
+	EnergyEmitter* HoverTank::GetEnergyEmitter() {
+		return energyEmitter_;
 	}
 
 	// Takes a normalized direction vector and a force value
@@ -202,12 +209,16 @@ namespace game {
 		scanner_ = scanner;
 	}
 
-	void HoverTank::SetMachineGun(SceneNode* machineGun) {
+	void HoverTank::SetMachineGun(MachineGun* machineGun) {
 		machineGun_ = machineGun;
 	}
 
-	void HoverTank::SetEnergyCannon(SceneNode* energyCannon) {
+	void HoverTank::SetEnergyCannon(EnergyCannon* energyCannon) {
 		energyCannon_ = energyCannon;
+	}
+
+	void HoverTank::SetEnergyEmitter(EnergyEmitter* energyEmitter) {
+		energyEmitter_ = energyEmitter;
 	}
 	
 	void HoverTank::SetSpeedMultiple(float multiple) {
