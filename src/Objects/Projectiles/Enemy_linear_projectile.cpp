@@ -27,6 +27,9 @@ namespace game {
 			//have the tank take damage
 			lifespan_ = 0.0f;
 			Game::GetInstance().GetPlayer()->decreaseHealth(attack_pow);
+			if (Math::randRangeFloat(0, 1) <= 0.3333) {
+				Game::GetInstance().GetPlayer()->Stun();
+			}
 		}
 
 	}

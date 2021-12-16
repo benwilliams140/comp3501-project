@@ -36,6 +36,7 @@
 #include "Objects/Hovertank/hovertank_turret.h"
 #include "Objects/Hovertank/Abilities/machine_gun.h"
 #include "Objects/Hovertank/Abilities/energy_cannon.h"
+#include "Objects/Hovertank/Abilities/EnergyEmitter.h"
 #include "Objects/Hovertank/scanner.h"
 #include "Objects/terrain.h"
 #include "Objects/Artifact.h"
@@ -61,6 +62,7 @@
 #define HOVERTANK_SCANNER "HovertankScanner"
 #define HOVERTANK_SCANNER_CONE "HovertankScannerCone"
 #define HOVERTANK_MACHINE_GUN "HovertankMachineGun"
+#define HOVERTANK_GUN_STAND "HovertankGunStand"
 #define HOVERTANK_TRACK_REAR "HovertankTrackRear"
 #define HOVERTANK_TRACK_FRONT "HovertankTrackFront"
 
@@ -129,12 +131,15 @@ namespace game {
             // Getters/Setters
             Camera* GetCamera();
             GLFWwindow* GetWindow();
+            GLint GetWindowWidth();
+            GLint GetWindowHeight();
             Player* GetPlayer();
             Terrain* GetTerrain();
             Menu* GetMenu(MenuType menu);
             std::vector<Artifact*>& GetArtifacts();
             std::vector<CarePackage*>& GetCarePackages();
 
+            void SetPlayer(Player* player);
             void SetState(State state);
 
             void AddCarePackage(CarePackage* package);
@@ -160,6 +165,7 @@ namespace game {
 
             // GLFW window
             GLFWwindow* window_;
+            GLint windowWidth_, windowHeight_;
 
             // Menus/GUI components
             std::unordered_map<MenuType, Menu*> menus_;
@@ -191,6 +197,9 @@ namespace game {
             void InitView(void);
             void InitEventHandlers(void);
             void InitMenus();
+
+            // Draws scene using a screen space effect shader
+            void DrawScene(std::string effect);
 
             // Methods to handle events
             static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);

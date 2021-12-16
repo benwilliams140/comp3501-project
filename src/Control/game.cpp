@@ -7,9 +7,9 @@ namespace game {
 
 // Main window settings
 const std::string window_title_g = "Game";
-const unsigned int window_width_g = 1280;
-const unsigned int window_height_g = 720;
-const bool window_full_screen_g = false;
+const unsigned int window_width_g = 1920;
+const unsigned int window_height_g = 1080;
+const bool window_full_screen_g = true;
 
 // Viewport and camera settings
 glm::vec3 camera_position_g(0.5, 0.5, 10.0);
@@ -51,6 +51,8 @@ void Game::InitWindow(void){
     } else {
         window_ = glfwCreateWindow(window_width_g, window_height_g, window_title_g.c_str(), NULL, NULL);
     }
+    windowWidth_ = window_width_g;
+    windowHeight_ = window_height_g;
     if (!window_){
         glfwTerminate();
         throw(GameException(std::string("Could not create window")));
@@ -142,6 +144,8 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Mesh, HOVERTANK_SCANNER, filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Scanner_Cone.mesh");
     resman_.LoadResource(ResourceType::Mesh, HOVERTANK_SCANNER_CONE, filename.c_str());
+    filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Gun_Stand.mesh");
+    resman_.LoadResource(ResourceType::Mesh, HOVERTANK_GUN_STAND, filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("/hovertank") + std::string("/hovertank_Machine_Gun.mesh");
     resman_.LoadResource(ResourceType::Mesh, HOVERTANK_MACHINE_GUN, filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("/environment") + std::string("/pool.mesh");
@@ -162,6 +166,8 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Mesh, "RubberBullet", filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("") + std::string("/spike_ball.mesh");
     resman_.LoadResource(ResourceType::Mesh, "SpikeBall", filename.c_str());
+    filename = std::string(MESH_DIRECTORY) + std::string("") + std::string("/artifact.mesh");
+    resman_.LoadResource(ResourceType::Mesh, "Artifact", filename.c_str());
 
     // Load shaders
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/simple_texture");
@@ -176,6 +182,8 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Material, "ArtifactParticles", filename.c_str());
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/terrain");
     resman_.LoadResource(ResourceType::Material, "TerrainMaterial", filename.c_str());
+    filename = std::string(MATERIAL_DIRECTORY) + std::string("/screen_space_effect");
+    resman_.LoadResource(ResourceType::Material, "ScreenSpaceEffect", filename.c_str());
 
     // Load texture
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/uv6.png");
@@ -216,8 +224,17 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Texture, "ShooterEnemyTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/scanning.png");
     resman_.LoadResource(ResourceType::Texture, "ScanningTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/circuits.png");
+    resman_.LoadResource(ResourceType::Texture, "ArtifactTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/gui") + std::string("/injured_screen_effect.png");
+    resman_.LoadResource(ResourceType::Texture, "BloodTexture", filename.c_str());
+
+    // Setup drawing to texture
+    scene_.SetupDrawToTexture();
+    scene_.SetBloodEffectTexture(resman_.GetResource("BloodTexture")->GetResource());
 }
 
+void SetupHovertank();
 void SetupArtifacts();
 void SetupEnemies();
 void SetupHazards();
@@ -230,68 +247,46 @@ void Game::SetupScene(void) {
     Terrain* terrain = CreateInstance<Terrain>("Terrain Object", "Terrain", "TerrainMaterial", "uv6");
     terrain->Translate(glm::vec3(-625.f, 0.0F, -625.0F));
     terrain->SetTextures("SnowTexture", "RockyTexture", "RockyTexture", "DirtTexture");
+    terrain->Init();
     terrain_ = terrain;
 
-    // create hovertank hierarchy
-    // to convert blender coordinates to opengl coordinates: (x, y, z) -> (x, z, -y)
-    // if scaling: multiply all translation values by the scale factor
-    // if a new model is loaded, will probably need to update these translations
-    std::string hovertankMaterial = "Lighting";
-    HoverTank* hovertank_base = CreateInstance<HoverTank>(HOVERTANK_BASE, HOVERTANK_BASE, hovertankMaterial, "HovertankTexture");
-    hovertank_base->SetPosition(glm::vec3(-216.0f, -41.0f, -181.0f));
-    player_ = new Player(100.f, 100.f, hovertank_base);
-  
-    HoverTankTurret* hovertank_turret = CreateInstance<HoverTankTurret>(HOVERTANK_TURRET, HOVERTANK_TURRET, hovertankMaterial, "HovertankTexture");
-    hovertank_turret->Translate(glm::vec3(0.f, 1.055f, -0.9f));
-    hovertank_turret->SetParent(hovertank_base);
-    hovertank_turret->SetForward(hovertank_base->GetForward());
-    hovertank_base->SetTurret(hovertank_turret);
+    // Creates tank instance with all its children
+    SetupHovertank();
 
-    // create hovertank tracks
-    std::string trackLocations[] = { "Rear", "Rear", "Front", "Front" };
-    std::vector<HoverTankTrack*> hovertank_tracks;
-    for (int i = 0; i < 4; ++i) {
-        hovertank_tracks.push_back(CreateInstance<HoverTankTrack>("HovertankTrack" + trackLocations[i], "HovertankTrack" + trackLocations[i], hovertankMaterial, "HovertankTexture"));
-        hovertank_tracks.at(i)->SetParent(hovertank_base);
-        float dx = -1.4f + 2.8f * ((i + 1) % 2); // left tracks (i=0,2) should translate (x) by 1.4, right (i=1,3) by -1.4
-        float dy = -0.3f; // all tracks should translate (y) by -.3
-        float dz = -1.5f +3.0f * (floor(i / 2)); // back tracks (i=0,1) should translate (z) by -1, front (i=2,3) by 3
-        hovertank_tracks.at(i)->Translate(glm::vec3(dx, dy, dz));
-    }
-    
-    // Create Hovertank scanner
-    Scanner* hovertank_scanner = CreateInstance<Scanner>("Scanner", HOVERTANK_SCANNER, hovertankMaterial, "uv6");
-    hovertank_scanner->Translate(glm::vec3(0.0f, 0.345, 1.0375f));
-    hovertank_scanner->SetParent(hovertank_turret);
-    hovertank_base->SetScanner(hovertank_scanner);
-
+    // Creates the instanced environmental objects
     EnvironmentObject* rocks1 = CreateInstance<EnvironmentObject>("Rocks 1", "Rock1", "Instanced", "RockyTexture");
     rocks1->InitPositions(1337, 250);
     rocks1->SetInstanceGroupID(0);
     rocks1->SetColliderRadius(1.5f);
+    rocks1->Init();
     EnvironmentObject* rocks2 = CreateInstance<EnvironmentObject>("Rocks 2", "Rock2", "Instanced", "RockyTexture");
     rocks2->InitPositions(65156, 250);
     rocks2->SetInstanceGroupID(1);
     rocks2->SetColliderRadius(1.0f);
+    rocks2->Init();
     EnvironmentObject* rocks3 = CreateInstance<EnvironmentObject>("Rocks 3", "Rock3", "Instanced", "RockyTexture");
     rocks3->InitPositions(351351, 250);
     rocks3->SetInstanceGroupID(2);
     rocks3->SetColliderRadius(2.0f);
+    rocks3->Init();
     EnvironmentObject* rocks4 = CreateInstance<EnvironmentObject>("Plant", "Plant", "Instanced", "PlantTexture");
     rocks4->InitPositions(7516331, 250);
     rocks4->SetInstanceGroupID(3);
     rocks4->SetColliderRadius(1.0f);
+    rocks4->Init();
 
+    // Creates the artifacts, hazards, and enemies
     SetupArtifacts();
     SetupHazards();
     SetupEnemies();
-  
-    // Initialize certain scene nodes
-    terrain_->Init();
-    rocks1->Init();
-    rocks2->Init();
-    rocks3->Init();
-    rocks4->Init();
+}
+
+void Game::DrawScene(std::string effect) {
+    // Draw the scene to a texture
+    scene_.DrawToTexture(camera_);
+    // Process the texture with a screen-space effect and display the texture
+    scene_.DisplayTexture(resman_.GetResource(effect)->GetResource());
+    //scene_.SaveTexture("test.ppm");
 }
 
 void Game::MainLoop(void){
@@ -333,12 +328,12 @@ void Game::MainLoop(void){
         }
         // render pause menu and frozen game state in the background when paused
         else if (state_ == State::PAUSED) {
-            scene_.Draw(camera_);
+            DrawScene("ScreenSpaceEffect");
             menus_[MenuType::PAUSE]->Render();
         }
         // render upgrades screen and frozen game state in the background
         else if (state_ == State::UPGRADES) {
-            scene_.Draw(camera_);
+            DrawScene("ScreenSpaceEffect");
             menus_[MenuType::UPGRADES]->Render();
         }
         else if (state_ == State::GAME_OVER) {
@@ -373,13 +368,12 @@ void Game::MainLoop(void){
                 player_->Update(); // player has it's own update method
                 scene_.Update();
             }
-            scene_.Draw(camera_);
+            DrawScene("ScreenSpaceEffect");
             
             // render the HUD overtop of the game and handle its input
             menus_[MenuType::HUD]->Render();
             menus_[MenuType::HUD]->HandleInput();
         }
-
         // Push buffer drawn in the background onto the display
         glfwSwapBuffers(window_);
         Input::update();
@@ -395,6 +389,8 @@ void Game::ResizeCallback(GLFWwindow* window, int width, int height){
     void* ptr = glfwGetWindowUserPointer(window);
     Game *game = (Game *) ptr;
     game->camera_->SetProjection(width, height);
+    game->windowWidth_ = width;
+    game->windowHeight_ = height;
 }
 
 Game::~Game(){
@@ -439,12 +435,24 @@ GLFWwindow* Game::GetWindow()
     return window_;
 }
 
+GLint Game::GetWindowWidth() {
+    return windowWidth_;
+}
+
+GLint Game::GetWindowHeight() {
+    return windowHeight_;
+}
+
 Terrain* Game::GetTerrain() {
     return terrain_;
 }
 
 Player* Game::GetPlayer() {
     return player_;
+}
+
+void Game::SetPlayer(Player* player) {
+    player_ = player;
 }
 
 void Game::SetState(State state) {
@@ -495,9 +503,71 @@ void Game::RemoveCarePackage(CarePackage* package) {
     if((*itr) == package) carePackages_.erase(itr);
 }
 
+void SetupHovertank() {
+    // create hovertank hierarchy
+    // to convert blender coordinates to opengl coordinates: (x, y, z) -> (x, z, -y)
+    // if scaling: multiply all translation values by the scale factor
+    // if a new model is loaded, will probably need to update these translations
+    std::string hovertankMaterial = "Lighting";
+    std::string hovertankTexture = "HovertankTexture";
+    HoverTank* hovertank_base = Game::GetInstance().CreateInstance<HoverTank>(HOVERTANK_BASE, HOVERTANK_BASE, hovertankMaterial, hovertankTexture);
+    hovertank_base->SetPosition(glm::vec3(-216.0f, -41.0f, -181.0f));
+    Game::GetInstance().SetPlayer(new Player(100.f, 100.f, hovertank_base));
+
+    HoverTankTurret* hovertank_turret = Game::GetInstance().CreateInstance<HoverTankTurret>(HOVERTANK_TURRET, HOVERTANK_TURRET, hovertankMaterial, hovertankTexture);
+    hovertank_turret->Translate(glm::vec3(0.f, 1.055f, -0.9f));
+    hovertank_turret->SetParent(hovertank_base);
+    hovertank_turret->SetForward(hovertank_base->GetForward());
+    hovertank_base->SetTurret(hovertank_turret);
+
+    // create hovertank tracks
+    std::string trackLocations[] = { "Rear", "Rear", "Front", "Front" };
+    std::vector<HoverTankTrack*> hovertank_tracks;
+    for (int i = 0; i < 4; ++i) {
+        hovertank_tracks.push_back(Game::GetInstance().CreateInstance<HoverTankTrack>("HovertankTrack" + trackLocations[i], "HovertankTrack" + trackLocations[i], hovertankMaterial, hovertankTexture));
+        hovertank_tracks.at(i)->SetParent(hovertank_base);
+        float dx = -1.4f + 2.8f * ((i + 1) % 2); // left tracks (i=0,2) should translate (x) by 1.4, right (i=1,3) by -1.4
+        float dy = -0.3f; // all tracks should translate (y) by -.3
+        float dz = -1.5f +3.0f * (floor(i / 2)); // back tracks (i=0,1) should translate (z) by -1, front (i=2,3) by 3
+        hovertank_tracks.at(i)->Translate(glm::vec3(dx, dy, dz));
+    }
+    
+    // Create Hovertank scanner
+    Scanner* hovertank_scanner = Game::GetInstance().CreateInstance<Scanner>("Scanner", HOVERTANK_SCANNER, hovertankMaterial, hovertankTexture);
+    hovertank_scanner->Translate(glm::vec3(0.0f, 0.345, 1.0375f));
+    hovertank_scanner->SetParent(hovertank_turret);
+    hovertank_base->SetScanner(hovertank_scanner);
+
+    // Create Hovertank gun stand
+    SceneNode* hovertank_gun_stand = Game::GetInstance().CreateInstance<SceneNode>("Machine Gun Stand", HOVERTANK_GUN_STAND, hovertankMaterial, hovertankTexture);
+    hovertank_gun_stand->SetParent(hovertank_turret);
+    hovertank_gun_stand->SetActive(false);
+
+    // Create Hovertank guns
+    MachineGun* hovertank_small_gun = Game::GetInstance().CreateInstance<MachineGun>("Machine Gun", HOVERTANK_MACHINE_GUN, hovertankMaterial, hovertankTexture);
+    hovertank_small_gun->Translate(glm::vec3(0.325f, 0.895f, -0.35f));
+    hovertank_small_gun->SetParent(hovertank_gun_stand);
+    hovertank_small_gun->SetActive(false);
+    hovertank_base->SetMachineGun(hovertank_small_gun);
+
+    EnergyCannon* hovertank_big_gun = Game::GetInstance().CreateInstance<EnergyCannon>("Energy Cannon", HOVERTANK_MACHINE_GUN, hovertankMaterial, hovertankTexture);
+    hovertank_big_gun->Translate(glm::vec3(-0.325f, 0.9f, -0.35f));
+    hovertank_big_gun->Scale(glm::vec3(1.5f, 1.5f, 1.0f));
+    hovertank_big_gun->Rotate(glm::angleAxis(glm::radians(-15.0f), glm::vec3(1.0f, 0.0f, 0.0f)));
+    hovertank_big_gun->SetParent(hovertank_gun_stand);
+    hovertank_big_gun->SetActive(false);
+    hovertank_base->SetEnergyCannon(hovertank_big_gun);
+
+    EnergyEmitter* energy_blast = Game::GetInstance().CreateInstance<EnergyEmitter>("EnergyBlast", "Cube", hovertankMaterial, "uv6");
+	energy_blast->Scale(glm::vec3(0.01));
+	energy_blast->SetParent(hovertank_gun_stand);
+	energy_blast->SetActive(false);
+    hovertank_base->SetEnergyEmitter(energy_blast);
+}
+
 Artifact* CreateArtifact(glm::vec2 pos, std::string name, float points) {
     static int artifactID = 0;
-    Artifact* artifact = Game::GetInstance().CreateInstance<Artifact>("Artifact" + std::to_string(artifactID), "Cube", "Simple", "uv6");
+    Artifact* artifact = Game::GetInstance().CreateInstance<Artifact>("Artifact" + std::to_string(artifactID), "Artifact", "Lighting", "ArtifactTexture");
     artifact->SetPosition(glm::vec3(pos.x, Game::GetInstance().GetTerrain()->GetHeightAt(pos.x, pos.y), pos.y));
     artifact->Setup(name, points, artifactID++);
     Game::GetInstance().GetArtifacts().push_back(artifact);

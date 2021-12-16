@@ -16,7 +16,13 @@ Found in the repository README.md file.
 
 #### Project Structure
 
-The headers and source files are split up into the `include` and `src` directories; these are then further split into `Control`, `Objects`, and `Renderer`. The CMake structure is recursive in nature - each of the `src` subfolders have their own `CMakeLists.txt` file containing each of the .cpp files and adding any additional subfolders. All of the resources are in the `res` directory.
+The headers and source files are split up into the `include` and `src` directories; these are then further split into `Control`, `Objects`, and `Renderer`. 
+
+The CMake structure is recursive in nature - each of the `src` subfolders have their own `CMakeLists.txt` file containing each of the .cpp files and any additional subfolders. 
+
+All of the resources such as meshes, textures, and shaders are in the `res` directory.
+
+Also, we use the ImGUI library to generate all of the GUI elements such as the HUD and the menus.
 
 ##### Class Tree
 
@@ -201,7 +207,8 @@ The headers and source files are split up into the `include` and `src` directori
   | shooter_enemy.png     | Bobbiethejean                                                | https://www.filterforge.com/filters/9039.html                |
   | sparkle_particle.png  | Ben Williams                                                 |                                                              |
   | water_particle.png    | David Mould (Fire Demo)                                      |                                                              |
-
+  | circuits.png          | Vladimir Golovin                                             | https://www.filterforge.com/filters/215.html                 |
+  
   | **Asset Name**            | **Author**   |
   | ------------------------- | ------------ |
   | button.png                | Navin Haider |
@@ -214,7 +221,7 @@ The headers and source files are split up into the `include` and `src` directori
   | mission_accomplished.png  | Navin Haider |
   | parabolic.png             | Navin Haider |
   | title_screen.png          | Navin Haider |
-
+  
   
 
 #### Fulfillment of Requirements

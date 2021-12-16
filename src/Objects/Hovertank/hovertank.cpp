@@ -8,6 +8,9 @@
 #include <time.h>
 
 #include "Control/game.h"
+#include "Objects/Hovertank/Abilities/machine_gun.h"
+#include "Objects/Hovertank/Abilities/energy_cannon.h"
+#include "Objects/Hovertank/Abilities/EnergyEmitter.h"
 
 namespace game {
 	using namespace Math;
@@ -25,8 +28,8 @@ namespace game {
 	HoverTank::~HoverTank() {}
 
 	void HoverTank::Update(void) {
-		std::string posString = std::to_string(GetPosition().x) + ", " + std::to_string(GetPosition().y) + ", " + std::to_string(GetPosition().z);
-		((HUD*)Game::GetInstance().GetMenu(MenuType::HUD))->ActivateTooltip(posString, 0.25f);
+		//std::string posString = std::to_string(GetPosition().x) + ", " + std::to_string(GetPosition().y) + ", " + std::to_string(GetPosition().z);
+		//((HUD*)Game::GetInstance().GetMenu(MenuType::HUD))->ActivateTooltip(posString, 0.25f);
 
 		// Update tank movement if game is not in freeroam
 		if (!Game::GetInstance().GetFreeroam()) {
@@ -177,6 +180,18 @@ namespace game {
 		return turret_;
 	}
 
+	MachineGun* HoverTank::GetMachineGun() {
+		return machineGun_;
+	}
+
+	EnergyCannon* HoverTank::GetEnergyCannon() {
+		return energyCannon_;
+	}
+
+	EnergyEmitter* HoverTank::GetEnergyEmitter() {
+		return energyEmitter_;
+	}
+
 	// Takes a normalized direction vector and a force value
 	void HoverTank::AddForce(glm::vec3 direction, float force) {
 		acceleration_ += direction * force;
@@ -192,6 +207,18 @@ namespace game {
 
 	void HoverTank::SetScanner(Scanner* scanner) {
 		scanner_ = scanner;
+	}
+
+	void HoverTank::SetMachineGun(MachineGun* machineGun) {
+		machineGun_ = machineGun;
+	}
+
+	void HoverTank::SetEnergyCannon(EnergyCannon* energyCannon) {
+		energyCannon_ = energyCannon;
+	}
+
+	void HoverTank::SetEnergyEmitter(EnergyEmitter* energyEmitter) {
+		energyEmitter_ = energyEmitter;
 	}
 	
 	void HoverTank::SetSpeedMultiple(float multiple) {

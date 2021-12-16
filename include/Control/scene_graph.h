@@ -33,6 +33,15 @@ namespace game {
             // Scene nodes to render
             std::vector<SceneNode *> node_;
 
+            // Frame buffer for drawing to texture
+            GLuint frame_buffer_;
+            // Quad vertex array for drawing from texture
+            GLuint quad_array_buffer_;
+            // Render targets
+            GLuint texture_;
+            GLuint depth_buffer_;
+            GLuint bloodTexture_;
+
         public:
             // Constructor and destructor
             SceneGraph(void);
@@ -41,6 +50,7 @@ namespace game {
             // Background color
             void SetBackgroundColor(glm::vec3 color);
             glm::vec3 GetBackgroundColor(void) const;
+            void SetBloodEffectTexture(GLuint texture);
             
             // Create a scene node from the specified resources
            // generic CreateNode function
@@ -82,6 +92,16 @@ namespace game {
 
             // Update entire scene
             void Update();
+
+            // Drawing from/to a texture
+            // Setup the texture
+            void SetupDrawToTexture(void);
+            // Draw the scene into a texture
+            void DrawToTexture(Camera *camera);
+            // Process and draw the texture on the screen
+            void DisplayTexture(GLuint program);
+            // Save texture to a file in ppm format
+            void SaveTexture(char *filename);
 
     }; // class SceneGraph
 

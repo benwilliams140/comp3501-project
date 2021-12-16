@@ -63,6 +63,7 @@ namespace game {
 
 	void CarePackage::Open()
 	{
+		storedAbility_->GetParent()->SetActive(true);
 		storedAbility_->SetActive(true);
 		Game::GetInstance().GetPlayer()->GetTank()->GetTurret()->AddAbility(storedAbility_);
 	}

@@ -72,24 +72,19 @@ namespace game {
 	{
 		ImGui::SetNextItemOpen(true, ImGuiCond_Always);
 		if (ImGui::TreeNode("Weapons")) {
-			std::string hovertankMaterial = "Simple";
+			std::string hovertankMaterial = "Lighting";
+			std::string hovertankTexture = "HovertankTexture";
+
 			HoverTank* tank = Game::GetInstance().GetPlayer()->GetTank();
 			if (weaponUpgrade_.machineGun) ImGui::BeginDisabled();
 			if (ImGui::Button("Machine Gun", buttonSize) && points >= weaponUpgrade_.machineGunCost) {
 				weaponUpgrade_.machineGun = true;
 				Game::GetInstance().GetPlayer()->AddMoney(-weaponUpgrade_.machineGunCost);
-				
-				MachineGun* machine_gun = Game::GetInstance().CreateInstance<MachineGun>("MachineGun", HOVERTANK_MACHINE_GUN, hovertankMaterial, "uv6");
-				machine_gun->Rotate(glm::angleAxis(glm::radians(180.0f), tank->GetForward()));
-				machine_gun->Translate(glm::vec3(0.0f, 0.2555f, 0.0f));
-				machine_gun->Scale(glm::vec3(0.75));
-				machine_gun->SetParent(tank->GetTurret());
-				machine_gun->SetActive(false);
 
 				// Create Care Package
 				CarePackage* package = Game::GetInstance().CreateInstance<CarePackage>("PackageMG", "Cube", "Lighting", "CrateTexture");
-				package->SetPosition(glm::vec3(-30.0f, 35.0f, 75.0f));
-				package->SetStoredAbility(machine_gun);
+				package->SetPosition(glm::vec3(-339.0f, 35.0f, 73.0f));
+				package->SetStoredAbility((Ability*)(tank->GetMachineGun()));
 				
 				ImGui::BeginDisabled();
 			}
@@ -99,18 +94,11 @@ namespace game {
 			if (ImGui::Button("Energy Cannon", buttonSize) && points >= weaponUpgrade_.energyCannonCost) {
 				weaponUpgrade_.energyCannon = true;
 				Game::GetInstance().GetPlayer()->AddMoney(-weaponUpgrade_.energyCannonCost);
-				
-				EnergyCannon* energy_cannon = Game::GetInstance().CreateInstance<EnergyCannon>("EnergyCannon", HOVERTANK_MACHINE_GUN, hovertankMaterial, "uv6");
-				energy_cannon->Rotate(glm::angleAxis(glm::radians(180.0f), tank->GetForward()));
-				energy_cannon->Translate(glm::vec3(0.0f, 0.2555f, 0.0f));
-				energy_cannon->Scale(glm::vec3(0.75));
-				energy_cannon->SetParent(tank->GetTurret());
-				energy_cannon->SetActive(false);
 
 				// Create Care Package
 				CarePackage* package = Game::GetInstance().CreateInstance<CarePackage>("PackageEC", "Cube", "Lighting", "CrateTexture");
-				package->SetPosition(glm::vec3(-30.0f, 35.0f, 75.0f));
-				package->SetStoredAbility(energy_cannon);
+				package->SetPosition(glm::vec3(-123.0f, 35.0f, 194.0f));
+				package->SetStoredAbility((Ability*)(tank->GetEnergyCannon()));
 				
 				ImGui::BeginDisabled();
 			}
@@ -121,17 +109,10 @@ namespace game {
 				weaponUpgrade_.energyBlast = true;
 				Game::GetInstance().GetPlayer()->AddMoney(-weaponUpgrade_.energyBlastCost);
 
-				EnergyEmitter* energy_blast = Game::GetInstance().CreateInstance<EnergyEmitter>("EnergyBlast", HOVERTANK_MACHINE_GUN, hovertankMaterial, "uv6");
-				energy_blast->Rotate(glm::angleAxis(glm::radians(180.0f), tank->GetForward()));
-				energy_blast->Translate(glm::vec3(0.0f, 0.2555f, 0.0f));
-				energy_blast->Scale(glm::vec3(0.75));
-				energy_blast->SetParent(tank->GetTurret());
-				energy_blast->SetActive(false);
-
 				// Create Care Package
 				CarePackage* package = Game::GetInstance().CreateInstance<CarePackage>("PackageEB", "Cube", "Lighting", "CrateTexture");
-				package->SetPosition(glm::vec3(-30.0f, 35.0f, 75.0f));
-				package->SetStoredAbility(energy_blast);
+				package->SetPosition(glm::vec3(261.0f, 35.0f, 151.0f));
+				package->SetStoredAbility((Ability*)(tank->GetEnergyEmitter()));
 
 				ImGui::BeginDisabled();
 			}
