@@ -1,3 +1,21 @@
+<style>
+.demoCode {
+    background-color: MediumVioletRed;
+}
+
+.thirdPartyCode {
+    background-color: LightCoral
+}
+
+.demoCodeWithAdditions {
+    color: ForestGreen
+}
+
+.ourCode {
+    color: Indigo
+}
+</style>
+
 ## COMP3501A - Final Project Report
 
 #### Group Members
@@ -22,7 +40,7 @@ The CMake structure is recursive in nature - each of the `src` subfolders have t
 
 All of the resources such as meshes, textures, and shaders are in the `res` directory.
 
-Also, we use the ImGUI library to generate all of the GUI elements such as the HUD and the menus.
+We also use the ImGUI library to generate and render all of the GUI elements such as the HUD and the menus.
 
 ##### Class Tree
 
@@ -31,130 +49,131 @@ Also, we use the ImGUI library to generate all of the GUI elements such as the H
 │   ├── Control\
 │   │   ├── GUI\
 │   │   │   ├── Menus\
-│   │   │   │   ├── game_over.h\
-│   │   │   │   ├── hud.h\
-│   │   │   │   ├── main_menu.h\
-│   │   │   │   ├── pause_menu.h\
-│   │   │   │   ├── text_window.h\
-│   │   │   │   ├── upgrades.h\
-│   │   │   │   └── you_win.h\
-│   │   │   └── menu.h\
-│   │   ├── game.h\
-│   │   ├── input.h\
-│   │   ├── mathematics.h\
-│   │   ├── path_config.h\
-│   │   ├── resource_manager.h\
-│   │   ├── resource.h\
-│   │   ├── scene_graph.h\
-│   │   ├── scene_node.h\
-│   │   └── time.h\
+│   │   │   │   ├── <span class="ourCode">game_over.h</span>\
+│   │   │   │   ├── <span class="ourCode">hud.h</span>\
+│   │   │   │   ├── <span class="ourCode">main_menu.h</span>\
+│   │   │   │   ├── <span class="ourCode">pause_menu.h</span>\
+│   │   │   │   ├── <span class="ourCode">text_window.h</span>\
+│   │   │   │   ├── <span class="ourCode">upgrades.h</span>\
+│   │   │   │   └── <span class="ourCode">you_win.h</span>\
+│   │   │   └── <span class="ourCode">menu.h</span>\
+│   │   ├── <span class="demoCodeWithAdditions">game.h</span>\
+│   │   ├── <span class="thirdPartyCode">input.h</span>\
+│   │   ├── <span class="ourCode">mathematics.h</span>\
+│   │   ├── <span class="demoCode">path_config.h</span>\
+│   │   ├── <span class="demoCodeWithAdditions">resource_manager.h</span>\
+│   │   ├── <span class="demoCode">resource.h</span>\
+│   │   ├── <span class="demoCodeWithAdditions">scene_graph.h</span>\
+│   │   ├── <span class="demoCodeWithAdditions">scene_node.h</span>\
+│   │   └── <span class="ourCode">time.h</span>\
 │   ├── Objects\
 │   │   ├── Hazards\
-│   │   │   ├── acid_pool.h\
-│   │   │   ├── geyser.h\
-│   │   │   ├── hazard.h\
-│   │   │   └── mud_pool.h\
+│   │   │   ├── <span class="ourCode">acid_pool.h</span>\
+│   │   │   ├── <span class="ourCode">geyser.h</span>\
+│   │   │   ├── <span class="ourCode">hazard.h</span>\
+│   │   │   └── <span class="ourCode">mud_pool.h</span>\
 │   │   ├── Hovertank\
 │   │   │   ├── Abilities\
-│   │   │   │   ├── ability.h\
-│   │   │   │   ├── energy_cannon.h\
-│   │   │   │   ├── EnergyEmitter.h\
-│   │   │   │   └── machine_gun.h\
-│   │   │   ├── hovertank_track.h\
-│   │   │   ├── hovertank_turret.h\
-│   │   │   ├── hovertank.h\
-│   │   │   └── scanner.h\
+│   │   │   │   ├── <span class="ourCode">ability.h</span>\
+│   │   │   │   ├── <span class="ourCode">energy_cannon.h</span>\
+│   │   │   │   ├── <span class="ourCode">EnergyEmitter.h</span>\
+│   │   │   │   └── <span class="ourCode">machine_gun.h</span>\
+│   │   │   ├── <span class="ourCode">hovertank_track.h</span>\
+│   │   │   ├── <span class="ourCode">hovertank_turret.h</span>\
+│   │   │   ├── <span class="ourCode">hovertank.h</span>\
+│   │   │   └── <span class="ourCode">scanner.h</span>\
 │   │   ├── Projectiles\
-│   │   │   ├── Enemy_linear_projectile.h\
-│   │   │   ├── EnergyBlast.h\
-│   │   │   ├── linear_projectile.h\
-│   │   │   ├── parabolic_projectile.h\
-│   │   │   └── projectile.h\
-│   │   ├── Artifact.h\
-│   │   ├── CarePackage.h\
-│   │   ├── ChaserEnemy.h\
-│   │   ├── Enemy.h\
-│   │   ├── EnergySource.h\
-│   │   ├── EnvironmentObject.h\
-│   │   ├── particle.h\
-│   │   ├── Player.h\
-│   │   ├── ShooterEnemy.h\
-│   │   └── terrain.h\
+│   │   │   ├── <span class="ourCode">Enemy_linear_projectile.h</span>\
+│   │   │   ├── <span class="ourCode">EnergyBlast.h</span>\
+│   │   │   ├── <span class="ourCode">linear_projectile.h</span>\
+│   │   │   ├── <span class="ourCode">parabolic_projectile.h</span>\
+│   │   │   └── <span class="ourCode">projectile.h</span>\
+│   │   ├── <span class="ourCode">Artifact.h</span>\
+│   │   ├── <span class="ourCode">CarePackage.h</span>\
+│   │   ├── <span class="ourCode">ChaserEnemy.h</span>\
+│   │   ├── <span class="ourCode">Enemy.h</span>\
+│   │   ├── <span class="ourCode">EnergySource.h</span>\
+│   │   ├── <span class="ourCode">EnvironmentObject.h</span>\
+│   │   ├── <span class="ourCode">particle.h</span>\
+│   │   ├── <span class="ourCode">Player.h</span>\
+│   │   ├── <span class="ourCode">ShooterEnemy.h</span>\
+│   │   └── <span class="ourCode">terrain.h</span>\
 │   └── Renderer\
-│       ├── camera.h\
-│       ├── ebo.h\
-│       └── vao.h\
+│       ├── <span class="demoCodeWithAdditions">camera.h</span>\
+│       ├── <span class="thirdPartyCode">ebo.h</span>\
+│       └── <span class="thirdPartyCode">vao.h</span>\
 ├── res\
 │   └── ...\
 ├── src\
 │   ├── Control\
 │   │   ├── GUI\
 │   │   │   ├── Menus\
-│   │   │   │   ├── CMakeLists.txt\
-│   │   │   │   ├── game_over.cpp\
-│   │   │   │   ├── hud.cpp\
-│   │   │   │   ├── main_menu.cpp\
-│   │   │   │   ├── pause_menu.cpp\
-│   │   │   │   ├── text_window.cpp\
-│   │   │   │   ├── upgrades.cpp\
-│   │   │   │   └── you_win.cpp\
-│   │   │   ├── CMakeLists.txt\
-│   │   │   └── menu.cpp\
-│   │   ├── CMakeLists.txt\
-│   │   ├── game.cpp\
-│   │   ├── input.cpp\
-│   │   ├── resource_manager.cpp\
-│   │   ├── resource.cpp\
-│   │   ├── scene_graph.cpp\
-│   │   ├── scene_node.cpp\
-│   │   └── time.cpp\
+│   │   │   │   ├── <span class="ourCode">CMakeLists.txt</span>\
+│   │   │   │   ├── <span class="ourCode">game_over.cpp</span>\
+│   │   │   │   ├── <span class="ourCode">hud.cpp</span>\
+│   │   │   │   ├── <span class="ourCode">main_menu.cpp</span>\
+│   │   │   │   ├── <span class="ourCode">pause_menu.cpp</span>\
+│   │   │   │   ├── <span class="ourCode">text_window.cpp</span>\
+│   │   │   │   ├── <span class="ourCode">upgrades.cpp</span>\
+│   │   │   │   └── <span class="ourCode">you_win.cpp</span>\
+│   │   │   ├── <span class="ourCode">CMakeLists.txt</span>\
+│   │   │   └── <span class="ourCode">menu.cpp</span>\
+│   │   ├── <span class="ourCode">CMakeLists.txt</span>\
+│   │   ├── <span class="demoCodeWithAdditions">game.cpp</span>\
+│   │   ├── <span class="thirdPartyCode">input.cpp</span>\
+│   │   ├── <span class="demoCodeWithAdditions">resource_manager.cpp</span>\
+│   │   ├── <span class="demoCode">resource.cpp</span>\
+│   │   ├── <span class="demoCodeWithAdditions">scene_graph.cpp</span>\
+│   │   ├── <span class="demoCodeWithAdditions">scene_node.cpp</span>\
+│   │   └── <span class="ourCode">time.cpp</span>\
 │   ├── Objects\
 │   │   ├── Hazards\
-│   │   │   ├── acid_pool.cpp\
-│   │   │   ├── CMakeLists.txt\
-│   │   │   ├── geyser.cpp\
-│   │   │   ├── hazard.cpp\
-│   │   │   └── mud_pool.cpp\
+│   │   │   ├── <span class="ourCode">acid_pool.cpp</span>\
+│   │   │   ├── <span class="ourCode">CMakeLists.txt</span>\
+│   │   │   ├── <span class="ourCode">geyser.cpp</span>\
+│   │   │   ├── <span class="ourCode">hazard.cpp</span>\
+│   │   │   └── <span class="ourCode">mud_pool.cpp</span>\
 │   │   ├── Hovertank\
 │   │   │   ├── Abilities\
-│   │   │   │   ├── ability.cpp\
-│   │   │   │   ├── CMakeLists.txt\
-│   │   │   │   ├── energy_cannon.cpp\
-│   │   │   │   ├── EnergyEmitter.cpp\
-│   │   │   │   └── machine_gun.cpp\
-│   │   │   ├── CMakeLists.txt\
-│   │   │   ├── hovertank_track.cpp\
-│   │   │   ├── hovertank_turret.cpp\
-│   │   │   ├── hovertank.cpp\
-│   │   │   └── scanner.cpp\
+│   │   │   │   ├── <span class="ourCode">ability.cpp</span>\
+│   │   │   │   ├── <span class="ourCode">CMakeLists.txt</span>\
+│   │   │   │   ├── <span class="ourCode">energy_cannon.cpp</span>\
+│   │   │   │   ├── <span class="ourCode">EnergyEmitter.cpp</span>\
+│   │   │   │   └── <span class="ourCode">machine_gun.cpp</span>\
+│   │   │   ├── <span class="ourCode">CMakeLists.txt</span>\
+│   │   │   ├── <span class="ourCode">hovertank_track.cpp</span>\
+│   │   │   ├── <span class="ourCode">hovertank_turret.cpp</span>\
+│   │   │   ├── <span class="ourCode">hovertank.cpp</span>\
+│   │   │   └── <span class="ourCode">scanner.cpp</span>\
 │   │   ├── Projectiles\
-│   │   │   ├── CMakeLists.txt\
-│   │   │   ├── Enemy_linear_projectile.cpp\
-│   │   │   ├── EnergyBlast.cpp\
-│   │   │   ├── linear_projectile.cpp\
-│   │   │   ├── parabolic_projectile.cpp\
-│   │   │   └── projectile.cpp\
-│   │   ├── Artifact.cpp\
-│   │   ├── CarePackage.cpp\
-│   │   ├── ChaserEnemy.cpp\
-│   │   ├── CMakeLists.txt\
-│   │   ├── Enemy.cpp\
-│   │   ├── EnergySource.cpp\
-│   │   ├── EnvironmentObject.cpp\
-│   │   ├── particle.cpp\
-│   │   ├── Player.cpp\
-│   │   ├── ShooterEnemy.cpp\
-│   │   └── terrain.cpp\
+│   │   │   ├── <span class="ourCode">CMakeLists.txt</span>\
+│   │   │   ├── <span class="ourCode">Enemy_linear_projectile.cpp</span>\
+│   │   │   ├── <span class="ourCode">EnergyBlast.cpp</span>\
+│   │   │   ├── <span class="ourCode">linear_projectile.cpp</span>\
+│   │   │   ├── <span class="ourCode">parabolic_projectile.cpp</span>\
+│   │   │   └── <span class="ourCode">projectile.cpp</span>\
+│   │   ├── <span class="ourCode">Artifact.cpp</span>\
+│   │   ├── <span class="ourCode">CarePackage.cpp</span>\
+│   │   ├── <span class="ourCode">ChaserEnemy.cpp</span>\
+│   │   ├── <span class="ourCode">CMakeLists.txt</span>\
+│   │   ├── <span class="ourCode">Enemy.cpp</span>\
+│   │   ├── <span class="ourCode">EnergySource.cpp</span>\
+│   │   ├── <span class="ourCode">EnvironmentObject.cpp</span>\
+│   │   ├── <span class="ourCode">particle.cpp</span>\
+│   │   ├── <span class="ourCode">Player.cpp</span>\
+│   │   ├── <span class="ourCode">ShooterEnemy.cpp</span>\
+│   │   └── <span class="ourCode">terrain.cpp</span>\
 │   ├── Renderer\
-│   │   ├── camera.cpp\
-│   │   ├── CMakeLists.txt\
-│   │   ├── ebo.cpp\
-│   │   └── vao.cpp\
-│   ├── CMakeLists.txt\
-│   └── main.cpp\
-├── CMakeLists.txt\
+│   │   ├── <span class="demoCodeWithAdditions">camera.cpp</span>\
+│   │   ├── <span class="ourCode">CMakeLists.txt</span>\
+│   │   ├── <span class="thirdPartyCode">ebo.cpp</span>\
+│   │   └── <span class="thirdPartyCode">vao.cpp</span>\
+│   ├── <span class="ourCode">CMakeLists.txt</span>\
+│   └── <span class="demoCode">main.cpp</span>\
+├── <span class="ourCode">CMakeLists.txt</span>\
 ├── project_report.md\
 └── README.md
+</font>
 
 ##### Assets / Credits
 
