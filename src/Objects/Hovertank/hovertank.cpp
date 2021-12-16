@@ -177,6 +177,14 @@ namespace game {
 		return turret_;
 	}
 
+	SceneNode* HoverTank::GetMachineGun() {
+		return machineGun_;
+	}
+
+	SceneNode* HoverTank::GetEnergyCannon() {
+		return energyCannon_;
+	}
+
 	// Takes a normalized direction vector and a force value
 	void HoverTank::AddForce(glm::vec3 direction, float force) {
 		acceleration_ += direction * force;
@@ -192,6 +200,14 @@ namespace game {
 
 	void HoverTank::SetScanner(Scanner* scanner) {
 		scanner_ = scanner;
+	}
+
+	void HoverTank::SetMachineGun(SceneNode* machineGun) {
+		machineGun_ = machineGun;
+	}
+
+	void HoverTank::SetEnergyCannon(SceneNode* energyCannon) {
+		energyCannon_ = energyCannon;
 	}
 	
 	void HoverTank::SetSpeedMultiple(float multiple) {

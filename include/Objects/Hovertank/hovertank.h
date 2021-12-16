@@ -35,6 +35,8 @@ namespace game {
 		glm::vec3 GetVelocity();
 		float GetStrength();
 		HoverTankTurret* GetTurret();
+		SceneNode* GetMachineGun();
+		SceneNode* GetEnergyCannon();
 		Math::SphereCollider GetCollider(void) const;
 
 		// setters
@@ -42,6 +44,8 @@ namespace game {
 		void SetStrength(float newStrength);
 		void SetTurret(HoverTankTurret* turret);
 		void SetScanner(Scanner* scanner);
+		void SetMachineGun(SceneNode* machineGun);
+		void SetEnergyCannon(SceneNode* energyCannon);
 		void SetSpeedMultiple(float multiple);
 		void SetSpeedEffectMultiple(float multiple);
 		void IncreaseSpeedMultiple(float increase);
@@ -67,6 +71,8 @@ namespace game {
 
 		HoverTankTurret* turret_;
 		Scanner* scanner_;
+		SceneNode* machineGun_;
+		SceneNode* energyCannon_;
 
 	}; // class HoverTank
 

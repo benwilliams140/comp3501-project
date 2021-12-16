@@ -61,6 +61,7 @@
 #define HOVERTANK_SCANNER "HovertankScanner"
 #define HOVERTANK_SCANNER_CONE "HovertankScannerCone"
 #define HOVERTANK_MACHINE_GUN "HovertankMachineGun"
+#define HOVERTANK_GUN_STAND "HovertankGunStand"
 #define HOVERTANK_TRACK_REAR "HovertankTrackRear"
 #define HOVERTANK_TRACK_FRONT "HovertankTrackFront"
 
@@ -135,6 +136,7 @@ namespace game {
             std::vector<Artifact*>& GetArtifacts();
             std::vector<CarePackage*>& GetCarePackages();
 
+            void SetPlayer(Player* player);
             void SetState(State state);
 
             void AddCarePackage(CarePackage* package);

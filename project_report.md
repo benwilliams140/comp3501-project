@@ -2,7 +2,13 @@
 
 #### Project Structure
 
-The headers and source files are split up into the `include` and `src` directories; these are then further split into `Control`, `Objects`, and `Renderer`. The CMake structure is recursive in nature - each of the `src` subfolders have their own `CMakeLists.txt` file containing each of the .cpp files and adding any additional subfolders. All of the resources are in the `res` directory.
+The headers and source files are split up into the `include` and `src` directories; these are then further split into `Control`, `Objects`, and `Renderer`. 
+
+The CMake structure is recursive in nature - each of the `src` subfolders have their own `CMakeLists.txt` file containing each of the .cpp files and any additional subfolders. 
+
+All of the resources such as meshes, textures, and shaders are in the `res` directory.
+
+Also, we use the ImGUI library to generate all of the GUI elements such as the HUD and the menus.
 
 ##### Class Tree
 
