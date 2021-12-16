@@ -220,9 +220,12 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Texture, "ShooterEnemyTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/scanning.png");
     resman_.LoadResource(ResourceType::Texture, "ScanningTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/gui") + std::string("/injured_screen_effect.png");
+    resman_.LoadResource(ResourceType::Texture, "BloodTexture", filename.c_str());
 
     // Setup drawing to texture
     scene_.SetupDrawToTexture();
+    scene_.SetBloodEffectTexture(resman_.GetResource("BloodTexture")->GetResource());
 }
 
 void SetupHovertank();

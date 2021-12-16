@@ -60,10 +60,6 @@ namespace game {
 		infoBar_.text = "";
 	}
 
-	void HUD::StartInjuredEffect() {
-		injuredEffect_.startTime = injuredEffect_.maxTime;
-	}
-
 	void HUD::Render() {
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -90,7 +86,6 @@ namespace game {
 		ImVec2 windowSize = ImVec2(windowWidth, windowHeight);
 		ImVec2 windowRatio = ImVec2((float)windowWidth / initialWindowWidth, (float)windowHeight / initialWindowHeight);
 
-		RenderInjuredEffect(windowSize);
 		RenderInformationBar(windowSize, windowRatio);
 		RenderArtifactBar();
 		RenderHealthBar(windowSize, windowRatio);
@@ -104,14 +99,6 @@ namespace game {
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-	}
-
-	void HUD::RenderInjuredEffect(ImVec2 windowSize)
-	{
-		injuredEffect_.startTime -= Time::GetDeltaTime();
-		ImGui::PushStyleVar(ImGuiStyleVar_Alpha, injuredEffect_.startTime / injuredEffect_.maxTime); // fade out
-		ImGui::Image(injuredEffect_.effect, windowSize);
-		ImGui::PopStyleVar(1);
 	}
 
 	void HUD::RenderInformationBar(ImVec2 windowSize, ImVec2 windowRatio) {

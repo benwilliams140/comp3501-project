@@ -40,6 +40,8 @@ namespace game {
 		HoverTank* GetTank();
 		float GetMoney();
 		int GetNumArtifacts();
+		float GetInjuredStartTime();
+		float GetInjuredMaxTime();
 
 		void SetHealth(float newHealth);
 		void SetMaxHealth(float newHealth);
@@ -66,6 +68,9 @@ namespace game {
 
 		const float maxCooldown_ = 3.0f;
 		float energyRegenCooldown_, healthRegenCooldown_;
+
+		float maxTime_ = 0.5f;
+		float startTime_ = 0.0f;
 		
 	}; // class Player
 

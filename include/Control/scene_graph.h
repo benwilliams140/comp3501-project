@@ -40,6 +40,7 @@ namespace game {
             // Render targets
             GLuint texture_;
             GLuint depth_buffer_;
+            GLuint bloodTexture_;
 
         public:
             // Constructor and destructor
@@ -49,6 +50,7 @@ namespace game {
             // Background color
             void SetBackgroundColor(glm::vec3 color);
             glm::vec3 GetBackgroundColor(void) const;
+            void SetBloodEffectTexture(GLuint texture);
             
             // Create a scene node from the specified resources
            // generic CreateNode function

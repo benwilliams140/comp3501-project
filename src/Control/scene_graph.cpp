@@ -27,6 +27,9 @@ void SceneGraph::SetBackgroundColor(glm::vec3 color){
     background_color_ = color;
 }
 
+void SceneGraph::SetBloodEffectTexture(GLuint texture) {
+    bloodTexture_ = texture;
+}
 
 glm::vec3 SceneGraph::GetBackgroundColor(void) const {
 
@@ -239,9 +242,25 @@ void SceneGraph::DisplayTexture(GLuint program){
     float current_time = glfwGetTime();
     glUniform1f(timer_var, current_time);
 
-    // Bind texture
+
+
+    // Bind scene texture
+    GLint tex1 = glGetUniformLocation(program, "texture_map");
+    glUniform1i(tex1, 0);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture_);
+
+    // Bind blood effect texture
+    GLint tex2 = glGetUniformLocation(program, "blood_texture_map");
+    glUniform1i(tex2, 1);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, bloodTexture_);
+
+    GLint start_time_var = glGetUniformLocation(program, "start_time");
+    glUniform1f(start_time_var, Game::GetInstance().GetPlayer()->GetInjuredStartTime());
+
+    GLint max_time_var = glGetUniformLocation(program, "max_time");
+    glUniform1f(max_time_var, Game::GetInstance().GetPlayer()->GetInjuredMaxTime());
 
     // Draw geometry
     glDrawArrays(GL_TRIANGLES, 0, 6); // Quad: 6 coordinates

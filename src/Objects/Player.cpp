@@ -26,6 +26,12 @@ namespace game {
 
 	void Player::Update()
 	{
+		if (startTime_ > 0) {
+			startTime_ -= Time::GetDeltaTime();
+		} else {
+			startTime_ = 0;
+		}
+
 		energyRegenCooldown_ -= Time::GetDeltaTime();
 		healthRegenCooldown_ -= Time::GetDeltaTime();
 
@@ -63,6 +69,14 @@ namespace game {
 		return tank;
 	}
 
+	float Player::GetInjuredStartTime() {
+		return startTime_;
+	}
+
+	float Player::GetInjuredMaxTime() {
+		return maxTime_;
+	}
+
 	//setters
 	void Player::SetHealth(float newHealth) {
 		health = newHealth;
@@ -87,7 +101,7 @@ namespace game {
 	
 	void Player::decreaseHealth(float damage) {
 		//have the player take damage and lose health
-		((HUD*)Game::GetInstance().GetMenu(MenuType::HUD))->StartInjuredEffect();
+		startTime_ = maxTime_;
 		health = health - damage;
 		healthRegenCooldown_ = maxCooldown_;
 		if (health <= 0.0f) {
