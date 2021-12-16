@@ -193,7 +193,8 @@ Also, we use the ImGUI library to generate all of the GUI elements such as the H
   | shooter_enemy.png     | Bobbiethejean                                                | https://www.filterforge.com/filters/9039.html                |
   | sparkle_particle.png  | Ben Williams                                                 |                                                              |
   | water_particle.png    | David Mould (Fire Demo)                                      |                                                              |
-
+  | circuits.png          | Vladimir Golovin                                             | https://www.filterforge.com/filters/215.html                 |
+  
   | **Asset Name**            | **Author**   |
   | ------------------------- | ------------ |
   | button.png                | Navin Haider |
@@ -206,7 +207,7 @@ Also, we use the ImGUI library to generate all of the GUI elements such as the H
   | mission_accomplished.png  | Navin Haider |
   | parabolic.png             | Navin Haider |
   | title_screen.png          | Navin Haider |
-
+  
   
 
 #### Fulfillment of Requirements

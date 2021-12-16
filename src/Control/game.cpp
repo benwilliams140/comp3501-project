@@ -164,6 +164,8 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Mesh, "RubberBullet", filename.c_str());
     filename = std::string(MESH_DIRECTORY) + std::string("") + std::string("/spike_ball.mesh");
     resman_.LoadResource(ResourceType::Mesh, "SpikeBall", filename.c_str());
+    filename = std::string(MESH_DIRECTORY) + std::string("") + std::string("/artifact.mesh");
+    resman_.LoadResource(ResourceType::Mesh, "Artifact", filename.c_str());
 
     // Load shaders
     filename = std::string(MATERIAL_DIRECTORY) + std::string("/simple_texture");
@@ -220,6 +222,8 @@ void Game::SetupResources(void) {
     resman_.LoadResource(ResourceType::Texture, "ShooterEnemyTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/scanning.png");
     resman_.LoadResource(ResourceType::Texture, "ScanningTexture", filename.c_str());
+    filename = std::string(TEXTURE_DIRECTORY) + std::string("/circuits.png");
+    resman_.LoadResource(ResourceType::Texture, "ArtifactTexture", filename.c_str());
     filename = std::string(TEXTURE_DIRECTORY) + std::string("/gui") + std::string("/injured_screen_effect.png");
     resman_.LoadResource(ResourceType::Texture, "BloodTexture", filename.c_str());
 
@@ -550,7 +554,7 @@ void SetupHovertank() {
 
 Artifact* CreateArtifact(glm::vec2 pos, std::string name, float points) {
     static int artifactID = 0;
-    Artifact* artifact = Game::GetInstance().CreateInstance<Artifact>("Artifact" + std::to_string(artifactID), "Cube", "Simple", "uv6");
+    Artifact* artifact = Game::GetInstance().CreateInstance<Artifact>("Artifact" + std::to_string(artifactID), "Artifact", "Lighting", "ArtifactTexture");
     artifact->SetPosition(glm::vec3(pos.x, Game::GetInstance().GetTerrain()->GetHeightAt(pos.x, pos.y), pos.y));
     artifact->Setup(name, points, artifactID++);
     Game::GetInstance().GetArtifacts().push_back(artifact);
