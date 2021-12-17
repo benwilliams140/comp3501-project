@@ -1,16 +1,16 @@
 <style>
+p {
+    
+}
+
 .tree {
     line-height: 15px;
     font-size: 12px;
     column-count: 3;
 }
 
-.demoCode {
-    background-color: MediumVioletRed;
-}
-
 .thirdPartyCode {
-    background-color: LightCoral
+    color: Red
 }
 
 .demoCodeWithAdditions {
@@ -18,7 +18,7 @@
 }
 
 .ourCode {
-    color: Indigo
+    color: Black
 }
 </style>
 
@@ -50,10 +50,14 @@ We also use the ImGUI library to generate and render all of the GUI elements suc
 
 ##### Class Tree
 
+<p class="ourCode">Code that we wrote.</p>
+<p class="demoCodeWithAdditions">Code from demos that we edited.</p>
+<p class="thirdPartyCode">Code that Pablo wrote for other projects.</p>
+
 <p class="tree">
 .<br/>
 ├── include<br/>
-│   ├── Control 
+│   ├── Control<br/>
 │   │   ├── GUI<br/>
 │   │   │   ├── Menus<br/>
 │   │   │   │   ├── <span class="ourCode">game_over.h</span><br/>
@@ -67,9 +71,9 @@ We also use the ImGUI library to generate and render all of the GUI elements suc
 │   │   ├── <span class="demoCodeWithAdditions">game.h</span><br/>
 │   │   ├── <span class="thirdPartyCode">input.h</span><br/>
 │   │   ├── <span class="ourCode">mathematics.h</span><br/>
-│   │   ├── <span class="demoCode">path_config.h</span><br/>
+│   │   ├── <span class="demoCodeWithAdditions">path_config.h</span><br/>
 │   │   ├── <span class="demoCodeWithAdditions">resource_manager.h</span><br/>
-│   │   ├── <span class="demoCode">resource.h</span><br/>
+│   │   ├── <span class="demoCodeWithAdditions">resource.h</span><br/>
 │   │   ├── <span class="demoCodeWithAdditions">scene_graph.h</span><br/>
 │   │   ├── <span class="demoCodeWithAdditions">scene_node.h</span><br/>
 │   │   └── <span class="ourCode">time.h</span><br/>
@@ -106,9 +110,9 @@ We also use the ImGUI library to generate and render all of the GUI elements suc
 │   │   ├── <span class="ourCode">ShooterEnemy.h</span><br/>
 │   │   └── <span class="ourCode">terrain.h</span><br/>
 │   └── Renderer<br/>
-│       ├── <span class="demoCodeWithAdditions">camera.h</span><br/>
-│       ├── <span class="thirdPartyCode">ebo.h</span><br/>
-│       └── <span class="thirdPartyCode">vao.h</span><br/>
+│ &emsp;├── <span class="demoCodeWithAdditions">camera.h</span><br/>
+│ &emsp;├── <span class="thirdPartyCode">ebo.h</span><br/>
+│ &emsp;└── <span class="thirdPartyCode">vao.h</span><br/>
 ├── res<br/>
 │   └── ...<br/>
 ├── src<br/>
@@ -129,7 +133,7 @@ We also use the ImGUI library to generate and render all of the GUI elements suc
 │   │   ├── <span class="demoCodeWithAdditions">game.cpp</span><br/>
 │   │   ├── <span class="thirdPartyCode">input.cpp</span><br/>
 │   │   ├── <span class="demoCodeWithAdditions">resource_manager.cpp</span><br/>
-│   │   ├── <span class="demoCode">resource.cpp</span><br/>
+│   │   ├── <span class="demoCodeWithAdditions">resource.cpp</span><br/>
 │   │   ├── <span class="demoCodeWithAdditions">scene_graph.cpp</span><br/>
 │   │   ├── <span class="demoCodeWithAdditions">scene_node.cpp</span><br/>
 │   │   └── <span class="ourCode">time.cpp</span><br/>
@@ -176,7 +180,7 @@ We also use the ImGUI library to generate and render all of the GUI elements suc
 │   │   ├── <span class="thirdPartyCode">ebo.cpp</span><br/>
 │   │   └── <span class="thirdPartyCode">vao.cpp</span><br/>
 │   ├── <span class="ourCode">CMakeLists.txt</span><br/>
-│   └── <span class="demoCode">main.cpp</span><br/>
+│   └── <span class="demoCodeWithAdditions">main.cpp</span><br/>
 ├── <span class="ourCode">CMakeLists.txt</span><br/>
 ├── project_report.md<br/>
 └── README.md
@@ -357,26 +361,31 @@ Good luck!"
 
 ##### Beyond the Minimum
 
-  - the terrain has quite advanced collision accomplished using ray-plane intersection
-  - in-depth GUI using ImGui
-  - has many different menus, widgets
-  - gravity affects several objects in our game: the hovertank, care package, parabolic projectile (shot from the energy cannon), and all enemies
-  - creating enemies with simple AI
+  - The terrain has two types of collision detection; the first is more advanced, using collision detection between a line segment and a triangle (plane).
+  - We added an in-depth GUI to our game using the ImGui library; it has many different menus and a HUD with custom elements (with textures) and text.
+  - Gravity affects almost all non-static objects in our game: the hovertank, care package, parabolic projectile (shot from the energy cannon), and all enemies.
+  - The hovertank has a physics-based movement system by applying forces in different directions, allowing us to push the hovertank into the air with the geyser hazard - this gives a more realistic movement.
+  - Our game uses a variety of custom-made meshes ad textures that help immerse the player into the game.
+  - Our game has two simple AI for the enemies, one that chases the player dealing melee damage and the other detects and shoots projectiles at the player from a distance.
+
+<div style="page-break-after: always; break-after: page;"></div>
 
 #### Postmortem
 
 1. Successes
 
   - Creating a game mechanic, and having it work properly. (collisions, projectiles, gravity, cameras movement, upgrade system etc.)
-  - create well designed meshes and assets for the game
-  - creating a wide variety of interactable/dynamic objects in the world (artifacts, enemies, care package, tank, hazards)
+  - Create well designed meshes and assets for the game
+  - Creating a wide variety of interactable/dynamic objects in the world (artifacts, enemies, care package, tank, hazards)
+  - Well organized class structure
+  - Game is decently optimized - we aren't constantly sending unneeded data to the GPU. Some data is sent once on initialization.
 
 2. Hardships
 
   - Calculating the terrain normals correctly, and have them be as accurate as possible
   - Working with other's premade code. Difficult to understand their intentions
-  - trying to work on project with time constraints, had to cut a few good ideas to save on time
-  - trying to also make sure game performance is adequate 
+  - Trying to work on project with time constraints, had to cut a few good ideas to save on time
+  - Finding more ways to improve game performance
 
 3. Contributions
 
@@ -391,8 +400,9 @@ Good luck!"
 
 5.  If we had more time
 
-  - Shadows, and normal mapping
-  - focus more on optimizing game performance
-  - add more enemy types
-  - energy resourse object
-  - sound effects
+  - Implementing Shadows + normal mapping
+  - Focusing more on optimizing game performance
+  - Adding more enemy types and smarter AI
+  - Adding a more in-depth energy system (eg. mining energy crystals)
+  - Adding sound effects
+  - Balancing game object variables (eg. movement, health, projectiles, etc.)
